@@ -6,6 +6,8 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'jacoco-android'
+
 buildscript {
     repositories {
         jcenter()
@@ -38,6 +40,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+jacocoAndroidUnitTestReport {
+    xml.enabled true
 }
 
 dependencies {
