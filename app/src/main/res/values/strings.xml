@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Toast</string>
     <string name="action_settings">Settings</string>
-    <string name="created_with">CREATED WITH</string>
+    <string name="created_with">Created with</string>
     <string name="toast_facebook_fanpage">Toast\'s Facebook fanpage</string>
+    <string name="by_toast_team">by TOAST Team</string>
 </resources>
