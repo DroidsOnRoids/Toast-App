@@ -17,12 +17,10 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         showInfoDialog()
-
     }
 
     private fun showInfoDialog() {
         InfoDialogFragment().show(supportFragmentManager, "")
     }
-
 
 }

@@ -73,18 +73,18 @@
         android:layout_marginTop="48dp"
         android:text="For more information visit our"
         android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintBottom_toTopOf="@+id/fanpageLinkText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/hearthImageView"
         app:layout_constraintVertical_chainStyle="spread" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/fanpageLinkText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:text="Toast's Facebook funpage"
+        android:text="@string/toast_facebook_fanpage"
         android:textColor="@color/blueLink"
         android:textSize="16sp"
         android:textStyle="bold"
