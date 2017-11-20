@@ -17,4 +17,16 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="TextAppearance.Roboto" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/roboto</item>
+    </style>
+
+    <style name="TitleTextStyle">
+        <item name="android:textSize">@dimen/text_size_normal</item>
+        <item name="android:textAppearance">@style/TextAppearance.Roboto</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:letterSpacing">0.1</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
 </resources>
