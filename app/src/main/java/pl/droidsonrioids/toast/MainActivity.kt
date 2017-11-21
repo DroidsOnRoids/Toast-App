@@ -20,7 +20,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showInfoDialog() {
-        InfoDialogFragment().show(supportFragmentManager, "")
+        InfoDialogFragment().show(supportFragmentManager, INFO_DIALOG_TAG)
+    }
+
+    companion object {
+        const val INFO_DIALOG_TAG = "info_dialog_tag"
     }
 
 }
