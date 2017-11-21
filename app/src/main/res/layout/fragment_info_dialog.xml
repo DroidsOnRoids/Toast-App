@@ -1,4 +1,5 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
@@ -14,7 +15,7 @@
         android:layout_marginTop="17dp"
         android:background="@drawable/ic_close"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
         android:id="@+id/toastLogoImage"
@@ -24,8 +25,7 @@
         android:src="@drawable/ic_logo_toast"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/closeImageButton" />
-
+        app:layout_constraintTop_toBottomOf="@+id/closeImageButton"/>
 
     <ImageView
         android:id="@+id/hearthImageView"
@@ -37,7 +37,7 @@
         android:src="@drawable/ic_favorite_24dp"
         app:layout_constraintEnd_toStartOf="@+id/byToastTeamText"
         app:layout_constraintStart_toEndOf="@+id/createdWithText"
-        app:layout_constraintTop_toBottomOf="@+id/toastLogoImage" />
+        app:layout_constraintTop_toBottomOf="@+id/toastLogoImage"/>
 
     <TextView
         android:id="@+id/createdWithText"
@@ -51,7 +51,7 @@
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toastLogoImage"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed"/>
 
     <TextView
         android:id="@+id/byToastTeamText"
@@ -63,7 +63,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/hearthImageView"
-        app:layout_constraintTop_toBottomOf="@+id/toastLogoImage" />
+        app:layout_constraintTop_toBottomOf="@+id/toastLogoImage"/>
 
     <TextView
         android:id="@+id/moreInfoText"
@@ -71,13 +71,13 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="48dp"
-        android:text="For more information visit our"
+        android:text="@string/for_more_information_visit_our"
         android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/fanpageLinkText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/hearthImageView"
-        app:layout_constraintVertical_chainStyle="spread" />
+        app:layout_constraintVertical_chainStyle="spread"/>
 
     <TextView
         android:id="@+id/fanpageLinkText"
@@ -91,5 +91,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/moreInfoText" />
+        app:layout_constraintTop_toBottomOf="@+id/moreInfoText"/>
 </android.support.constraint.ConstraintLayout>

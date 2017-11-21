@@ -17,7 +17,17 @@ class InfoDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initialSetUp()
+    }
+
+    private fun initialSetUp() {
+        setDialogBackgroundDrawable()
         setButtonsOnClickListeners()
+    }
+
+    private fun setDialogBackgroundDrawable() {
+        dialog.window.setBackgroundDrawableResource(R.drawable.rectangle_with_round_corners)
     }
 
     private fun setButtonsOnClickListeners() {
@@ -26,9 +36,7 @@ class InfoDialogFragment : DialogFragment() {
     }
 
     private fun setCloseImageButtonOnClickListener() {
-        closeImageButton.setOnClickListener {
-            dismiss()
-        }
+        closeImageButton.setOnClickListener { dismiss() }
     }
 
     private fun setFanpageLinkTextOnClickListener() {
