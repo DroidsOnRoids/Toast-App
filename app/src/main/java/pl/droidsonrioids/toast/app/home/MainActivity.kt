@@ -25,9 +25,9 @@ class MainActivity : AppCompatActivity() {
         homeViewPager.adapter = HomePagerAdapter(supportFragmentManager)
         with(homeTabLayout) {
             setupWithViewPager(homeViewPager)
-            getTabAt(0)?.setIcon(R.drawable.ic_events)
-            getTabAt(1)?.setIcon(R.drawable.ic_lecturers)
-            getTabAt(2)?.setIcon(R.drawable.ic_contact)
+            getTabAt(0)?.setIcon(R.drawable.ic_tab_events_selector)
+            getTabAt(1)?.setIcon(R.drawable.ic_tab_lecturers_selector)
+            getTabAt(2)?.setIcon(R.drawable.ic_tab_contact_selector)
         }
     }
 
