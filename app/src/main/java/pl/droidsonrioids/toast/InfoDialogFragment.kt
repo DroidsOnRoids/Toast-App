@@ -1,5 +1,6 @@
 package pl.droidsonrioids.toast
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -7,8 +8,8 @@ import android.support.v4.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_info_dialog.*
-
 
 class InfoDialogFragment : DialogFragment() {
 
@@ -47,9 +48,17 @@ class InfoDialogFragment : DialogFragment() {
     }
 
     private fun openFanpageSite() {
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(TOAST_FANPAGE_URL)
-        startActivity(intent)
+        try {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(TOAST_FANPAGE_URL)
+            startActivity(intent)
+        } catch (exception: ActivityNotFoundException) {
+            showBrowserNotFoundErrorToast()
+        }
+    }
+
+    private fun showBrowserNotFoundErrorToast() {
+        Toast.makeText(activity, getString(R.string.error_internet_browser_not_found), Toast.LENGTH_SHORT).show()
     }
 
     companion object {
