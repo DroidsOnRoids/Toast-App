@@ -3,4 +3,8 @@
     <string name="action_settings">Settings</string>
     <string name="about">About</string>
     <string name="toolbar_events_title">Events</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="toast_number">TOAST #</string>
 </resources>

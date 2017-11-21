@@ -1,0 +1,27 @@
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="344dp"
+    android:layout_height="406dp"
+    tools:context="pl.droidsonrioids.toast.UpcomingEventFragment">
+
+    <ImageView
+        android:id="@+id/upcomingEventImage"
+        android:layout_width="match_parent"
+        android:layout_height="182dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/upcomingToastTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_bold"
+        android:text="@string/toast_number"
+        android:textColor="@color/blueDark"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@+id/upcomingEventImage"/>
+
+</android.support.constraint.ConstraintLayout>
