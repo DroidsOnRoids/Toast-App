@@ -4,11 +4,12 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_info_dialog.*
 
 class InfoDialogFragment : DialogFragment() {
@@ -25,10 +26,11 @@ class InfoDialogFragment : DialogFragment() {
     private fun initialSetUp() {
         setDialogBackgroundDrawable()
         setButtonsOnClickListeners()
+        setVersionText()
     }
 
     private fun setDialogBackgroundDrawable() {
-        dialog.window.setBackgroundDrawableResource(R.drawable.rectangle_with_round_corners)
+        dialog.window.setBackgroundDrawableResource(R.drawable.dialog_background_round_rectangle)
     }
 
     private fun setButtonsOnClickListeners() {
@@ -50,7 +52,7 @@ class InfoDialogFragment : DialogFragment() {
     private fun openFanpageSite() {
         try {
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(TOAST_FANPAGE_URL)
+            intent.data = Uri.parse(getString(R.string.toast_fanpage_url))
             startActivity(intent)
         } catch (exception: ActivityNotFoundException) {
             showBrowserNotFoundErrorToast()
@@ -58,11 +60,11 @@ class InfoDialogFragment : DialogFragment() {
     }
 
     private fun showBrowserNotFoundErrorToast() {
-        Toast.makeText(activity, getString(R.string.error_internet_browser_not_found), Toast.LENGTH_SHORT).show()
+        Snackbar.make((activity as MainActivity).mainCoordinatorLayout, R.string.error_internet_browser_not_found, Snackbar.LENGTH_SHORT).show()
     }
 
-    companion object {
-        const val TOAST_FANPAGE_URL = "https://www.facebook.com/toastwroclaw/"
+    private fun setVersionText() {
+        appVersionText.text = BuildConfig.VERSION_NAME
     }
 }
 

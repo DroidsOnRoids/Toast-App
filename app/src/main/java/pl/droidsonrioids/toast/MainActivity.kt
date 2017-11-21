@@ -7,6 +7,8 @@ import android.view.MenuItem
 
 import kotlinx.android.synthetic.main.activity_main.*
 
+const val INFO_DIALOG_TAG = "info_dialog_tag"
+
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,7 +16,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         setupToolbar()
-        showInfoDialog()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?) = when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.about_item -> consume { showInfoDialog() }
         else -> super.onOptionsItemSelected(item)
     }
@@ -40,9 +41,4 @@ class MainActivity : AppCompatActivity() {
         func()
         return true
     }
-
-    companion object {
-        const val INFO_DIALOG_TAG = "info_dialog_tag"
-    }
-
 }
