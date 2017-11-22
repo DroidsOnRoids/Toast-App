@@ -12,8 +12,8 @@ class TestHomeScreen {
 
     @Test
     fun isToolbarDisplayed() {
-        val toolbarTitle = TestUtils.getString(R.string.toolbar_events_title)
-        HomeRobot().checkIsToolbarTitle(toolbarTitle)
+        val toolbarTitle = getString(R.string.toolbar_events_title)
+        HomeRobot().checkIfToolbarWithTitleIsDisplayed(toolbarTitle, R.id.toolbar)
 
     }
 
