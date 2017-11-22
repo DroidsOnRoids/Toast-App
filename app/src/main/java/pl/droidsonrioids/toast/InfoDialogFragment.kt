@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_info_dialog.*
+import pl.droidsonrioids.toast.app.home.MainActivity
 
 class InfoDialogFragment : DialogFragment() {
 
