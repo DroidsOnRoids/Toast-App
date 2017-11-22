@@ -114,7 +114,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="12dp"
         android:fontFamily="@font/roboto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
