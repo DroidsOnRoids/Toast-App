@@ -15,6 +15,7 @@ const val CONTACT_TAB_INDEX = 2
 
 
 const val INFO_DIALOG_TAG = "info_dialog_tag"
+
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,10 +45,11 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.about_item -> consume { showInfoDialog() }
-        else -> super.onOptionsItemSelected(item)
-    }
+    override fun onOptionsItemSelected(item: MenuItem) =
+            when (item.itemId) {
+                R.id.about_item -> consume { showInfoDialog() }
+                else -> super.onOptionsItemSelected(item)
+            }
 
     private fun showInfoDialog() {
         InfoDialogFragment().show(supportFragmentManager, INFO_DIALOG_TAG)

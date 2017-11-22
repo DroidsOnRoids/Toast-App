@@ -4,7 +4,7 @@
     <string name="about">About</string>
     <string name="toolbar_events_title">Events</string>
     <string name="created_with">Created with</string>
-    <string name="toast_facebook_fanpage">Toast\'s Facebook fanpage</string>
+    <string translatable="false" name="toast_facebook_fanpage">Toast\'s Facebook fanpage</string>
     <string name="by_toast_team">by TOAST Team</string>
     <string name="for_more_information_visit_our">For more information visit our</string>
     <string name="error_internet_browser_not_found">Internet browser not found.</string>
