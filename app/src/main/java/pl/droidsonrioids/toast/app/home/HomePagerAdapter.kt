@@ -7,8 +7,8 @@ import android.support.v4.app.FragmentStatePagerAdapter
 const val HOME_TABS_COUNT = 3
 
 class HomePagerAdapter(fragmentManager: FragmentManager) : FragmentStatePagerAdapter(fragmentManager) {
-    // TODO: 21/11/2017 Add proper fragments
-    override fun getItem(position: Int): Fragment = Fragment()
+    // TODO: TOA-18, TOA-20 Add proper fragments
+    override fun getItem(position: Int) = Fragment()
 
     override fun getCount() = HOME_TABS_COUNT
 }
