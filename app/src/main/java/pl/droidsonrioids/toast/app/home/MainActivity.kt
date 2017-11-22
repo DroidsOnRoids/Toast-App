@@ -7,6 +7,10 @@ import android.view.Menu
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonrioids.toast.R
 
+const val EVENTS_TAB_INDEX = 0
+const val LECTURERS_TAB_INDEX = 1
+const val CONTACT_TAB_INDEX = 2
+
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,9 +29,9 @@ class MainActivity : AppCompatActivity() {
         homeViewPager.adapter = HomePagerAdapter(supportFragmentManager)
         with(homeTabLayout) {
             setupWithViewPager(homeViewPager)
-            getTabAt(0)?.setIcon(R.drawable.ic_tab_events_selector)
-            getTabAt(1)?.setIcon(R.drawable.ic_tab_lecturers_selector)
-            getTabAt(2)?.setIcon(R.drawable.ic_tab_contact_selector)
+            getTabAt(EVENTS_TAB_INDEX)?.setIcon(R.drawable.ic_tab_events_selector)
+            getTabAt(LECTURERS_TAB_INDEX)?.setIcon(R.drawable.ic_tab_lecturers_selector)
+            getTabAt(CONTACT_TAB_INDEX)?.setIcon(R.drawable.ic_tab_contact_selector)
         }
     }
 
