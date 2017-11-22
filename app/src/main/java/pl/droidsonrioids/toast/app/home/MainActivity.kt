@@ -1,14 +1,12 @@
-package pl.droidsonrioids.toast
+package pl.droidsonrioids.toast.app.home
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
-import android.view.MenuItem
-
 import kotlinx.android.synthetic.main.activity_main.*
+import pl.droidsonrioids.toast.R
+import pl.droidsonrioids.toast.app.base.BaseActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,3 +24,4 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 }
+

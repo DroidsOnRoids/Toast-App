@@ -57,9 +57,15 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:2.0.1"
 
     //dagger
+
+    kapt "com.google.dagger:dagger-compiler:$versions.dagger"
     kapt "com.google.dagger:dagger-android-processor:$versions.dagger"
     implementation "com.google.dagger:dagger-android-support:$versions.dagger"
     implementation "com.google.dagger:dagger-android:$versions.dagger"
+
+    // architecture components
+    kapt "android.arch.lifecycle:compiler:$versions.lifecycle"
+    implementation "android.arch.lifecycle:extensions:$versions.lifecycle"
 
     // tests
     testImplementation 'junit:junit:4.12'
