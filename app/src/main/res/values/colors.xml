@@ -3,6 +3,10 @@
     <color name="colorPrimary">#20c685</color>
     <color name="colorPrimaryDark">#1cb076</color>
     <color name="colorAccent">#20c685</color>
+    <color name="blueLink">#4266B2</color>
+    <color name="greenLogo">#99CC34</color>
+    <color name="whiteGray">#f2f2f2</color>
+    <color name="blueGray">#b1bac5</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blueDark">#213d55</color>
     <color name="blueGrey">#b1bac5</color>
