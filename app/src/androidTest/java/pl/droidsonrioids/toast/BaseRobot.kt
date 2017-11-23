@@ -18,4 +18,10 @@ abstract class BaseRobot {
                 .check(matches(isDisplayed()))
         return this
     }
+
+    fun checkIfElementWithIdIsClickable(id: Int): BaseRobot {
+        onView(withId(id))
+                .check(matches(isClickable()))
+        return this
+    }
 }
