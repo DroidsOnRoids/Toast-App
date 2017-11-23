@@ -20,7 +20,7 @@ buildscript {
 import org.ajoberstar.grgit.Grgit
 
 def git = Grgit.open(currentDir: projectDir)
-def commitsOnBranchCount = git.log(includes:['HEAD']).size()
+def commitsOnBranchCount = git.log(includes: ['HEAD']).size()
 def commitTimestamp = git.head().time
 
 android {
@@ -44,7 +44,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$versions.kotlin"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$versions.kotlin"
 
     // android
     implementation "com.android.support:appcompat-v7:$versions.support"
