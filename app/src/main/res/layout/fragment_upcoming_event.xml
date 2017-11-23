@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="406dp"
         android:layout_gravity="top|center_horizontal"
-        android:layout_margin="@dimen/cardview_default_margin"
+        android:layout_margin="@dimen/margin_small"
         app:cardCornerRadius="4dp">
 
         <android.support.constraint.ConstraintLayout
@@ -23,39 +23,42 @@
                 android:id="@+id/upcomingEventImage"
                 android:layout_width="match_parent"
                 android:layout_height="182dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toTopOf="@+id/eventTitleText"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                android:layout_marginBottom="@dimen/margin_normal"
+                app:layout_constraintBottom_toTopOf="@+id/eventTitleText"/>
 
             <TextView
                 android:id="@+id/eventTitleText"
                 style="@style/EventHeaderStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="@dimen/margin_normal"
                 app:layout_constraintBottom_toTopOf="@+id/eventDescriptionText"
+                app:layout_constraintEnd_toStartOf="@+id/forwardArrowImage"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventImage"
+                app:layout_constraintVertical_chainStyle="packed"
                 tools:text="TOAST #9"/>
 
             <TextView
                 android:id="@+id/eventDescriptionText"
                 style="@style/EventSubHeaderStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:layout_marginStart="@dimen/margin_normal"
+                app:layout_constraintBottom_toTopOf="@+id/titleDivider"
+                app:layout_constraintEnd_toStartOf="@+id/forwardArrowImage"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventTitleText"
-                app:layout_constraintBottom_toTopOf="@+id/titleDivider"
                 tools:text="Android Developers Meet-up"/>
 
             <ImageView
                 android:id="@+id/forwardArrowImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="@dimen/margin_normal"
                 android:src="@drawable/ic_arrow_forward"
                 app:layout_constraintBottom_toTopOf="@+id/titleDivider"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -63,49 +66,106 @@
 
             <View
                 android:id="@+id/titleDivider"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginBottom="@dimen/margin_normal"
                 android:background="@color/blueGrey"
+                app:layout_constraintBottom_toTopOf="@id/placeTitleText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventDescriptionText"/>
 
             <ImageView
                 android:id="@+id/locationImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_location_on"
-                app:layout_constraintTop_toBottomOf="@id/titleDivider"/>
-
+                android:layout_marginStart="17dp"
+                android:src="@drawable/ic_location"
+                app:layout_constraintBottom_toTopOf="@+id/locationDivider"
+                app:layout_constraintEnd_toStartOf="@+id/placeTitleText"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titleDivider"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/placeTitleText"
+                style="@style/EventHeaderStyle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:fontFamily="sans-serif"
-                android:textStyle="normal"
-                android:letterSpacing="0.07"
-                tools:text="PROZA — Wrocławski Klub Literacki
-                Przejście Garncarskie 2, Rynek Wrocław"/>
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:layout_marginStart="12dp"
+                app:layout_constraintBottom_toTopOf="@+id/placeLocationText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/locationImage"
+                app:layout_constraintTop_toBottomOf="@+id/titleDivider"
+                tools:text="PROZA — Wrocławski Klub Literacki"/>
 
             <TextView
                 android:id="@+id/placeLocationText"
                 style="@style/EventSubHeaderStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/eventTitleText"
-                app:layout_constraintBottom_toTopOf="@+id/titleDivider"
-                tools:text="Android Developers Meet-up"/>
-
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:layout_marginStart="12dp"
+                app:layout_constraintBottom_toTopOf="@+id/locationDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/locationImage"
+                app:layout_constraintTop_toBottomOf="@+id/placeTitleText"
+                tools:text="Przejście Garncarskie 2, Rynek Wrocław"/>
 
             <View
                 android:id="@+id/locationDivider"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginBottom="@dimen/margin_normal"
                 android:background="@color/blueGrey"
-                app:layout_constraintTop_toBottomOf="@+id/eventDescriptionText"/>
+                app:layout_constraintBottom_toTopOf="@+id/eventDataText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/placeLocationText"/>
+
+            <ImageView
+                android:id="@+id/calendarImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:src="@drawable/ic_calendar"
+                app:layout_constraintBottom_toTopOf="@+id/dateDivider"
+                app:layout_constraintEnd_toStartOf="@+id/eventDataText"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/locationDivider"/>
+
+            <TextView
+                android:id="@+id/eventDataText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:layout_marginStart="10.5dp"
+                android:textColor="@color/blueGrey"
+                app:layout_constraintBottom_toTopOf="@+id/dateDivider"
+                app:layout_constraintEnd_toStartOf="@+id/timeDivider"
+                app:layout_constraintStart_toEndOf="@+id/calendarImage"
+                app:layout_constraintTop_toBottomOf="@+id/locationDivider"
+                tools:text="02.03.2017"/>
+
+            <View
+                android:id="@+id/dateDivider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/blueGrey"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/eventDataText"/>
+
+            <View
+                android:id="@+id/timeDivider"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:background="@color/blueGrey"
+                app:layout_constraintBottom_toBottomOf="@+id/dateDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/locationDivider"/>
 
         </android.support.constraint.ConstraintLayout>
 
