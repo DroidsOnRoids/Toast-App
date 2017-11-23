@@ -45,4 +45,13 @@
         <item name="android:textColor">@color/blueGrey</item>
         <item name="android:letterSpacing">0.07</item>
     </style>
+
+
+    <style name="FacebookAttend">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#20c685</item>
+        <item name="android:letterSpacing">0.07</item>
+    </style>
 </resources>

@@ -12,4 +12,5 @@
     <string name="error_internet_browser_not_found">Internet browser not found.</string>
     <string name="toast_fanpage_url">https://www.facebook.com/toastwroclaw/</string>
     <string name="application_version_title">Application Version:</string>
+    <string name="attend">ATTEND</string>
 </resources>
