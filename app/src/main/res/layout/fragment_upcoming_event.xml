@@ -19,9 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="182dp"
             android:layout_marginBottom="@dimen/margin_large"
-            android:padding="@dimen/margin_medium"
             app:layout_constraintBottom_toTopOf="@+id/eventTitleText"
-            tools:src="@drawable/ic_logo_toast"/>
+            tools:src="@drawable/ic_placeholder_toast"/>
 
         <TextView
             android:id="@+id/eventTitleText"
