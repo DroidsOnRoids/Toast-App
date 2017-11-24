@@ -3,6 +3,7 @@ package pl.droidsonrioids.toast
 import android.support.test.rule.ActivityTestRule
 import org.junit.Rule
 import org.junit.Test
+import pl.droidsonrioids.toast.app.home.MainActivity
 
 
 class TestHomeScreen {

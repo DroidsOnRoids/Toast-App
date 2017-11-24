@@ -68,6 +68,10 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:$versions.dagger"
     implementation "com.google.dagger:dagger-android:$versions.dagger"
 
+    // chuck
+    debugImplementation "com.readystatesoftware.chuck:library:$versions.chuck"
+    releaseImplementation "com.readystatesoftware.chuck:library-no-op:$versions.chuck"
+
     // architecture components
     kapt "android.arch.lifecycle:compiler:$versions.lifecycle"
     implementation "android.arch.lifecycle:extensions:$versions.lifecycle"
