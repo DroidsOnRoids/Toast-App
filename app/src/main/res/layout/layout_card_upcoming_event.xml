@@ -5,22 +5,24 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="top|center_horizontal"
     android:layout_margin="@dimen/margin_small"
     app:cardCornerRadius="4dp"
-    tools:context="pl.droidsonrioids.toast.UpcomingEventFragment">
+    tools:context="pl.droidsonrioids.toast.EventsFragment">
 
     <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/upcomingEventImage"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="182dp"
             android:layout_marginBottom="@dimen/margin_large"
+            android:src="@drawable/ic_placeholder_toast"
             app:layout_constraintBottom_toTopOf="@+id/eventTitleText"
-            tools:src="@drawable/ic_placeholder_toast"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/eventTitleText"
