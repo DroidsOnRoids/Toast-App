@@ -7,7 +7,7 @@ import dagger.android.HasActivityInjector
 import pl.droidsonrioids.toast.di.DaggerAppComponent
 import javax.inject.Inject
 
-class App : Application(), HasActivityInjector {
+class ToastApplication : Application(), HasActivityInjector {
 
     @Inject
     lateinit var activityInjector: DispatchingAndroidInjector<Activity>

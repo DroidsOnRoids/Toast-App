@@ -20,7 +20,7 @@ class DummyFragment : BaseFragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-            TextView(context, null, 0).apply {
+            TextView(context).apply {
                 text = dummyViewModel.text
             }
 }
