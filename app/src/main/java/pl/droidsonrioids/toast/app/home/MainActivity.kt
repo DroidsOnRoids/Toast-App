@@ -2,12 +2,14 @@ package pl.droidsonrioids.toast.app.home
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonrioids.toast.InfoDialogFragment
 import pl.droidsonrioids.toast.R
+import pl.droidsonrioids.toast.data.api.ApiManagerImpl
 
 const val EVENTS_TAB_INDEX = 0
 const val LECTURERS_TAB_INDEX = 1
@@ -23,6 +25,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setupToolbar()
         setupViewPager()
+
+        ApiManagerImpl().getEvents()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { result -> Log.d("TAG", result.toString()) },
+                        { error ->  Log.d("TAG", error.message) }
+                )
     }
 
     private fun setupToolbar() {
