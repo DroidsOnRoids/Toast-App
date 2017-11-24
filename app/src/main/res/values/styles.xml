@@ -40,7 +40,7 @@
     <style name="EventSubHeaderStyle">
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/roboto_medium</item>
-        <item name="android:textColor">@color/blueGrey</item>
+        <item name="android:textColor">@color/blueGray</item>
         <item name="android:letterSpacing">0.07</item>
     </style>
 
