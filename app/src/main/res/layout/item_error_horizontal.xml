@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="wrap_content"
+             android:layout_height="match_parent"
+             android:layout_margin="@dimen/margin_tiny"
+             android:clickable="true"
+             android:focusable="true"
+             android:foreground="?attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/loadingProgressBar"
+        style="@style/SectionHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawableTop="@drawable/ic_refresh"
+        android:padding="@dimen/margin_normal"
+        android:text="@string/retry"/>
+</FrameLayout>

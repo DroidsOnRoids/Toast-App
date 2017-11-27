@@ -11,6 +11,7 @@ class PreviousEventsAdapter : RecyclerView.Adapter<PreviousEventViewHolder>() {
         val itemView = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
         return when (viewType) {
             R.layout.item_loading_horizontal -> PreviousEventViewHolder.Loading(itemView)
+            R.layout.item_error_horizontal -> PreviousEventViewHolder.Error(itemView)
             else -> PreviousEventViewHolder.Item(itemView)
         }
     }
@@ -24,7 +25,8 @@ class PreviousEventsAdapter : RecyclerView.Adapter<PreviousEventViewHolder>() {
     override fun getItemViewType(position: Int): Int {
         // TODO add proper types for given position
         return when (position) {
-            4 -> R.layout.item_loading_horizontal
+            2 -> R.layout.item_loading_horizontal
+            4 -> R.layout.item_error_horizontal
             else -> R.layout.item_previous_event
         }
     }

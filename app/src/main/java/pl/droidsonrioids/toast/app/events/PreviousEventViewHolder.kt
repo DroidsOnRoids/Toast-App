@@ -10,4 +10,6 @@ sealed class PreviousEventViewHolder(itemView: View) : RecyclerView.ViewHolder(i
     }
 
     class Loading(itemView: View) : PreviousEventViewHolder(itemView)
+
+    class Error(itemView: View) : PreviousEventViewHolder(itemView)
 }
