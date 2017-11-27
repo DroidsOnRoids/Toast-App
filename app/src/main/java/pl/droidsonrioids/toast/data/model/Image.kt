@@ -1,6 +1,6 @@
 package pl.droidsonrioids.toast.data.model
 
-data class CoverImage(
+data class Image(
         val big: String,
         val thumb: String
 )

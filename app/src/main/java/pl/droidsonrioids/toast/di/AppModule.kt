@@ -6,9 +6,9 @@ import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
-import pl.droidsonrioids.toast.data.api.ApiManager
-import pl.droidsonrioids.toast.data.api.ApiManagerImpl
-import pl.droidsonrioids.toast.data.api.ApiService
+import pl.droidsonrioids.toast.data.api.EventService
+import pl.droidsonrioids.toast.data.api.EventsManager
+import pl.droidsonrioids.toast.data.api.EventsManagerImpl
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -26,7 +26,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideApiManager(apiService: ApiService): ApiManager = ApiManagerImpl(apiService)
+    fun provideApiManager(eventService: EventService): EventsManager = EventsManagerImpl(eventService)
 
     @Singleton
     @Provides
@@ -37,7 +37,7 @@ class AppModule {
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                     .client(httpClient)
                     .build()
-                    .create(ApiService::class.java)
+                    .create(EventService::class.java)
 
     @Singleton
     @Provides

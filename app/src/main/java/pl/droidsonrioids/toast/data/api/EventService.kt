@@ -7,7 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 
-interface ApiService {
+interface EventService {
 
     @GET("events")
     fun getEvents(): Single<EventsResponse>
