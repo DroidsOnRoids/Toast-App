@@ -32,7 +32,7 @@ class AppModule {
     @Provides
     fun provideApiService(httpClient: OkHttpClient): ApiService =
             Retrofit.Builder()
-                    .baseUrl(BuildConfig.SERVER_ADDRESS)
+                    .baseUrl(BuildConfig.BASE_API_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                     .client(httpClient)
