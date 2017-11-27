@@ -1,13 +1,13 @@
 package pl.droidsonrioids.toast.app.home
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonrioids.toast.InfoDialogFragment
 import pl.droidsonrioids.toast.R
+import pl.droidsonrioids.toast.app.base.BaseActivity
 
 const val EVENTS_TAB_INDEX = 0
 const val LECTURERS_TAB_INDEX = 1
@@ -16,7 +16,7 @@ const val CONTACT_TAB_INDEX = 2
 
 const val INFO_DIALOG_TAG = "info_dialog_tag"
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +59,6 @@ class MainActivity : AppCompatActivity() {
         func()
         return true
     }
-
 
 }
 

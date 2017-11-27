@@ -10,10 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/incomingEventPlaceholder"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"/>
+        <include layout="@layout/layout_card_upcoming_event"/>
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
