@@ -3,17 +3,23 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/previousEventCard"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_tiny"
     app:cardCornerRadius="3dp">
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/previousEventCardContent"
         android:layout_width="160dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
 
         <ImageView
             android:id="@+id/eventCoverImage"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="111dp"
             android:contentDescription="@string/previous_event_cover_desc"
             app:layout_constraintEnd_toEndOf="parent"
