@@ -7,15 +7,15 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_tiny"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
     app:cardCornerRadius="3dp">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/previousEventCardContent"
         android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/eventCoverImage"

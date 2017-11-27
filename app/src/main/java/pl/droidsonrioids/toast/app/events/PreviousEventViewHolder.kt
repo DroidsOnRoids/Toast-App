@@ -3,6 +3,11 @@ package pl.droidsonrioids.toast.app.events
 import android.support.v7.widget.RecyclerView
 import android.view.View
 
-class PreviousEventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+sealed class PreviousEventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+    class Item(itemView: View) : PreviousEventViewHolder(itemView) {
+
+    }
+
+    class Loading(itemView: View) : PreviousEventViewHolder(itemView)
 }
