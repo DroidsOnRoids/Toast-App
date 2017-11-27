@@ -18,7 +18,7 @@
             style="@style/SectionHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_tiny"
             android:layout_marginStart="@dimen/margin_large"
             android:layout_marginTop="@dimen/margin_small"
             android:text="@string/previous_events_label"
@@ -39,6 +39,7 @@
                 android:id="@+id/previousEventsList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_medium"
                 android:clipToPadding="false"
                 android:paddingEnd="@dimen/margin_tiny"
                 android:paddingStart="@dimen/margin_tiny"/>
