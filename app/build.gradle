@@ -33,6 +33,8 @@ android {
         versionCode commitTimestamp
         versionName "0.1.$commitsOnBranchCount"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField 'String', 'SERVER_ADDRESS', '"https://api.letswift.pl/api/v1/"'
     }
     buildTypes {
         release {
@@ -79,7 +81,7 @@ dependencies {
     // tests
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.12.0'
-    testImplementation 'com.nhaarman:mockito-kotlin:1.5.0', {
+    testImplementation 'com.nhaarman:mockito-kotlin-kt1.1:1.5.0', {
         exclude group: 'org.jetbrains.kotlin'
     }
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

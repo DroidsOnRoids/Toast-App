@@ -6,7 +6,8 @@ data class EventDetails(
         val id: Int,
         val title: String,
         val date: String,
-        val facebook: Long,
+        @SerializedName("facebook")
+        val facebookId: String,
         @SerializedName("place_name")
         val placeName: String,
         @SerializedName("place_street")

@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
+import pl.droidsonrioids.toast.BuildConfig
 import pl.droidsonrioids.toast.data.api.ApiManager
 import pl.droidsonrioids.toast.data.api.ApiManagerImpl
 import pl.droidsonrioids.toast.data.api.ApiService
@@ -14,7 +15,6 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-private const val SERVER_ADDRESS = "https://api.letswift.pl/api/v1/"
 private const val ACCEPT = "Accept"
 private const val APPLICATION_JSON = "application/json"
 
@@ -30,9 +30,9 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideApiService(httpClient: OkHttpClient) =
+    fun provideApiService(httpClient: OkHttpClient): ApiService =
             Retrofit.Builder()
-                    .baseUrl(SERVER_ADDRESS)
+                    .baseUrl(BuildConfig.SERVER_ADDRESS)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                     .client(httpClient)

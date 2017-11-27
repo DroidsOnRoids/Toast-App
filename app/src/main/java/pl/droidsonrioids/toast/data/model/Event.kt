@@ -3,10 +3,9 @@ package pl.droidsonrioids.toast.data.model
 import com.google.gson.annotations.SerializedName
 
 data class Event(
-        val id: Int,
+        val id: Long,
         val title: String,
         val date: String,
         @SerializedName("cover_images")
-        val coverImages: List<CoverImage>,
-        val upcoming: Boolean
+        val coverImages: List<CoverImage>
 )
