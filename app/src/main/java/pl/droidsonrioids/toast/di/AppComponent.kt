@@ -5,7 +5,7 @@ import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import dagger.android.support.AndroidSupportInjectionModule
-import pl.droidsonrioids.toast.app.App
+import pl.droidsonrioids.toast.app.ToastApplication
 import javax.inject.Singleton
 
 @Singleton
@@ -24,5 +24,5 @@ interface AppComponent {
         fun build(): AppComponent
     }
 
-    fun inject(app: App)
+    fun inject(toastApplication: ToastApplication)
 }
