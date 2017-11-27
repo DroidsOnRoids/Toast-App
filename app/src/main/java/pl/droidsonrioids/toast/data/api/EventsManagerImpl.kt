@@ -16,7 +16,7 @@ class EventsManagerImpl @Inject constructor(private val eventService: EventServi
                         }?:Maybe.empty<Events>()
                     }
 
-    override fun getEvent(id: Int) =
+    override fun getEvent(id: Long) =
             eventService.getEvent(id)
 
 }

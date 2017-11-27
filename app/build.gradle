@@ -42,6 +42,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -77,6 +81,9 @@ dependencies {
     // architecture components
     kapt "android.arch.lifecycle:compiler:$versions.lifecycle"
     implementation "android.arch.lifecycle:extensions:$versions.lifecycle"
+
+    // data binding
+    kapt 'com.android.databinding:compiler:3.0.1'
 
     // tests
     testImplementation 'junit:junit:4.12'

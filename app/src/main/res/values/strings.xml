@@ -11,4 +11,5 @@
     <string name="toast_fanpage_url">https://www.facebook.com/toastwroclaw/</string>
     <string name="application_version_title">Application Version:</string>
     <string name="attend">ATTEND</string>
+    <string name="android_developers_meet_up">Android Developers Meet-up</string>
 </resources>

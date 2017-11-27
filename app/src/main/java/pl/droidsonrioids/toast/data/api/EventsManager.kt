@@ -9,5 +9,5 @@ interface EventsManager {
 
     fun getEvents(): Maybe<Events>
 
-    fun getEvent(id: Int): Single<EventDetailsResponse>
+    fun getEvent(id: Long): Single<EventDetailsResponse>
 }

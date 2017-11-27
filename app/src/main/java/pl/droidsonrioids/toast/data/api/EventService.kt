@@ -13,6 +13,6 @@ interface EventService {
     fun getEvents(): Single<EventsResponse>
 
     @GET("events/{id}")
-    fun getEvent(@Path("id") id: Int): Single<EventDetailsResponse>
+    fun getEvent(@Path("id") id: Long): Single<EventDetailsResponse>
 
 }

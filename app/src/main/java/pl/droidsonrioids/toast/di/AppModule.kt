@@ -41,7 +41,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient() =
+    fun provideOkHttpClient(): OkHttpClient =
             OkHttpClient.Builder()
                     .addInterceptor {
                         it.proceed(it.request().newBuilder().header(ACCEPT, APPLICATION_JSON).build())

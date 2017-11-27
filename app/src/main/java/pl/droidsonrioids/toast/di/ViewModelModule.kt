@@ -6,13 +6,20 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import pl.droidsonrioids.toast.viewmodels.DummyViewModel
+import pl.droidsonrioids.toast.viewmodels.EventsViewModel
 
 @Module
 abstract class ViewModelModule {
+
     @Binds
     @IntoMap
     @ViewModelKey(DummyViewModel::class)
     abstract fun bindDummyViewModel(dummyViewModel: DummyViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EventsViewModel::class)
+    abstract fun bindEventsViewModel(eventsViewModel: EventsViewModel): ViewModel
 
     @Binds
     internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory

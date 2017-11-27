@@ -1,30 +1,30 @@
 package pl.droidsonrioids.toast.viewmodels
 
 import android.arch.lifecycle.ViewModel
+import android.databinding.ObservableField
+import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import pl.droidsonrioids.toast.data.api.EventsManager
 import pl.droidsonrioids.toast.data.model.Event
-import pl.droidsonrioids.toast.data.model.EventDetails
 import javax.inject.Inject
 
 
-class EventsViewModel @Inject constructor(private val eventsManager: EventsManager) : ViewModel() {
+class EventsViewModel @Inject constructor(eventsManager: EventsManager) : ViewModel() {
 
-    var featuredEvent: EventDetails? = null
+
+    var featuredEvent: ObservableField<UpcomingEventViewModel> = ObservableField()
     var lastEvents: List<Event> = listOf()
+    private val disposable: Disposable
 
     init {
-        eventsManager.getEvents().subscribeBy (onSuccess = {
-            featuredEvent = it.featuredEvent
+        disposable = eventsManager.getEvents().subscribeBy (onSuccess = {
+            featuredEvent.set(UpcomingEventViewModel(it.featuredEvent))
             lastEvents = it.lastEvents
         })
     }
 
-    fun onViewCreated() {
-        getUpcomingEventData()
+    override fun onCleared() {
+        disposable.dispose()
     }
 
-    private fun getUpcomingEventData() {
-
-    }
 }
