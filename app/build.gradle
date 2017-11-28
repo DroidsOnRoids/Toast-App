@@ -34,7 +34,7 @@ android {
         versionName "0.1.$commitsOnBranchCount"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        buildConfigField 'String', 'SERVER_ADDRESS', '"https://api.letswift.pl/api/v1/"'
+        buildConfigField 'String', 'BASE_API_URL', '"https://api.letswift.pl/api/v1/"'
     }
     buildTypes {
         release {
