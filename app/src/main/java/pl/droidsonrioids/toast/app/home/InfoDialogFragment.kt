@@ -1,4 +1,4 @@
-package pl.droidsonrioids.toast
+package pl.droidsonrioids.toast.app.home
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -11,7 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_info_dialog.*
-import pl.droidsonrioids.toast.app.home.MainActivity
+import pl.droidsonrioids.toast.BuildConfig
+import pl.droidsonrioids.toast.R
 
 class InfoDialogFragment : DialogFragment() {
 

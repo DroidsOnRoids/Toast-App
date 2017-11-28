@@ -5,7 +5,6 @@ import android.view.Menu
 import android.view.MenuItem
 
 import kotlinx.android.synthetic.main.activity_main.*
-import pl.droidsonrioids.toast.InfoDialogFragment
 import pl.droidsonrioids.toast.R
 import pl.droidsonrioids.toast.app.base.BaseActivity
 
