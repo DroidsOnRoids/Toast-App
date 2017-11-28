@@ -10,4 +10,5 @@
     <color name="blueDark">#213d55</color>
     <color name="blueGray">#b1bac5</color>
     <color name="paleGrayBackground">#edf1f5</color>
+    <color name="paleGray">#e0e7f0</color>
 </resources>

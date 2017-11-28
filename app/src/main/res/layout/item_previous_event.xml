@@ -7,9 +7,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_tiny"
-    android:foreground="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
     app:cardCornerRadius="3dp">
 
     <android.support.constraint.ConstraintLayout
@@ -22,10 +22,10 @@
             android:layout_width="0dp"
             android:layout_height="111dp"
             android:contentDescription="@string/previous_event_cover_desc"
+            android:src="@drawable/ic_placeholder_toast"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:background="@color/cardview_dark_background"/>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/previousEventName"
@@ -58,10 +58,10 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_tiny"
             android:contentDescription="@string/previous_event_arrow_desc"
+            android:src="@drawable/ic_arrow_forward"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/eventCoverImage"
-            app:srcCompat="@drawable/ic_arrow_forward"/>
+            app:layout_constraintTop_toBottomOf="@+id/eventCoverImage"/>
 
     </android.support.constraint.ConstraintLayout>
 

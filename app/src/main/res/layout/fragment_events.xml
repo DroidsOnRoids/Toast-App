@@ -1,62 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.v4.widget.NestedScrollView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/eventsScrollContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
-        android:descendantFocusability="blocksDescendants"
+    <View
+        android:id="@+id/shadowCreator"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="10dp"
+        android:background="@color/colorPrimary"
+        android:translationY="-10dp"/>
 
-        <include
-            android:id="@+id/incomingEventCard"
-            layout="@layout/layout_card_upcoming_event"/>
+    <android.support.v4.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/eventsScrollContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/previousEventsLabel"
-            style="@style/SectionHeader"
-            android:layout_width="wrap_content"
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_tiny"
-            android:layout_marginStart="@dimen/margin_large"
-            android:layout_marginTop="@dimen/margin_small"
-            android:text="@string/previous_events_label"
-            app:layout_constraintBottom_toTopOf="@+id/previousEventsListContainer"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/incomingEventCard"/>
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/previousEventsListContainer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/previousEventsLabel">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/previousEventsList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_medium"
-                android:clipToPadding="false"
-                android:paddingEnd="@dimen/margin_tiny"
-                android:paddingStart="@dimen/margin_tiny"/>
+            <include
+                android:id="@+id/incomingEventCard"
+                layout="@layout/layout_card_upcoming_event"/>
 
             <TextView
+                android:id="@+id/previousEventsLabel"
                 style="@style/SectionHeader"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:gravity="center"
-                android:padding="@dimen/margin_large"
-                android:text="@string/no_events_loaded"
-                android:visibility="gone"/>
-        </FrameLayout>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_tiny"
+                android:layout_marginStart="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_small"
+                android:text="@string/previous_events_label"
+                app:layout_constraintBottom_toTopOf="@+id/previousEventsListContainer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/incomingEventCard"/>
 
-    </android.support.constraint.ConstraintLayout>
-</android.support.v4.widget.NestedScrollView>
+            <FrameLayout
+                android:id="@+id/previousEventsListContainer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/previousEventsLabel">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/previousEventsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_medium"
+                    android:clipToPadding="false"
+                    android:paddingEnd="@dimen/margin_tiny"
+                    android:paddingStart="@dimen/margin_tiny"/>
+
+                <TextView
+                    style="@style/SectionHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="center"
+                    android:padding="@dimen/margin_large"
+                    android:text="@string/no_events_loaded"
+                    android:visibility="gone"/>
+            </FrameLayout>
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v4.widget.NestedScrollView>
+</FrameLayout>

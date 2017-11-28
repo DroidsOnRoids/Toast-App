@@ -3,6 +3,7 @@ package pl.droidsonrioids.toast
 import android.support.test.rule.ActivityTestRule
 import org.junit.Rule
 import org.junit.Test
+import pl.droidsonrioids.toast.app.home.MainActivity
 
 
 class TestHomeScreen {
@@ -12,13 +13,13 @@ class TestHomeScreen {
 
     @Test
     fun isToolbarDisplayed() {
-        val toolbarTitle = getString(R.string.toolbar_events_title)
+        val toolbarTitle = getString(R.string.events_title)
         HomeRobot().checkIfToolbarWithTitleIsDisplayed(toolbarTitle, R.id.toolbar)
 
     }
 
     @Test
-    fun isMenuOverflowDisplayed(){
+    fun isMenuOverflowDisplayed() {
         HomeRobot().checkIfElementWithIdIsDisplayed(R.id.about_item)
     }
 
