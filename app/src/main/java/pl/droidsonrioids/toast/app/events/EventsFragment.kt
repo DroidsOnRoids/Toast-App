@@ -32,7 +32,7 @@ class EventsFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        with(previousEventsList) {
+        with(previousEventsRecyclerView) {
             adapter = PreviousEventsAdapter()
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
