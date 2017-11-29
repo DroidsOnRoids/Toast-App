@@ -17,13 +17,13 @@ class PreviousEventsAdapter : RecyclerView.Adapter<PreviousEventViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: PreviousEventViewHolder?, position: Int) {
-        //TODO fill this with data after repository implemented
+        //TODO TOA-42 fill this with data after repository implemented
     }
 
-    override fun getItemCount(): Int = 5 //TODO fill this with data after repository implemented
+    override fun getItemCount(): Int = 5 //TODO TOA-42 fill this with data after repository implemented
 
     override fun getItemViewType(position: Int): Int {
-        // TODO add proper types for given position
+        // TODO TOA-42 add proper types for given position
         return when (position) {
             2 -> R.layout.item_loading_horizontal
             4 -> R.layout.item_error_horizontal
