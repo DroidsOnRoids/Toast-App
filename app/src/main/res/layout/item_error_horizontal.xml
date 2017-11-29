@@ -8,7 +8,7 @@
              android:foreground="?attr/selectableItemBackground">
 
     <TextView
-        android:id="@+id/loadingProgressBar"
+        android:id="@+id/itemErrorText"
         style="@style/SectionHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
