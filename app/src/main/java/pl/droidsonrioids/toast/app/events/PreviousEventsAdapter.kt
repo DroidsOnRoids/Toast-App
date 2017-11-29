@@ -20,7 +20,7 @@ class PreviousEventsAdapter : RecyclerView.Adapter<PreviousEventViewHolder>() {
         //TODO TOA-42 fill this with data after repository implemented
     }
 
-    override fun getItemCount(): Int = 5 //TODO TOA-42 fill this with data after repository implemented
+    override fun getItemCount() = 5 //TODO TOA-42 fill this with data after repository implemented
 
     override fun getItemViewType(position: Int): Int {
         // TODO TOA-42 add proper types for given position

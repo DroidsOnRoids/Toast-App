@@ -9,6 +9,6 @@
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_medium">12dp</dimen>
     <dimen name="margin_tiny">4dp</dimen>
-    <dimen name="home_toolbar_shadow">4dp</dimen>
+    <dimen name="home_toolbar_elevation">4dp</dimen>
     <dimen name="events_top_bar_height">42dp</dimen>
 </resources>

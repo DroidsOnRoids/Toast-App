@@ -5,9 +5,7 @@ import android.view.View
 
 sealed class PreviousEventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    class Item(itemView: View) : PreviousEventViewHolder(itemView) {
-
-    }
+    class Item(itemView: View) : PreviousEventViewHolder(itemView)
 
     class Loading(itemView: View) : PreviousEventViewHolder(itemView)
 

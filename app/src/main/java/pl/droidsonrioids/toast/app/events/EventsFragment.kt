@@ -15,8 +15,8 @@ const val TOP_BAR_TRANSLATION_FACTOR = 2f
 
 class EventsFragment : Fragment() {
 
-    private val maxShadow by lazy {
-        resources.getDimensionPixelSize(R.dimen.home_toolbar_shadow).toFloat()
+    private val maxToolbarElevation by lazy {
+        resources.getDimensionPixelSize(R.dimen.home_toolbar_elevation).toFloat()
     }
     private val topBarHeight by lazy {
         resources.getDimensionPixelSize(R.dimen.events_top_bar_height).toFloat()
@@ -45,8 +45,8 @@ class EventsFragment : Fragment() {
             topBar.translationY = -scrollY * TOP_BAR_TRANSLATION_FACTOR
 
             val shadow = scrollY.takeIf { it < topBarHeight }
-                    ?.let { shadowInterpolator.getInterpolation(it / topBarHeight) * maxShadow }
-                    ?: maxShadow
+                    ?.let { shadowInterpolator.getInterpolation(it / topBarHeight) * maxToolbarElevation }
+                    ?: maxToolbarElevation
 
             shadowCreator.translationZ = shadow
         }
