@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import pl.droidsonrioids.toast.BuildConfig
 import pl.droidsonrioids.toast.data.api.EventService
 import pl.droidsonrioids.toast.data.api.EventsManager
@@ -41,10 +42,28 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(): OkHttpClient =
-            OkHttpClient.Builder()
-                    .addInterceptor {
-                        it.proceed(it.request().newBuilder().header(ACCEPT, APPLICATION_JSON).build())
-                    }
-                    .build()
+    fun provideOkHttpClient(): OkHttpClient {
+        val builder = OkHttpClient.Builder()
+        addHeaders(builder)
+        addHttpLoggingInterceptorIfDebugBuildConfig(builder)
+        return builder.build()
+    }
+
+    private fun addHeaders(builder: OkHttpClient.Builder) {
+        builder.addInterceptor {
+            it.proceed(it.request().newBuilder().header(ACCEPT, APPLICATION_JSON).build())
+        }
+    }
+
+    private fun addHttpLoggingInterceptorIfDebugBuildConfig(builder: OkHttpClient.Builder) {
+        if (BuildConfig.DEBUG) {
+            builder.addNetworkInterceptor(getHttpLoggingInterceptor())
+        }
+    }
+
+    private fun getHttpLoggingInterceptor(): HttpLoggingInterceptor {
+        val httpLoggingInterceptor = HttpLoggingInterceptor()
+        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        return httpLoggingInterceptor
+    }
 }

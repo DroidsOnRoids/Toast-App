@@ -1,16 +1,14 @@
-<layout>
-
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
-
         <variable
             name="upcomingEvent"
             type="pl.droidsonrioids.toast.viewmodels.UpcomingEventViewModel"/>
     </data>
 
     <android.support.v7.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -97,11 +95,11 @@
             <TextView
                 android:id="@+id/upcomingEventPlaceTitleText"
                 style="@style/EventHeaderStyle"
-                android:text="@{upcomingEvent.placeName}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginStart="@dimen/margin_medium"
+                android:text="@{upcomingEvent.placeName}"
                 app:layout_constraintBottom_toTopOf="@+id/upcomingEventPlaceLocationText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/upcomingEventLocationImage"
@@ -112,11 +110,11 @@
                 android:id="@+id/upcomingEventPlaceLocationText"
                 style="@style/EventSubHeaderStyle"
                 android:layout_width="0dp"
-                android:text="@{upcomingEvent.placeStreet}"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_medium"
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginStart="@dimen/margin_medium"
+                android:text="@{upcomingEvent.placeStreet}"
                 app:layout_constraintBottom_toTopOf="@+id/upcomingEventlocationDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/upcomingEventLocationImage"
@@ -153,6 +151,7 @@
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginStart="10.5dp"
                 android:textColor="@color/blueGray"
+                app:eventDate="@{upcomingEvent.date}"
                 app:layout_constraintBottom_toTopOf="@+id/upcomingEventDateDivider"
                 app:layout_constraintEnd_toStartOf="@+id/upcomingEventTimeDivider"
                 app:layout_constraintStart_toEndOf="@+id/upcomingEventCalendarImage"
@@ -196,6 +195,7 @@
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginStart="9dp"
                 android:textColor="@color/blueGray"
+                app:eventTime="@{upcomingEvent.date}"
                 app:layout_constraintBottom_toTopOf="@+id/upcomingEventDateDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/upcomingEventClockImage"
