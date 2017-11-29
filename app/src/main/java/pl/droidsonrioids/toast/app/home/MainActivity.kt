@@ -1,11 +1,8 @@
 package pl.droidsonrioids.toast.app.home
 
 import android.os.Bundle
-import android.support.design.widget.AppBarLayout
-import android.support.design.widget.CoordinatorLayout
 import android.view.Menu
 import android.view.MenuItem
-
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonrioids.toast.InfoDialogFragment
 import pl.droidsonrioids.toast.R
@@ -30,12 +27,6 @@ class MainActivity : BaseActivity() {
     private fun setupToolbar() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        val layoutParams = appBar.layoutParams as CoordinatorLayout.LayoutParams
-        layoutParams.behavior = AppBarLayout.Behavior().apply {
-            setDragCallback(object : AppBarLayout.Behavior.DragCallback() {
-                override fun canDrag(appBarLayout: AppBarLayout) = false
-            })
-        }
     }
 
     private fun setupViewPager() {

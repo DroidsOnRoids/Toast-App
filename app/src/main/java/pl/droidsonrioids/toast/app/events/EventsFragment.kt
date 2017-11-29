@@ -7,12 +7,20 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
 import kotlinx.android.synthetic.main.fragment_events.*
 import pl.droidsonrioids.toast.R
 
+const val TOP_BAR_TRANSLATION_FACTOR = 2f
+
 class EventsFragment : Fragment() {
 
-    private var isShadowHidden: Boolean? = null
+    private val maxShadow by lazy {
+        resources.getDimensionPixelSize(R.dimen.home_toolbar_shadow).toFloat()
+    }
+    private val topBarHeight by lazy {
+        resources.getDimensionPixelSize(R.dimen.events_top_bar_height).toFloat()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
             inflater.inflate(R.layout.fragment_events, container, false)
@@ -31,15 +39,16 @@ class EventsFragment : Fragment() {
     }
 
     private fun setupAppBarShadow() {
+        val shadowInterpolator = DecelerateInterpolator(TOP_BAR_TRANSLATION_FACTOR)
+
         eventsScrollContainer.setOnScrollChangeListener { _: NestedScrollView?, _, scrollY, _, _ ->
-            val state = scrollY == 0
-            if (isShadowHidden != state) {
-                isShadowHidden = state
-                if (state) {
-                    shadowCreator.animate().translationZ(0f).start()
-                } else
-                    shadowCreator.animate().translationZ(resources.getDimensionPixelSize(R.dimen.home_toolbar_shadow).toFloat()).start()
-            }
+            topBar.translationY = -scrollY * TOP_BAR_TRANSLATION_FACTOR
+
+            val shadow = scrollY.takeIf { it < topBarHeight }
+                    ?.let { shadowInterpolator.getInterpolation(it / topBarHeight) * maxShadow }
+                    ?: maxShadow
+
+            shadowCreator.translationZ = shadow
         }
     }
 

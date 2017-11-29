@@ -5,7 +5,7 @@ buildscript {
     //    add versions that occur at least twice
         versions = [
                 buildTools : "27.0.1",
-                kotlin : "1.1.61",
+                kotlin : "1.2.0",
                 support : "27.0.1",
                 dagger : "2.13",
                 lifecycle : '1.0.0'
