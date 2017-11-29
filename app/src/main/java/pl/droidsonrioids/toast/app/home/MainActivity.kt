@@ -3,7 +3,6 @@ package pl.droidsonrioids.toast.app.home
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonrioids.toast.R
 import pl.droidsonrioids.toast.app.base.BaseActivity
