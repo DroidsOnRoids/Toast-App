@@ -86,6 +86,9 @@ dependencies {
     // data binding
     kapt 'com.android.databinding:compiler:3.0.1'
 
+    // picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
     // tests
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.12.0'
