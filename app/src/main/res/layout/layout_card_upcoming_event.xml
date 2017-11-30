@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="upcomingEvent"
             type="pl.droidsonrioids.toast.viewmodels.UpcomingEventViewModel"/>
@@ -15,18 +14,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        app:cardCornerRadius="3dp"
+        app:layout_constraintBottom_toTopOf="@+id/previousEventsLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:context="pl.droidsonrioids.toast.app.events.EventsFragment"
-    android:layout_marginBottom="@dimen/margin_small"
-    android:layout_marginEnd="@dimen/margin_small"
-    android:layout_marginStart="@dimen/margin_small"
-    android:layout_marginTop="@dimen/margin_small"
-    app:cardCornerRadius="3dp"
-    app:layout_constraintBottom_toTopOf="@+id/previousEventsLabel"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    tools:parentTag="android.support.constraint.ConstraintLayout"
-    tools:showIn="@layout/fragment_events">
+        tools:parentTag="android.support.constraint.ConstraintLayout"
+        tools:showIn="@layout/fragment_events">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="wrap_content"
