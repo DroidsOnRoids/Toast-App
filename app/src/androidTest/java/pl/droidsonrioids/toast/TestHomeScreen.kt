@@ -77,8 +77,11 @@ class TestHomeScreen {
         HomeRobot().checkIfElementWithIdIsDisplayed(R.id.toastLogoImage)
     }
 
-    //todo
-    //fun isDialogDismissedAfterTappingOutsideDialog()
+    /*todo
+    fun isDialogDismissedAfterTappingOutsideDialog()
+        openDialog()
+
+    */
 
     @Test
     fun isCreatedWithTextDisplayed() {
