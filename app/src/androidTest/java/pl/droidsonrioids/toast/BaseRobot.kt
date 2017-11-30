@@ -4,10 +4,8 @@ import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.assertion.ViewAssertions.doesNotExist
 import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.matcher.RootMatchers.isDialog
 import android.support.test.espresso.matcher.ViewMatchers.*
 import org.hamcrest.Matchers.allOf
-import org.hamcrest.Matchers.not
 
 abstract class BaseRobot {
 

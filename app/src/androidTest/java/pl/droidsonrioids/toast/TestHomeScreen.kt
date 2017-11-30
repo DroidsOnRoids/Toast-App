@@ -4,7 +4,6 @@ import android.support.test.espresso.Espresso.pressBack
 import android.support.test.rule.ActivityTestRule
 import org.junit.Rule
 import org.junit.Test
-import pl.droidsonrioids.toast.R.string.for_more_information_visit_our
 import pl.droidsonrioids.toast.app.home.MainActivity
 
 
@@ -23,7 +22,7 @@ class TestHomeScreen {
 
     @Test
     fun isToolbarDisplayed() {
-        val toolbarTitle = getString(R.string.toolbar_events_title)
+        val toolbarTitle = getString(R.string.events_title)
         HomeRobot().checkIfToolbarWithTitleIsDisplayed(toolbarTitle, R.id.toolbar)
 
     }

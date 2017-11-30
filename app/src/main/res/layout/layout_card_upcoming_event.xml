@@ -1,0 +1,227 @@
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/upcomingEventCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin_small"
+    android:layout_marginEnd="@dimen/margin_small"
+    android:layout_marginStart="@dimen/margin_small"
+    android:layout_marginTop="@dimen/margin_small"
+    app:cardCornerRadius="3dp"
+    app:layout_constraintBottom_toTopOf="@+id/previousEventsLabel"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:parentTag="android.support.constraint.ConstraintLayout"
+    tools:showIn="@layout/fragment_events">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/upcomingEventImage"
+            android:layout_width="0dp"
+            android:layout_height="182dp"
+            android:layout_marginBottom="@dimen/margin_large"
+            android:src="@drawable/ic_placeholder_toast"
+            app:layout_constraintBottom_toTopOf="@+id/eventTitleText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/eventTitleText"
+            style="@style/EventHeaderStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginStart="@dimen/margin_large"
+            app:layout_constraintBottom_toTopOf="@+id/eventDescriptionText"
+            app:layout_constraintEnd_toStartOf="@+id/forwardArrowImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/upcomingEventImage"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="TOAST #9"/>
+
+        <TextView
+            android:id="@+id/eventDescriptionText"
+            style="@style/EventSubHeaderStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_large"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginStart="@dimen/margin_large"
+            app:layout_constraintBottom_toTopOf="@+id/titleDivider"
+            app:layout_constraintEnd_toStartOf="@+id/forwardArrowImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/eventTitleText"
+            tools:text="Android Developers Meet-up"/>
+
+        <ImageView
+            android:id="@+id/forwardArrowImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:src="@drawable/ic_arrow_forward"
+            app:layout_constraintBottom_toTopOf="@+id/titleDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/upcomingEventImage"/>
+
+        <View
+            android:id="@+id/titleDivider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:background="@color/paleGray"
+            app:layout_constraintBottom_toTopOf="@id/placeTitleText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/eventDescriptionText"/>
+
+        <ImageView
+            android:id="@+id/locationImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:src="@drawable/ic_location"
+            app:layout_constraintBottom_toTopOf="@+id/locationDivider"
+            app:layout_constraintEnd_toStartOf="@+id/placeTitleText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleDivider"/>
+
+        <TextView
+            android:id="@+id/placeTitleText"
+            style="@style/EventHeaderStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginStart="@dimen/margin_medium"
+            app:layout_constraintBottom_toTopOf="@+id/placeLocationText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/locationImage"
+            app:layout_constraintTop_toBottomOf="@+id/titleDivider"
+            tools:text="PROZA — Wrocławski Klub Literacki"/>
+
+        <TextView
+            android:id="@+id/placeLocationText"
+            style="@style/EventSubHeaderStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginStart="@dimen/margin_medium"
+            app:layout_constraintBottom_toTopOf="@+id/locationDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/locationImage"
+            app:layout_constraintTop_toBottomOf="@+id/placeTitleText"
+            tools:text="Przejście Garncarskie 2, Rynek Wrocław"/>
+
+        <View
+            android:id="@+id/locationDivider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:background="@color/paleGray"
+            app:layout_constraintBottom_toTopOf="@+id/eventDateText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/placeLocationText"/>
+
+        <ImageView
+            android:id="@+id/calendarImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_large"
+            android:src="@drawable/ic_calendar"
+            app:layout_constraintBottom_toTopOf="@+id/dateDivider"
+            app:layout_constraintEnd_toStartOf="@+id/eventDateText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/locationDivider"/>
+
+        <TextView
+            android:id="@+id/eventDateText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginStart="10.5dp"
+            android:textColor="@color/blueGray"
+            app:layout_constraintBottom_toTopOf="@+id/dateDivider"
+            app:layout_constraintEnd_toStartOf="@+id/timeDivider"
+            app:layout_constraintStart_toEndOf="@+id/calendarImage"
+            app:layout_constraintTop_toBottomOf="@+id/locationDivider"
+            tools:text="02.03.2017"/>
+
+        <View
+            android:id="@+id/timeDivider"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/paleGray"
+            app:layout_constraintBottom_toBottomOf="@+id/dateDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/locationDivider"/>
+
+        <View
+            android:id="@+id/dateDivider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:background="@color/paleGray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/facebookAttendText"
+            app:layout_constraintTop_toBottomOf="@+id/eventDateText"/>
+
+        <ImageView
+            android:id="@+id/clockImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_large"
+            android:src="@drawable/ic_clock"
+            app:layout_constraintBottom_toTopOf="@+id/dateDivider"
+            app:layout_constraintStart_toEndOf="@+id/timeDivider"
+            app:layout_constraintTop_toBottomOf="@+id/locationDivider"/>
+
+        <TextView
+            android:id="@+id/eventTimeText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginStart="9dp"
+            android:textColor="@color/blueGray"
+            app:layout_constraintBottom_toTopOf="@+id/dateDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/clockImage"
+            app:layout_constraintTop_toBottomOf="@+id/locationDivider"
+            tools:text="07:00 PM CET"/>
+
+        <ImageView
+            android:id="@+id/facebookImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_facebook"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/facebookAttendText"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateDivider"/>
+
+        <TextView
+            android:id="@+id/facebookAttendText"
+            style="@style/FacebookAttend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_small"
+            android:text="@string/attend"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/facebookImage"
+            app:layout_constraintTop_toBottomOf="@+id/dateDivider"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>
