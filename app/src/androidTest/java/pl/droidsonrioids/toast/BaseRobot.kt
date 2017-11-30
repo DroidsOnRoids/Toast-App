@@ -1,15 +1,25 @@
 package pl.droidsonrioids.toast
 
 import android.support.test.espresso.Espresso.onView
+import android.support.test.espresso.action.ViewActions.click
+import android.support.test.espresso.assertion.ViewAssertions.doesNotExist
 import android.support.test.espresso.assertion.ViewAssertions.matches
+import android.support.test.espresso.matcher.RootMatchers.isDialog
 import android.support.test.espresso.matcher.ViewMatchers.*
 import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.not
 
 abstract class BaseRobot {
 
     fun checkIfToolbarWithTitleIsDisplayed(title: String, toolbarId: Int): BaseRobot {
         onView(allOf(withText(title), isDescendantOfA(withId(toolbarId))))
                 .check(matches(isDisplayed()))
+        return this
+    }
+
+    fun checkIfElementWithIdIsNotPresentInHierarchy(id: Int): BaseRobot {
+        onView(withId(id))
+                .check(doesNotExist())
         return this
     }
 
@@ -22,6 +32,19 @@ abstract class BaseRobot {
     fun checkIfElementWithIdIsClickable(id: Int): BaseRobot {
         onView(withId(id))
                 .check(matches(isClickable()))
+        return this
+    }
+
+    fun checkIfTextIsCorrect(text: String, id: Int): BaseRobot {
+        onView(withId(id))
+                .check(matches(withText(text)))
+        return this
+
+    }
+
+    fun performClickOnElementWithId(id: Int): BaseRobot {
+        onView(withId(id))
+                .perform(click())
         return this
     }
 }
