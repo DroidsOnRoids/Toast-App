@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="upcomingEvent"
             type="pl.droidsonrioids.toast.viewmodels.UpcomingEventViewModel"/>
@@ -59,13 +60,15 @@
 
             <TextView
                 android:id="@+id/upcomingEventDescriptionText"
-                style="@style/EventSubHeaderStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_large"
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginStart="@dimen/margin_large"
+                android:fontFamily="@font/roboto_medium"
+                android:letterSpacing="0.09"
                 android:text="@string/android_developers_meet_up"
+                android:textColor="@color/blueGray"
                 app:layout_constraintBottom_toTopOf="@+id/upcomingEventTitleDivider"
                 app:layout_constraintEnd_toStartOf="@+id/upcomingEventForwardArrowImage"
                 app:layout_constraintStart_toStartOf="parent"
@@ -161,6 +164,7 @@
                 android:layout_marginBottom="@dimen/margin_medium"
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginStart="10.5dp"
+                android:letterSpacing="0.07"
                 android:textColor="@color/blueGray"
                 app:eventDate="@{upcomingEvent.date}"
                 app:layout_constraintBottom_toTopOf="@+id/upcomingEventDateDivider"
@@ -205,6 +209,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginStart="9dp"
+                android:letterSpacing="0.07"
                 android:textColor="@color/blueGray"
                 app:eventTime="@{upcomingEvent.date}"
                 app:layout_constraintBottom_toTopOf="@+id/upcomingEventDateDivider"

@@ -13,7 +13,7 @@ import java.util.*
 
 
 object BindingAdapters {
-    private const val TIME_PATTERN = "hh:mm a zz"
+    private const val TIME_PATTERN = "hh:mm a z"
     private const val DATE_PATTERN = "dd.M.Y"
     private const val FIRST_COVER_INDEX = 0
 
@@ -22,8 +22,8 @@ object BindingAdapters {
     fun setEventTime(textView: TextView, date: Date?) {
         val timeFormatter = SimpleDateFormat(TIME_PATTERN, Locale.getDefault())
         if (date != null) {
-            val formattedDate = timeFormatter.format(date)
-            textView.text = formattedDate
+            val formattedDate = timeFormatter.format(date).split(":")
+            textView.text = StringBuilder().append(formattedDate[0]).append(":").append(formattedDate[1])
         }
     }
 

@@ -18,7 +18,7 @@ class EventsViewModel @Inject constructor(eventsManager: EventsManager) : ViewMo
 
     init {
         disposable = eventsManager.getEvents().subscribeBy(onSuccess = {
-            featuredEvent.set(UpcomingEventViewModel(it.featuredEvent))
+            featuredEvent.set(UpcomingEventViewModel(it.upcomingEvent))
             lastEvents = it.lastEvents
         })
     }

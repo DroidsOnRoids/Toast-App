@@ -44,12 +44,12 @@ class AppModule {
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
         val builder = OkHttpClient.Builder()
-        addHeaders(builder)
+        addHttpHeaders(builder)
         addHttpLoggingInterceptorIfDebugBuildConfig(builder)
         return builder.build()
     }
 
-    private fun addHeaders(builder: OkHttpClient.Builder) {
+    private fun addHttpHeaders(builder: OkHttpClient.Builder) {
         builder.addInterceptor {
             it.proceed(it.request().newBuilder().header(ACCEPT, APPLICATION_JSON).build())
         }
