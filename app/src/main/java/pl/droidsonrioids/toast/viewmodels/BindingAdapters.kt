@@ -1,54 +1,58 @@
+@file:JvmName("BindingAdapters")
+
 package pl.droidsonrioids.toast.viewmodels
 
 import android.databinding.BindingAdapter
+import android.text.format.DateFormat
 import android.widget.ImageView
 import android.widget.TextView
 import com.jakewharton.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
 import okhttp3.OkHttpClient
+import pl.droidsonrioids.toast.BuildConfig
 import pl.droidsonrioids.toast.R
 import pl.droidsonrioids.toast.data.model.Image
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-object BindingAdapters {
-    private const val TIME_PATTERN = "hh:mm a z"
-    private const val DATE_PATTERN = "dd.M.Y"
-    private const val FIRST_COVER_INDEX = 0
+const val DATE_PATTERN = "dd.MM.yyyy"
+private const val FIRST_COVER_INDEX = 0
 
-    @JvmStatic
-    @BindingAdapter("eventTime")
-    fun setEventTime(textView: TextView, date: Date?) {
-        val timeFormatter = SimpleDateFormat(TIME_PATTERN, Locale.getDefault())
-        if (date != null) {
-            val formattedDate = timeFormatter.format(date).split(":")
-            textView.text = StringBuilder().append(formattedDate[0]).append(":").append(formattedDate[1])
-        }
-    }
 
-    @JvmStatic
-    @BindingAdapter("eventDate")
-    fun setEventDate(textView: TextView, date: Date?) {
-        val timeFormatter = SimpleDateFormat(DATE_PATTERN, Locale.getDefault())
-        if (date != null) {
-            val formattedDate = timeFormatter.format(date)
-            textView.text = formattedDate
-        }
-    }
-
-    @JvmStatic
-    @BindingAdapter("eventCoverImage")
-    fun setEventCoverImage(imageView: ImageView, imageUrlList: List<Image>?) {
-        if (imageUrlList != null) {
-            Picasso.Builder(imageView.context)
-                    .downloader(OkHttp3Downloader(OkHttpClient()))
-                    .build().load(imageUrlList[FIRST_COVER_INDEX].big)
-                    .placeholder(R.drawable.ic_placeholder_toast)
-                    .fit()
-                    .centerCrop()
-                    .into(imageView)
-        }
-    }
-
+@BindingAdapter("eventTime")
+fun setEventTime(textView: TextView, date: Date?) {
+    val timeFormatter = DateFormat.getTimeFormat(textView.context) /*SimpleDateFormat(TIME_PATTERN, Locale.getDefault())*/
+    textView.text = date?.let { timeFormatter.format(it) }
 }
+
+
+@BindingAdapter("eventDate")
+fun setEventDate(textView: TextView, date: Date?) {
+    val timeFormatter = SimpleDateFormat(DATE_PATTERN, Locale.getDefault())
+    textView.text = date?.let { timeFormatter.format(it) }
+}
+
+
+@BindingAdapter("eventCoverImage")
+fun setEventCoverImage(imageView: ImageView, imageUrlList: List<Image>?) {
+    // TODO: handle caching
+    if (imageUrlList != null) {
+        Picasso.Builder(imageView.context)
+                .downloader(OkHttp3Downloader(OkHttpClient()))
+                .build()
+                .showIndicatorsIfDebug()
+                .load(imageUrlList[FIRST_COVER_INDEX].big)
+                .placeholder(R.drawable.ic_placeholder_toast)
+                .fit()
+                .centerCrop()
+                .into(imageView)
+    }
+}
+
+private fun Picasso.showIndicatorsIfDebug() =
+        apply {
+            if (BuildConfig.DEBUG) {
+                setIndicatorsEnabled(true)
+            }
+        }

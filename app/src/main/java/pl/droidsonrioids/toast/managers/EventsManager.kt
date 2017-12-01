@@ -1,8 +1,8 @@
-package pl.droidsonrioids.toast.data.api
+package pl.droidsonrioids.toast.managers
 
 import io.reactivex.Maybe
 import io.reactivex.Single
-import pl.droidsonrioids.toast.data.model.EventDetailsResponse
+import pl.droidsonrioids.toast.data.api.EventDetailsResponse
 import pl.droidsonrioids.toast.data.model.SplitEvents
 
 interface EventsManager {

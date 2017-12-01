@@ -8,18 +8,19 @@ import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import pl.droidsonrioids.toast.BuildConfig
-import pl.droidsonrioids.toast.data.api.EventService
-import pl.droidsonrioids.toast.data.api.EventsManager
-import pl.droidsonrioids.toast.data.api.EventsManagerImpl
+import pl.droidsonrioids.toast.managers.EventsManager
+import pl.droidsonrioids.toast.managers.EventsManagerImpl
+import pl.droidsonrioids.toast.services.EventService
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
+
 private const val ACCEPT = "Accept"
 private const val APPLICATION_JSON = "application/json"
 
-@Module(includes = arrayOf(ViewModelModule::class))
+@Module(includes = [ViewModelModule::class])
 class AppModule {
     @Singleton
     @Provides
@@ -42,28 +43,26 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(): OkHttpClient {
-        val builder = OkHttpClient.Builder()
-        addHttpHeaders(builder)
-        addHttpLoggingInterceptorIfDebugBuildConfig(builder)
-        return builder.build()
-    }
+    fun provideOkHttpClient(): OkHttpClient =
+            OkHttpClient.Builder()
+                    .addHttpHeaders()
+                    .addHttpLoggingInterceptorIfDebugBuildConfig()
+                    .build()
 
-    private fun addHttpHeaders(builder: OkHttpClient.Builder) {
-        builder.addInterceptor {
-            it.proceed(it.request().newBuilder().header(ACCEPT, APPLICATION_JSON).build())
-        }
-    }
+    private fun OkHttpClient.Builder.addHttpHeaders() =
+            addInterceptor {
+                it.proceed(it.request().newBuilder().header(ACCEPT, APPLICATION_JSON).build())
+            }
 
-    private fun addHttpLoggingInterceptorIfDebugBuildConfig(builder: OkHttpClient.Builder) {
+    private fun OkHttpClient.Builder.addHttpLoggingInterceptorIfDebugBuildConfig(): OkHttpClient.Builder {
         if (BuildConfig.DEBUG) {
-            builder.addNetworkInterceptor(getHttpLoggingInterceptor())
+            addNetworkInterceptor(getHttpLoggingInterceptor())
         }
+        return this
     }
 
-    private fun getHttpLoggingInterceptor(): HttpLoggingInterceptor {
-        val httpLoggingInterceptor = HttpLoggingInterceptor()
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-        return httpLoggingInterceptor
-    }
+    private fun getHttpLoggingInterceptor() =
+            HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            }
 }

@@ -1,7 +1,8 @@
-package pl.droidsonrioids.toast.data.api
+package pl.droidsonrioids.toast.managers
 
 import io.reactivex.Maybe
 import pl.droidsonrioids.toast.data.model.SplitEvents
+import pl.droidsonrioids.toast.services.EventService
 import javax.inject.Inject
 
 class EventsManagerImpl @Inject constructor(private val eventService: EventService) : EventsManager {

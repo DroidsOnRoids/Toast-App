@@ -8,17 +8,26 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import pl.droidsonrioids.toast.app.base.BaseFragment
-import pl.droidsonrioids.toast.databinding.FragmentEventsBinding
-import pl.droidsonrioids.toast.viewmodels.EventsViewModel
 import android.view.animation.DecelerateInterpolator
 import kotlinx.android.synthetic.main.fragment_events.*
 import pl.droidsonrioids.toast.R
+import pl.droidsonrioids.toast.app.base.BaseFragment
+import pl.droidsonrioids.toast.databinding.FragmentEventsBinding
+import pl.droidsonrioids.toast.viewmodels.EventsViewModel
 
 const val TOP_BAR_TRANSLATION_FACTOR = 2f
+
 class EventsFragment : BaseFragment() {
 
     private lateinit var eventsViewModel: EventsViewModel
+
+    private val topBarHeight by lazy {
+        resources.getDimensionPixelSize(R.dimen.events_top_bar_height).toFloat()
+    }
+
+    private val maxToolbarElevation by lazy {
+        resources.getDimensionPixelSize(R.dimen.home_toolbar_elevation).toFloat()
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -29,12 +38,6 @@ class EventsFragment : BaseFragment() {
         val binding = FragmentEventsBinding.inflate(inflater, container, false)
         binding.eventsViewModel = eventsViewModel
         return binding.root
-    }
-    private val maxToolbarElevation by lazy {
-        resources.getDimensionPixelSize(R.dimen.home_toolbar_elevation).toFloat()
-    }
-    private val topBarHeight by lazy {
-        resources.getDimensionPixelSize(R.dimen.events_top_bar_height).toFloat()
     }
 
 
