@@ -34,24 +34,38 @@ class EventsManagerImplTest {
     fun shouldReturnUpcomingEventAndEmptyPreviousEventsList() {
         val eventDetail = Single.just(EventDetailsResponse(testEventDetails))
         whenever(eventService.getEvent(any())).thenReturn(eventDetail)
-        val eventsList = Single.just(EventsResponse(testPreviousEvents))
+        val eventsList = Single.just(EventsResponse(testPreviousEvents, 1))
         whenever(eventService.getEvents()).thenReturn(eventsList)
         val testObserver = eventsManager.getEvents().test()
 
         testObserver.assertComplete()
         testObserver.assertNoErrors()
 
-        testObserver.assertValue { it.lastEvents.isEmpty() && it.upcomingEvent == testEventDetails }
+        testObserver.assertValue { it.previousEvents.items.isEmpty() && it.upcomingEvent == testEventDetails }
     }
 
     @Test
     fun shouldReturnNothingWhenEmptyList() {
-        val eventsList = Single.just(EventsResponse(listOf()))
+        val eventsList = Single.just(EventsResponse(listOf(), 1))
         whenever(eventService.getEvents()).thenReturn(eventsList)
         val testObserver = eventsManager.getEvents().test()
 
         testObserver.assertComplete()
         testObserver.assertNoErrors()
         testObserver.assertNoValues()
+    }
+
+
+    @Test
+    fun shouldReturnPreviousEventsPage() {
+        val pageCount = 1
+        val pageNo = 1
+        val eventsList = Single.just(EventsResponse(testPreviousEvents, pageCount))
+        whenever(eventService.getEvents(page = pageNo)).thenReturn(eventsList)
+        val testObserver = eventsManager.getEventsPage(pageNo).test()
+
+        testObserver.assertComplete()
+        testObserver.assertNoErrors()
+        testObserver.assertValue { it.items == testPreviousEvents && it.pageNo == pageNo && it.pageCount == pageCount }
     }
 }

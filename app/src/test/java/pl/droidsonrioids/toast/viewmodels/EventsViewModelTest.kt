@@ -10,6 +10,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
+import pl.droidsonrioids.toast.data.model.State
 import pl.droidsonrioids.toast.managers.EventsManager
 import pl.droidsonrioids.toast.testEventDetails
 import pl.droidsonrioids.toast.testPreviousEvents
@@ -37,10 +38,13 @@ class EventsViewModelTest {
         whenever(eventsManager.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
         val eventsViewModel = EventsViewModel(eventsManager)
 
-        val previousEvents = eventsViewModel.lastEvents
+        val previousEvents = eventsViewModel.previousEvents.value
 
         assertTrue(previousEvents.isNotEmpty())
-        assertThat(previousEvents, equalTo(testPreviousEvents))
+        // TODO: Refactor to something prettier
+        previousEvents.forEachIndexed { index, state ->
+            assertThat((state as? State.Item)?.item, equalTo(testPreviousEvents[index]))
+        }
     }
 
 }

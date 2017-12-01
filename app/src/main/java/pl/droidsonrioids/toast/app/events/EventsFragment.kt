@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_events.*
 import pl.droidsonrioids.toast.R
 import pl.droidsonrioids.toast.app.base.BaseFragment
@@ -20,6 +22,7 @@ const val TOP_BAR_TRANSLATION_FACTOR = 2f
 class EventsFragment : BaseFragment() {
 
     private lateinit var eventsViewModel: EventsViewModel
+    private var disposable: Disposable? = null
 
     private val topBarHeight by lazy {
         resources.getDimensionPixelSize(R.dimen.events_top_bar_height).toFloat()
@@ -48,8 +51,14 @@ class EventsFragment : BaseFragment() {
 
     private fun setupRecyclerView() {
         with(previousEventsRecyclerView) {
-            adapter = PreviousEventsAdapter()
+            val previousEventsAdapter = PreviousEventsAdapter()
+            adapter = previousEventsAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            disposable = eventsViewModel.previousEvents
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        previousEventsAdapter.setData(it)
+                    }
         }
     }
 
@@ -67,4 +76,8 @@ class EventsFragment : BaseFragment() {
         }
     }
 
+    override fun onDestroyView() {
+        disposable?.dispose()
+        super.onDestroyView()
+    }
 }

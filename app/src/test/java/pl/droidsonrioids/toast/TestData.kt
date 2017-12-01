@@ -27,4 +27,7 @@ val testPreviousEvents = listOf(
                 listOf(Image("bigImageFirst", "thumbImageFirst")))
 )
 
-val testSplitEvents = SplitEvents(testEventDetails, testPreviousEvents)
+
+val testPreviousEventsPage = Page(testPreviousEvents, 1, 1)
+
+val testSplitEvents = SplitEvents(testEventDetails, testPreviousEventsPage)

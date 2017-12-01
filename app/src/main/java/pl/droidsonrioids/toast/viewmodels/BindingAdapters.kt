@@ -38,16 +38,24 @@ fun setEventDate(textView: TextView, date: Date?) {
 fun setEventCoverImage(imageView: ImageView, imageUrlList: List<Image>?) {
     // TODO: handle caching
     if (imageUrlList != null) {
+        val url = imageUrlList[FIRST_COVER_INDEX].big.addBaseUrlIfNeeded()
         Picasso.Builder(imageView.context)
                 .downloader(OkHttp3Downloader(OkHttpClient()))
                 .build()
                 .showIndicatorsIfDebug()
-                .load(imageUrlList[FIRST_COVER_INDEX].big)
+                .load(url)
                 .placeholder(R.drawable.ic_placeholder_toast)
                 .fit()
                 .centerCrop()
                 .into(imageView)
     }
+}
+
+private fun String.addBaseUrlIfNeeded(): String {
+    // TODO: Investigate with backend
+    return if (startsWith("http", true)) {
+        this
+    } else BuildConfig.BASE_API_URL.removeSuffix("/api/v1/") + this
 }
 
 private fun Picasso.showIndicatorsIfDebug() =

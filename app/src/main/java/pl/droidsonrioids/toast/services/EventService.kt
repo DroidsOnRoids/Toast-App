@@ -5,12 +5,13 @@ import pl.droidsonrioids.toast.data.api.EventDetailsResponse
 import pl.droidsonrioids.toast.data.api.EventsResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 
 interface EventService {
 
     @GET("events")
-    fun getEvents(): Single<EventsResponse>
+    fun getEvents(@Query("per_page") pageSize: Int = 10, @Query("page") page: Int = 1): Single<EventsResponse>
 
     @GET("events/{id}")
     fun getEvent(@Path("id") id: Long): Single<EventDetailsResponse>
