@@ -5,6 +5,8 @@ import android.support.test.rule.ActivityTestRule
 import org.junit.Rule
 import org.junit.Test
 import pl.droidsonrioids.toast.app.home.MainActivity
+import android.support.test.InstrumentationRegistry
+import android.support.test.uiautomator.UiDevice
 
 
 class TestHomeScreen {
@@ -76,11 +78,12 @@ class TestHomeScreen {
         HomeRobot().checkIfElementWithIdIsDisplayed(R.id.toastLogoImage)
     }
 
-    /*todo
-    fun isDialogDismissedAfterTappingOutsideDialog()
+    @Test
+    fun isDialogDismissedAfterTappingOutsideDialog() {
         openDialog()
-
-    */
+        UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).click(0, 300)
+        isDialogClosed()
+    }
 
     @Test
     fun isCreatedWithTextDisplayed() {
@@ -105,5 +108,15 @@ class TestHomeScreen {
         openDialog()
         HomeRobot().checkIfTextIsCorrect(getString(R.string.application_version_title), R.id.appVersionTitle)
     }
+
+    @Test
+    fun isFbFanPageDeepLinkDisplayedAndActive() {
+        openDialog()
+        HomeRobot().checkIfTextIsCorrect(getString(R.string.toast_facebook_fanpage), R.id.fanpageLinkText)
+        HomeRobot().performClickOnElementWithId(R.id.fanpageLinkText)
+        UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).pressBack()
+        isDialogClosed()
+    }
+
 
 }
