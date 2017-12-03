@@ -65,7 +65,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/hearthImageView"
-        app:layout_constraintTop_toBottomOf="@+id/toastLogoImage" />
+        app:layout_constraintTop_toBottomOf="@+id/toastLogoImage"/>
 
     <TextView
         android:id="@+id/moreInfoText"
