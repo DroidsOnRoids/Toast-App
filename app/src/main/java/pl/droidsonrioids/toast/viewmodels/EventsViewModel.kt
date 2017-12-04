@@ -11,7 +11,9 @@ import io.reactivex.subjects.BehaviorSubject
 import pl.droidsonrioids.toast.data.model.Event
 import pl.droidsonrioids.toast.data.model.Page
 import pl.droidsonrioids.toast.data.model.State
-import pl.droidsonrioids.toast.managers.EventsRepository
+import pl.droidsonrioids.toast.data.model.wrapWithState
+import pl.droidsonrioids.toast.repositories.EventsRepository
+import pl.droidsonrioids.toast.utils.toPage
 import javax.inject.Inject
 
 
@@ -19,15 +21,14 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
 
 
     val featuredEvent = ObservableField<UpcomingEventViewModel>()
-    val previousEvents: BehaviorSubject<List<State<Event>>> = BehaviorSubject.create()
+    val previousEvents: BehaviorSubject<List<State<EventItemViewModel>>> = BehaviorSubject.create()
     private var disposable: Disposable? = null
     private var nextPageNo: Int? = null
 
     init {
         disposable = eventsRepository.getEvents()
                 .flatMap { (featuredEvent, previousEventsPage) ->
-                    previousEventsPage
-                            .mapToSinglePageWithState()
+                    mapToSingleEventItemViewModelsPage(previousEventsPage)
                             .map { featuredEvent to it }
                             .toMaybe()
                 }
@@ -43,34 +44,50 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
                 )
     }
 
-    private fun handleNewEventsPage(it: Page<State<Event>>) {
-        var newList =
-                (previousEvents.value
-                        ?.filter { it is State.Item }
-                        ?: listOf()) + it.items
-        if (it.pageNo < it.pageCount) {
-
+    private fun handleNewEventsPage(page: Page<State<EventItemViewModel>>) {
+        var newList = previousEvents.value
+                ?.filter { it is State.Item }
+                ?: listOf()
+        newList += page.items
+        if (page.pageNo < page.pageCount) {
+            nextPageNo = page.pageNo + 1
             newList += State.Loading
+        } else {
+            nextPageNo = null
         }
         previousEvents.onNext(newList)
     }
 
     fun loadNextPage() {
-        nextPageNo?.takeIf { disposable?.isDisposed == true }?.let {
-            disposable = eventsRepository.getEventsPage(it)
-                    .flatMap { previousEventsPage ->
-                        previousEventsPage
-                                .mapToSinglePageWithState()
-                    }
-                    .doAfterTerminate { disposable?.dispose() }
-                    .subscribeBy(
-                            onSuccess = {
-                                handleNewEventsPage(it)
-                            },
-                            onError = {
-                                Log.e(this::class.java.simpleName, "Something went wrong with fetching previous events next page for EventsViewModel", it)
+        nextPageNo?.takeIf { disposable?.isDisposed == true }
+                ?.let {
+                    disposable = eventsRepository.getEventsPage(it)
+                            .flatMap { previousEventsPage ->
+                                mapToSingleEventItemViewModelsPage(previousEventsPage)
                             }
-                    )
+                            .doAfterTerminate { disposable?.dispose() }
+                            .subscribeBy(
+                                    onSuccess = {
+                                        handleNewEventsPage(it)
+                                    },
+                                    onError = {
+                                        Log.e(this::class.java.simpleName, "Something went wrong with fetching previous events next page for EventsViewModel", it)
+                                    }
+                            )
+                }
+    }
+
+    private fun mapToSingleEventItemViewModelsPage(page: Page<Event>): Single<Page<State.Item<EventItemViewModel>>> {
+        val (items, pageNo, pageCount) = page
+        return items.toObservable()
+                .map(this::toEventItemViewModel)
+                .map { wrapWithState(it) }
+                .toPage(pageNo, pageCount)
+    }
+
+    private fun toEventItemViewModel(it: Event): EventItemViewModel {
+        return EventItemViewModel(it) {
+            Log.d(this::class.java.simpleName, "Event item clicked ${it.id}")
         }
     }
 
@@ -80,9 +97,4 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
 
 }
 
-private fun <E : Any> Page<E>.mapToSinglePageWithState(): Single<Page<State<E>>> {
-    return items.toObservable()
-            .map { State.Item(it) as State<E> }
-            .toList()
-            .map { Page(it, pageNo, pageCount) }
-}
+

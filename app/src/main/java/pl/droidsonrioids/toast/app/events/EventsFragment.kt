@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,6 +60,13 @@ class EventsFragment : BaseFragment() {
                     .subscribe {
                         previousEventsAdapter.setData(it)
                     }
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (layoutManager.itemCount - 1 == (layoutManager as LinearLayoutManager).findLastVisibleItemPosition()) {
+                        eventsViewModel.loadNextPage()
+                    }
+                }
+            })
         }
     }
 

@@ -10,7 +10,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import pl.droidsonrioids.toast.data.model.State
-import pl.droidsonrioids.toast.managers.EventsRepository
+import pl.droidsonrioids.toast.repositories.EventsRepository
 import pl.droidsonrioids.toast.testEventDetails
 import pl.droidsonrioids.toast.testPreviousEvents
 import pl.droidsonrioids.toast.testSplitEvents
@@ -40,7 +40,12 @@ class EventsViewModelTest {
         val previousEvents = eventsViewModel.previousEvents.value
 
         assertThat(previousEvents.size, equalTo(1))
-        assertThat((previousEvents.first() as? State.Item)?.item, equalTo(testPreviousEvents.first()))
+        val testPreviousEvent = testPreviousEvents.first()
+        val eventItemViewModel = (previousEvents.first() as? State.Item)?.item
+
+        assertNotNull(eventItemViewModel)
+        assertThat(eventItemViewModel?.id, equalTo(testPreviousEvent.id))
+        assertThat(eventItemViewModel?.title, equalTo(testPreviousEvent.title))
     }
 
 }

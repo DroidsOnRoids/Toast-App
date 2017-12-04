@@ -5,3 +5,5 @@ sealed class State<out T> {
     class Error(action: () -> Unit) : State<Nothing>()
     object Loading : State<Nothing>()
 }
+
+fun <T : Any> wrapWithState(item: T) = State.Item(item)

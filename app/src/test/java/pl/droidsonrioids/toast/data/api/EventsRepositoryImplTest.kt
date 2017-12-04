@@ -9,7 +9,7 @@ import org.junit.runner.RunWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-import pl.droidsonrioids.toast.managers.EventsRepositoryImpl
+import pl.droidsonrioids.toast.repositories.EventsRepositoryImpl
 import pl.droidsonrioids.toast.rule.RxPluginSchedulerRule
 import pl.droidsonrioids.toast.services.EventService
 import pl.droidsonrioids.toast.testEventDetails

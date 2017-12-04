@@ -20,7 +20,7 @@ val testEventDetails = EventDetailsDto(
 )
 
 val testPreviousEvents = listOf(
-        Event(
+        EventDto(
                 0,
                 "titleFirst",
                 testDate,

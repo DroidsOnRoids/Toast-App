@@ -1,4 +1,4 @@
-package pl.droidsonrioids.toast.managers
+package pl.droidsonrioids.toast.repositories
 
 import io.reactivex.Maybe
 import io.reactivex.Single

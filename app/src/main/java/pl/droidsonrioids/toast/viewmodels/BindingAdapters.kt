@@ -35,10 +35,10 @@ fun setEventDate(textView: TextView, date: Date?) {
 
 
 @BindingAdapter("eventCoverImage")
-fun setEventCoverImage(imageView: ImageView, imageUrlList: List<Image>?) {
+fun setEventCoverImage(imageView: ImageView, image: Image?) {
     // TODO: handle caching
-    if (imageUrlList != null) {
-        val url = imageUrlList[FIRST_COVER_INDEX].big.addBaseUrlIfNeeded()
+    if (image != null) {
+        val url = image.big.addBaseUrlIfNeeded()
         Picasso.Builder(imageView.context)
                 .downloader(OkHttp3Downloader(OkHttpClient()))
                 .build()
@@ -58,9 +58,10 @@ private fun Picasso.showIndicatorsIfDebug(): Picasso {
         }
     }
 }
+
 private fun String.addBaseUrlIfNeeded(): String {
     // TODO: Investigate with backend
     return if (startsWith("http", true)) {
         this
-    } else BuildConfig.BASE_API_URL.removeSuffix("/api/v1/") + this
+    } else BuildConfig.BASE_IMAGES_URL + this
 }

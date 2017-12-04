@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="pl.droidsonrioids.toast.data.model.Event"/>
+            type="pl.droidsonrioids.toast.viewmodels.EventItemViewModel"/>
     </data>
 
     <android.support.v7.widget.CardView
@@ -19,6 +19,7 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
+        android:onClick="@{() -> viewModel.onClick.invoke()}"
         app:cardCornerRadius="3dp">
 
         <android.support.constraint.ConstraintLayout
@@ -31,7 +32,7 @@
                 android:layout_width="0dp"
                 android:layout_height="111dp"
                 android:contentDescription="@string/previous_event_cover_desc"
-                app:eventCoverImage="@{viewModel.coverImages}"
+                app:eventCoverImage="@{viewModel.coverImage}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>

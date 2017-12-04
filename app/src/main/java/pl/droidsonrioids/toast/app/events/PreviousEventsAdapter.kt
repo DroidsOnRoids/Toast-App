@@ -5,12 +5,12 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import pl.droidsonrioids.toast.R
-import pl.droidsonrioids.toast.data.model.Event
 import pl.droidsonrioids.toast.data.model.State
+import pl.droidsonrioids.toast.viewmodels.EventItemViewModel
 
 class PreviousEventsAdapter : RecyclerView.Adapter<PreviousEventViewHolder>() {
 
-    private var data: List<State<Event>> = listOf()
+    private var data: List<State<EventItemViewModel>> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PreviousEventViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -23,7 +23,7 @@ class PreviousEventsAdapter : RecyclerView.Adapter<PreviousEventViewHolder>() {
 
     override fun onBindViewHolder(holder: PreviousEventViewHolder, position: Int) {
         when (holder) {
-            is PreviousEventViewHolder.Item -> holder.bind(data[position] as State.Item<Event>)
+            is PreviousEventViewHolder.Item -> holder.bind(data[position] as State.Item<EventItemViewModel>)
         }
     }
 
@@ -37,7 +37,7 @@ class PreviousEventsAdapter : RecyclerView.Adapter<PreviousEventViewHolder>() {
         }
     }
 
-    fun setData(list: List<State<Event>>) {
+    fun setData(list: List<State<EventItemViewModel>>) {
         data = list
         notifyDataSetChanged()
     }
