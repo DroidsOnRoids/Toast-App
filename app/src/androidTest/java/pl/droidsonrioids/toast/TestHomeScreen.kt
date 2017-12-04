@@ -14,7 +14,7 @@ class TestHomeScreen {
     @get:Rule
     val activityRule = ActivityTestRule(MainActivity::class.java, true, true)
 
-    private fun openDialog() {
+    private fun showDialog() {
         HomeRobot().performClickOnElementWithId(R.id.about_item)
     }
 
@@ -41,14 +41,14 @@ class TestHomeScreen {
 
     @Test
     fun isToastLogoDisplayed() {
-        openDialog()
-        HomeRobot().checkIfElementWithIdIsDisplayed(R.id.toastLogoImage)
+        showDialog()
+        HomeRobot().checkIfElementWithIdIsDisplayedInDialog(R.id.toastLogoImage)
     }
 
     @Test
     fun isHeartImageDisplayed() {
-        openDialog()
-        HomeRobot().checkIfElementWithIdIsDisplayed(R.id.hearthImageView)
+        showDialog()
+        HomeRobot().checkIfElementWithIdIsDisplayedInDialog(R.id.hearthImageView)
     }
 
     /*
@@ -58,60 +58,60 @@ class TestHomeScreen {
 
     @Test
     fun isDialogClosedAfterClickingOnCloseButton() {
-        openDialog()
-        HomeRobot().checkIfElementWithIdIsDisplayed(R.id.closeImageButton)
+        showDialog()
+        HomeRobot().checkIfElementWithIdIsDisplayedInDialog(R.id.closeImageButton)
         HomeRobot().performClickOnElementWithId(R.id.closeImageButton)
         isDialogClosed()
     }
 
     @Test
     fun isDialogClosedAfterClickingOnBackButton() {
-        openDialog()
+        showDialog()
         pressBack()
         isDialogClosed()
     }
 
     @Test
     fun isDialogNotDismissedAfterTappingOnDialog() {
-        openDialog()
+        showDialog()
         HomeRobot().performClickOnElementWithId(R.id.toastLogoImage)
-        HomeRobot().checkIfElementWithIdIsDisplayed(R.id.toastLogoImage)
+        HomeRobot().checkIfElementWithIdIsDisplayedInDialog(R.id.toastLogoImage)
     }
 
     @Test
     fun isDialogDismissedAfterTappingOutsideDialog() {
-        openDialog()
+        showDialog()
         UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).click(0, 300)
         isDialogClosed()
     }
 
     @Test
     fun isCreatedWithTextDisplayed() {
-        openDialog()
+        showDialog()
         HomeRobot().checkIfTextIsCorrect(getString(R.string.created_with), R.id.createdWithText)
     }
 
     @Test
     fun isByToastTeamTextDisplayed() {
-        openDialog()
+        showDialog()
         HomeRobot().checkIfTextIsCorrect(getString(R.string.by_toast_team), R.id.byToastTeamText)
     }
 
     @Test
     fun isMoreInfoTextDisplayed() {
-        openDialog()
+        showDialog()
         HomeRobot().checkIfTextIsCorrect(getString(R.string.for_more_information_visit_our), R.id.moreInfoText)
     }
 
     @Test
     fun isAppVersionTextDisplayed() {
-        openDialog()
+        showDialog()
         HomeRobot().checkIfTextIsCorrect(getString(R.string.application_version_title), R.id.appVersionTitle)
     }
 
     @Test
     fun isFbFanPageDeepLinkDisplayedAndActive() {
-        openDialog()
+        showDialog()
         HomeRobot().checkIfTextIsCorrect(getString(R.string.toast_facebook_fanpage), R.id.fanpageLinkText)
         HomeRobot().performClickOnElementWithId(R.id.fanpageLinkText)
         UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).pressBack()
