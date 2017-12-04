@@ -33,6 +33,17 @@ class EventsFragment : BaseFragment() {
         resources.getDimension(R.dimen.home_toolbar_elevation)
     }
 
+    private val lazyLoadingScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            (recyclerView.layoutManager as? LinearLayoutManager)
+                    ?.let {
+                        if (it.itemCount - 1 == it.findLastVisibleItemPosition()) {
+                            eventsViewModel.loadNextPage()
+                        }
+                    }
+        }
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         eventsViewModel = ViewModelProviders.of(this, viewModelFactory)[EventsViewModel::class.java]
@@ -60,13 +71,7 @@ class EventsFragment : BaseFragment() {
                     .subscribe {
                         previousEventsAdapter.setData(it)
                     }
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    if (layoutManager.itemCount - 1 == (layoutManager as LinearLayoutManager).findLastVisibleItemPosition()) {
-                        eventsViewModel.loadNextPage()
-                    }
-                }
-            })
+            addOnScrollListener(lazyLoadingScrollListener)
         }
     }
 

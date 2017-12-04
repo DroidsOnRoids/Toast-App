@@ -37,18 +37,16 @@ fun setEventDate(textView: TextView, date: Date?) {
 @BindingAdapter("eventCoverImage")
 fun setEventCoverImage(imageView: ImageView, image: Image?) {
     // TODO: handle caching
-    if (image != null) {
-        val url = image.big.addBaseUrlIfNeeded()
-        Picasso.Builder(imageView.context)
-                .downloader(OkHttp3Downloader(OkHttpClient()))
-                .build()
-                .showIndicatorsIfDebug()
-                .load(url)
-                .placeholder(R.drawable.ic_placeholder_toast)
-                .fit()
-                .centerCrop()
-                .into(imageView)
-    }
+    val url = image?.big?.addBaseUrlIfNeeded()
+    Picasso.Builder(imageView.context)
+            .downloader(OkHttp3Downloader(OkHttpClient()))
+            .build()
+            .showIndicatorsIfDebug()
+            .load(url)
+            .placeholder(R.drawable.ic_placeholder_toast)
+            .fit()
+            .centerCrop()
+            .into(imageView)
 }
 
 private fun Picasso.showIndicatorsIfDebug(): Picasso {
@@ -59,8 +57,8 @@ private fun Picasso.showIndicatorsIfDebug(): Picasso {
     }
 }
 
+// There's inconsistency on backend - sometimes we have full url and sometimes we have just endpoint
 private fun String.addBaseUrlIfNeeded(): String {
-    // TODO: Investigate with backend
     return if (startsWith("http", true)) {
         this
     } else BuildConfig.BASE_IMAGES_URL + this

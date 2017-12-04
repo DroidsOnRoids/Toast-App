@@ -45,33 +45,33 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
     }
 
     private fun handleNewEventsPage(page: Page<State<EventItemViewModel>>) {
-        var newList = previousEvents.value
-                ?.filter { it is State.Item }
-                ?: listOf()
-        newList += page.items
+        var newList = mergeWithExistingList(page.items)
         if (page.pageNo < page.pageCount) {
-            nextPageNo = page.pageNo + 1
             newList += State.Loading
+            nextPageNo = page.pageNo + 1
         } else {
             nextPageNo = null
         }
         previousEvents.onNext(newList)
     }
 
+    private fun mergeWithExistingList(newList: List<State<EventItemViewModel>>): List<State<EventItemViewModel>> {
+        val previousList = previousEvents.value
+                ?.filter { it is State.Item }
+                ?: listOf()
+        return previousList + newList
+    }
+
     fun loadNextPage() {
         nextPageNo?.takeIf { disposable?.isDisposed == true }
                 ?.let {
                     disposable = eventsRepository.getEventsPage(it)
-                            .flatMap { previousEventsPage ->
-                                mapToSingleEventItemViewModelsPage(previousEventsPage)
-                            }
+                            .flatMap(this::mapToSingleEventItemViewModelsPage)
                             .doAfterTerminate { disposable?.dispose() }
                             .subscribeBy(
-                                    onSuccess = {
-                                        handleNewEventsPage(it)
-                                    },
+                                    onSuccess = (this::handleNewEventsPage),
                                     onError = {
-                                        Log.e(this::class.java.simpleName, "Something went wrong with fetching previous events next page for EventsViewModel", it)
+                                        Log.e(this::class.java.simpleName, "Something went wrong with fetching next previous events page for EventsViewModel", it)
                                     }
                             )
                 }
@@ -85,9 +85,9 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
                 .toPage(pageNo, pageCount)
     }
 
-    private fun toEventItemViewModel(it: Event): EventItemViewModel {
-        return EventItemViewModel(it) {
-            Log.d(this::class.java.simpleName, "Event item clicked ${it.id}")
+    private fun toEventItemViewModel(event: Event): EventItemViewModel {
+        return EventItemViewModel(event) {
+            Log.d(this::class.java.simpleName, "Event item clicked ${event.id}")
         }
     }
 
