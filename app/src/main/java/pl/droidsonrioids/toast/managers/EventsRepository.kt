@@ -7,7 +7,7 @@ import pl.droidsonrioids.toast.data.model.Event
 import pl.droidsonrioids.toast.data.model.Page
 import pl.droidsonrioids.toast.data.model.SplitEvents
 
-interface EventsManager {
+interface EventsRepository {
 
     fun getEvents(): Maybe<SplitEvents>
 

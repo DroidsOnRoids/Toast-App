@@ -11,7 +11,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import pl.droidsonrioids.toast.data.model.State
-import pl.droidsonrioids.toast.managers.EventsManager
+import pl.droidsonrioids.toast.managers.EventsRepository
 import pl.droidsonrioids.toast.testEventDetails
 import pl.droidsonrioids.toast.testPreviousEvents
 import pl.droidsonrioids.toast.testSplitEvents
@@ -19,12 +19,12 @@ import pl.droidsonrioids.toast.testSplitEvents
 @RunWith(MockitoJUnitRunner::class)
 class EventsViewModelTest {
     @Mock
-    lateinit var eventsManager: EventsManager
+    lateinit var eventsRepository: EventsRepository
 
     @Test
     fun shouldReturnFeaturedEvent() {
-        whenever(eventsManager.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
-        val eventsViewModel = EventsViewModel(eventsManager)
+        whenever(eventsRepository.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
+        val eventsViewModel = EventsViewModel(eventsRepository)
 
         val upcomingEventViewModel = eventsViewModel.featuredEvent.get()
 
@@ -35,8 +35,8 @@ class EventsViewModelTest {
 
     @Test
     fun shouldReturnSingletonPreviousEventsList() {
-        whenever(eventsManager.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
-        val eventsViewModel = EventsViewModel(eventsManager)
+        whenever(eventsRepository.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
+        val eventsViewModel = EventsViewModel(eventsRepository)
 
         val previousEvents = eventsViewModel.previousEvents.value
 

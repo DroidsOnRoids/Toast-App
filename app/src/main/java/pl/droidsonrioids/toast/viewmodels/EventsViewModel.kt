@@ -3,6 +3,7 @@ package pl.droidsonrioids.toast.viewmodels
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import io.reactivex.Single
+import android.util.Log
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.rxkotlin.toObservable
@@ -10,11 +11,11 @@ import io.reactivex.subjects.BehaviorSubject
 import pl.droidsonrioids.toast.data.model.Event
 import pl.droidsonrioids.toast.data.model.Page
 import pl.droidsonrioids.toast.data.model.State
-import pl.droidsonrioids.toast.managers.EventsManager
+import pl.droidsonrioids.toast.managers.EventsRepository
 import javax.inject.Inject
 
 
-class EventsViewModel @Inject constructor(private val eventsManager: EventsManager) : ViewModel() {
+class EventsViewModel @Inject constructor(eventsRepository: EventsRepository) : ViewModel() {
 
 
     val featuredEvent = ObservableField<UpcomingEventViewModel>()
@@ -24,6 +25,16 @@ class EventsViewModel @Inject constructor(private val eventsManager: EventsManag
     private var nextPageNo: Int? = null
 
     init {
+        disposable = eventsRepository.getEvents()
+                .subscribeBy(
+                        onSuccess = {
+                            featuredEvent.set(UpcomingEventViewModel(it.upcomingEvent))
+                            lastEvents = it.lastEvents
+                        },
+                        onError = {
+                            Log.e(this::class.java.simpleName, "Something went wrong with fetching data for EventsViewModel", it)
+                        }
+                )
         disposable = eventsManager.getEvents()
                 .flatMap { (featuredEvent, previousEventsPage) ->
                     previousEventsPage

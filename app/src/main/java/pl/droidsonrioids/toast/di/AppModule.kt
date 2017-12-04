@@ -8,8 +8,8 @@ import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import pl.droidsonrioids.toast.BuildConfig
-import pl.droidsonrioids.toast.managers.EventsManager
-import pl.droidsonrioids.toast.managers.EventsManagerImpl
+import pl.droidsonrioids.toast.managers.EventsRepository
+import pl.droidsonrioids.toast.managers.EventsRepositoryImpl
 import pl.droidsonrioids.toast.services.EventService
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -28,7 +28,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideApiManager(eventService: EventService): EventsManager = EventsManagerImpl(eventService)
+    fun provideApiManager(eventService: EventService): EventsRepository = EventsRepositoryImpl(eventService)
 
     @Singleton
     @Provides
