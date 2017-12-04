@@ -1,6 +1,7 @@
 package pl.droidsonrioids.toast.app.events
 
 import android.databinding.DataBindingUtil
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -37,8 +38,37 @@ class PreviousEventsAdapter : RecyclerView.Adapter<PreviousEventViewHolder>() {
         }
     }
 
-    fun setData(list: List<State<EventItemViewModel>>) {
-        data = list
-        notifyDataSetChanged()
+    fun setData(newData: List<State<EventItemViewModel>>) {
+        val diff = DiffUtil.calculateDiff(EventItemDiffCallback(data, newData))
+        data = newData
+        diff.dispatchUpdatesTo(this)
+    }
+
+    class EventItemDiffCallback(private val old: List<State<EventItemViewModel>>, private val new: List<State<EventItemViewModel>>) : DiffUtil.Callback() {
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldItem = old[oldItemPosition]
+            val newItem = new[newItemPosition]
+            return when {
+                oldItem is State.Item && newItem is State.Item -> oldItem.item.id == newItem.item.id
+                oldItem is State.Loading && newItem is State.Loading -> true
+                oldItem is State.Error && newItem is State.Error -> true
+                else -> false
+            }
+        }
+
+        override fun getOldListSize() = old.size
+
+        override fun getNewListSize() = new.size
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldItem = old[oldItemPosition]
+            val newItem = new[newItemPosition]
+            return when {
+                oldItem is State.Item && newItem is State.Item -> oldItem.item == newItem.item
+                oldItem is State.Loading && newItem is State.Loading -> true
+                oldItem is State.Error && newItem is State.Error -> oldItem.action == newItem.action
+                else -> false
+            }
+        }
     }
 }
