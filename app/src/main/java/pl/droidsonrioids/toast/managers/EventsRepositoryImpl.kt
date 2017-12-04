@@ -8,14 +8,15 @@ import javax.inject.Inject
 
 class EventsRepositoryImpl @Inject constructor(private val eventService: EventService) : EventsRepository {
 
-    override fun getEvents(): Maybe<SplitEvents> =
-            eventService.getEvents()
-                    .flatMapMaybe { eventsResponse ->
-                        eventsResponse.events
-                                .firstOrNull()
-                                ?.getSplitEventsMaybe(eventsResponse.events)
-                                ?: Maybe.empty<SplitEvents>()
-                    }
+    override fun getEvents(): Maybe<SplitEvents> {
+        return eventService.getEvents()
+                .flatMapMaybe { eventsResponse ->
+                    eventsResponse.events
+                            .firstOrNull()
+                            ?.getSplitEventsMaybe(eventsResponse.events)
+                            ?: Maybe.empty<SplitEvents>()
+                }
+    }
 
     private fun Event.getSplitEventsMaybe(previousEvents: List<Event>): Maybe<SplitEvents> {
         return getEvent(id)
