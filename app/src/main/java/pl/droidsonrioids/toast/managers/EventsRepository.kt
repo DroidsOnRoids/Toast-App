@@ -5,7 +5,7 @@ import io.reactivex.Single
 import pl.droidsonrioids.toast.data.api.EventDetailsResponse
 import pl.droidsonrioids.toast.data.model.SplitEvents
 
-interface EventsManager {
+interface EventsRepository {
 
     fun getEvents(): Maybe<SplitEvents>
 

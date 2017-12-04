@@ -7,7 +7,7 @@ import java.util.*
 
 val testDate: Date = SimpleDateFormat(DATE_PATTERN).parse("1.12.2017")
 
-val testEventDetails = EventDetailsImpl(
+val testEventDetails = EventDetailsDto(
         1,
         "title",
         testDate,
@@ -24,7 +24,8 @@ val testPreviousEvents = listOf(
                 0,
                 "titleFirst",
                 testDate,
-                listOf(Image("bigImageFirst", "thumbImageFirst")))
+                listOf(Image("bigImageFirst", "thumbImageFirst"))
+        )
 )
 
 val testSplitEvents = SplitEvents(testEventDetails, testPreviousEvents)

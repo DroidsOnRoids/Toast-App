@@ -22,11 +22,11 @@ class EventsFragment : BaseFragment() {
     private lateinit var eventsViewModel: EventsViewModel
 
     private val topBarHeight by lazy {
-        resources.getDimensionPixelSize(R.dimen.events_top_bar_height).toFloat()
+        resources.getDimension(R.dimen.events_top_bar_height)
     }
 
     private val maxToolbarElevation by lazy {
-        resources.getDimensionPixelSize(R.dimen.home_toolbar_elevation).toFloat()
+        resources.getDimension(R.dimen.home_toolbar_elevation)
     }
 
     override fun onAttach(context: Context) {

@@ -22,7 +22,7 @@ private const val FIRST_COVER_INDEX = 0
 
 @BindingAdapter("eventTime")
 fun setEventTime(textView: TextView, date: Date?) {
-    val timeFormatter = DateFormat.getTimeFormat(textView.context) /*SimpleDateFormat(TIME_PATTERN, Locale.getDefault())*/
+    val timeFormatter = DateFormat.getTimeFormat(textView.context)
     textView.text = date?.let { timeFormatter.format(it) }
 }
 
@@ -50,9 +50,10 @@ fun setEventCoverImage(imageView: ImageView, imageUrlList: List<Image>?) {
     }
 }
 
-private fun Picasso.showIndicatorsIfDebug() =
-        apply {
-            if (BuildConfig.DEBUG) {
-                setIndicatorsEnabled(true)
-            }
+private fun Picasso.showIndicatorsIfDebug(): Picasso {
+    return apply {
+        if (BuildConfig.DEBUG) {
+            setIndicatorsEnabled(true)
         }
+    }
+}
