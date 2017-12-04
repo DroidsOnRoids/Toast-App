@@ -69,6 +69,14 @@ fun setEventsContentVisibility(eventsContent: View, loadingStatus: LoadingStatus
     }
 }
 
+@BindingAdapter("errorConnectionVisibility")
+fun setErrorConnectionVisibility(errorConnectionContent: View, loadingStatus: LoadingStatus) {
+    when (loadingStatus) {
+        LoadingStatus.ERROR -> errorConnectionContent.visibility = View.VISIBLE
+        else -> errorConnectionContent.visibility = View.GONE
+    }
+}
+
 private fun Picasso.showIndicatorsIfDebug(): Picasso {
     return apply {
         if (BuildConfig.DEBUG) {

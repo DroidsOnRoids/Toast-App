@@ -90,6 +90,11 @@
 
         </android.support.v4.widget.NestedScrollView>
 
+        <include
+            android:id="@+id/errorConnectionLayout"
+            layout="@layout/layout_error_connection"
+            app:errorConnectionVisibility="@{eventsViewModel.loadingStatus}"/>
+
         <ProgressBar
             android:id="@+id/eventsLoaderProgressBar"
             android:layout_width="wrap_content"
