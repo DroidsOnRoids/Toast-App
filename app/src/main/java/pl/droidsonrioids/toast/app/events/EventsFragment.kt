@@ -35,6 +35,8 @@ class EventsFragment : Fragment() {
         with(previousEventsRecyclerView) {
             adapter = PreviousEventsAdapter()
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            val snapHelper = HorizontalSnapHelper(layoutManager)
+            snapHelper.attachToRecyclerView(this)
         }
     }
 
