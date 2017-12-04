@@ -2,8 +2,8 @@ package pl.droidsonrioids.toast.viewmodels
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
-import io.reactivex.Single
 import android.util.Log
+import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.rxkotlin.toObservable
@@ -15,38 +15,32 @@ import pl.droidsonrioids.toast.managers.EventsRepository
 import javax.inject.Inject
 
 
-class EventsViewModel @Inject constructor(eventsRepository: EventsRepository) : ViewModel() {
+class EventsViewModel @Inject constructor(private val eventsRepository: EventsRepository) : ViewModel() {
 
 
     val featuredEvent = ObservableField<UpcomingEventViewModel>()
-    // TODO:  TOA-42 Add previous events handling
     val previousEvents: BehaviorSubject<List<State<Event>>> = BehaviorSubject.create()
     private var disposable: Disposable? = null
     private var nextPageNo: Int? = null
 
     init {
         disposable = eventsRepository.getEvents()
-                .subscribeBy(
-                        onSuccess = {
-                            featuredEvent.set(UpcomingEventViewModel(it.upcomingEvent))
-                            lastEvents = it.lastEvents
-                        },
-                        onError = {
-                            Log.e(this::class.java.simpleName, "Something went wrong with fetching data for EventsViewModel", it)
-                        }
-                )
-        disposable = eventsManager.getEvents()
                 .flatMap { (featuredEvent, previousEventsPage) ->
                     previousEventsPage
                             .mapToSinglePageWithState()
                             .map { featuredEvent to it }
                             .toMaybe()
                 }
-                .subscribeBy(onSuccess = {
-                    featuredEvent.set(UpcomingEventViewModel(it.first))
-                    handleNewEventsPage(it.second)
-                    disposable?.dispose()
-                })
+                .doAfterTerminate { disposable?.dispose() }
+                .subscribeBy(
+                        onSuccess = { (featuredEvent, previousEventsPage) ->
+                            this.featuredEvent.set(UpcomingEventViewModel(featuredEvent))
+                            handleNewEventsPage(previousEventsPage)
+                        },
+                        onError = {
+                            Log.e(this::class.java.simpleName, "Something went wrong with fetching data for EventsViewModel", it)
+                        }
+                )
     }
 
     private fun handleNewEventsPage(it: Page<State<Event>>) {
@@ -62,14 +56,21 @@ class EventsViewModel @Inject constructor(eventsRepository: EventsRepository) : 
     }
 
     fun loadNextPage() {
-        nextPageNo?.takeIf { disposable?.isDisposed ?: false }?.let {
-            disposable = eventsManager.getEventsPage(it)
+        nextPageNo?.takeIf { disposable?.isDisposed == true }?.let {
+            disposable = eventsRepository.getEventsPage(it)
                     .flatMap { previousEventsPage ->
                         previousEventsPage
                                 .mapToSinglePageWithState()
-                    }.subscribeBy(onSuccess = {
-                handleNewEventsPage(it)
-            })
+                    }
+                    .doAfterTerminate { disposable?.dispose() }
+                    .subscribeBy(
+                            onSuccess = {
+                                handleNewEventsPage(it)
+                            },
+                            onError = {
+                                Log.e(this::class.java.simpleName, "Something went wrong with fetching previous events next page for EventsViewModel", it)
+                            }
+                    )
         }
     }
 

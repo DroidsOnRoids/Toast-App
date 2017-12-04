@@ -3,7 +3,6 @@ package pl.droidsonrioids.toast.viewmodels
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.internal.operators.maybe.MaybeJust
 import junit.framework.Assert.assertNotNull
-import junit.framework.Assert.assertTrue
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
@@ -40,11 +39,8 @@ class EventsViewModelTest {
 
         val previousEvents = eventsViewModel.previousEvents.value
 
-        assertTrue(previousEvents.isNotEmpty())
-        // TODO: Refactor to something prettier
-        previousEvents.forEachIndexed { index, state ->
-            assertThat((state as? State.Item)?.item, equalTo(testPreviousEvents[index]))
-        }
+        assertThat(previousEvents.size, equalTo(1))
+        assertThat((previousEvents.first() as? State.Item)?.item, equalTo(testPreviousEvents.first()))
     }
 
 }
