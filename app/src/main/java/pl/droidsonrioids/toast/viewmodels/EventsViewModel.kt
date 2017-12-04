@@ -10,7 +10,7 @@ import pl.droidsonrioids.toast.data.model.LoadingStatus
 import pl.droidsonrioids.toast.managers.EventsRepository
 import javax.inject.Inject
 
-class EventsViewModel @Inject constructor(eventsRepository: EventsRepository) : ViewModel() {
+class EventsViewModel @Inject constructor(private val eventsRepository: EventsRepository) : ViewModel() {
 
     var loadingStatus: ObservableField<LoadingStatus> = ObservableField()
     var featuredEvent: ObservableField<UpcomingEventViewModel> = ObservableField()
@@ -18,9 +18,21 @@ class EventsViewModel @Inject constructor(eventsRepository: EventsRepository) : 
     // TODO:  TOA-42 Add previous events handling
     var lastEvents: List<Event> = emptyList()
         private set
-    private val disposable: Disposable
+    private lateinit var disposable: Disposable
 
     init {
+        loadEvents()
+    }
+
+    override fun onCleared() {
+        disposable.dispose()
+    }
+
+    fun loadEvents() {
+        getSplitEventsFromApi()
+    }
+
+    private fun getSplitEventsFromApi() {
         loadingStatus.set(LoadingStatus.PENDING)
         disposable = eventsRepository.getEvents()
                 .subscribeBy(
@@ -36,8 +48,5 @@ class EventsViewModel @Inject constructor(eventsRepository: EventsRepository) : 
                 )
     }
 
-    override fun onCleared() {
-        disposable.dispose()
-    }
 
 }
