@@ -6,11 +6,11 @@ import android.support.v7.widget.OrientationHelper
 import android.support.v7.widget.RecyclerView
 import android.view.View
 
-class HorizontalSnapHelper(layoutManager: RecyclerView.LayoutManager, private val offset: Int = 0) : LinearSnapHelper() {
+class HorizontalSnapHelper(layoutManager: RecyclerView.LayoutManager) : LinearSnapHelper() {
     private val horizontalHelper = OrientationHelper.createHorizontalHelper(layoutManager)
 
     override fun calculateDistanceToFinalSnap(layoutManager: RecyclerView.LayoutManager, targetView: View): IntArray {
-        val horizontalDistance = horizontalHelper.getDecoratedStart(targetView) - offset - horizontalHelper.startAfterPadding
+        val horizontalDistance = horizontalHelper.getDecoratedStart(targetView) - horizontalHelper.startAfterPadding
         return intArrayOf(horizontalDistance, 0)
     }
 
@@ -31,7 +31,9 @@ class HorizontalSnapHelper(layoutManager: RecyclerView.LayoutManager, private va
                 return null
             }
             val firstVisibleView = findViewByPosition(firstVisibleItemPosition)
-            val visibilityPercent = horizontalHelper.getDecoratedEnd(firstVisibleView).toFloat() / horizontalHelper.getDecoratedMeasurement(firstVisibleView).toFloat()
+            val viewVisibleWidth = horizontalHelper.getDecoratedEnd(firstVisibleView).toFloat()
+            val viewWidth = horizontalHelper.getDecoratedMeasurement(firstVisibleView).toFloat()
+            val visibilityPercent = viewVisibleWidth / viewWidth
             val firstCompletelyVisibleItemPosition = findFirstCompletelyVisibleItemPosition()
             val hasFirstCompletelyVisibleItem = firstCompletelyVisibleItemPosition != RecyclerView.NO_POSITION
             return when {
