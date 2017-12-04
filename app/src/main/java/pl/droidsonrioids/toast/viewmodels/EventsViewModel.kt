@@ -5,7 +5,7 @@ import android.databinding.ObservableField
 import android.util.Log
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
-import pl.droidsonrioids.toast.data.model.Event
+import pl.droidsonrioids.toast.data.dto.EventDto
 import pl.droidsonrioids.toast.managers.EventsRepository
 import javax.inject.Inject
 
@@ -16,15 +16,15 @@ class EventsViewModel @Inject constructor(eventsRepository: EventsRepository) : 
     var featuredEvent: ObservableField<UpcomingEventViewModel> = ObservableField()
         private set
     // TODO:  TOA-42 Add previous events handling
-    var lastEvents: List<Event> = emptyList()
+    var lastEvents: List<EventDto> = emptyList()
         private set
-    private val disposable: Disposable
+    private val eventsDisposable: Disposable
 
     init {
-        disposable = eventsRepository.getEvents()
+        eventsDisposable = eventsRepository.getEvents()
                 .subscribeBy(
                         onSuccess = {
-                            featuredEvent.set(UpcomingEventViewModel(it.upcomingEvent))
+                            featuredEvent.set(UpcomingEventViewModel.create(it.upcomingEvent))
                             lastEvents = it.lastEvents
                         },
                         onError = {
@@ -34,7 +34,7 @@ class EventsViewModel @Inject constructor(eventsRepository: EventsRepository) : 
     }
 
     override fun onCleared() {
-        disposable.dispose()
+        eventsDisposable.dispose()
     }
 
 }

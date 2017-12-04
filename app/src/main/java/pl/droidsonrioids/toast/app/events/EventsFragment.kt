@@ -15,7 +15,7 @@ import pl.droidsonrioids.toast.app.base.BaseFragment
 import pl.droidsonrioids.toast.databinding.FragmentEventsBinding
 import pl.droidsonrioids.toast.viewmodels.EventsViewModel
 
-const val TOP_BAR_TRANSLATION_FACTOR = 2f
+private const val TOP_BAR_TRANSLATION_FACTOR = 2f
 
 class EventsFragment : BaseFragment() {
 

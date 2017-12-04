@@ -9,6 +9,7 @@ import org.junit.runner.RunWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
+import pl.droidsonrioids.toast.data.mapper.toDto
 import pl.droidsonrioids.toast.managers.EventsRepositoryImpl
 import pl.droidsonrioids.toast.rule.RxPluginSchedulerRule
 import pl.droidsonrioids.toast.services.EventService
@@ -37,7 +38,7 @@ class EventsRepositoryImplTest {
                 .test()
                 .assertComplete()
                 .assertNoErrors()
-                .assertValue { it.lastEvents.isEmpty() && it.upcomingEvent == testEventDetails }
+                .assertValue { it.lastEvents.isEmpty() && it.upcomingEvent == testEventDetails.toDto() }
     }
 
     @Test
