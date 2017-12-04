@@ -33,11 +33,11 @@ class HorizontalSnapHelper(layoutManager: RecyclerView.LayoutManager) : LinearSn
             val firstVisibleView = findViewByPosition(firstVisibleItemPosition)
             val firstVisibleViewEnd = horizontalHelper.getDecoratedEnd(firstVisibleView).toFloat()
             val firstVisibleViewWidth = horizontalHelper.getDecoratedMeasurement(firstVisibleView).toFloat()
-            val visibilityPercent = firstVisibleViewEnd / firstVisibleViewWidth
+            val visibleFraction = firstVisibleViewEnd / firstVisibleViewWidth
             val firstCompletelyVisibleItemPosition = findFirstCompletelyVisibleItemPosition()
             val hasFirstCompletelyVisibleItem = firstCompletelyVisibleItemPosition != RecyclerView.NO_POSITION
             return when {
-                visibilityPercent > 0.5 -> firstVisibleView
+                visibleFraction > 0.5 -> firstVisibleView
                 hasFirstCompletelyVisibleItem ->
                     findViewByPosition(firstCompletelyVisibleItemPosition)
                 else -> findViewByPosition(firstVisibleItemPosition + 1)
