@@ -17,4 +17,5 @@
     <string name="previous_event_arrow_desc">Go to previous event details</string>
     <string name="no_events_loaded">No events loaded</string>
     <string name="retry">Retry</string>
+    <string name="android_developers_meet_up">Android Developers Meet-up</string>
 </resources>

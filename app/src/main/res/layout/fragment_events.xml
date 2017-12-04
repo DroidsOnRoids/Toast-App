@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="eventsViewModel"
+            type="pl.droidsonrioids.toast.viewmodels.EventsViewModel"/>
+    </data>
+
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -36,9 +44,9 @@
             android:descendantFocusability="blocksDescendants"
             android:orientation="vertical">
 
-            <include
-                android:id="@+id/upcomingEventCard"
-                layout="@layout/layout_card_upcoming_event"/>
+           <include layout="@layout/layout_card_upcoming_event"
+                    android:id="@+id/upcomingEventCard"
+                    app:upcomingEvent = "@{eventsViewModel.featuredEvent}"/>
 
             <TextView
                 android:id="@+id/previousEventsLabel"
@@ -85,3 +93,4 @@
 
     </android.support.v4.widget.NestedScrollView>
 </FrameLayout>
+</layout>
