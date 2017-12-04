@@ -2,6 +2,7 @@ package pl.droidsonrioids.toast.viewmodels
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
+import android.util.Log
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import pl.droidsonrioids.toast.data.model.Event
@@ -21,10 +22,15 @@ class EventsViewModel @Inject constructor(eventsRepository: EventsRepository) : 
 
     init {
         disposable = eventsRepository.getEvents()
-                .subscribeBy(onSuccess = {
-                    featuredEvent.set(UpcomingEventViewModel(it.upcomingEvent))
-                    lastEvents = it.lastEvents
-                })
+                .subscribeBy(
+                        onSuccess = {
+                            featuredEvent.set(UpcomingEventViewModel(it.upcomingEvent))
+                            lastEvents = it.lastEvents
+                        },
+                        onError = {
+                            Log.e(this::class.java.simpleName, "Something went wrong with fetching data for EventsViewModel", it)
+                        }
+                )
     }
 
     override fun onCleared() {
