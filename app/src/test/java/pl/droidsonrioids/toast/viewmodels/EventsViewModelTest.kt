@@ -5,6 +5,7 @@ import io.reactivex.internal.operators.maybe.MaybeJust
 import junit.framework.Assert.assertNotNull
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
@@ -19,12 +20,16 @@ import pl.droidsonrioids.toast.testSplitEvents
 class EventsViewModelTest {
     @Mock
     lateinit var eventsRepository: EventsRepository
+    lateinit var eventsViewModel: EventsViewModel
+
+    @Before
+    fun setUp() {
+        whenever(eventsRepository.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
+        eventsViewModel = EventsViewModel(eventsRepository)
+    }
 
     @Test
     fun shouldReturnFeaturedEvent() {
-        whenever(eventsRepository.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
-        val eventsViewModel = EventsViewModel(eventsRepository)
-
         val upcomingEventViewModel = eventsViewModel.featuredEvent.get()
 
         assertNotNull(upcomingEventViewModel)
@@ -34,9 +39,6 @@ class EventsViewModelTest {
 
     @Test
     fun shouldReturnSingletonPreviousEventsList() {
-        whenever(eventsRepository.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
-        val eventsViewModel = EventsViewModel(eventsRepository)
-
         val previousEvents = eventsViewModel.lastEvents
 
         assertThat(previousEvents.size, equalTo(1))
