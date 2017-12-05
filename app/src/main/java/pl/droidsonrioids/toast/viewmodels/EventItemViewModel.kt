@@ -1,7 +1,11 @@
 package pl.droidsonrioids.toast.viewmodels
 
-import pl.droidsonrioids.toast.data.model.Event
+import pl.droidsonrioids.toast.data.dto.ImageDto
+import java.util.*
 
-class EventItemViewModel(private val event: Event, val onClick: () -> Unit) : Event by event {
-    val coverImage = coverImages.firstOrNull()
-}
+class EventItemViewModel(
+        val id: Long,
+        val title: String,
+        val date: Date,
+        val coverImage: ImageDto?,
+        val onClick: () -> Unit)

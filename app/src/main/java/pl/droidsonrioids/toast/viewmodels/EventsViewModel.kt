@@ -6,14 +6,12 @@ import android.util.Log
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
-import pl.droidsonrioids.toast.data.dto.EventDto
-import pl.droidsonrioids.toast.managers.EventsRepository
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.subjects.BehaviorSubject
-import pl.droidsonrioids.toast.data.model.Event
-import pl.droidsonrioids.toast.data.model.Page
-import pl.droidsonrioids.toast.data.model.State
-import pl.droidsonrioids.toast.data.model.wrapWithState
+import pl.droidsonrioids.toast.data.Page
+import pl.droidsonrioids.toast.data.State
+import pl.droidsonrioids.toast.data.dto.EventDto
+import pl.droidsonrioids.toast.data.wrapWithState
 import pl.droidsonrioids.toast.repositories.EventsRepository
 import pl.droidsonrioids.toast.utils.toPage
 import javax.inject.Inject
@@ -82,14 +80,19 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
     private fun mapToSingleEventItemViewModelsPage(page: Page<EventDto>): Single<Page<State.Item<EventItemViewModel>>> {
         val (items, pageNo, pageCount) = page
         return items.toObservable()
-                .map(this::toEventItemViewModel)
+                .map { it.toViewModel() }
                 .map { wrapWithState(it) }
                 .toPage(pageNo, pageCount)
     }
 
-    private fun toEventItemViewModel(event: EventDto): EventItemViewModel {
-        return EventItemViewModel(event) {
-            Log.d(this::class.java.simpleName, "Event item clicked ${event.id}")
+    private fun EventDto.toViewModel(): EventItemViewModel {
+        return EventItemViewModel(
+                id,
+                title,
+                date,
+                coverImages.firstOrNull()
+        ) {
+            Log.d(this::class.java.simpleName, "Event item clicked $id")
         }
     }
 

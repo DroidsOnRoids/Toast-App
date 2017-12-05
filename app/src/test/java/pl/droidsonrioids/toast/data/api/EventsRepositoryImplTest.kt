@@ -15,6 +15,7 @@ import pl.droidsonrioids.toast.rule.RxPluginSchedulerRule
 import pl.droidsonrioids.toast.services.EventService
 import pl.droidsonrioids.toast.testEventDetails
 import pl.droidsonrioids.toast.testPreviousEvents
+import pl.droidsonrioids.toast.testPreviousEventsPage
 
 @RunWith(MockitoJUnitRunner::class)
 class EventsRepositoryImplTest {
@@ -65,6 +66,6 @@ class EventsRepositoryImplTest {
                 .test()
                 .assertComplete()
                 .assertNoErrors()
-                .assertValue { it.items == testPreviousEvents && it.pageNo == pageNo && it.pageCount == pageCount }
+                .assertValue { it == testPreviousEventsPage }
     }
 }

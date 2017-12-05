@@ -1,4 +1,4 @@
-package pl.droidsonrioids.toast.data.model
+package pl.droidsonrioids.toast.data
 
 sealed class State<out T> {
     data class Item<out T>(val item: T) : State<T>()

@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import pl.droidsonrioids.toast.R
-import pl.droidsonrioids.toast.data.model.State
+import pl.droidsonrioids.toast.data.State
 import pl.droidsonrioids.toast.viewmodels.EventItemViewModel
 
 class PreviousEventsAdapter : RecyclerView.Adapter<PreviousEventViewHolder>() {

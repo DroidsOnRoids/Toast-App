@@ -4,7 +4,7 @@ import android.databinding.ViewDataBinding
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.android.databinding.library.baseAdapters.BR
-import pl.droidsonrioids.toast.data.model.State
+import pl.droidsonrioids.toast.data.State
 import pl.droidsonrioids.toast.viewmodels.EventItemViewModel
 
 sealed class PreviousEventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

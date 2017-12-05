@@ -1,12 +1,12 @@
 package pl.droidsonrioids.toast
 
+import pl.droidsonrioids.toast.data.Page
 import pl.droidsonrioids.toast.data.api.ApiCoordinates
 import pl.droidsonrioids.toast.data.api.ApiEvent
 import pl.droidsonrioids.toast.data.api.ApiEventDetails
 import pl.droidsonrioids.toast.data.api.ApiImage
 import pl.droidsonrioids.toast.data.dto.SplitEvents
 import pl.droidsonrioids.toast.data.mapper.toDto
-import pl.droidsonrioids.toast.data.model.Page
 import pl.droidsonrioids.toast.utils.Consts
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,6 +34,6 @@ val testPreviousEvents = listOf(
         )
 )
 
-val testSplitEvents = SplitEvents(testEventDetails.toDto(), testPreviousEvents.map { it.toDto() })
+val testPreviousEventsPage = Page(testPreviousEvents.map { it.toDto() }, 1, 1)
 
-val testPreviousEventsPage = Page(testPreviousEvents, 1, 1)
+val testSplitEvents = SplitEvents(testEventDetails.toDto(), testPreviousEventsPage)
