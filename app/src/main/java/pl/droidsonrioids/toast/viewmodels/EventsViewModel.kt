@@ -68,8 +68,8 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
         return previousList + newList
     }
 
-    fun loadNextPage(forceLoading: Boolean = false) {
-        nextPageNumber?.takeIf { !isPreviousEventsLoading || forceLoading }
+    fun loadNextPage() {
+        nextPageNumber?.takeIf { !isPreviousEventsLoading }
                 ?.let {
                     loadNextPage(it)
                 }
@@ -99,7 +99,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
     private fun onErrorClick() {
         val previousEvents = mergeWithExistingPreviousEvents(listOf(State.Loading))
         previousEventsSubject.onNext(previousEvents)
-        loadNextPage(true)
+        nextPageNumber?.let { loadNextPage(it) }
     }
 
     private fun mapToSingleEventItemViewModelsPage(page: Page<EventDto>): Single<Page<State.Item<EventItemViewModel>>> {
