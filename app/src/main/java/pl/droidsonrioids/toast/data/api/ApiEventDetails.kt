@@ -1,11 +1,15 @@
-package pl.droidsonrioids.toast.data.model
+package pl.droidsonrioids.toast.data.api
 
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
-data class EventDetails(
+data class ApiEventDetails(
+        @SerializedName("id")
         val id: Int,
+        @SerializedName("title")
         val title: String,
-        val date: String,
+        @SerializedName("date")
+        val date: Date,
         @SerializedName("facebook")
         val facebookId: String,
         @SerializedName("place_name")
@@ -13,7 +17,9 @@ data class EventDetails(
         @SerializedName("place_street")
         val placeStreet: String,
         @SerializedName("place_coordinates")
-        val placeCoordinates: Coordinates,
+        val placeCoordinates: ApiCoordinates,
         @SerializedName("cover_images")
-        val coverImages: List<CoverImage>
+        val coverImages: List<ApiImage>,
+        @SerializedName("photos")
+        val photos: List<ApiImage>
 )

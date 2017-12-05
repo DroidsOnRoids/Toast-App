@@ -1,7 +1,8 @@
 package pl.droidsonrioids.toast.app.events
 
+import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -10,20 +11,34 @@ import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import kotlinx.android.synthetic.main.fragment_events.*
 import pl.droidsonrioids.toast.R
+import pl.droidsonrioids.toast.app.base.BaseFragment
+import pl.droidsonrioids.toast.databinding.FragmentEventsBinding
+import pl.droidsonrioids.toast.viewmodels.EventsViewModel
 
-const val TOP_BAR_TRANSLATION_FACTOR = 2f
+private const val TOP_BAR_TRANSLATION_FACTOR = 2f
 
-class EventsFragment : Fragment() {
+class EventsFragment : BaseFragment() {
+
+    private lateinit var eventsViewModel: EventsViewModel
+
+    private val topBarHeight by lazy {
+        resources.getDimension(R.dimen.events_top_bar_height)
+    }
 
     private val maxToolbarElevation by lazy {
-        resources.getDimensionPixelSize(R.dimen.home_toolbar_elevation).toFloat()
-    }
-    private val topBarHeight by lazy {
-        resources.getDimensionPixelSize(R.dimen.events_top_bar_height).toFloat()
+        resources.getDimension(R.dimen.home_toolbar_elevation)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-            inflater.inflate(R.layout.fragment_events, container, false)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        eventsViewModel = ViewModelProviders.of(this, viewModelFactory)[EventsViewModel::class.java]
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        val binding = FragmentEventsBinding.inflate(inflater, container, false)
+        binding.eventsViewModel = eventsViewModel
+        return binding.root
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
