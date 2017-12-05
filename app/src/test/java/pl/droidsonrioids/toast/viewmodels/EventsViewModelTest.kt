@@ -50,7 +50,7 @@ class EventsViewModelTest {
     }
 
     @Test
-    fun shouldReturnSuccessLoadingStatus(){
+    fun shouldReturnSuccessLoadingStatus() {
         whenever(eventsRepository.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
         eventsViewModel = EventsViewModel(eventsRepository)
         val eventsLoadingStatus = eventsViewModel.loadingStatus
@@ -59,7 +59,7 @@ class EventsViewModelTest {
     }
 
     @Test
-    fun shouldReturnErrorLoadingStatus(){
+    fun shouldReturnErrorLoadingStatus() {
         whenever(eventsRepository.getEvents()).thenReturn(Maybe.error(Throwable()))
         eventsViewModel = EventsViewModel(eventsRepository)
         val eventsLoadingStatus = eventsViewModel.loadingStatus
