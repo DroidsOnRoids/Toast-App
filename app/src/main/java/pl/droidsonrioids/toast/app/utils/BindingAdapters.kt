@@ -7,10 +7,8 @@ import android.text.format.DateFormat
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.jakewharton.picasso.OkHttp3Downloader
-import com.squareup.picasso.Picasso
-import okhttp3.OkHttpClient
-import pl.droidsonrioids.toast.BuildConfig
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import pl.droidsonrioids.toast.R
 import pl.droidsonrioids.toast.data.dto.ImageDto
 import pl.droidsonrioids.toast.utils.Consts
@@ -35,15 +33,11 @@ fun setEventDate(textView: TextView, date: Date?) {
 
 @BindingAdapter("eventCoverImage")
 fun setEventCoverImage(imageView: ImageView, imageDto: ImageDto?) {
-    // TODO: handle caching
-    Picasso.Builder(imageView.context)
-            .downloader(OkHttp3Downloader(OkHttpClient()))
-            .build()
-            .showIndicatorsIfDebug()
+    val thumbnailLoader = Glide.with(imageView).load(imageDto?.thumbSizeUrl)
+    Glide.with(imageView)
             .load(imageDto?.originalSizeUrl)
-            .placeholder(R.drawable.ic_placeholder_toast)
-            .fit()
-            .centerCrop()
+            .thumbnail(thumbnailLoader)
+            .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_toast))
             .into(imageView)
 }
 
@@ -52,13 +46,5 @@ fun setEventsLoadingProgressBarVisibility(loadingContainer: View, loadingStatus:
     when (loadingStatus) {
         LoadingStatus.PENDING -> loadingContainer.visibility = View.VISIBLE
         else -> loadingContainer.visibility = View.GONE
-    }
-}
-
-private fun Picasso.showIndicatorsIfDebug(): Picasso {
-    return apply {
-        if (BuildConfig.DEBUG) {
-            setIndicatorsEnabled(true)
-        }
     }
 }
