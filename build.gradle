@@ -6,7 +6,7 @@ buildscript {
         versions = [
                 buildTools : "27.0.1",
                 kotlin : "1.2.0",
-                support : "27.0.1",
+                support : "27.0.2",
                 dagger : "2.13",
                 retrofit: "2.3.0",
                 chuck: "1.1.0",

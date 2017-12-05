@@ -6,19 +6,21 @@ import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import pl.droidsonrioids.toast.BuildConfig
-import pl.droidsonrioids.toast.data.api.ApiManager
-import pl.droidsonrioids.toast.data.api.ApiManagerImpl
-import pl.droidsonrioids.toast.data.api.ApiService
+import pl.droidsonrioids.toast.managers.EventsRepository
+import pl.droidsonrioids.toast.managers.EventsRepositoryImpl
+import pl.droidsonrioids.toast.services.EventService
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
+
 private const val ACCEPT = "Accept"
 private const val APPLICATION_JSON = "application/json"
 
-@Module(includes = arrayOf(ViewModelModule::class))
+@Module(includes = [ViewModelModule::class])
 class AppModule {
     @Singleton
     @Provides
@@ -26,25 +28,41 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideApiManager(apiService: ApiService): ApiManager = ApiManagerImpl(apiService)
+    fun provideApiManager(eventService: EventService): EventsRepository = EventsRepositoryImpl(eventService)
 
     @Singleton
     @Provides
-    fun provideApiService(httpClient: OkHttpClient): ApiService =
+    fun provideApiService(httpClient: OkHttpClient): EventService =
             Retrofit.Builder()
                     .baseUrl(BuildConfig.BASE_API_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                     .client(httpClient)
                     .build()
-                    .create(ApiService::class.java)
+                    .create(EventService::class.java)
 
     @Singleton
     @Provides
-    fun provideOkHttpClient() =
+    fun provideOkHttpClient(): OkHttpClient =
             OkHttpClient.Builder()
-                    .addInterceptor {
-                        it.proceed(it.request().newBuilder().header(ACCEPT, APPLICATION_JSON).build())
-                    }
+                    .addHttpHeaders()
+                    .addHttpLoggingInterceptorIfDebugBuildConfig()
                     .build()
+
+    private fun OkHttpClient.Builder.addHttpHeaders() =
+            addInterceptor {
+                it.proceed(it.request().newBuilder().header(ACCEPT, APPLICATION_JSON).build())
+            }
+
+    private fun OkHttpClient.Builder.addHttpLoggingInterceptorIfDebugBuildConfig(): OkHttpClient.Builder {
+        if (BuildConfig.DEBUG) {
+            addNetworkInterceptor(getHttpLoggingInterceptor())
+        }
+        return this
+    }
+
+    private fun getHttpLoggingInterceptor() =
+            HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            }
 }

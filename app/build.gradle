@@ -35,12 +35,17 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField 'String', 'BASE_API_URL', '"https://api.letswift.pl/api/v1/"'
+        buildConfigField 'String', 'BASE_IMAGES_URL', '"https://api.letswift.pl"'
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    dataBinding {
+        enabled = true
     }
 }
 
@@ -59,6 +64,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
 
     // rxjava
     implementation "io.reactivex.rxjava2:rxkotlin:2.1.0"
@@ -77,6 +83,13 @@ dependencies {
     // architecture components
     kapt "android.arch.lifecycle:compiler:$versions.lifecycle"
     implementation "android.arch.lifecycle:extensions:$versions.lifecycle"
+
+    // data binding
+    kapt 'com.android.databinding:compiler:3.0.1'
+
+    // picasso
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
 
     // tests
     testImplementation 'junit:junit:4.12'

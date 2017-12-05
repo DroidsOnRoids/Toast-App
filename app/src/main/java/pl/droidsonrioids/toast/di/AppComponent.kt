@@ -9,12 +9,12 @@ import pl.droidsonrioids.toast.app.ToastApplication
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = arrayOf(
-        AndroidInjectionModule::class,
-        AndroidSupportInjectionModule::class,
-        AppModule::class,
-        ActivityBuilder::class,
-        FragmentBuilder::class))
+@Component(modules = [
+    AndroidInjectionModule::class,
+    AndroidSupportInjectionModule::class,
+    AppModule::class,
+    ActivityBuilder::class,
+    FragmentBuilder::class])
 interface AppComponent {
     @Component.Builder
     interface Builder {
