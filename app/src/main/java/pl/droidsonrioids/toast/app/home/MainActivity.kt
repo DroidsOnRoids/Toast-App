@@ -45,7 +45,7 @@ class MainActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem) =
             when (item.itemId) {
-                R.id.about_item -> consume { showInfoDialog() }
+                R.id.menuItemAbout -> consume { showInfoDialog() }
                 else -> super.onOptionsItemSelected(item)
             }
 

@@ -8,4 +8,8 @@ class EventItemViewModel(
         val title: String,
         val date: Date,
         val coverImage: ImageDto?,
-        val onClick: () -> Unit)
+        private val action: (Long) -> Unit) {
+    fun onClick() {
+        action(id)
+    }
+}

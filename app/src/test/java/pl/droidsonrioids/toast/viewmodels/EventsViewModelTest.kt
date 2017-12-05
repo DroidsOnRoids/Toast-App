@@ -37,7 +37,7 @@ class EventsViewModelTest {
         whenever(eventsRepository.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
         val eventsViewModel = EventsViewModel(eventsRepository)
 
-        val previousEvents = eventsViewModel.previousEvents.value
+        val previousEvents = eventsViewModel.previousEventsSubject.value
 
         assertThat(previousEvents.size, equalTo(1))
         val previousEventViewModel = (previousEvents.first() as? State.Item)?.item

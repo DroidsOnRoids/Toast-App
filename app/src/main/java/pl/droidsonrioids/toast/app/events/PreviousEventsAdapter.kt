@@ -17,7 +17,7 @@ class PreviousEventsAdapter : RecyclerView.Adapter<PreviousEventViewHolder>() {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             R.layout.item_loading_horizontal -> PreviousEventViewHolder.Loading(inflater.inflate(viewType, parent, false))
-            R.layout.item_error_horizontal -> PreviousEventViewHolder.Error(inflater.inflate(viewType, parent, false))
+            R.layout.item_error_horizontal -> PreviousEventViewHolder.Error(DataBindingUtil.inflate(inflater, viewType, parent, false))
             else -> PreviousEventViewHolder.Item(DataBindingUtil.inflate(inflater, viewType, parent, false))
         }
     }
@@ -25,6 +25,7 @@ class PreviousEventsAdapter : RecyclerView.Adapter<PreviousEventViewHolder>() {
     override fun onBindViewHolder(holder: PreviousEventViewHolder, position: Int) {
         when (holder) {
             is PreviousEventViewHolder.Item -> holder.bind(data[position] as State.Item<EventItemViewModel>)
+            is PreviousEventViewHolder.Error -> holder.bind(data[position] as State.Error)
         }
     }
 

@@ -19,7 +19,7 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
-        android:onClick="@{() -> viewModel.onClick.invoke()}"
+        android:onClick="@{() -> viewModel.onClick()}"
         app:cardCornerRadius="3dp">
 
         <android.support.constraint.ConstraintLayout

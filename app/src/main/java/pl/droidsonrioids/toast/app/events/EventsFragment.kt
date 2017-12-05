@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,7 @@ import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_events.*
 import pl.droidsonrioids.toast.R
 import pl.droidsonrioids.toast.app.base.BaseFragment
+import pl.droidsonrioids.toast.app.utils.LazyLoadingScrollListener
 import pl.droidsonrioids.toast.databinding.FragmentEventsBinding
 import pl.droidsonrioids.toast.viewmodels.EventsViewModel
 
@@ -23,7 +23,7 @@ private const val TOP_BAR_TRANSLATION_FACTOR = 2f
 class EventsFragment : BaseFragment() {
 
     private lateinit var eventsViewModel: EventsViewModel
-    private var disposable: Disposable? = null
+    private var previousEventsDisposable: Disposable? = null
 
     private val topBarHeight by lazy {
         resources.getDimension(R.dimen.events_top_bar_height)
@@ -31,17 +31,6 @@ class EventsFragment : BaseFragment() {
 
     private val maxToolbarElevation by lazy {
         resources.getDimension(R.dimen.home_toolbar_elevation)
-    }
-
-    private val lazyLoadingScrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            (recyclerView.layoutManager as? LinearLayoutManager)
-                    ?.let {
-                        if (it.itemCount - 1 == it.findLastVisibleItemPosition()) {
-                            eventsViewModel.loadNextPage()
-                        }
-                    }
-        }
     }
 
     override fun onAttach(context: Context) {
@@ -62,19 +51,25 @@ class EventsFragment : BaseFragment() {
     }
 
     private fun setupRecyclerView() {
-        with(previousEventsRecyclerView) {
+        with(previousEventsRecycler) {
             val previousEventsAdapter = PreviousEventsAdapter()
             adapter = previousEventsAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             val snapHelper = HorizontalSnapHelper(layoutManager)
             snapHelper.attachToRecyclerView(this)
-            disposable = eventsViewModel.previousEvents
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        previousEventsAdapter.setData(it)
-                    }
-            addOnScrollListener(lazyLoadingScrollListener)
+            addOnScrollListener(LazyLoadingScrollListener {
+                eventsViewModel.loadNextPage()
+            })
+            subscribeToPreviousEventChange(previousEventsAdapter)
         }
+    }
+
+    private fun subscribeToPreviousEventChange(previousEventsAdapter: PreviousEventsAdapter) {
+        previousEventsDisposable = eventsViewModel.previousEventsSubject
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    previousEventsAdapter.setData(it)
+                }
     }
 
     private fun setupAppBarShadow() {
@@ -92,7 +87,8 @@ class EventsFragment : BaseFragment() {
     }
 
     override fun onDestroyView() {
-        disposable?.dispose()
+        previousEventsDisposable?.dispose()
         super.onDestroyView()
     }
 }
+
