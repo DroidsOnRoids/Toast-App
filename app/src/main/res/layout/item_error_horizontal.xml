@@ -4,7 +4,7 @@
     <data>
 
         <variable
-            name="error"
+            name="errorState"
             type="pl.droidsonrioids.toast.data.State.Error"/>
     </data>
 
@@ -15,7 +15,7 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
-        android:onClick="@{() -> error.action.invoke()}">
+        android:onClick="@{() -> errorState.action.invoke()}">
 
         <TextView
             android:id="@+id/itemErrorText"

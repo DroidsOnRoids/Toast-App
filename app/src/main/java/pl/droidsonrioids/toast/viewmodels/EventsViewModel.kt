@@ -25,7 +25,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
     val featuredEvent = ObservableField<UpcomingEventViewModel>()
     val previousEventsSubject: BehaviorSubject<List<State<EventItemViewModel>>> = BehaviorSubject.create()
     private var eventsDisposable: Disposable? = null
-    private var nextPageNo: Int? = null
+    private var nextPageNumber: Int? = null
 
     private var isPreviousEventsLoading: Boolean = false
 
@@ -52,11 +52,11 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
 
     private fun onPreviousEventsPageLoaded(page: Page<State<EventItemViewModel>>) {
         var previousEvents = mergeWithExistingPreviousEvents(page.items)
-        if (page.pageNo < page.pageCount) {
+        if (page.pageNumber < page.allPagesCount) {
             previousEvents += State.Loading
-            nextPageNo = page.pageNo + 1
+            nextPageNumber = page.pageNumber + 1
         } else {
-            nextPageNo = null
+            nextPageNumber = null
         }
         previousEventsSubject.onNext(previousEvents)
     }
@@ -68,28 +68,38 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
         return previousList + newList
     }
 
-    fun loadNextPage(force: Boolean = false) {
-        nextPageNo?.takeIf { !isPreviousEventsLoading || force }
+    fun loadNextPage(forceLoading: Boolean = false) {
+        nextPageNumber?.takeIf { !isPreviousEventsLoading || forceLoading }
                 ?.let {
-                    isPreviousEventsLoading = true
-                    eventsDisposable = eventsRepository.getEventsPage(it)
-                            .flatMap(::mapToSingleEventItemViewModelsPage)
-                            .doAfterSuccess { isPreviousEventsLoading = false }
-                            .subscribeBy(
-                                    onSuccess = (::onPreviousEventsPageLoaded),
-                                    onError = (::onPreviousEventsLoadError)
-                            )
+                    loadNextPage(it)
                 }
+    }
+
+    private fun loadNextPage(pageNumber: Int) {
+        isPreviousEventsLoading = true
+        eventsDisposable = eventsRepository.getEventsPage(pageNumber)
+                .flatMap(::mapToSingleEventItemViewModelsPage)
+                .doAfterSuccess { isPreviousEventsLoading = false }
+                .subscribeBy(
+                        onSuccess = (::onPreviousEventsPageLoaded),
+                        onError = (::onPreviousEventsLoadError)
+                )
     }
 
     private fun onPreviousEventsLoadError(throwable: Throwable) {
         Log.e(this::class.java.simpleName, "Something went wrong with fetching next previous events page for EventsViewModel", throwable)
-        val previousEvents = mergeWithExistingPreviousEvents(listOf(State.Error {
-            val previousEvents = mergeWithExistingPreviousEvents(listOf(State.Loading))
-            previousEventsSubject.onNext(previousEvents)
-            loadNextPage(true)
-        }))
+        val previousEvents = mergeWithExistingPreviousEvents(listOf(createErrorState()))
         previousEventsSubject.onNext(previousEvents)
+    }
+
+    private fun createErrorState(): State.Error {
+        return State.Error(::onErrorClick)
+    }
+
+    private fun onErrorClick() {
+        val previousEvents = mergeWithExistingPreviousEvents(listOf(State.Loading))
+        previousEventsSubject.onNext(previousEvents)
+        loadNextPage(true)
     }
 
     private fun mapToSingleEventItemViewModelsPage(page: Page<EventDto>): Single<Page<State.Item<EventItemViewModel>>> {

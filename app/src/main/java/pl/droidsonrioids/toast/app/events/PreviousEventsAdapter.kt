@@ -45,10 +45,10 @@ class PreviousEventsAdapter : RecyclerView.Adapter<PreviousEventViewHolder>() {
         diff.dispatchUpdatesTo(this)
     }
 
-    class EventItemDiffCallback(private val old: List<State<EventItemViewModel>>, private val new: List<State<EventItemViewModel>>) : DiffUtil.Callback() {
+    class EventItemDiffCallback(private val oldEventsList: List<State<EventItemViewModel>>, private val newEventsList: List<State<EventItemViewModel>>) : DiffUtil.Callback() {
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val oldItem = old[oldItemPosition]
-            val newItem = new[newItemPosition]
+            val oldItem = oldEventsList[oldItemPosition]
+            val newItem = newEventsList[newItemPosition]
             return when {
                 oldItem is State.Item && newItem is State.Item -> oldItem.item.id == newItem.item.id
                 oldItem is State.Loading && newItem is State.Loading -> true
@@ -57,13 +57,13 @@ class PreviousEventsAdapter : RecyclerView.Adapter<PreviousEventViewHolder>() {
             }
         }
 
-        override fun getOldListSize() = old.size
+        override fun getOldListSize() = oldEventsList.size
 
-        override fun getNewListSize() = new.size
+        override fun getNewListSize() = newEventsList.size
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val oldItem = old[oldItemPosition]
-            val newItem = new[newItemPosition]
+            val oldItem = oldEventsList[oldItemPosition]
+            val newItem = newEventsList[newItemPosition]
             return when {
                 oldItem is State.Item && newItem is State.Item -> oldItem.item == newItem.item
                 oldItem is State.Loading && newItem is State.Loading -> true

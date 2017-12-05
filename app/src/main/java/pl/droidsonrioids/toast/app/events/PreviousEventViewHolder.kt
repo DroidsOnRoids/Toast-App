@@ -12,7 +12,7 @@ sealed class PreviousEventViewHolder(itemView: View) : RecyclerView.ViewHolder(i
 
     class Item(private val itemBinding: ViewDataBinding) : PreviousEventViewHolder(itemBinding.root) {
         fun bind(state: State.Item<EventItemViewModel>) {
-            itemBinding.setVariable(BR.viewModel, state.item)
+            itemBinding.setVariable(BR.eventItemViewModel, state.item)
             itemBinding.executePendingBindings()
         }
     }
@@ -20,8 +20,8 @@ sealed class PreviousEventViewHolder(itemView: View) : RecyclerView.ViewHolder(i
     class Loading(itemView: View) : PreviousEventViewHolder(itemView)
 
     class Error(private val errorBinding: ItemErrorHorizontalBinding) : PreviousEventViewHolder(errorBinding.root) {
-        fun bind(error: State.Error) {
-            errorBinding.error = error
+        fun bind(errorState: State.Error) {
+            errorBinding.errorState = errorState
         }
     }
 }

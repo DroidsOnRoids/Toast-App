@@ -43,12 +43,12 @@ class EventsRepositoryImpl @Inject constructor(private val eventService: EventSe
     override fun getEvent(id: Long): Single<EventDetailsDto> =
             eventService.getEvent(id).map { it.eventItem.toDto() }
 
-    override fun getEventsPage(page: Int): Single<Page<EventDto>> {
-        return eventService.getEvents(page = page)
+    override fun getEventsPage(pageNumber: Int): Single<Page<EventDto>> {
+        return eventService.getEvents(pageNumber = pageNumber)
                 .flatMap { (apiEvents, pageCount) ->
                     apiEvents.toObservable()
                             .map { it.toDto() }
-                            .toPage(page, pageCount)
+                            .toPage(pageNumber, pageCount)
                 }
     }
 }

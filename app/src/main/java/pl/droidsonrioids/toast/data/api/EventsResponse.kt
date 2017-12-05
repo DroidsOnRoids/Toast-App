@@ -6,5 +6,5 @@ data class EventsResponse(
         @SerializedName("events")
         val events: List<ApiEvent>,
         @SerializedName("page_count")
-        val pageCount: Int
+        val allPagesCount: Int
 )

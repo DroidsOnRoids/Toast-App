@@ -51,7 +51,7 @@ class EventsFragment : BaseFragment() {
     }
 
     private fun setupRecyclerView() {
-        with(previousEventsRecycler) {
+        with(previousEventsRecyclerView) {
             val previousEventsAdapter = PreviousEventsAdapter()
             adapter = previousEventsAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

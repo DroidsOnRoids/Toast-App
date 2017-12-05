@@ -12,5 +12,5 @@ interface EventsRepository {
     fun getEvents(): Maybe<SplitEvents>
 
     fun getEvent(id: Long): Single<EventDetailsDto>
-    fun getEventsPage(page: Int): Single<Page<EventDto>>
+    fun getEventsPage(pageNumber: Int): Single<Page<EventDto>>
 }

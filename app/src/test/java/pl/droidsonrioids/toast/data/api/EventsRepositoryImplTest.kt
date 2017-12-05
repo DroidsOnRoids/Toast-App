@@ -57,12 +57,12 @@ class EventsRepositoryImplTest {
 
     @Test
     fun shouldReturnPreviousEventsPage() {
-        val pageCount = 1
-        val pageNo = 1
-        val eventsList = Single.just(EventsResponse(testPreviousEvents, pageCount))
-        whenever(eventService.getEvents(page = pageNo)).thenReturn(eventsList)
+        val allPagesCount = 1
+        val pageNumber = 1
+        val eventsList = Single.just(EventsResponse(testPreviousEvents, allPagesCount))
+        whenever(eventService.getEvents(pageNumber = pageNumber)).thenReturn(eventsList)
 
-        eventsRepository.getEventsPage(pageNo)
+        eventsRepository.getEventsPage(pageNumber)
                 .test()
                 .assertComplete()
                 .assertNoErrors()
