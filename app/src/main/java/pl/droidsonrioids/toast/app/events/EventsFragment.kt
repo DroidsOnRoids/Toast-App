@@ -67,9 +67,7 @@ class EventsFragment : BaseFragment() {
     private fun subscribeToPreviousEventChange(previousEventsAdapter: PreviousEventsAdapter) {
         previousEventsDisposable = eventsViewModel.previousEventsSubject
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    previousEventsAdapter.setData(it)
-                }
+                .subscribe(previousEventsAdapter::setData)
     }
 
     private fun setupAppBarShadow() {
