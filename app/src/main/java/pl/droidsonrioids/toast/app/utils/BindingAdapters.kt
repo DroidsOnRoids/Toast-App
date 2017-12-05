@@ -6,7 +6,6 @@ import android.databinding.BindingAdapter
 import android.text.format.DateFormat
 import android.view.View
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import com.jakewharton.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
@@ -48,19 +47,11 @@ fun setEventCoverImage(imageView: ImageView, imageDto: ImageDto?) {
             .into(imageView)
 }
 
-@BindingAdapter("eventsProgressBarVisibility")
-fun setEventsLoadingProgressBarVisibility(progressBar: ProgressBar, loadingStatus: LoadingStatus) {
+@BindingAdapter("eventsLoadingScreenVisibility")
+fun setEventsLoadingProgressBarVisibility(loadingScreen: View, loadingStatus: LoadingStatus) {
     when (loadingStatus) {
-        LoadingStatus.PENDING -> progressBar.visibility = View.VISIBLE
-        else -> progressBar.visibility = View.GONE
-    }
-}
-
-@BindingAdapter("eventsContentVisibility")
-fun setEventsContentVisibility(eventsContent: View, loadingStatus: LoadingStatus) {
-    when (loadingStatus) {
-        LoadingStatus.SUCCESS -> eventsContent.visibility = View.VISIBLE
-        else -> eventsContent.visibility = View.GONE
+        LoadingStatus.PENDING -> loadingScreen.visibility = View.VISIBLE
+        else -> loadingScreen.visibility = View.GONE
     }
 }
 

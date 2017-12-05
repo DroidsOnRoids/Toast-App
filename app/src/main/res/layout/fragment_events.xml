@@ -31,8 +31,7 @@
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/eventsScrollContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:eventsContentVisibility="@{eventsViewModel.loadingStatus}">
+            android:layout_height="match_parent">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -90,12 +89,19 @@
 
         </android.support.v4.widget.NestedScrollView>
 
-        <ProgressBar
-            android:id="@+id/eventsLoaderProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:eventsProgressBarVisibility="@{eventsViewModel.loadingStatus}"/>
+        <FrameLayout
+            android:id="@+id/loadingLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/paleGrayBackground"
+            app:eventsLoadingScreenVisibility="@{eventsViewModel.loadingStatus}">
+
+            <ProgressBar
+                android:id="@+id/eventsLoaderProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+        </FrameLayout>
 
     </FrameLayout>
 </layout>
