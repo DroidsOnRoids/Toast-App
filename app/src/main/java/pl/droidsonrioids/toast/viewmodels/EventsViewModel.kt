@@ -27,6 +27,8 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
     private var eventsDisposable: Disposable? = null
     private var nextPageNo: Int? = null
 
+    private var isPreviousEventsLoading: Boolean = false
+
     init {
         eventsDisposable = eventsRepository.getEvents()
                 .flatMap { (featuredEvent, previousEventsPage) ->
@@ -34,7 +36,6 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
                             .map { featuredEvent to it }
                             .toMaybe()
                 }
-                .doAfterTerminate { eventsDisposable?.dispose() }
                 .subscribeBy(
                         onSuccess = (::onEventsLoaded),
                         onError = {
@@ -67,12 +68,13 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
         return previousList + newList
     }
 
-    fun loadNextPage() {
-        nextPageNo?.takeIf { eventsDisposable?.isDisposed == true }
+    fun loadNextPage(force: Boolean = false) {
+        nextPageNo?.takeIf { !isPreviousEventsLoading || force }
                 ?.let {
+                    isPreviousEventsLoading = true
                     eventsDisposable = eventsRepository.getEventsPage(it)
                             .flatMap(::mapToSingleEventItemViewModelsPage)
-                            .doAfterTerminate { eventsDisposable?.dispose() }
+                            .doAfterSuccess { isPreviousEventsLoading = false }
                             .subscribeBy(
                                     onSuccess = (::onPreviousEventsPageLoaded),
                                     onError = (::onPreviousEventsLoadError)
@@ -85,7 +87,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
         val previousEvents = mergeWithExistingPreviousEvents(listOf(State.Error {
             val previousEvents = mergeWithExistingPreviousEvents(listOf(State.Loading))
             previousEventsSubject.onNext(previousEvents)
-            loadNextPage()
+            loadNextPage(true)
         }))
         previousEventsSubject.onNext(previousEvents)
     }
