@@ -9,6 +9,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
+import pl.droidsonrioids.toast.data.mapper.toDto
 import pl.droidsonrioids.toast.data.model.State
 import pl.droidsonrioids.toast.repositories.EventsRepository
 import pl.droidsonrioids.toast.testEventDetails
@@ -40,12 +41,9 @@ class EventsViewModelTest {
         val previousEvents = eventsViewModel.previousEvents.value
 
         assertThat(previousEvents.size, equalTo(1))
-        val testPreviousEvent = testPreviousEvents.first()
-        val eventItemViewModel = (previousEvents.first() as? State.Item)?.item
-
-        assertNotNull(eventItemViewModel)
-        assertThat(eventItemViewModel?.id, equalTo(testPreviousEvent.id))
-        assertThat(eventItemViewModel?.title, equalTo(testPreviousEvent.title))
+        val previousEventDto = previousEvents.first()
+        val testPreviousApiEvent = testPreviousEvents.first()
+        assertThat(previousEventDto, equalTo(testPreviousApiEvent.toDto()))
     }
 
 }

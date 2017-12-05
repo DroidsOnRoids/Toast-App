@@ -2,15 +2,15 @@ package pl.droidsonrioids.toast.repositories
 
 import io.reactivex.Maybe
 import io.reactivex.Single
-import pl.droidsonrioids.toast.data.api.EventDetailsResponse
-import pl.droidsonrioids.toast.data.model.Event
+import pl.droidsonrioids.toast.data.dto.EventDetailsDto
+import pl.droidsonrioids.toast.data.dto.EventDto
+import pl.droidsonrioids.toast.data.dto.SplitEvents
 import pl.droidsonrioids.toast.data.model.Page
-import pl.droidsonrioids.toast.data.model.SplitEvents
 
 interface EventsRepository {
 
     fun getEvents(): Maybe<SplitEvents>
 
-    fun getEvent(id: Long): Single<EventDetailsResponse>
-    fun getEventsPage(page: Int): Single<Page<Event>>
+    fun getEvent(id: Long): Single<EventDetailsDto>
+    fun getEventsPage(page: Int): Single<Page<EventDto>>
 }

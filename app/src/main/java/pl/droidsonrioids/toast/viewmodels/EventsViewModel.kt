@@ -6,6 +6,8 @@ import android.util.Log
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
+import pl.droidsonrioids.toast.data.dto.EventDto
+import pl.droidsonrioids.toast.managers.EventsRepository
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.subjects.BehaviorSubject
 import pl.droidsonrioids.toast.data.model.Event
@@ -22,20 +24,20 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
 
     val featuredEvent = ObservableField<UpcomingEventViewModel>()
     val previousEvents: BehaviorSubject<List<State<EventItemViewModel>>> = BehaviorSubject.create()
-    private var disposable: Disposable? = null
+    private var eventsDisposable: Disposable? = null
     private var nextPageNo: Int? = null
 
     init {
-        disposable = eventsRepository.getEvents()
+        eventsDisposable = eventsRepository.getEvents()
                 .flatMap { (featuredEvent, previousEventsPage) ->
                     mapToSingleEventItemViewModelsPage(previousEventsPage)
                             .map { featuredEvent to it }
                             .toMaybe()
                 }
-                .doAfterTerminate { disposable?.dispose() }
+                .doAfterTerminate { eventsDisposable?.dispose() }
                 .subscribeBy(
                         onSuccess = { (featuredEvent, previousEventsPage) ->
-                            this.featuredEvent.set(UpcomingEventViewModel(featuredEvent))
+                            this.featuredEvent.set(UpcomingEventViewModel.create(featuredEvent))
                             handleNewEventsPage(previousEventsPage)
                         },
                         onError = {
@@ -63,11 +65,11 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
     }
 
     fun loadNextPage() {
-        nextPageNo?.takeIf { disposable?.isDisposed == true }
+        nextPageNo?.takeIf { eventsDisposable?.isDisposed == true }
                 ?.let {
-                    disposable = eventsRepository.getEventsPage(it)
+                    eventsDisposable = eventsRepository.getEventsPage(it)
                             .flatMap(this::mapToSingleEventItemViewModelsPage)
-                            .doAfterTerminate { disposable?.dispose() }
+                            .doAfterTerminate { eventsDisposable?.dispose() }
                             .subscribeBy(
                                     onSuccess = (this::handleNewEventsPage),
                                     onError = {
@@ -77,7 +79,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
                 }
     }
 
-    private fun mapToSingleEventItemViewModelsPage(page: Page<Event>): Single<Page<State.Item<EventItemViewModel>>> {
+    private fun mapToSingleEventItemViewModelsPage(page: Page<EventDto>): Single<Page<State.Item<EventItemViewModel>>> {
         val (items, pageNo, pageCount) = page
         return items.toObservable()
                 .map(this::toEventItemViewModel)
@@ -85,16 +87,14 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
                 .toPage(pageNo, pageCount)
     }
 
-    private fun toEventItemViewModel(event: Event): EventItemViewModel {
+    private fun toEventItemViewModel(event: EventDto): EventItemViewModel {
         return EventItemViewModel(event) {
             Log.d(this::class.java.simpleName, "Event item clicked ${event.id}")
         }
     }
 
     override fun onCleared() {
-        disposable?.dispose()
+        eventsDisposable?.dispose()
     }
 
 }
-
-

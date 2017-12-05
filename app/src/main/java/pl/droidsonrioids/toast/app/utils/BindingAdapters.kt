@@ -1,6 +1,6 @@
 @file:JvmName("BindingAdapters")
 
-package pl.droidsonrioids.toast.viewmodels
+package pl.droidsonrioids.toast.app.utils
 
 import android.databinding.BindingAdapter
 import android.text.format.DateFormat
@@ -11,13 +11,10 @@ import com.squareup.picasso.Picasso
 import okhttp3.OkHttpClient
 import pl.droidsonrioids.toast.BuildConfig
 import pl.droidsonrioids.toast.R
-import pl.droidsonrioids.toast.data.model.Image
+import pl.droidsonrioids.toast.data.dto.ImageDto
+import pl.droidsonrioids.toast.utils.Consts
 import java.text.SimpleDateFormat
 import java.util.*
-
-
-const val DATE_PATTERN = "dd.MM.yyyy"
-private const val FIRST_COVER_INDEX = 0
 
 
 @BindingAdapter("eventTime")
@@ -29,20 +26,19 @@ fun setEventTime(textView: TextView, date: Date?) {
 
 @BindingAdapter("eventDate")
 fun setEventDate(textView: TextView, date: Date?) {
-    val timeFormatter = SimpleDateFormat(DATE_PATTERN, Locale.getDefault())
+    val timeFormatter = SimpleDateFormat(Consts.DATE_PATTERN, Locale.getDefault())
     textView.text = date?.let { timeFormatter.format(it) }
 }
 
 
 @BindingAdapter("eventCoverImage")
-fun setEventCoverImage(imageView: ImageView, image: Image?) {
+fun setEventCoverImage(imageView: ImageView, imageDto: ImageDto?) {
     // TODO: handle caching
-    val url = image?.big?.addBaseUrlIfNeeded()
     Picasso.Builder(imageView.context)
             .downloader(OkHttp3Downloader(OkHttpClient()))
             .build()
             .showIndicatorsIfDebug()
-            .load(url)
+            .load(imageDto?.originalSizeUrl)
             .placeholder(R.drawable.ic_placeholder_toast)
             .fit()
             .centerCrop()
@@ -55,11 +51,4 @@ private fun Picasso.showIndicatorsIfDebug(): Picasso {
             setIndicatorsEnabled(true)
         }
     }
-}
-
-// There's inconsistency on backend - sometimes we have full url and sometimes we have just endpoint
-private fun String.addBaseUrlIfNeeded(): String {
-    return if (startsWith("http", true)) {
-        this
-    } else BuildConfig.BASE_IMAGES_URL + this
 }
