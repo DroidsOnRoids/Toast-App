@@ -35,6 +35,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField 'String', 'BASE_API_URL', '"https://api.letswift.pl/api/v1/"'
+        buildConfigField 'String', 'BASE_IMAGES_URL', '"https://api.letswift.pl"'
     }
     buildTypes {
         release {

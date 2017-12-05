@@ -3,13 +3,13 @@ package pl.droidsonrioids.toast.viewmodels
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.internal.operators.maybe.MaybeJust
 import junit.framework.Assert.assertNotNull
-import junit.framework.Assert.assertTrue
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
+import pl.droidsonrioids.toast.data.mapper.toDto
 import pl.droidsonrioids.toast.managers.EventsRepository
 import pl.droidsonrioids.toast.testEventDetails
 import pl.droidsonrioids.toast.testPreviousEvents
@@ -39,8 +39,10 @@ class EventsViewModelTest {
 
         val previousEvents = eventsViewModel.lastEvents
 
-        assertTrue(previousEvents.isNotEmpty())
-        assertThat(previousEvents, equalTo(testPreviousEvents))
+        assertThat(previousEvents.size, equalTo(1))
+        val previousEventDto = previousEvents.first()
+        val testPreviousApiEvent = testPreviousEvents.first()
+        assertThat(previousEventDto, equalTo(testPreviousApiEvent.toDto()))
     }
 
 }

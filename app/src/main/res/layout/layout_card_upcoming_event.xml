@@ -37,7 +37,7 @@
                 android:layout_width="0dp"
                 android:layout_height="182dp"
                 android:layout_marginBottom="@dimen/margin_large"
-                app:eventCoverImage="@{upcomingEvent.coverImages}"
+                app:eventCoverImage="@{upcomingEvent.coverImage}"
                 app:layout_constraintBottom_toTopOf="@+id/upcomingEventTitleText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

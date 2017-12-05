@@ -15,7 +15,7 @@ import pl.droidsonrioids.toast.app.base.BaseFragment
 import pl.droidsonrioids.toast.databinding.FragmentEventsBinding
 import pl.droidsonrioids.toast.viewmodels.EventsViewModel
 
-const val TOP_BAR_TRANSLATION_FACTOR = 2f
+private const val TOP_BAR_TRANSLATION_FACTOR = 2f
 
 class EventsFragment : BaseFragment() {
 
@@ -50,6 +50,8 @@ class EventsFragment : BaseFragment() {
         with(previousEventsRecyclerView) {
             adapter = PreviousEventsAdapter()
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            val snapHelper = HorizontalSnapHelper(layoutManager)
+            snapHelper.attachToRecyclerView(this)
         }
     }
 
