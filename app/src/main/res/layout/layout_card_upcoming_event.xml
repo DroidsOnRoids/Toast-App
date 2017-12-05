@@ -41,6 +41,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/upcomingEventTitleText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                android:scaleType="centerCrop"
                 app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
