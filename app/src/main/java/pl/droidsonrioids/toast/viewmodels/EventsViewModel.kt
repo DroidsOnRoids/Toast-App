@@ -5,9 +5,9 @@ import android.databinding.ObservableField
 import android.util.Log
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
-import pl.droidsonrioids.toast.data.model.LoadingStatus
 import pl.droidsonrioids.toast.data.dto.EventDto
 import pl.droidsonrioids.toast.managers.EventsRepository
+import pl.droidsonrioids.toast.utils.LoadingStatus
 import javax.inject.Inject
 
 class EventsViewModel @Inject constructor(eventsRepository: EventsRepository) : ViewModel() {

@@ -13,9 +13,9 @@ import com.squareup.picasso.Picasso
 import okhttp3.OkHttpClient
 import pl.droidsonrioids.toast.BuildConfig
 import pl.droidsonrioids.toast.R
-import pl.droidsonrioids.toast.data.model.LoadingStatus
 import pl.droidsonrioids.toast.data.dto.ImageDto
 import pl.droidsonrioids.toast.utils.Consts
+import pl.droidsonrioids.toast.utils.LoadingStatus
 import java.text.SimpleDateFormat
 import java.util.*
 
