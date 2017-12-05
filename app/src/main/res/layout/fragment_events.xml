@@ -94,7 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/paleGrayBackground"
-            app:eventsLoadingContainerVisibility="@{eventsViewModel.loadingStatus}">
+            app:loadingContainerVisibility="@{eventsViewModel.loadingStatus}">
 
             <ProgressBar
                 android:id="@+id/eventsLoadingProgressBar"

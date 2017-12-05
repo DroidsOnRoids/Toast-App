@@ -47,7 +47,7 @@ fun setEventCoverImage(imageView: ImageView, imageDto: ImageDto?) {
             .into(imageView)
 }
 
-@BindingAdapter("eventsLoadingContainerVisibility")
+@BindingAdapter("loadingContainerVisibility")
 fun setEventsLoadingProgressBarVisibility(loadingContainer: View, loadingStatus: LoadingStatus) {
     when (loadingStatus) {
         LoadingStatus.PENDING -> loadingContainer.visibility = View.VISIBLE
