@@ -87,9 +87,8 @@ dependencies {
     // data binding
     kapt 'com.android.databinding:compiler:3.0.1'
 
-    // picasso
-    implementation 'com.squareup.picasso:picasso:2.5.2'
-    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+    // glide
+    implementation "com.github.bumptech.glide:glide:$versions.glide"
 
     // tests
     testImplementation 'junit:junit:4.12'
