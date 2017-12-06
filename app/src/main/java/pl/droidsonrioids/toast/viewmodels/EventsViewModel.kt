@@ -41,6 +41,14 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
         uploadEventsFromApi()
     }
 
+    fun loadNextPage() {
+        nextPageNumber
+                ?.takeIf { !isPreviousEventsLoading }
+                ?.let {
+                    loadNextPage(it)
+                }
+    }
+
     private fun uploadEventsFromApi() {
 
         eventsDisposable = eventsRepository.getEvents()
@@ -90,13 +98,6 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
     private fun onEmptyResponse() {
         isEmptyPreviousEvents.set(true)
         loadingStatus.set(LoadingStatus.ERROR)
-    }
-
-    fun loadNextPage() {
-        nextPageNumber?.takeIf { !isPreviousEventsLoading }
-                ?.let {
-                    loadNextPage(it)
-                }
     }
 
     private fun loadNextPage(pageNumber: Int) {
