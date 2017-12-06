@@ -28,7 +28,7 @@ class EventsViewModelTest {
     fun shouldReturnFeaturedEvent() {
         whenever(eventsRepository.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
         eventsViewModel = EventsViewModel(eventsRepository)
-        val upcomingEventViewModel = eventsViewModel.featuredEvent.get()
+        val upcomingEventViewModel = eventsViewModel.upcomingEvent.get()
 
         assertNotNull(upcomingEventViewModel)
         assertThat(upcomingEventViewModel.id, equalTo(testEventDetails.id))

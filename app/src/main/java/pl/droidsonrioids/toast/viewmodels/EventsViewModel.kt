@@ -21,16 +21,16 @@ import javax.inject.Inject
 
 class EventsViewModel @Inject constructor(private val eventsRepository: EventsRepository) : ViewModel() {
 
-
-    val featuredEvent = ObservableField<UpcomingEventViewModel>()
     val isEmptyPreviousEvents = ObservableField<Boolean>(true)
+    val upcomingEvent = ObservableField<UpcomingEventViewModel>()
     val previousEventsSubject: BehaviorSubject<List<State<EventItemViewModel>>> = BehaviorSubject.create()
-    private var eventsDisposable: Disposable? = null
-    private var nextPageNumber: Int? = null
-
-    private var isPreviousEventsLoading: Boolean = false
     var loadingStatus: ObservableField<LoadingStatus> = ObservableField()
         private set
+
+    private var isPreviousEventsLoading: Boolean = false
+    private var nextPageNumber: Int? = null
+    private var eventsDisposable: Disposable? = null
+
 
     init {
         loadEvents()
@@ -50,7 +50,6 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
     }
 
     private fun uploadEventsFromApi() {
-
         eventsDisposable = eventsRepository.getEvents()
                 .flatMap { (featuredEvent, previousEventsPage) ->
                     mapToSingleEventItemViewModelsPage(previousEventsPage)
@@ -65,13 +64,19 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
     }
 
     private fun onEventsLoaded(events: Pair<EventDetailsDto, Page<State.Item<EventItemViewModel>>>) {
-        val (featuredEvent, previousEventsPage) = events
-        this.featuredEvent.set(UpcomingEventViewModel.create(featuredEvent))
+        val (upcomingEvent, previousEventsPage) = events
+        this.upcomingEvent.set(UpcomingEventViewModel.create(upcomingEvent))
         onPreviousEventsPageLoaded(previousEventsPage)
         loadingStatus.set(LoadingStatus.SUCCESS)
     }
 
     private fun onPreviousEventsPageLoaded(page: Page<State<EventItemViewModel>>) {
+        val previousEvents = loadPreviousEvents(page)
+        isEmptyPreviousEvents.set(previousEvents.isEmpty())
+        previousEventsSubject.onNext(previousEvents)
+    }
+
+    private fun loadPreviousEvents(page: Page<State<EventItemViewModel>>): List<State<EventItemViewModel>> {
         var previousEvents = mergeWithExistingPreviousEvents(page.items)
         if (page.pageNumber < page.allPagesCount) {
             previousEvents += State.Loading
@@ -79,8 +84,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
         } else {
             nextPageNumber = null
         }
-        isEmptyPreviousEvents.set(previousEvents.isEmpty())
-        previousEventsSubject.onNext(previousEvents)
+        return previousEvents
     }
 
     private fun mergeWithExistingPreviousEvents(newList: List<State<EventItemViewModel>>): List<State<EventItemViewModel>> {
@@ -90,9 +94,9 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
         return previousList + newList
     }
 
-    private fun onEventsLoadError(it: Throwable) {
+    private fun onEventsLoadError(error: Throwable) {
         onEmptyResponse()
-        Log.e(this::class.java.simpleName, "Something went wrong with fetching data for EventsViewModel", it)
+        Log.e(this::class.java.simpleName, "Something went wrong with fetching data for EventsViewModel", error)
     }
 
     private fun onEmptyResponse() {

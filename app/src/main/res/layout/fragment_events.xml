@@ -42,7 +42,7 @@
                 <include
                     android:id="@+id/upcomingEventCard"
                     layout="@layout/layout_card_upcoming_event"
-                    app:upcomingEvent="@{eventsViewModel.featuredEvent}"/>
+                    app:upcomingEvent="@{eventsViewModel.upcomingEvent}"/>
 
                 <TextView
                     android:id="@+id/previousEventsLabel"
