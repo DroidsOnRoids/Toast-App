@@ -71,12 +71,12 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
     }
 
     private fun onPreviousEventsPageLoaded(page: Page<State<EventItemViewModel>>) {
-        val previousEvents = loadPreviousEvents(page)
+        val previousEvents = getPreviousEvents(page)
         isEmptyPreviousEvents.set(previousEvents.isEmpty())
         previousEventsSubject.onNext(previousEvents)
     }
 
-    private fun loadPreviousEvents(page: Page<State<EventItemViewModel>>): List<State<EventItemViewModel>> {
+    private fun getPreviousEvents(page: Page<State<EventItemViewModel>>): List<State<EventItemViewModel>> {
         var previousEvents = mergeWithExistingPreviousEvents(page.items)
         if (page.pageNumber < page.allPagesCount) {
             previousEvents += State.Loading
