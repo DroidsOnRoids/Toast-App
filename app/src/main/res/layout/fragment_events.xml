@@ -102,9 +102,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"/>
         </FrameLayout>
+
         <include
             android:id="@+id/errorConnectionLayout"
             layout="@layout/layout_error_connection"
             app:eventsViewModel="@{eventsViewModel}"/>
+
     </FrameLayout>
 </layout>

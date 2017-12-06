@@ -15,8 +15,8 @@ import pl.droidsonrioids.toast.data.dto.EventDto
 import pl.droidsonrioids.toast.data.mapper.toViewModel
 import pl.droidsonrioids.toast.data.wrapWithState
 import pl.droidsonrioids.toast.repositories.EventsRepository
-import pl.droidsonrioids.toast.utils.toPage
 import pl.droidsonrioids.toast.utils.LoadingStatus
+import pl.droidsonrioids.toast.utils.toPage
 import javax.inject.Inject
 
 class EventsViewModel @Inject constructor(private val eventsRepository: EventsRepository) : ViewModel() {
@@ -35,7 +35,16 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
         private set
 
     init {
+        loadEvents()
+    }
+
+    fun loadEvents() {
         loadingStatus.set(LoadingStatus.PENDING)
+        uploadEventsFromApi()
+    }
+
+    private fun uploadEventsFromApi() {
+
         eventsDisposable = eventsRepository.getEvents()
                 .flatMap { (featuredEvent, previousEventsPage) ->
                     mapToSingleEventItemViewModelsPage(previousEventsPage)
@@ -94,6 +103,18 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
                 )
     }
 
+    private fun mapToSingleEventItemViewModelsPage(page: Page<EventDto>): Single<Page<State.Item<EventItemViewModel>>> {
+        val (items, pageNo, pageCount) = page
+        return items.toObservable()
+                .map {
+                    it.toViewModel { id ->
+                        Log.d(this::class.java.simpleName, "Event item clicked $id")
+                    }
+                }
+                .map { wrapWithState(it) }
+                .toPage(pageNo, pageCount)
+    }
+
     private fun onPreviousEventsLoadError(throwable: Throwable) {
         Log.e(this::class.java.simpleName, "Something went wrong with fetching next previous events page for EventsViewModel", throwable)
         val previousEvents = mergeWithExistingPreviousEvents(listOf(createErrorState()))
@@ -108,18 +129,6 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
         val previousEvents = mergeWithExistingPreviousEvents(listOf(State.Loading))
         previousEventsSubject.onNext(previousEvents)
         nextPageNumber?.let { loadNextPage(it) }
-    }
-
-    private fun mapToSingleEventItemViewModelsPage(page: Page<EventDto>): Single<Page<State.Item<EventItemViewModel>>> {
-        val (items, pageNo, pageCount) = page
-        return items.toObservable()
-                .map {
-                    it.toViewModel { id ->
-                        Log.d(this::class.java.simpleName, "Event item clicked $id")
-                    }
-                }
-                .map { wrapWithState(it) }
-                .toPage(pageNo, pageCount)
     }
 
     override fun onCleared() {

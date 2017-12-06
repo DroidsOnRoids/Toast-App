@@ -42,9 +42,17 @@ fun setEventCoverImage(imageView: ImageView, imageDto: ImageDto?) {
 }
 
 @BindingAdapter("loadingContainerVisibility")
-fun setEventsLoadingProgressBarVisibility(loadingContainer: View, loadingStatus: LoadingStatus) {
+fun setLoadingProgressBarVisibility(loadingContainer: View, loadingStatus: LoadingStatus) {
     when (loadingStatus) {
         LoadingStatus.PENDING -> loadingContainer.visibility = View.VISIBLE
         else -> loadingContainer.visibility = View.GONE
+    }
+}
+
+@BindingAdapter("errorConnectionContainerVisibility")
+fun setErrorConnectionProgressBarVisibility(errorConnectionContainer: View, loadingStatus: LoadingStatus) {
+    when (loadingStatus) {
+        LoadingStatus.ERROR -> errorConnectionContainer.visibility = View.VISIBLE
+        else -> errorConnectionContainer.visibility = View.GONE
     }
 }
