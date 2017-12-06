@@ -15,8 +15,8 @@ import pl.droidsonrioids.toast.data.dto.EventDto
 import pl.droidsonrioids.toast.data.mapper.toViewModel
 import pl.droidsonrioids.toast.data.wrapWithState
 import pl.droidsonrioids.toast.repositories.EventsRepository
-import pl.droidsonrioids.toast.utils.toPage
 import pl.droidsonrioids.toast.utils.LoadingStatus
+import pl.droidsonrioids.toast.utils.toPage
 import javax.inject.Inject
 
 
@@ -24,15 +24,13 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
 
 
     val featuredEvent = ObservableField<UpcomingEventViewModel>()
+    val isEmptyPreviousEvents = ObservableField<Boolean>(true)
     val previousEventsSubject: BehaviorSubject<List<State<EventItemViewModel>>> = BehaviorSubject.create()
     private var eventsDisposable: Disposable? = null
     private var nextPageNumber: Int? = null
 
     private var isPreviousEventsLoading: Boolean = false
     var loadingStatus: ObservableField<LoadingStatus> = ObservableField()
-        private set
-    // TODO:  TOA-42 Add previous events handling
-    var lastEvents: List<EventDto> = emptyList()
         private set
 
     init {
@@ -45,10 +43,8 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
                 }
                 .subscribeBy(
                         onSuccess = (::onEventsLoaded),
-                        onError = {
-                            loadingStatus.set(LoadingStatus.ERROR)
-                            Log.e(this::class.java.simpleName, "Something went wrong with fetching data for EventsViewModel", it)
-                        }
+                        onError = (::onEventsLoadError),
+                        onComplete = (::onEmptyResponse)
                 )
     }
 
@@ -67,6 +63,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
         } else {
             nextPageNumber = null
         }
+        isEmptyPreviousEvents.set(previousEvents.isEmpty())
         previousEventsSubject.onNext(previousEvents)
     }
 
@@ -75,6 +72,16 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
                 ?.filter { it is State.Item }
                 ?: listOf()
         return previousList + newList
+    }
+
+    private fun onEventsLoadError(it: Throwable) {
+        onEmptyResponse()
+        Log.e(this::class.java.simpleName, "Something went wrong with fetching data for EventsViewModel", it)
+    }
+
+    private fun onEmptyResponse() {
+        isEmptyPreviousEvents.set(true)
+        loadingStatus.set(LoadingStatus.ERROR)
     }
 
     fun loadNextPage() {

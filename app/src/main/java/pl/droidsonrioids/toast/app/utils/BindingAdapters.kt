@@ -48,3 +48,8 @@ fun setEventsLoadingProgressBarVisibility(loadingContainer: View, loadingStatus:
         else -> loadingContainer.visibility = View.GONE
     }
 }
+
+@BindingAdapter("android:visibility")
+fun setVisibility(view: View, isVisible: Boolean) {
+    view.visibility = if (isVisible) View.VISIBLE else View.GONE
+}
