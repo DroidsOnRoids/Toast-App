@@ -38,18 +38,6 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
 
     fun loadEvents() {
         loadingStatus.set(LoadingStatus.PENDING)
-        uploadEventsFromApi()
-    }
-
-    fun loadNextPage() {
-        nextPageNumber
-                ?.takeIf { !isPreviousEventsLoading }
-                ?.let {
-                    loadNextPage(it)
-                }
-    }
-
-    private fun uploadEventsFromApi() {
         eventsDisposable = eventsRepository.getEvents()
                 .flatMap { (featuredEvent, previousEventsPage) ->
                     mapToSingleEventItemViewModelsPage(previousEventsPage)
@@ -61,6 +49,14 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
                         onError = (::onEventsLoadError),
                         onComplete = (::onEmptyResponse)
                 )
+    }
+
+    fun loadNextPage() {
+        nextPageNumber
+                ?.takeIf { !isPreviousEventsLoading }
+                ?.let {
+                    loadNextPage(it)
+                }
     }
 
     private fun onEventsLoaded(events: Pair<EventDetailsDto, Page<State.Item<EventItemViewModel>>>) {

@@ -19,9 +19,8 @@
 
         <ImageView
             android:id="@+id/errorConnectionImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_width="164dp"
+            android:layout_height="164dp"
             android:src="@drawable/ic_error_connection"
             app:layout_constraintBottom_toTopOf="@+id/noInternetConnectionText"
             app:layout_constraintEnd_toEndOf="parent"
@@ -46,16 +45,15 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
             android:text="@string/please_check_your_internet_settings"
-            app:layout_constraintBottom_toTopOf="@+id/retryConnectToInternetButton"
+            app:layout_constraintBottom_toTopOf="@+id/retryButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/noInternetConnectionText"/>
 
         <Button
-            android:id="@+id/retryConnectToInternetButton"
+            android:id="@+id/retryButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_small"
             android:layout_marginTop="@dimen/margin_large"
             android:background="@drawable/retry_connection_button_shape"
             android:foreground="@drawable/retry_connection_button_ripple"
