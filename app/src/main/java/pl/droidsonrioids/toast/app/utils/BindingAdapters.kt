@@ -4,6 +4,7 @@ package pl.droidsonrioids.toast.app.utils
 
 import android.databinding.BindingAdapter
 import android.text.format.DateFormat
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -11,6 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import pl.droidsonrioids.toast.R
 import pl.droidsonrioids.toast.data.dto.ImageDto
 import pl.droidsonrioids.toast.utils.Consts
+import pl.droidsonrioids.toast.utils.LoadingStatus
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -37,4 +39,12 @@ fun setEventCoverImage(imageView: ImageView, imageDto: ImageDto?) {
             .thumbnail(thumbnailLoader)
             .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_toast))
             .into(imageView)
+}
+
+@BindingAdapter("loadingContainerVisibility")
+fun setEventsLoadingProgressBarVisibility(loadingContainer: View, loadingStatus: LoadingStatus) {
+    when (loadingStatus) {
+        LoadingStatus.PENDING -> loadingContainer.visibility = View.VISIBLE
+        else -> loadingContainer.visibility = View.GONE
+    }
 }

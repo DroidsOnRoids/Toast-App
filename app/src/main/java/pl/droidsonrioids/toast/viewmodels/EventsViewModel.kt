@@ -16,6 +16,7 @@ import pl.droidsonrioids.toast.data.mapper.toViewModel
 import pl.droidsonrioids.toast.data.wrapWithState
 import pl.droidsonrioids.toast.repositories.EventsRepository
 import pl.droidsonrioids.toast.utils.toPage
+import pl.droidsonrioids.toast.utils.LoadingStatus
 import javax.inject.Inject
 
 
@@ -28,8 +29,14 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
     private var nextPageNumber: Int? = null
 
     private var isPreviousEventsLoading: Boolean = false
+    var loadingStatus: ObservableField<LoadingStatus> = ObservableField()
+        private set
+    // TODO:  TOA-42 Add previous events handling
+    var lastEvents: List<EventDto> = emptyList()
+        private set
 
     init {
+        loadingStatus.set(LoadingStatus.PENDING)
         eventsDisposable = eventsRepository.getEvents()
                 .flatMap { (featuredEvent, previousEventsPage) ->
                     mapToSingleEventItemViewModelsPage(previousEventsPage)
@@ -39,6 +46,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
                 .subscribeBy(
                         onSuccess = (::onEventsLoaded),
                         onError = {
+                            loadingStatus.set(LoadingStatus.ERROR)
                             Log.e(this::class.java.simpleName, "Something went wrong with fetching data for EventsViewModel", it)
                         }
                 )
@@ -48,6 +56,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
         val (featuredEvent, previousEventsPage) = events
         this.featuredEvent.set(UpcomingEventViewModel.create(featuredEvent))
         onPreviousEventsPageLoaded(previousEventsPage)
+        loadingStatus.set(LoadingStatus.SUCCESS)
     }
 
     private fun onPreviousEventsPageLoaded(page: Page<State<EventItemViewModel>>) {
