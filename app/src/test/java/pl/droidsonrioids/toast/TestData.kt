@@ -1,5 +1,6 @@
 package pl.droidsonrioids.toast
 
+import pl.droidsonrioids.toast.data.Page
 import pl.droidsonrioids.toast.data.api.ApiCoordinates
 import pl.droidsonrioids.toast.data.api.ApiEvent
 import pl.droidsonrioids.toast.data.api.ApiEventDetails
@@ -33,4 +34,6 @@ val testPreviousEvents = listOf(
         )
 )
 
-val testSplitEvents = SplitEvents(testEventDetails.toDto(), testPreviousEvents.map { it.toDto() })
+val testPreviousEventsPage = Page(testPreviousEvents.map { it.toDto() }, 1, 1)
+
+val testSplitEvents = SplitEvents(testEventDetails.toDto(), testPreviousEventsPage)

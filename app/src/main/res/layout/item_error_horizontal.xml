@@ -1,19 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="wrap_content"
-             android:layout_height="match_parent"
-             android:layout_margin="@dimen/margin_tiny"
-             android:clickable="true"
-             android:focusable="true"
-             android:foreground="?attr/selectableItemBackground">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/itemErrorText"
-        style="@style/SectionHeader"
+    <data>
+
+        <variable
+            name="errorState"
+            type="pl.droidsonrioids.toast.data.State.Error"/>
+    </data>
+
+    <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:drawableTop="@drawable/ic_refresh"
-        android:padding="@dimen/margin_large"
-        android:text="@string/retry"/>
-</FrameLayout>
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_tiny"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:onClick="@{() -> errorState.action.invoke()}">
+
+        <TextView
+            android:id="@+id/itemErrorText"
+            style="@style/SectionHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableTop="@drawable/ic_refresh"
+            android:padding="@dimen/margin_large"
+            android:text="@string/retry"/>
+    </FrameLayout>
+</layout>
+

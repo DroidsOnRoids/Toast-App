@@ -9,9 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_events.*
 import pl.droidsonrioids.toast.R
 import pl.droidsonrioids.toast.app.base.BaseFragment
+import pl.droidsonrioids.toast.app.utils.LazyLoadingScrollListener
 import pl.droidsonrioids.toast.databinding.FragmentEventsBinding
 import pl.droidsonrioids.toast.viewmodels.EventsViewModel
 
@@ -20,6 +23,7 @@ private const val TOP_BAR_TRANSLATION_FACTOR = 2f
 class EventsFragment : BaseFragment() {
 
     private lateinit var eventsViewModel: EventsViewModel
+    private var previousEventsDisposable: Disposable? = null
 
     private val topBarHeight by lazy {
         resources.getDimension(R.dimen.events_top_bar_height)
@@ -48,11 +52,22 @@ class EventsFragment : BaseFragment() {
 
     private fun setupRecyclerView() {
         with(previousEventsRecyclerView) {
-            adapter = PreviousEventsAdapter()
+            val previousEventsAdapter = PreviousEventsAdapter()
+            adapter = previousEventsAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             val snapHelper = HorizontalSnapHelper(layoutManager)
             snapHelper.attachToRecyclerView(this)
+            addOnScrollListener(LazyLoadingScrollListener {
+                eventsViewModel.loadNextPage()
+            })
+            subscribeToPreviousEventChange(previousEventsAdapter)
         }
+    }
+
+    private fun subscribeToPreviousEventChange(previousEventsAdapter: PreviousEventsAdapter) {
+        previousEventsDisposable = eventsViewModel.previousEventsSubject
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(previousEventsAdapter::setData)
     }
 
     private fun setupAppBarShadow() {
@@ -69,4 +84,9 @@ class EventsFragment : BaseFragment() {
         }
     }
 
+    override fun onDestroyView() {
+        previousEventsDisposable?.dispose()
+        super.onDestroyView()
+    }
 }
+

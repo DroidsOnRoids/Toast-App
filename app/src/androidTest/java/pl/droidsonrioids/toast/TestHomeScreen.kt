@@ -31,7 +31,7 @@ class TestHomeScreen {
 
     @Test
     fun isMenuOverflowDisplayed() {
-        HomeRobot().checkIfElementWithIdIsDisplayed(R.id.about_item)
+        HomeRobot().checkIfElementWithIdIsDisplayed(R.id.menuItemAbout)
     }
 
     @Test
