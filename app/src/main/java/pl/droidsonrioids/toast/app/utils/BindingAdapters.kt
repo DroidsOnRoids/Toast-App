@@ -56,3 +56,8 @@ fun setErrorConnectionProgressBarVisibility(errorConnectionContainer: View, load
         else -> errorConnectionContainer.visibility = View.GONE
     }
 }
+
+@BindingAdapter("android:visibility")
+fun setVisibility(view: View, isVisible: Boolean) {
+    view.visibility = if (isVisible) View.VISIBLE else View.GONE
+}

@@ -73,16 +73,17 @@
                         android:layout_marginBottom="@dimen/margin_medium"
                         android:clipToPadding="false"
                         android:paddingEnd="@dimen/margin_tiny"
-                        android:paddingStart="@dimen/margin_tiny"/>
+                        android:paddingStart="@dimen/margin_tiny"
+                        android:visibility="@{!eventsViewModel.isEmptyPreviousEvents}"/>
 
                     <TextView
-                        style="@style/SectionHeader"
+                        style="@style/EventHeaderStyle"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:gravity="center"
                         android:padding="@dimen/margin_large"
                         android:text="@string/no_events_loaded"
-                        android:visibility="gone"/>
+                        android:visibility="@{eventsViewModel.isEmptyPreviousEvents}"/>
                 </FrameLayout>
 
             </android.support.constraint.ConstraintLayout>
