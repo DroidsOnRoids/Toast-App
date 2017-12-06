@@ -1,4 +1,4 @@
-package pl.droidsonrioids.toast.data.model
+package pl.droidsonrioids.toast.utils
 
 enum class LoadingStatus {
     PENDING, SUCCESS, ERROR

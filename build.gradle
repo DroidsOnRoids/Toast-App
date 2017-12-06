@@ -10,7 +10,8 @@ buildscript {
                 dagger : "2.13",
                 retrofit: "2.3.0",
                 chuck: "1.1.0",
-                lifecycle : '1.0.0'
+                lifecycle : '1.0.0',
+                glide : '4.4.0'
         ]
     }
     repositories {
