@@ -1,6 +1,5 @@
 package pl.droidsonrioids.toast.viewmodels
 
-import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import android.util.Log
 import io.reactivex.Single
@@ -19,13 +18,11 @@ import pl.droidsonrioids.toast.utils.LoadingStatus
 import pl.droidsonrioids.toast.utils.toPage
 import javax.inject.Inject
 
-class EventsViewModel @Inject constructor(private val eventsRepository: EventsRepository) : ViewModel() {
+class EventsViewModel @Inject constructor(private val eventsRepository: EventsRepository) : LoadingViewModel() {
 
-    val isEmptyPreviousEvents = ObservableField<Boolean>(true)
+    val isPreviousEventsEmpty = ObservableField<Boolean>(true)
     val upcomingEvent = ObservableField<UpcomingEventViewModel>()
     val previousEventsSubject: BehaviorSubject<List<State<EventItemViewModel>>> = BehaviorSubject.create()
-    var loadingStatus: ObservableField<LoadingStatus> = ObservableField()
-        private set
 
     private var isPreviousEventsLoading: Boolean = false
     private var nextPageNumber: Int? = null
@@ -36,7 +33,11 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
         loadEvents()
     }
 
-    fun loadEvents() {
+    override fun retryLoading() {
+        loadEvents()
+    }
+
+    private fun loadEvents() {
         loadingStatus.set(LoadingStatus.PENDING)
         eventsDisposable = eventsRepository.getEvents()
                 .flatMap { (featuredEvent, previousEventsPage) ->
@@ -68,7 +69,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
 
     private fun onPreviousEventsPageLoaded(page: Page<State<EventItemViewModel>>) {
         val previousEvents = getPreviousEvents(page)
-        isEmptyPreviousEvents.set(previousEvents.isEmpty())
+        isPreviousEventsEmpty.set(previousEvents.isEmpty())
         previousEventsSubject.onNext(previousEvents)
     }
 
@@ -96,7 +97,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
     }
 
     private fun onEmptyResponse() {
-        isEmptyPreviousEvents.set(true)
+        isPreviousEventsEmpty.set(true)
         loadingStatus.set(LoadingStatus.ERROR)
     }
 
