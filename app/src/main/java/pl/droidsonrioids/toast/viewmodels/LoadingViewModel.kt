@@ -6,8 +6,7 @@ import pl.droidsonrioids.toast.utils.LoadingStatus
 
 
 abstract class LoadingViewModel : ViewModel() {
-    var loadingStatus: ObservableField<LoadingStatus> = ObservableField()
-        private set
+    val loadingStatus: ObservableField<LoadingStatus> = ObservableField()
 
     abstract fun retryLoading()
 }
