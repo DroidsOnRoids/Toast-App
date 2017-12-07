@@ -18,4 +18,5 @@
     <string name="no_events_loaded">No events loaded</string>
     <string name="retry">Retry</string>
     <string name="android_developers_meet_up">Android Developers Meet-up</string>
+    <string name="toast_title">TOAST</string>
 </resources>
