@@ -19,9 +19,31 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
 -keep public class * extends com.bumptech.glide.module.AppGlideModule
 -keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
     **[] $VALUES;
     public *;
 }
+
+# OkHttp
+-dontwarn okio.**
+-dontwarn com.squareup.okhttp.**
+
+# Retrofit
+-dontnote retrofit2.Platform
+-dontwarn retrofit2.Platform$Java8
+-dontwarn javax.annotation.**
+
+# Kotlin
+-keep class kotlin.** { *; }
+-keep class org.jetbrains.** { *; }
+
+# Android support
+-keep interface android.support.** { *; }
+-keep class android.support.** { *; }
+
+# Dagger
+-dontwarn com.google.errorprone.annotations.*
