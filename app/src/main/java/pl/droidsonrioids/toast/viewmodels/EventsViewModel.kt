@@ -53,11 +53,9 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
     }
 
     fun loadNextPage() {
-        nextPageNumber
-                ?.takeIf { !isPreviousEventsLoading }
-                ?.let {
-                    loadNextPage(it)
-                }
+        if (!isPreviousEventsLoading && nextPageNumber != null) {
+            loadNextPage(nextPageNumber!!)
+        }
     }
 
     private fun onEventsLoaded(events: Pair<EventDetailsDto, Page<State.Item<EventItemViewModel>>>) {

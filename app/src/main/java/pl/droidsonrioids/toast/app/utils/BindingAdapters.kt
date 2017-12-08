@@ -43,17 +43,17 @@ fun setEventCoverImage(imageView: ImageView, imageDto: ImageDto?) {
 
 @BindingAdapter("loadingContainerVisibility")
 fun setLoadingContainerVisibility(loadingContainer: View, loadingStatus: LoadingStatus) {
-    when (loadingStatus) {
-        LoadingStatus.PENDING -> loadingContainer.visibility = View.VISIBLE
-        else -> loadingContainer.visibility = View.GONE
+    loadingContainer.visibility = when (loadingStatus) {
+        LoadingStatus.PENDING -> View.VISIBLE
+        else -> View.GONE
     }
 }
 
-@BindingAdapter("errorConnectionContainerVisibility")
-fun setErrorConnectionContainerVisibility(errorConnectionContainer: View, loadingStatus: LoadingStatus) {
-    when (loadingStatus) {
-        LoadingStatus.ERROR -> errorConnectionContainer.visibility = View.VISIBLE
-        else -> errorConnectionContainer.visibility = View.GONE
+@BindingAdapter("connectionErrorContainerVisibility")
+fun setConnectionErrorContainerVisibility(errorConnectionContainer: View, loadingStatus: LoadingStatus) {
+    errorConnectionContainer.visibility = when (loadingStatus) {
+        LoadingStatus.ERROR -> View.VISIBLE
+        else -> View.GONE
     }
 }
 

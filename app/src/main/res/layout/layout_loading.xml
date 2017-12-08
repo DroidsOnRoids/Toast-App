@@ -33,10 +33,10 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:background="@color/paleGrayBackground"
-            app:errorConnectionContainerVisibility="@{loadingViewModel.loadingStatus}">
+            app:connectionErrorContainerVisibility="@{loadingViewModel.loadingStatus}">
 
             <ImageView
-                android:id="@+id/errorConnectionImage"
+                android:id="@+id/connectionErrorImage"
                 android:layout_width="164dp"
                 android:layout_height="164dp"
                 android:src="@drawable/ic_error_connection"
@@ -55,7 +55,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/checkSettingsText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/errorConnectionImage"/>
+                app:layout_constraintTop_toBottomOf="@+id/connectionErrorImage"/>
 
             <TextView
                 android:id="@+id/checkSettingsText"
