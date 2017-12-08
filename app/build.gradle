@@ -148,7 +148,7 @@ tasks.addRule("Pattern: jacoco<Variant>TestReport") { String taskName ->
 }
 
 private Task createTestReportTask(String taskName, String variant) {
-    task(taskName, type: JacocoReport, dependsOn: ["test${variant}UnitTest"]) {
+    task(taskName, type: JacocoReport, dependsOn: "test${variant}UnitTest") {
 
         reports {
             xml.enabled = true
