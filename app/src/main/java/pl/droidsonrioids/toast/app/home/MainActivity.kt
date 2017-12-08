@@ -33,7 +33,7 @@ class MainActivity : BaseActivity() {
         with(homeTabLayout) {
             setupWithViewPager(homeViewPager)
             getTabAt(EVENTS_TAB_INDEX)?.setIcon(R.drawable.ic_tab_events_selector)
-            getTabAt(LECTURERS_TAB_INDEX)?.setIcon(R.drawable.ic_tab_lecturers_selector)
+            getTabAt(LECTURERS_TAB_INDEX)?.setIcon(R.drawable.ic_tab_speakers_selector)
             getTabAt(CONTACT_TAB_INDEX)?.setIcon(R.drawable.ic_tab_contact_selector)
         }
     }

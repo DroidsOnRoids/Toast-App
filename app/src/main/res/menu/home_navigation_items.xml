@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_events"
+          android:title="@string/events_title"
+          android:enabled="true"
+          android:icon="@drawable/ic_tab_events_selector" />
+    <item android:id="@+id/action_speakers"
+          android:title="@string/speakers_title"
+          android:icon="@drawable/ic_tab_speakers_selector" />
+    <item android:id="@+id/action_contact"
+          android:title="@string/contact_title"
+          android:icon="@drawable/ic_tab_contact_selector" />
+</menu>
