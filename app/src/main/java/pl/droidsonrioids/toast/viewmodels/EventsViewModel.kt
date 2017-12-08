@@ -1,5 +1,6 @@
 package pl.droidsonrioids.toast.viewmodels
 
+import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import android.util.Log
 import io.reactivex.Single
@@ -18,8 +19,9 @@ import pl.droidsonrioids.toast.utils.LoadingStatus
 import pl.droidsonrioids.toast.utils.toPage
 import javax.inject.Inject
 
-class EventsViewModel @Inject constructor(private val eventsRepository: EventsRepository) : LoadingViewModel() {
+class EventsViewModel @Inject constructor(private val eventsRepository: EventsRepository) : ViewModel(), LoadingViewModel {
 
+    override val loadingStatus: ObservableField<LoadingStatus> = ObservableField()
     val isPreviousEventsEmpty = ObservableField<Boolean>(true)
     val upcomingEvent = ObservableField<UpcomingEventViewModel>()
     val previousEventsSubject: BehaviorSubject<List<State<EventItemViewModel>>> = BehaviorSubject.create()
