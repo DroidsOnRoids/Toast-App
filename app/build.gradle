@@ -156,7 +156,7 @@ private Task createTestReportTask(String taskName, String variant) {
         }
 
         def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*', '**/app/**', '**/di/**']
-        def debugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/${variant}", excludes: fileFilter)
+        def debugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/${variant.uncapitalize()}", excludes: fileFilter)
         def mainSrc = "${project.projectDir}/src/main/java"
 
         sourceDirectories = files(mainSrc)
