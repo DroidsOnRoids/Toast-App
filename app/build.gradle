@@ -139,18 +139,28 @@ repositories {
     mavenCentral()
 }
 
-task jacocoTestReport(type: JacocoReport, dependsOn: ['testLetswiftDebugUnitTest']) {
-
-    reports {
-        xml.enabled = true
-        html.enabled = true
+tasks.addRule("Pattern: jacoco<Variant>TestReport") { String taskName ->
+    def matcher = (taskName =~ "jacoco(\\w*)TestReport")
+    if (matcher.matches()) {
+        def variant = matcher[0][1]
+        createTestReportTask(taskName, variant)
     }
+}
 
-    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*', '**/app/**']
-    def debugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/letswiftDebug", excludes: fileFilter)
-    def mainSrc = "${project.projectDir}/src/main/java"
+private Task createTestReportTask(String taskName, String variant) {
+    task(taskName, type: JacocoReport, dependsOn: ["test${variant}UnitTest"]) {
 
-    sourceDirectories = files(mainSrc)
-    classDirectories = files(debugTree)
-    executionData = fileTree(dir: "$buildDir", includes: ["jacoco/testLetswiftDebugUnitTest.exec"])
+        reports {
+            xml.enabled = true
+            html.enabled = true
+        }
+
+        def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*', '**/app/**', '**/di/**']
+        def debugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/${variant}", excludes: fileFilter)
+        def mainSrc = "${project.projectDir}/src/main/java"
+
+        sourceDirectories = files(mainSrc)
+        classDirectories = files(debugTree)
+        executionData = fileTree(dir: "$buildDir", includes: ["jacoco/test${variant}UnitTest.exec"])
+    }
 }
