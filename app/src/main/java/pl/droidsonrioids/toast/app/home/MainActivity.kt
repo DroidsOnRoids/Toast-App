@@ -60,17 +60,17 @@ class MainActivity : BaseActivity() {
     }
 
     private fun showEventsFragment() {
-        val newLazyEventsFragment = { lazy { EventsFragment() }.value }
+        val newLazyEventsFragment = { EventsFragment() }
         showFragment(newLazyEventsFragment, EVENTS_FRAGMENT_TAG)
     }
 
     private fun showSpeakersFragment() {
-        val newLazySpeakersFragment = { lazy { SpeakersFragment() }.value }
+        val newLazySpeakersFragment = { SpeakersFragment() }
         showFragment(newLazySpeakersFragment, SPEAKERS_FRAGMENT_TAG)
     }
 
     private fun showContactFragment() {
-        val newLazyContactFragment = { lazy { ContactFrafgment() }.value }
+        val newLazyContactFragment = { ContactFrafgment() }
         showFragment(newLazyContactFragment, CONTACT_FRAGMENT_TAG)
     }
 
@@ -79,7 +79,7 @@ class MainActivity : BaseActivity() {
             supportFragmentManager.findFragmentByTag(fragmentTag)?.let {
                 replaceFragment(it)
             } ?: run {
-                addFragment(fragment.invoke(), fragmentTag)
+                addFragment(fragment(), fragmentTag)
             }
         }
     }
@@ -94,15 +94,18 @@ class MainActivity : BaseActivity() {
 
     private fun FragmentTransaction.replaceFragment(fragment: Fragment) {
         if (currentFragment != fragment) {
-            detach(currentFragment)
+            setCustomAnimations(R.anim.animation_cross_fade_in, R.anim.animation_cross_fade_out)
+            hide(currentFragment)
+            show(fragment)
             currentFragment = fragment
-            attach(currentFragment)
         }
     }
 
     private fun FragmentTransaction.addFragment(fragment: Fragment, fragmentTag: String) {
+        setCustomAnimations(R.anim.animation_cross_fade_in, R.anim.animation_cross_fade_out)
+        currentFragment?.let { hide(it) }
+        add(R.id.fragmentContainer, fragment, fragmentTag)
         currentFragment = fragment
-        add(R.id.fragmentContainer, currentFragment, fragmentTag)
     }
 
     private fun showInfoDialog() {
