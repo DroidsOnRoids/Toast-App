@@ -29,6 +29,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
     private var isPreviousEventsLoading: Boolean = false
     private var nextPageNumber: Int? = null
     private var eventsDisposable: Disposable? = null
+    private val Any.simpleClassName:String get() = javaClass.simpleName
 
 
     init {
@@ -93,7 +94,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
 
     private fun onEventsLoadError(error: Throwable) {
         onEmptyResponse()
-        Log.e(this::class.java.simpleName, "Something went wrong with fetching data for EventsViewModel", error)
+        Log.e(simpleClassName, "Something went wrong with fetching data for EventsViewModel", error)
     }
 
     private fun onEmptyResponse() {
@@ -117,7 +118,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
         return items.toObservable()
                 .map {
                     it.toViewModel { id ->
-                        Log.d(this::class.java.simpleName, "Event item clicked $id")
+                        Log.d(simpleClassName, "Event item clicked $id")
                     }
                 }
                 .map { wrapWithState(it) }
@@ -125,7 +126,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
     }
 
     private fun onPreviousEventsLoadError(throwable: Throwable) {
-        Log.e(this::class.java.simpleName, "Something went wrong with fetching next previous events page for EventsViewModel", throwable)
+        Log.e(simpleClassName, "Something went wrong with fetching next previous events page for EventsViewModel", throwable)
         val previousEvents = mergeWithExistingPreviousEvents(listOf(createErrorState()))
         previousEventsSubject.onNext(previousEvents)
     }
