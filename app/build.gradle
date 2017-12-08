@@ -37,11 +37,45 @@ android {
         buildConfigField 'String', 'BASE_API_URL', '"https://api.letswift.pl/api/v1/"'
         buildConfigField 'String', 'BASE_IMAGES_URL', '"https://api.letswift.pl"'
     }
+
+    signingConfigs {
+        debug {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storePassword 'android'
+            storeFile file('../keystore/debug.keystore')
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
+        staging {
+            applicationIdSuffix ".staging"
+            versionNameSuffix "-staging"
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    flavorDimensions 'api'
+    productFlavors {
+        letswift {
+            applicationIdSuffix ".letswift"
+            versionNameSuffix "-letswift"
+            buildConfigField 'String', 'BASE_API_URL', '"https://api.letswift.pl/api/v1/"'
+            buildConfigField 'String', 'BASE_IMAGES_URL', '"https://api.letswift.pl"'
+        }
+        // TODO add flavor for toast api when available
     }
 
     dataBinding {
@@ -105,18 +139,18 @@ repositories {
     mavenCentral()
 }
 
-task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testLetswiftDebugUnitTest']) {
 
     reports {
         xml.enabled = true
         html.enabled = true
     }
 
-    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*', '**/*Activity.*', '**/*Fragment.*']
-    def debugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug", excludes: fileFilter)
+    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*', '**/app/**']
+    def debugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/letswiftDebug", excludes: fileFilter)
     def mainSrc = "${project.projectDir}/src/main/java"
 
     sourceDirectories = files(mainSrc)
     classDirectories = files(debugTree)
-    executionData = fileTree(dir: "$buildDir", includes: ["jacoco/testDebugUnitTest.exec"])
+    executionData = fileTree(dir: "$buildDir", includes: ["jacoco/testLetswiftDebugUnitTest.exec"])
 }
