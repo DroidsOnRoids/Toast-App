@@ -19,4 +19,6 @@
     <string name="no_events_loaded">No events loaded</string>
     <string name="retry">Retry</string>
     <string name="android_developers_meet_up">Android Developers Meet-up</string>
+    <string name="oops_no_internet_connection">Oops! No internet connection.</string>
+    <string name="please_check_your_internet_settings">Please check your internet settings.</string>
 </resources>

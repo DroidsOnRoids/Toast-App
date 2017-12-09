@@ -19,21 +19,28 @@ import pl.droidsonrioids.toast.utils.LoadingStatus
 import pl.droidsonrioids.toast.utils.toPage
 import javax.inject.Inject
 
+class EventsViewModel @Inject constructor(private val eventsRepository: EventsRepository) : ViewModel(), LoadingViewModel {
 
-class EventsViewModel @Inject constructor(private val eventsRepository: EventsRepository) : ViewModel() {
-
-
-    val featuredEvent = ObservableField<UpcomingEventViewModel>()
-    val isEmptyPreviousEvents = ObservableField<Boolean>(true)
+    override val loadingStatus: ObservableField<LoadingStatus> = ObservableField()
+    val isPreviousEventsEmpty = ObservableField<Boolean>(true)
+    val upcomingEvent = ObservableField<UpcomingEventViewModel>()
     val previousEventsSubject: BehaviorSubject<List<State<EventItemViewModel>>> = BehaviorSubject.create()
-    private var eventsDisposable: Disposable? = null
-    private var nextPageNumber: Int? = null
 
     private var isPreviousEventsLoading: Boolean = false
-    var loadingStatus: ObservableField<LoadingStatus> = ObservableField()
-        private set
+    private var nextPageNumber: Int? = null
+    private var eventsDisposable: Disposable? = null
+    private val Any.simpleClassName:String get() = javaClass.simpleName
+
 
     init {
+        loadEvents()
+    }
+
+    override fun retryLoading() {
+        loadEvents()
+    }
+
+    private fun loadEvents() {
         loadingStatus.set(LoadingStatus.PENDING)
         eventsDisposable = eventsRepository.getEvents()
                 .flatMap { (featuredEvent, previousEventsPage) ->
@@ -48,14 +55,26 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
                 )
     }
 
+    fun loadNextPage() {
+        if (!isPreviousEventsLoading && nextPageNumber != null) {
+            loadNextPage(nextPageNumber!!)
+        }
+    }
+
     private fun onEventsLoaded(events: Pair<EventDetailsDto, Page<State.Item<EventItemViewModel>>>) {
-        val (featuredEvent, previousEventsPage) = events
-        this.featuredEvent.set(UpcomingEventViewModel.create(featuredEvent))
+        val (upcomingEvent, previousEventsPage) = events
+        this.upcomingEvent.set(UpcomingEventViewModel.create(upcomingEvent))
         onPreviousEventsPageLoaded(previousEventsPage)
         loadingStatus.set(LoadingStatus.SUCCESS)
     }
 
     private fun onPreviousEventsPageLoaded(page: Page<State<EventItemViewModel>>) {
+        val previousEvents = getPreviousEvents(page)
+        isPreviousEventsEmpty.set(previousEvents.isEmpty())
+        previousEventsSubject.onNext(previousEvents)
+    }
+
+    private fun getPreviousEvents(page: Page<State<EventItemViewModel>>): List<State<EventItemViewModel>> {
         var previousEvents = mergeWithExistingPreviousEvents(page.items)
         if (page.pageNumber < page.allPagesCount) {
             previousEvents += State.Loading
@@ -63,8 +82,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
         } else {
             nextPageNumber = null
         }
-        isEmptyPreviousEvents.set(previousEvents.isEmpty())
-        previousEventsSubject.onNext(previousEvents)
+        return previousEvents
     }
 
     private fun mergeWithExistingPreviousEvents(newList: List<State<EventItemViewModel>>): List<State<EventItemViewModel>> {
@@ -74,21 +92,14 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
         return previousList + newList
     }
 
-    private fun onEventsLoadError(it: Throwable) {
+    private fun onEventsLoadError(error: Throwable) {
         onEmptyResponse()
-        Log.e(this::class.java.simpleName, "Something went wrong with fetching data for EventsViewModel", it)
+        Log.e(simpleClassName, "Something went wrong with fetching data for EventsViewModel", error)
     }
 
     private fun onEmptyResponse() {
-        isEmptyPreviousEvents.set(true)
+        isPreviousEventsEmpty.set(true)
         loadingStatus.set(LoadingStatus.ERROR)
-    }
-
-    fun loadNextPage() {
-        nextPageNumber?.takeIf { !isPreviousEventsLoading }
-                ?.let {
-                    loadNextPage(it)
-                }
     }
 
     private fun loadNextPage(pageNumber: Int) {
@@ -102,8 +113,20 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
                 )
     }
 
+    private fun mapToSingleEventItemViewModelsPage(page: Page<EventDto>): Single<Page<State.Item<EventItemViewModel>>> {
+        val (items, pageNo, pageCount) = page
+        return items.toObservable()
+                .map {
+                    it.toViewModel { id ->
+                        Log.d(simpleClassName, "Event item clicked $id")
+                    }
+                }
+                .map { wrapWithState(it) }
+                .toPage(pageNo, pageCount)
+    }
+
     private fun onPreviousEventsLoadError(throwable: Throwable) {
-        Log.e(this::class.java.simpleName, "Something went wrong with fetching next previous events page for EventsViewModel", throwable)
+        Log.e(simpleClassName, "Something went wrong with fetching next previous events page for EventsViewModel", throwable)
         val previousEvents = mergeWithExistingPreviousEvents(listOf(createErrorState()))
         previousEventsSubject.onNext(previousEvents)
     }
@@ -116,18 +139,6 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
         val previousEvents = mergeWithExistingPreviousEvents(listOf(State.Loading))
         previousEventsSubject.onNext(previousEvents)
         nextPageNumber?.let { loadNextPage(it) }
-    }
-
-    private fun mapToSingleEventItemViewModelsPage(page: Page<EventDto>): Single<Page<State.Item<EventItemViewModel>>> {
-        val (items, pageNo, pageCount) = page
-        return items.toObservable()
-                .map {
-                    it.toViewModel { id ->
-                        Log.d(this::class.java.simpleName, "Event item clicked $id")
-                    }
-                }
-                .map { wrapWithState(it) }
-                .toPage(pageNo, pageCount)
     }
 
     override fun onCleared() {
