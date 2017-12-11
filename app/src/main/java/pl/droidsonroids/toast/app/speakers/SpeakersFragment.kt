@@ -31,15 +31,15 @@ class SpeakersFragment : BaseFragment() {
             addItemDecoration(SpeakerItemDecoration(context.applicationContext))
             // TODO: TOA-56 add lazy loading && data retrieving
             val sampleData = (0..10L)
-                    .map(::getSampleSpeaker)
+                    .map { getSampleSpeaker(it) }
                     .map(::wrapWithState) + State.Loading + State.Error {}
             speakersAdapter.setData(sampleData)
         }
     }
 
-    private fun getSampleSpeaker(it: Long): SpeakerItemViewModel {
+    private fun getSampleSpeaker(id: Long): SpeakerItemViewModel {
         return SpeakerItemViewModel(
-                it,
+                id,
                 "John Doe",
                 "Android Developer",
                 ImageDto(
@@ -47,7 +47,7 @@ class SpeakersFragment : BaseFragment() {
                         "http://api.letswift.pl/uploads/cache/ba0e0f28e20aa16a657ea291b2eed477.jpg"
                 )
         ) {
-            Log.d(this@SpeakersFragment::class.java.simpleName, "Clicked $it")
+            Log.d(this::class.java.simpleName, "Clicked $it")
         }
     }
 }
