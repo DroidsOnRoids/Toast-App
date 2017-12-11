@@ -38,6 +38,7 @@ class SpeakersFragment : BaseFragment() {
     }
 
     private fun getSampleSpeaker(id: Long): SpeakerItemViewModel {
+        // TODO: TOA-56  Change to real data
         return SpeakerItemViewModel(
                 id,
                 "John Doe",
