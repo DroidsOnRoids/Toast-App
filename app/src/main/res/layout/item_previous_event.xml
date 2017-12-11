@@ -8,7 +8,7 @@
 
         <variable
             name="eventItemViewModel"
-            type="pl.droidsonrioids.toast.viewmodels.EventItemViewModel"/>
+            type="pl.droidsonroids.toast.viewmodels.EventItemViewModel"/>
     </data>
 
     <android.support.v7.widget.CardView
