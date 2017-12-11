@@ -1,10 +1,7 @@
 package pl.droidsonroids.toast.app.utils
 
-import android.annotation.SuppressLint
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
-import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.contact.ContactFragment
 import pl.droidsonroids.toast.app.events.EventsFragment
 import pl.droidsonroids.toast.app.home.InfoDialogFragment
@@ -19,55 +16,35 @@ class HomeFragmentsTransaction(private val supportFragmentManager: FragmentManag
 
     private var currentFragment: Fragment? = null
 
+    init {
+        showEventsFragment()
+    }
+
 
     fun showEventsFragment() {
-        showFragment(EVENTS_FRAGMENT_TAG) {
+        showFragmentWithAnimation(EVENTS_FRAGMENT_TAG) {
             EventsFragment()
         }
     }
 
     fun showSpeakersFragment() {
-        showFragment(SPEAKERS_FRAGMENT_TAG) {
+        showFragmentWithAnimation(SPEAKERS_FRAGMENT_TAG) {
             SpeakersFragment()
         }
     }
 
     fun showContactFragment() {
-        showFragment(CONTACT_FRAGMENT_TAG) {
+        showFragmentWithAnimation(CONTACT_FRAGMENT_TAG) {
             ContactFragment()
         }
     }
 
-    private fun showFragment(fragmentTag: String, fragmentCreator: () -> Fragment) {
+    private fun showFragmentWithAnimation(fragmentTag: String, fragmentCreator: () -> Fragment) {
         supportFragmentManager.beginTransaction {
-            supportFragmentManager.findFragmentByTag(fragmentTag)?.let {
-                replaceFragment(it)
-            } ?: addFragment(fragmentCreator(), fragmentTag)
+            setFragmentsAnimation()
+            detachCurrentFragment(currentFragment)
+            attachChosenFragment(supportFragmentManager, fragmentTag, fragmentCreator)
         }
-    }
-
-    @SuppressLint("CommitTransaction")
-    private fun FragmentManager.beginTransaction(transaction: FragmentTransaction.() -> Unit) {
-        with(beginTransaction()) {
-            transaction()
-            commit()
-        }
-    }
-
-    private fun FragmentTransaction.replaceFragment(fragmentToReplace: Fragment) {
-        if (!fragmentToReplace.isVisible) {
-            setCustomAnimations(R.anim.animation_translated_cross_fade_in, R.anim.animation_cross_fade_out)
-            currentFragment?.let { detach(it) }
-            attach(fragmentToReplace)
-            currentFragment = fragmentToReplace
-        }
-    }
-
-    private fun FragmentTransaction.addFragment(fragment: Fragment, fragmentTag: String) {
-        setCustomAnimations(R.anim.animation_translated_cross_fade_in, R.anim.animation_cross_fade_out)
-        currentFragment?.let { detach(it) }
-        add(R.id.fragmentContainer, fragment, fragmentTag)
-        currentFragment = fragment
     }
 
     fun showInfoDialog() {

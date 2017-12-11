@@ -20,7 +20,6 @@ class MainActivity : BaseActivity() {
         setupToolbar()
         setupNavigationView()
         initHomeFragmentTransaction()
-        homeFragmentTransaction.showEventsFragment()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -40,6 +39,11 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setupNavigationView() {
+        setHomeNavigationItemReselectedListener()
+        setHomeNavigationItemSelectedListener()
+    }
+
+    private fun setHomeNavigationItemSelectedListener() {
         homeNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.actionEvents -> homeFragmentTransaction.showEventsFragment()
@@ -47,6 +51,22 @@ class MainActivity : BaseActivity() {
                 R.id.actionContact -> homeFragmentTransaction.showContactFragment()
             }
             true
+        }
+    }
+
+    private fun setHomeNavigationItemReselectedListener() {
+        homeNavigationView.setOnNavigationItemReselectedListener { item ->
+            when (item.itemId) {
+                R.id.actionEvents -> {
+                    //TODO: Scroll the fragment's content up
+                }
+                R.id.actionSpeakers -> {
+                    //TODO: Scroll the fragment's content up
+                }
+                R.id.actionContact -> {
+                    //TODO: Scroll the fragment's content up
+                }
+            }
         }
     }
 
