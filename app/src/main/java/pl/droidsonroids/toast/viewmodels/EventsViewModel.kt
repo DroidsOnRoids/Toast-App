@@ -31,7 +31,6 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
     private var eventsDisposable: Disposable? = null
     private val Any.simpleClassName:String get() = javaClass.simpleName
 
-
     init {
         loadEvents()
     }

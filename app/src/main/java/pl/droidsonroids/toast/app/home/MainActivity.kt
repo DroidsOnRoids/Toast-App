@@ -55,18 +55,8 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setHomeNavigationItemReselectedListener() {
-        homeNavigationView.setOnNavigationItemReselectedListener { item ->
-            when (item.itemId) {
-                R.id.actionEvents -> {
-                    //TODO: Scroll the fragment's content up
-                }
-                R.id.actionSpeakers -> {
-                    //TODO: Scroll the fragment's content up
-                }
-                R.id.actionContact -> {
-                    //TODO: Scroll the fragment's content up
-                }
-            }
+        homeNavigationView.setOnNavigationItemReselectedListener {
+            //TODO: Scroll the fragment's content up
         }
     }
 
