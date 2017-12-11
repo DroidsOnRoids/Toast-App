@@ -1,18 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    >
-
-    <data>
-
-        <variable
-            name="loadingViewModel"
-            type="pl.droidsonroids.toast.viewmodels.LoadingViewModel"/>
-    </data>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
         <View
             android:id="@+id/shadowCreator"
@@ -28,9 +18,17 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"/>
 
-        <!--<include-->
-        <!--android:id="@+id/loadingLayout"-->
-        <!--layout="@layout/layout_loading"-->
-        <!--app:loadingViewModel="@{loadingViewModel}"/>-->
-    </FrameLayout>
-</layout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:rotation="10"
+                android:text="@string/speakers_title"/>
+        </FrameLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+</FrameLayout>
