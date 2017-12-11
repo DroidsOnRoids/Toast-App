@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="loadingViewModel"
+            type="pl.droidsonroids.toast.viewmodels.LoadingViewModel"/>
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/loadingContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/paleGrayBackground"
+            app:loadingContainerVisibility="@{loadingViewModel.loadingStatus}">
+
+            <ProgressBar
+                android:id="@+id/loadingProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+        </FrameLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@color/paleGrayBackground"
+            app:connectionErrorContainerVisibility="@{loadingViewModel.loadingStatus}">
+
+            <ImageView
+                android:id="@+id/connectionErrorImage"
+                android:layout_width="164dp"
+                android:layout_height="164dp"
+                android:src="@drawable/ic_error_connection"
+                app:layout_constraintBottom_toTopOf="@+id/noInternetConnectionText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"/>
+
+            <TextView
+                android:id="@+id/noInternetConnectionText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="@string/oops_no_internet_connection"
+                app:layout_constraintBottom_toTopOf="@+id/checkSettingsText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/connectionErrorImage"/>
+
+            <TextView
+                android:id="@+id/checkSettingsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="@string/please_check_your_internet_settings"
+                app:layout_constraintBottom_toTopOf="@+id/retryButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/noInternetConnectionText"/>
+
+            <Button
+                android:id="@+id/retryButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                android:background="@drawable/retry_connection_button_shape"
+                android:foreground="@drawable/retry_connection_button_ripple"
+                android:onClick="@{() -> loadingViewModel.retryLoading()}"
+                android:text="@string/retry"
+                android:textColor="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/checkSettingsText"/>
+
+        </android.support.constraint.ConstraintLayout>
+    </FrameLayout>
+</layout>

@@ -5,7 +5,7 @@
 
         <variable
             name="errorState"
-            type="pl.droidsonrioids.toast.data.State.Error"/>
+            type="pl.droidsonroids.toast.data.State.Error"/>
     </data>
 
     <FrameLayout

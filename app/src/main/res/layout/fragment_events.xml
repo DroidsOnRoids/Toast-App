@@ -8,7 +8,7 @@
 
         <variable
             name="eventsViewModel"
-            type="pl.droidsonrioids.toast.viewmodels.EventsViewModel"/>
+            type="pl.droidsonroids.toast.viewmodels.EventsViewModel"/>
     </data>
 
     <FrameLayout
@@ -42,7 +42,7 @@
                 <include
                     android:id="@+id/upcomingEventCard"
                     layout="@layout/layout_card_upcoming_event"
-                    app:upcomingEvent="@{eventsViewModel.featuredEvent}"/>
+                    app:upcomingEvent="@{eventsViewModel.upcomingEvent}"/>
 
                 <TextView
                     android:id="@+id/previousEventsLabel"
@@ -74,7 +74,7 @@
                         android:clipToPadding="false"
                         android:paddingEnd="@dimen/margin_tiny"
                         android:paddingStart="@dimen/margin_tiny"
-                        android:visibility="@{!eventsViewModel.isEmptyPreviousEvents}"/>
+                        android:visibility="@{!eventsViewModel.isPreviousEventsEmpty}"/>
 
                     <TextView
                         style="@style/EventHeaderStyle"
@@ -83,26 +83,17 @@
                         android:gravity="center"
                         android:padding="@dimen/margin_large"
                         android:text="@string/no_events_loaded"
-                        android:visibility="@{eventsViewModel.isEmptyPreviousEvents}"/>
+                        android:visibility="@{eventsViewModel.isPreviousEventsEmpty}"/>
                 </FrameLayout>
 
             </android.support.constraint.ConstraintLayout>
 
         </android.support.v4.widget.NestedScrollView>
 
-        <FrameLayout
-            android:id="@+id/loadingContainer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/paleGrayBackground"
-            app:loadingContainerVisibility="@{eventsViewModel.loadingStatus}">
-
-            <ProgressBar
-                android:id="@+id/eventsLoadingProgressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"/>
-        </FrameLayout>
+        <include
+            android:id="@+id/loadingLayout"
+            layout="@layout/layout_loading"
+            app:loadingViewModel="@{eventsViewModel}"/>
 
     </FrameLayout>
 </layout>
