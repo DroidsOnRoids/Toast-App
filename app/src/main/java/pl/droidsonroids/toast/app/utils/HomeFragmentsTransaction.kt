@@ -42,11 +42,8 @@ class HomeFragmentsTransaction(private val supportFragmentManager: FragmentManag
         supportFragmentManager.beginTransaction {
             supportFragmentManager.findFragmentByTag(fragmentTag)?.let {
                 replaceFragment(it)
-                currentFragment = it
             } ?: run {
-                val fragmentToAdd = fragmentCreator()
-                addFragment(fragmentToAdd, fragmentTag)
-                currentFragment = fragmentToAdd
+                addFragment(fragmentCreator(), fragmentTag)
             }
         }
     }
@@ -62,15 +59,17 @@ class HomeFragmentsTransaction(private val supportFragmentManager: FragmentManag
     private fun FragmentTransaction.replaceFragment(fragmentToReplace: Fragment) {
         if (!fragmentToReplace.isVisible) {
             setCustomAnimations(R.anim.animation_translated_cross_fade_in, R.anim.animation_cross_fade_out)
-            currentFragment?.let { hide(it) }
-            show(fragmentToReplace)
+            currentFragment?.let { detach(it) }
+            attach(fragmentToReplace)
+            currentFragment = fragmentToReplace
         }
     }
 
     private fun FragmentTransaction.addFragment(fragment: Fragment, fragmentTag: String) {
         setCustomAnimations(R.anim.animation_translated_cross_fade_in, R.anim.animation_cross_fade_out)
-        currentFragment?.let { hide(it) }
+        currentFragment?.let { detach(it) }
         add(R.id.fragmentContainer, fragment, fragmentTag)
+        currentFragment = fragment
     }
 
     fun showInfoDialog() {
