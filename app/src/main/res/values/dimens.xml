@@ -1,0 +1,14 @@
+<resources>
+    <dimen name="text_size_extra_tiny">10sp</dimen>
+    <dimen name="text_size_tiny">12sp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_normal">16sp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
+    <dimen name="margin_large">16dp</dimen>
+    <dimen name="icon_size_small">24dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium">12dp</dimen>
+    <dimen name="margin_tiny">4dp</dimen>
+    <dimen name="home_toolbar_elevation">4dp</dimen>
+    <dimen name="events_top_bar_height">42dp</dimen>
+</resources>
