@@ -1,4 +1,4 @@
-package pl.droidsonroids.toast.app.events
+package pl.droidsonroids.toast.app.base
 
 import android.databinding.ViewDataBinding
 import android.support.v7.widget.RecyclerView

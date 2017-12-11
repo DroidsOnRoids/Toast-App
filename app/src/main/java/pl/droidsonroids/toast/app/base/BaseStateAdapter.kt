@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import pl.droidsonroids.toast.R
-import pl.droidsonroids.toast.app.events.StateViewHolder
 import pl.droidsonroids.toast.data.State
 
 abstract class BaseStateAdapter<in T>(private val isHorizontal: Boolean) : RecyclerView.Adapter<StateViewHolder>() {

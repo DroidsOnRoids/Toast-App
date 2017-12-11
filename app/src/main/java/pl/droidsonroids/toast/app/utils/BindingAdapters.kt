@@ -31,13 +31,24 @@ fun setEventDate(textView: TextView, date: Date?) {
 }
 
 
-@BindingAdapter("eventCoverImage")
-fun setEventCoverImage(imageView: ImageView, imageDto: ImageDto?) {
+@BindingAdapter("coverImage")
+fun setCoverImage(imageView: ImageView, imageDto: ImageDto?) {
     val thumbnailLoader = Glide.with(imageView).load(imageDto?.thumbSizeUrl)
     Glide.with(imageView)
             .load(imageDto?.originalSizeUrl)
             .thumbnail(thumbnailLoader)
             .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_toast))
+            .into(imageView)
+}
+
+@BindingAdapter("roundImage")
+fun setRound(imageView: ImageView, imageDto: ImageDto?) {
+    val thumbnailLoader = Glide.with(imageView).load(imageDto?.thumbSizeUrl)
+    Glide.with(imageView)
+            .load(imageDto?.originalSizeUrl)
+            .thumbnail(thumbnailLoader)
+            .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_toast)
+                    .circleCrop())
             .into(imageView)
 }
 

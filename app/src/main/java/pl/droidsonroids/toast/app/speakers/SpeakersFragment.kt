@@ -2,16 +2,15 @@ package pl.droidsonroids.toast.app.speakers
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_speakers.*
 import pl.droidsonroids.toast.R
-import pl.droidsonroids.toast.app.base.BaseDiffCallback
 import pl.droidsonroids.toast.app.base.BaseFragment
-import pl.droidsonroids.toast.app.base.BaseStateAdapter
-import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
 import pl.droidsonroids.toast.data.State
+import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.wrapWithState
 import pl.droidsonroids.toast.viewmodels.SpeakerItemViewModel
 
@@ -29,33 +28,25 @@ class SpeakersFragment : BaseFragment() {
             val speakersAdapter = SpeakersAdapter()
             adapter = speakersAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            addOnScrollListener(LazyLoadingScrollListener {
-
-            })
-            speakersAdapter.setData((0..10L).map { wrapWithState(SpeakerItemViewModel(it)) }
-                    + State.Loading + State.Error {})
+            addItemDecoration(SpeakerItemDecoration(context.applicationContext))
+            // TODO: TOA-56 add lazy loading && data retrieving
+            val sampleData = ((0..10L).map {
+                wrapWithState(
+                        SpeakerItemViewModel(
+                                it,
+                                "John Doe",
+                                "Android Developer",
+                                ImageDto(
+                                        "http://api.letswift.pl/uploads/cache/efdebb744b2ca985de9d567eaa512c40.jpg",
+                                        "http://api.letswift.pl/uploads/cache/ba0e0f28e20aa16a657ea291b2eed477.jpg"
+                                )
+                        ) {
+                            Log.d(this@SpeakersFragment::class.java.simpleName, "Clicked $it")
+                        }
+                )
+            } + State.Loading + State.Error {})
+            speakersAdapter.setData(sampleData)
         }
     }
 }
 
-class SpeakersAdapter : BaseStateAdapter<SpeakerItemViewModel>(false) {
-    override fun getDiffCallback(oldList: List<State<SpeakerItemViewModel>>, newList: List<State<SpeakerItemViewModel>>): BaseDiffCallback<SpeakerItemViewModel> {
-        return SpeakerItemDiffCallback(oldList, newList)
-    }
-
-    override fun getLayoutForPosition(position: Int) = R.layout.item_speaker
-
-    class SpeakerItemDiffCallback(oldList: List<State<SpeakerItemViewModel>>, newList: List<State<SpeakerItemViewModel>>)
-        : BaseDiffCallback<SpeakerItemViewModel>(oldList, newList) {
-
-        override fun areStateItemsTheSame(oldItem: State.Item<SpeakerItemViewModel>, newItem: State.Item<SpeakerItemViewModel>): Boolean {
-            return oldItem.item.id == newItem.item.id
-        }
-
-        override fun areStateItemsContentTheSame(oldItem: State.Item<SpeakerItemViewModel>, newItem: State.Item<SpeakerItemViewModel>): Boolean {
-            return oldItem.item == newItem.item
-        }
-
-    }
-
-}
