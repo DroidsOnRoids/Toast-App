@@ -35,20 +35,20 @@
             <ImageView
                 android:id="@+id/upcomingEventImage"
                 android:layout_width="0dp"
-                android:layout_height="182dp"
+                android:layout_height="185dp"
                 android:layout_marginBottom="@dimen/margin_large"
+                android:scaleType="centerCrop"
                 app:eventCoverImage="@{upcomingEvent.coverImage}"
                 app:layout_constraintBottom_toTopOf="@+id/upcomingEventTitleText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:scaleType="centerCrop"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/upcomingEventTitleText"
                 style="@style/EventHeaderStyle"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="16dp"
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginStart="@dimen/margin_large"
                 android:text="@{upcomingEvent.title}"
@@ -57,7 +57,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventImage"
                 app:layout_constraintVertical_chainStyle="packed"
-                tools:text="TOAST #9"/>
+                tools:text="TOAST #9" />
 
             <TextView
                 android:id="@+id/upcomingEventDescriptionText"
@@ -101,9 +101,8 @@
                 android:layout_marginStart="17dp"
                 android:src="@drawable/ic_location"
                 app:layout_constraintBottom_toTopOf="@+id/upcomingEventlocationDivider"
-                app:layout_constraintEnd_toStartOf="@+id/upcomingEventPlaceTitleText"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/upcomingEventTitleDivider"/>
+                app:layout_constraintTop_toBottomOf="@+id/upcomingEventTitleDivider" />
 
             <TextView
                 android:id="@+id/upcomingEventPlaceTitleText"
@@ -174,13 +173,13 @@
 
             <View
                 android:id="@+id/upcomingEventTimeDivider"
-                android:layout_width="1dp"
+                android:layout_width="5dp"
                 android:layout_height="0dp"
                 android:background="@color/paleGray"
                 app:layout_constraintBottom_toBottomOf="@+id/upcomingEventDateDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/upcomingEventlocationDivider"/>
+                app:layout_constraintTop_toBottomOf="@+id/upcomingEventlocationDivider" />
 
             <View
                 android:id="@+id/upcomingEventDateDivider"

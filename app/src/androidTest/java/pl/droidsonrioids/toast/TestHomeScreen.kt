@@ -15,7 +15,7 @@ class TestHomeScreen {
     val activityRule = ActivityTestRule(MainActivity::class.java, true, true)
 
     private fun showDialog() {
-        HomeRobot().performClickOnElementWithId(R.id.about_item)
+        HomeRobot().performClickOnElementWithId(R.id.menuItemAbout)
     }
 
     private fun isDialogClosed() {
@@ -36,7 +36,7 @@ class TestHomeScreen {
 
     @Test
     fun isMenuOverflowClickable() {
-        HomeRobot().checkIfElementWithIdIsClickable(R.id.about_item)
+        HomeRobot().checkIfElementWithIdIsClickable(R.id.menuItemAbout)
     }
 
     @Test
@@ -48,7 +48,7 @@ class TestHomeScreen {
     @Test
     fun isHeartImageDisplayed() {
         showDialog()
-        HomeRobot().checkIfElementWithIdIsDisplayedInDialog(R.id.hearthImageView)
+        HomeRobot().checkIfElementWithIdIsDisplayedInDialog(R.id.hearthImage)
     }
 
     /*
@@ -117,6 +117,29 @@ class TestHomeScreen {
         UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).pressBack()
         isDialogClosed()
     }
+    
+    @Test
+    fun isEveryElementDisplayedProperlyOnUpcomingEventCard() {
+        HomeRobot().checkIfElementWithIdIsDisplayed(R.id.topBar)
+        HomeRobot().checkIfElementWithIdIsDisplayed(R.id.upcomingEventImage)
+        HomeRobot().checkIfElementWithIdIsDisplayed(R.id.upcomingEventTitleText)
+        HomeRobot().checkIfTextIsCorrect(getString(R.string.android_developers_meet_up), R.id.upcomingEventDescriptionText)
+        HomeRobot().checkIfElementWithIdIsDisplayed(R.id.upcomingEventLocationImage)
+        HomeRobot().checkIfElementWithIdIsDisplayed(R.id.upcomingEventPlaceTitleText)
+        HomeRobot().checkIfElementWithIdIsDisplayed(R.id.upcomingEventPlaceLocationText)
+        HomeRobot().checkIfElementWithIdIsDisplayed(R.id.upcomingEventCalendarImage)
+        HomeRobot().checkIfElementWithIdIsDisplayed(R.id.upcomingEventDateText)
+        HomeRobot().checkIfElementWithIdIsDisplayed(R.id.upcomingEventClockImage)
+        HomeRobot().checkIfElementWithIdIsDisplayed(R.id.upcomingEventTimeText)
 
+    }
 
+    @Test
+    fun isEveryDividerDisplayedOnUpcomingEventCard() {
+        HomeRobot().checkIfElementWithIdIsDisplayed(R.id.upcomingEventTitleDivider)
+        HomeRobot().checkIfElementWithIdIsDisplayed(R.id.upcomingEventlocationDivider)
+        HomeRobot().checkIfElementWithIdIsDisplayed(R.id.upcomingEventTimeDivider)
+        HomeRobot().checkIfElementWithIdIsDisplayed(R.id.upcomingEventDateDivider)
+
+    }
 }
