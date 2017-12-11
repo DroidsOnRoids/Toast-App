@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.android.databinding.library.baseAdapters.BR
 import pl.droidsonroids.toast.data.State
-import pl.droidsonroids.toast.databinding.ItemErrorHorizontalBinding
 
 sealed class StateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -18,9 +17,10 @@ sealed class StateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     class Loading(itemView: View) : StateViewHolder(itemView)
 
-    class Error(private val errorBinding: ItemErrorHorizontalBinding) : StateViewHolder(errorBinding.root) {
+    class Error(private val errorBinding: ViewDataBinding) : StateViewHolder(errorBinding.root) {
         fun bind(errorState: State.Error) {
-            errorBinding.errorState = errorState
+            errorBinding.setVariable(BR.errorState, errorState)
+            errorBinding.executePendingBindings()
         }
     }
 }

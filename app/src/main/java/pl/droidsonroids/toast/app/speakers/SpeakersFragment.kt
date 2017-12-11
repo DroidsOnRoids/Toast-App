@@ -32,7 +32,8 @@ class SpeakersFragment : BaseFragment() {
             addOnScrollListener(LazyLoadingScrollListener {
 
             })
-            speakersAdapter.setData((0..10L).map { wrapWithState(SpeakerItemViewModel(it)) })
+            speakersAdapter.setData((0..10L).map { wrapWithState(SpeakerItemViewModel(it)) }
+                    + State.Loading + State.Error {})
         }
     }
 }
