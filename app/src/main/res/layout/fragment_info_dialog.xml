@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/dialog_background_round_rectangle"
-    tools:context="pl.droidsonrioids.toast.app.home.InfoDialogFragment">
+    tools:context="pl.droidsonroids.toast.app.home.InfoDialogFragment">
 
     <ImageButton
         android:id="@+id/closeImageButton"

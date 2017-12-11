@@ -7,7 +7,7 @@
 
         <variable
             name="loadingViewModel"
-            type="pl.droidsonrioids.toast.viewmodels.LoadingViewModel"/>
+            type="pl.droidsonroids.toast.viewmodels.LoadingViewModel"/>
     </data>
 
     <FrameLayout

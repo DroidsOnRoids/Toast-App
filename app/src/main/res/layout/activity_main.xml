@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/paleGrayBackground"
-    tools:context="pl.droidsonrioids.toast.app.home.MainActivity">
+    tools:context="pl.droidsonroids.toast.app.home.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBar"
