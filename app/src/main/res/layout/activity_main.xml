@@ -40,8 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="56dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_dodgeInsetEdges="all"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/homeNavigationView"
