@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/actionEvents"
+        android:icon="@drawable/ic_tab_events_selector"
+        android:title="@string/events_title"/>
+    <item
+        android:id="@+id/actionSpeakers"
+        android:icon="@drawable/ic_tab_speakers_selector"
+        android:title="@string/speakers_title"/>
+    <item
+        android:id="@+id/actionContact"
+        android:icon="@drawable/ic_tab_contact_selector"
+        android:title="@string/contact_title"/>
+</menu>

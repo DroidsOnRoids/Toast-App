@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".app.contact.ContactFragment">
 
     <View
         android:id="@+id/shadowCreator"
@@ -13,7 +14,7 @@
         android:translationY="-10dp"/>
 
     <android.support.v4.widget.NestedScrollView
-        android:id="@+id/speakerScrollContainer"
+        android:id="@+id/contactScrollContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/paleGrayBackground"
@@ -28,8 +29,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:rotation="10"
-                android:text="@string/speakers_title"/>
+                android:text="@string/contact_title"/>
         </FrameLayout>
 
     </android.support.v4.widget.NestedScrollView>
+
 </FrameLayout>

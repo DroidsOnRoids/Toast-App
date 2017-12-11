@@ -6,36 +6,20 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.base.BaseActivity
+import pl.droidsonroids.toast.app.utils.HomeFragmentsTransaction
 
-const val EVENTS_TAB_INDEX = 0
-const val LECTURERS_TAB_INDEX = 1
-const val CONTACT_TAB_INDEX = 2
-
-
-const val INFO_DIALOG_TAG = "info_dialog_tag"
 
 class MainActivity : BaseActivity() {
+
+    private lateinit var homeFragmentTransaction: HomeFragmentsTransaction
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         setupToolbar()
-        setupViewPager()
-    }
-
-    private fun setupToolbar() {
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-    }
-
-    private fun setupViewPager() {
-        homeViewPager.adapter = HomePagerAdapter(supportFragmentManager)
-        with(homeTabLayout) {
-            setupWithViewPager(homeViewPager)
-            getTabAt(EVENTS_TAB_INDEX)?.setIcon(R.drawable.ic_tab_events_selector)
-            getTabAt(LECTURERS_TAB_INDEX)?.setIcon(R.drawable.ic_tab_lecturers_selector)
-            getTabAt(CONTACT_TAB_INDEX)?.setIcon(R.drawable.ic_tab_contact_selector)
-        }
+        setupNavigationView()
+        initHomeFragmentTransaction()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -45,12 +29,39 @@ class MainActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem) =
             when (item.itemId) {
-                R.id.menuItemAbout -> consume { showInfoDialog() }
+                R.id.menuItemAbout -> consume { homeFragmentTransaction.showInfoDialog() }
                 else -> super.onOptionsItemSelected(item)
             }
 
-    private fun showInfoDialog() {
-        InfoDialogFragment().show(supportFragmentManager, INFO_DIALOG_TAG)
+    private fun setupToolbar() {
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+    }
+
+    private fun setupNavigationView() {
+        setHomeNavigationItemReselectedListener()
+        setHomeNavigationItemSelectedListener()
+    }
+
+    private fun setHomeNavigationItemSelectedListener() {
+        homeNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.actionEvents -> homeFragmentTransaction.showEventsFragment()
+                R.id.actionSpeakers -> homeFragmentTransaction.showSpeakersFragment()
+                R.id.actionContact -> homeFragmentTransaction.showContactFragment()
+            }
+            true
+        }
+    }
+
+    private fun setHomeNavigationItemReselectedListener() {
+        homeNavigationView.setOnNavigationItemReselectedListener {
+            //TODO: Scroll the fragment's content up
+        }
+    }
+
+    private fun initHomeFragmentTransaction() {
+        homeFragmentTransaction = HomeFragmentsTransaction(supportFragmentManager)
     }
 
     private fun consume(func: () -> Unit): Boolean {
