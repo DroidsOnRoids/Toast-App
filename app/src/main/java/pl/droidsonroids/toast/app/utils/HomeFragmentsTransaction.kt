@@ -42,9 +42,7 @@ class HomeFragmentsTransaction(private val supportFragmentManager: FragmentManag
         supportFragmentManager.beginTransaction {
             supportFragmentManager.findFragmentByTag(fragmentTag)?.let {
                 replaceFragment(it)
-            } ?: run {
-                addFragment(fragmentCreator(), fragmentTag)
-            }
+            } ?: addFragment(fragmentCreator(), fragmentTag)
         }
     }
 
