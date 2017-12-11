@@ -3,10 +3,10 @@ package pl.droidsonroids.toast.app.base
 import android.support.v7.util.DiffUtil
 import pl.droidsonroids.toast.data.State
 
-abstract class BaseDiffCallback<in T>(private val oldEventsList: List<State<T>>, private val newEventsList: List<State<T>>) : DiffUtil.Callback() {
+abstract class BaseDiffCallback<in T>(private val oldList: List<State<T>>, private val newList: List<State<T>>) : DiffUtil.Callback() {
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val oldItem = oldEventsList[oldItemPosition]
-        val newItem = newEventsList[newItemPosition]
+        val oldItem = oldList[oldItemPosition]
+        val newItem = newList[newItemPosition]
         return when {
             oldItem is State.Item && newItem is State.Item -> areStateItemsTheSame(oldItem, newItem)
             oldItem is State.Loading && newItem is State.Loading -> true
@@ -15,13 +15,13 @@ abstract class BaseDiffCallback<in T>(private val oldEventsList: List<State<T>>,
         }
     }
 
-    override fun getOldListSize() = oldEventsList.size
+    override fun getOldListSize() = oldList.size
 
-    override fun getNewListSize() = newEventsList.size
+    override fun getNewListSize() = newList.size
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val oldItem = oldEventsList[oldItemPosition]
-        val newItem = newEventsList[newItemPosition]
+        val oldItem = oldList[oldItemPosition]
+        val newItem = newList[newItemPosition]
         return when {
             oldItem is State.Item && newItem is State.Item -> areStateItemsContentTheSame(oldItem, newItem)
             oldItem is State.Loading && newItem is State.Loading -> true
