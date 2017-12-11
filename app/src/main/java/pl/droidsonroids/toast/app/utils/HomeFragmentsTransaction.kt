@@ -2,6 +2,7 @@ package pl.droidsonroids.toast.app.utils
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
+import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.contact.ContactFragment
 import pl.droidsonroids.toast.app.events.EventsFragment
 import pl.droidsonroids.toast.app.home.InfoDialogFragment
@@ -41,9 +42,15 @@ class HomeFragmentsTransaction(private val supportFragmentManager: FragmentManag
 
     private fun showFragmentWithAnimation(fragmentTag: String, fragmentCreator: () -> Fragment) {
         supportFragmentManager.beginTransaction {
-            setFragmentsAnimation()
-            detachCurrentFragment(currentFragment)
-            attachChosenFragment(supportFragmentManager, fragmentTag, fragmentCreator)
+            setCustomAnimations(R.anim.animation_translated_cross_fade_in, R.anim.animation_cross_fade_out)
+
+            currentFragment?.let { detach(it) }
+
+            val fragmentToReplace = supportFragmentManager.findFragmentByTag(fragmentTag)
+            fragmentToReplace?.let {
+                attach(it)
+            } ?: add(R.id.fragmentContainer, fragmentCreator(), fragmentTag)
+            currentFragment = fragmentToReplace
         }
     }
 
