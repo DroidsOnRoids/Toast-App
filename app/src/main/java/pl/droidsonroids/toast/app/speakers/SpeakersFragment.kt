@@ -30,22 +30,24 @@ class SpeakersFragment : BaseFragment() {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             addItemDecoration(SpeakerItemDecoration(context.applicationContext))
             // TODO: TOA-56 add lazy loading && data retrieving
-            val sampleData = ((0..10L).map {
-                wrapWithState(
-                        SpeakerItemViewModel(
-                                it,
-                                "John Doe",
-                                "Android Developer",
-                                ImageDto(
-                                        "http://api.letswift.pl/uploads/cache/efdebb744b2ca985de9d567eaa512c40.jpg",
-                                        "http://api.letswift.pl/uploads/cache/ba0e0f28e20aa16a657ea291b2eed477.jpg"
-                                )
-                        ) {
-                            Log.d(this@SpeakersFragment::class.java.simpleName, "Clicked $it")
-                        }
-                )
-            } + State.Loading + State.Error {})
+            val sampleData = (0..10L)
+                    .map(::getSampleSpeaker)
+                    .map(::wrapWithState) + State.Loading + State.Error {}
             speakersAdapter.setData(sampleData)
+        }
+    }
+
+    private fun getSampleSpeaker(it: Long): SpeakerItemViewModel {
+        return SpeakerItemViewModel(
+                it,
+                "John Doe",
+                "Android Developer",
+                ImageDto(
+                        "http://api.letswift.pl/uploads/cache/efdebb744b2ca985de9d567eaa512c40.jpg",
+                        "http://api.letswift.pl/uploads/cache/ba0e0f28e20aa16a657ea291b2eed477.jpg"
+                )
+        ) {
+            Log.d(this@SpeakersFragment::class.java.simpleName, "Clicked $it")
         }
     }
 }
