@@ -10,6 +10,7 @@ import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.data.api.event.EventDetailsResponse
 import pl.droidsonroids.toast.data.api.event.EventsResponse
 import pl.droidsonroids.toast.data.mapper.toDto
+import pl.droidsonroids.toast.repositories.event.EventsRepositoryImpl
 import pl.droidsonroids.toast.services.EventService
 import pl.droidsonroids.toast.testEventDetails
 import pl.droidsonroids.toast.testPreviousEvents

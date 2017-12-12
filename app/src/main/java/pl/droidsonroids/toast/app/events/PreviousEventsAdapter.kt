@@ -4,7 +4,7 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.base.BaseDiffCallback
 import pl.droidsonroids.toast.app.base.BaseStateAdapter
 import pl.droidsonroids.toast.data.State
-import pl.droidsonroids.toast.viewmodels.EventItemViewModel
+import pl.droidsonroids.toast.viewmodels.event.EventItemViewModel
 
 class PreviousEventsAdapter : BaseStateAdapter<EventItemViewModel>(true) {
     override fun getDiffCallback(oldList: List<State<EventItemViewModel>>, newList: List<State<EventItemViewModel>>): BaseDiffCallback<EventItemViewModel> {

@@ -12,7 +12,7 @@ import pl.droidsonroids.toast.app.base.BaseFragment
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.wrapWithState
-import pl.droidsonroids.toast.viewmodels.SpeakerItemViewModel
+import pl.droidsonroids.toast.viewmodels.speaker.SpeakerItemViewModel
 
 class SpeakersFragment : BaseFragment() {
 

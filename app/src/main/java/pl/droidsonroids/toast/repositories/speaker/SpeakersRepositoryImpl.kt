@@ -1,4 +1,4 @@
-package pl.droidsonroids.toast.repositories
+package pl.droidsonroids.toast.repositories.speaker
 
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable

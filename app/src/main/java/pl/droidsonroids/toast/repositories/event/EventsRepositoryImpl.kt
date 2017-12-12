@@ -1,4 +1,4 @@
-package pl.droidsonroids.toast.repositories
+package pl.droidsonroids.toast.repositories.event
 
 import io.reactivex.Maybe
 import io.reactivex.Single

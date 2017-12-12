@@ -1,4 +1,4 @@
-package pl.droidsonroids.toast.viewmodels
+package pl.droidsonroids.toast.viewmodels.event
 
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto

@@ -7,7 +7,7 @@
 
         <variable
             name="itemViewModel"
-            type="pl.droidsonroids.toast.viewmodels.SpeakerItemViewModel"/>
+            type="pl.droidsonroids.toast.viewmodels.speaker.SpeakerItemViewModel"/>
     </data>
 
     <android.support.constraint.ConstraintLayout

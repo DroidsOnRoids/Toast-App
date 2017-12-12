@@ -5,7 +5,7 @@ import android.arch.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import pl.droidsonroids.toast.viewmodels.EventsViewModel
+import pl.droidsonroids.toast.viewmodels.event.EventsViewModel
 
 @Module
 abstract class ViewModelModule {

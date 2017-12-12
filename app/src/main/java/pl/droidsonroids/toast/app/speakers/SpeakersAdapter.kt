@@ -4,7 +4,7 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.base.BaseDiffCallback
 import pl.droidsonroids.toast.app.base.BaseStateAdapter
 import pl.droidsonroids.toast.data.State
-import pl.droidsonroids.toast.viewmodels.SpeakerItemViewModel
+import pl.droidsonroids.toast.viewmodels.speaker.SpeakerItemViewModel
 
 class SpeakersAdapter : BaseStateAdapter<SpeakerItemViewModel>(false) {
     override fun getDiffCallback(oldList: List<State<SpeakerItemViewModel>>, newList: List<State<SpeakerItemViewModel>>): BaseDiffCallback<SpeakerItemViewModel> {

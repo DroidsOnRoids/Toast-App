@@ -4,7 +4,7 @@ import pl.droidsonroids.toast.data.api.event.ApiEvent
 import pl.droidsonroids.toast.data.api.event.ApiEventDetails
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
 import pl.droidsonroids.toast.data.dto.event.EventDto
-import pl.droidsonroids.toast.viewmodels.EventItemViewModel
+import pl.droidsonroids.toast.viewmodels.event.EventItemViewModel
 
 fun ApiEventDetails.toDto(): EventDetailsDto {
     val imagesDto = coverImages.map { it.toDto() }

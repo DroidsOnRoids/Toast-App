@@ -8,8 +8,8 @@ import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import pl.droidsonroids.toast.BuildConfig
-import pl.droidsonroids.toast.repositories.EventsRepository
-import pl.droidsonroids.toast.repositories.EventsRepositoryImpl
+import pl.droidsonroids.toast.repositories.event.EventsRepository
+import pl.droidsonroids.toast.repositories.event.EventsRepositoryImpl
 import pl.droidsonroids.toast.services.EventService
 import pl.droidsonroids.toast.services.SpeakerService
 import retrofit2.Retrofit

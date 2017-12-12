@@ -7,6 +7,7 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.data.api.speaker.SpeakersResponse
+import pl.droidsonroids.toast.repositories.speaker.SpeakersRepositoryImpl
 import pl.droidsonroids.toast.services.SpeakerService
 import pl.droidsonroids.toast.testSpeakers
 import pl.droidsonroids.toast.testSpeakersPage
