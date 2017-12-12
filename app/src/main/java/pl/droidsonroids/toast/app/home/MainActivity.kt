@@ -46,9 +46,18 @@ class MainActivity : BaseActivity() {
     private fun setHomeNavigationItemSelectedListener() {
         homeNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.actionEvents -> homeFragmentTransaction.showEventsFragment()
-                R.id.actionSpeakers -> homeFragmentTransaction.showSpeakersFragment()
-                R.id.actionContact -> homeFragmentTransaction.showContactFragment()
+                R.id.actionEvents -> {
+                    homeFragmentTransaction.showEventsFragment()
+                    homeTitle.text = getText(R.string.events_title)
+                }
+                R.id.actionSpeakers -> {
+                    homeFragmentTransaction.showSpeakersFragment()
+                    homeTitle.text = getText(R.string.speakers_title)
+                }
+                R.id.actionContact -> {
+                    homeFragmentTransaction.showContactFragment()
+                    homeTitle.text = getText(R.string.contact_title)
+                }
             }
             true
         }

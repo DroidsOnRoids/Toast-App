@@ -50,6 +50,8 @@
         android:background="@color/colorAccent"
         app:itemIconTint="@color/home_navigation_items_color_selector"
         app:itemTextColor="@color/home_navigation_items_color_selector"
+        app:layout_anchor="@id/fragmentContainer"
+        app:layout_anchorGravity="bottom"
         app:menu="@menu/home_navigation_items"/>
 
 </android.support.design.widget.CoordinatorLayout>
