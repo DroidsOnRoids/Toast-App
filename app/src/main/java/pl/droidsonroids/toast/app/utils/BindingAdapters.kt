@@ -42,7 +42,7 @@ fun setCoverImage(imageView: ImageView, imageDto: ImageDto?) {
 }
 
 @BindingAdapter("roundImage")
-fun setRound(imageView: ImageView, imageDto: ImageDto?) {
+fun setRoundImage(imageView: ImageView, imageDto: ImageDto?) {
     val thumbnailLoader = Glide.with(imageView).load(imageDto?.thumbSizeUrl)
     Glide.with(imageView)
             .load(imageDto?.originalSizeUrl)

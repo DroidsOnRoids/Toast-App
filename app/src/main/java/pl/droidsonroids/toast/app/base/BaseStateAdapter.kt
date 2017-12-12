@@ -34,8 +34,20 @@ abstract class BaseStateAdapter<in T>(private val isHorizontal: Boolean) : Recyc
 
     override fun getItemViewType(position: Int): Int {
         return when (data[position]) {
-            is State.Loading -> if (isHorizontal) R.layout.item_loading_horizontal else R.layout.item_loading_vertical
-            is State.Error -> if (isHorizontal) R.layout.item_error_horizontal else R.layout.item_error_vertical
+            is State.Loading -> {
+                if (isHorizontal) {
+                    R.layout.item_loading_horizontal
+                } else {
+                    R.layout.item_loading_vertical
+                }
+            }
+            is State.Error -> {
+                if (isHorizontal) {
+                    R.layout.item_error_horizontal
+                } else {
+                    R.layout.item_error_vertical
+                }
+            }
             else -> getLayoutForPosition(position)
         }
     }
