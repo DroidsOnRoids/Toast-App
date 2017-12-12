@@ -4,10 +4,10 @@ import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
 import pl.droidsonroids.toast.data.Page
-import pl.droidsonroids.toast.data.api.ApiEvent
-import pl.droidsonroids.toast.data.dto.EventDetailsDto
-import pl.droidsonroids.toast.data.dto.EventDto
-import pl.droidsonroids.toast.data.dto.SplitEvents
+import pl.droidsonroids.toast.data.api.event.ApiEvent
+import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
+import pl.droidsonroids.toast.data.dto.event.EventDto
+import pl.droidsonroids.toast.data.dto.event.SplitEvents
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.services.EventService
 import pl.droidsonroids.toast.utils.toPage

@@ -1,5 +1,6 @@
-package pl.droidsonroids.toast.data.dto
+package pl.droidsonroids.toast.data.dto.event
 
+import pl.droidsonroids.toast.data.dto.ImageDto
 import java.util.*
 
 data class EventDto(

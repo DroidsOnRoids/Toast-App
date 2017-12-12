@@ -10,8 +10,8 @@ import io.reactivex.rxkotlin.toObservable
 import io.reactivex.subjects.BehaviorSubject
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
-import pl.droidsonroids.toast.data.dto.EventDetailsDto
-import pl.droidsonroids.toast.data.dto.EventDto
+import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
+import pl.droidsonroids.toast.data.dto.event.EventDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.data.wrapWithState
 import pl.droidsonroids.toast.repositories.EventsRepository

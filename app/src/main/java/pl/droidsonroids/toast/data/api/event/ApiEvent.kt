@@ -1,6 +1,7 @@
-package pl.droidsonroids.toast.data.api
+package pl.droidsonroids.toast.data.api.event
 
 import com.google.gson.annotations.SerializedName
+import pl.droidsonroids.toast.data.api.ApiImage
 import java.util.*
 
 data class ApiEvent(

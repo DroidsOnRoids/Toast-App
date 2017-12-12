@@ -1,32 +1,26 @@
-package pl.droidsonroids.toast.data.api
+package pl.droidsonroids.toast.repositories
 
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Single
-import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.junit.MockitoJUnitRunner
+import pl.droidsonroids.toast.RxTestBase
+import pl.droidsonroids.toast.data.api.event.EventDetailsResponse
+import pl.droidsonroids.toast.data.api.event.EventsResponse
 import pl.droidsonroids.toast.data.mapper.toDto
-import pl.droidsonroids.toast.repositories.EventsRepositoryImpl
-import pl.droidsonroids.toast.rule.RxPluginSchedulerRule
 import pl.droidsonroids.toast.services.EventService
 import pl.droidsonroids.toast.testEventDetails
 import pl.droidsonroids.toast.testPreviousEvents
 import pl.droidsonroids.toast.testPreviousEventsPage
 
-@RunWith(MockitoJUnitRunner::class)
-class EventsRepositoryImplTest {
+class EventsRepositoryImplTest : RxTestBase() {
 
     @Mock
     lateinit var eventService: EventService
     @InjectMocks
     lateinit var eventsRepository: EventsRepositoryImpl
-
-    @get:Rule
-    val rxPluginSchedulerRule = RxPluginSchedulerRule()
 
     @Test
     fun shouldReturnUpcomingEventAndEmptyPreviousEventsList() {

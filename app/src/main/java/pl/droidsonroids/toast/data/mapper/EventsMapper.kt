@@ -1,9 +1,9 @@
 package pl.droidsonroids.toast.data.mapper
 
-import pl.droidsonroids.toast.data.api.ApiEvent
-import pl.droidsonroids.toast.data.api.ApiEventDetails
-import pl.droidsonroids.toast.data.dto.EventDetailsDto
-import pl.droidsonroids.toast.data.dto.EventDto
+import pl.droidsonroids.toast.data.api.event.ApiEvent
+import pl.droidsonroids.toast.data.api.event.ApiEventDetails
+import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
+import pl.droidsonroids.toast.data.dto.event.EventDto
 import pl.droidsonroids.toast.viewmodels.EventItemViewModel
 
 fun ApiEventDetails.toDto(): EventDetailsDto {

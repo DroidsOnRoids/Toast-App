@@ -1,8 +1,8 @@
 package pl.droidsonroids.toast.services
 
 import io.reactivex.Single
-import pl.droidsonroids.toast.data.api.EventDetailsResponse
-import pl.droidsonroids.toast.data.api.EventsResponse
+import pl.droidsonroids.toast.data.api.event.EventDetailsResponse
+import pl.droidsonroids.toast.data.api.event.EventsResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

@@ -1,7 +1,7 @@
 package pl.droidsonroids.toast.viewmodels
 
-import pl.droidsonroids.toast.data.dto.EventDetailsDto
 import pl.droidsonroids.toast.data.dto.ImageDto
+import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
 import java.util.*
 
 

@@ -11,6 +11,7 @@ import pl.droidsonroids.toast.BuildConfig
 import pl.droidsonroids.toast.repositories.EventsRepository
 import pl.droidsonroids.toast.repositories.EventsRepositoryImpl
 import pl.droidsonroids.toast.services.EventService
+import pl.droidsonroids.toast.services.SpeakerService
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -32,14 +33,23 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideApiService(httpClient: OkHttpClient): EventService =
+    fun provideEventService(httpClient: OkHttpClient): EventService =
+            getRetrofitBuilder(httpClient)
+                    .create(EventService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideSpeakersService(httpClient: OkHttpClient): SpeakerService =
+            getRetrofitBuilder(httpClient)
+                    .create(SpeakerService::class.java)
+
+    private fun getRetrofitBuilder(httpClient: OkHttpClient) =
             Retrofit.Builder()
                     .baseUrl(BuildConfig.BASE_API_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                     .client(httpClient)
                     .build()
-                    .create(EventService::class.java)
 
     @Singleton
     @Provides
