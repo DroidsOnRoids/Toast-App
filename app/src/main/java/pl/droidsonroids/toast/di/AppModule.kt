@@ -10,6 +10,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import pl.droidsonroids.toast.BuildConfig
 import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.repositories.event.EventsRepositoryImpl
+import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
+import pl.droidsonroids.toast.repositories.speaker.SpeakersRepositoryImpl
 import pl.droidsonroids.toast.services.EventService
 import pl.droidsonroids.toast.services.SpeakerService
 import retrofit2.Retrofit
@@ -29,7 +31,11 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideApiManager(eventService: EventService): EventsRepository = EventsRepositoryImpl(eventService)
+    fun provideEventsRepository(eventService: EventService): EventsRepository = EventsRepositoryImpl(eventService)
+
+    @Singleton
+    @Provides
+    fun provideSpeakersRepository(speakerService: SpeakerService): SpeakersRepository = SpeakersRepositoryImpl(speakerService)
 
     @Singleton
     @Provides

@@ -6,5 +6,5 @@ import pl.droidsonroids.toast.data.dto.speaker.SpeakerDto
 
 interface SpeakersRepository {
 
-    fun getSpeakersPage(pageNumber: Int): Single<Page<SpeakerDto>>
+    fun getSpeakersPage(pageNumber: Int = 1): Single<Page<SpeakerDto>>
 }
