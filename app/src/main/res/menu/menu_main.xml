@@ -4,6 +4,7 @@
 
     <item
         android:id="@+id/menuItemSearch"
+        android:actionLayout="@layout/menu_search_action_layout"
         android:icon="@drawable/ic_menu_search"
         android:title="@string/search"
         app:showAsAction="ifRoom"/>

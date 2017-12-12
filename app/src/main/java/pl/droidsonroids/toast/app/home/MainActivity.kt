@@ -7,6 +7,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.utils.HomeFragmentsTransaction
+import pl.droidsonroids.toast.utils.Consts.SEARCH_ITEM_HIDDEN_OFFSET
 
 
 class MainActivity : BaseActivity() {
@@ -24,6 +25,7 @@ class MainActivity : BaseActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+        hideSearchMenuItem(menu)
         return true
     }
 
@@ -71,6 +73,16 @@ class MainActivity : BaseActivity() {
 
     private fun initHomeFragmentTransaction() {
         homeFragmentTransaction = HomeFragmentsTransaction(supportFragmentManager)
+    }
+
+    private fun hideSearchMenuItem(menu: Menu) {
+        menu.findItem(R.id.menuItemSearch)
+                .setActionView(R.layout.menu_search_action_layout)
+                .actionView
+                .animate()
+                .y(SEARCH_ITEM_HIDDEN_OFFSET)
+                .setDuration(0)
+                .start()
     }
 
     private fun consume(func: () -> Unit): Boolean {
