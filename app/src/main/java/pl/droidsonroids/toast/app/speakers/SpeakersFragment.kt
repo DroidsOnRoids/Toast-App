@@ -1,5 +1,7 @@
 package pl.droidsonroids.toast.app.speakers
 
+import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
@@ -7,17 +9,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_speakers.*
-import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.base.BaseFragment
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.wrapWithState
+import pl.droidsonroids.toast.databinding.FragmentSpeakersBinding
 import pl.droidsonroids.toast.viewmodels.SpeakerItemViewModel
+import pl.droidsonroids.toast.viewmodels.SpeakersViewModel
 
 class SpeakersFragment : BaseFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-            inflater.inflate(R.layout.fragment_speakers, container, false)
+    private lateinit var speakersViewModel: SpeakersViewModel
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        speakersViewModel = ViewModelProviders.of(this, viewModelFactory)[SpeakersViewModel::class.java]
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        val binding = FragmentSpeakersBinding.inflate(inflater, container, false)
+        binding.speakersViewModel = speakersViewModel
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupRecyclerView()
