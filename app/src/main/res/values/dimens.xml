@@ -5,6 +5,7 @@
     <dimen name="text_size_normal">16sp</dimen>
     <dimen name="text_size_large">18sp</dimen>
     <dimen name="margin_large">16dp</dimen>
+    <dimen name="margin_huge">24dp</dimen>
     <dimen name="icon_size_small">24dp</dimen>
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_medium">12dp</dimen>
