@@ -20,23 +20,14 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:background="@color/paleGrayBackground"
+            android:foreground="@drawable/sorting_title_layout_ripple"
+            android:clickable="true"
+            android:focusable="true"
             android:onClick="@{() -> sortingViewModel.toggleSortingDetailsVisibility()}"
             android:paddingStart="@dimen/margin_large"
             app:layout_constraintBottom_toTopOf="@+id/sortingDetailsLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/arrowUpImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_large"
-                android:layout_marginTop="2dp"
-                android:src="@drawable/ic_arrow_up"
-                android:visibility="@{sortingViewModel.isSortingDetailsVisible()}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
 
             <ImageView
                 android:id="@+id/arrowDownImage"
@@ -45,7 +36,19 @@
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginTop="2dp"
                 android:src="@drawable/ic_arrow_down"
-                android:visibility="@{!sortingViewModel.isSortingDetailsVisible()}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <ImageView
+                android:id="@+id/arrowUpImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:layout_marginTop="2dp"
+                android:background="@color/paleGrayBackground"
+                android:src="@drawable/ic_arrow_up"
+                android:visibility="@{sortingViewModel.isSortingDetailsVisible()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -79,14 +82,12 @@
             android:background="@color/paleGray"
             app:layout_constraintBottom_toTopOf="@+id/sortingDetailsLayout"
             app:layout_constraintEnd_toStartOf="@+id/titleSortingLayout"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/sortingDetailsLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/paleGrayBackground"
             android:visibility="@{sortingViewModel.isSortingDetailsVisible()}"
             app:layout_constraintBottom_toBottomOf="parent">
 
