@@ -7,7 +7,7 @@
 
         <variable
             name="upcomingEvent"
-            type="pl.droidsonrioids.toast.viewmodels.UpcomingEventViewModel"/>
+            type="pl.droidsonroids.toast.viewmodels.UpcomingEventViewModel"/>
     </data>
 
     <android.support.v7.widget.CardView
@@ -24,7 +24,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:context="pl.droidsonrioids.toast.app.events.EventsFragment"
+        tools:context="pl.droidsonroids.toast.app.events.EventsFragment"
         tools:parentTag="android.support.constraint.ConstraintLayout"
         tools:showIn="@layout/fragment_events">
 
@@ -37,7 +37,7 @@
                 android:layout_width="0dp"
                 android:layout_height="182dp"
                 android:layout_marginBottom="@dimen/margin_large"
-                app:eventCoverImage="@{upcomingEvent.coverImage}"
+                app:coverImage="@{upcomingEvent.coverImage}"
                 app:layout_constraintBottom_toTopOf="@+id/upcomingEventTitleText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
