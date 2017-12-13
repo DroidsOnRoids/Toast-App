@@ -60,7 +60,7 @@ class TestHomeScreen {
     fun isDialogClosedAfterClickingOnCloseButton() {
         showDialog()
         HomeRobot().checkIfElementWithIdIsDisplayedInDialog(R.id.closeImageButton)
-        HomeRobot().performClickOnElementWithId(R.id.closeImageButton)
+                .performClickOnElementWithId(R.id.closeImageButton)
         isDialogClosed()
     }
 
@@ -75,7 +75,7 @@ class TestHomeScreen {
     fun isDialogNotDismissedAfterTappingOnDialog() {
         showDialog()
         HomeRobot().performClickOnElementWithId(R.id.toastLogoImage)
-        HomeRobot().checkIfElementWithIdIsDisplayedInDialog(R.id.toastLogoImage)
+                .checkIfElementWithIdIsDisplayedInDialog(R.id.toastLogoImage)
     }
 
     @Test
@@ -113,10 +113,33 @@ class TestHomeScreen {
     fun isFbFanPageDeepLinkDisplayedAndActive() {
         showDialog()
         HomeRobot().checkIfTextIsCorrect(getString(R.string.toast_facebook_fanpage), R.id.fanpageLinkText)
-        HomeRobot().performClickOnElementWithId(R.id.fanpageLinkText)
+                .performClickOnElementWithId(R.id.fanpageLinkText)
         UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).pressBack()
         isDialogClosed()
     }
 
+    @Test
+    fun isEveryElementDisplayedProperlyOnUpcomingEventCard() {
+        HomeRobot().checkIfElementWithIdIsDisplayed(R.id.topBar)
+                .checkIfElementWithIdIsDisplayed(R.id.upcomingEventImage)
+                .checkIfElementWithIdIsDisplayed(R.id.upcomingEventTitleText)
+                .checkIfTextIsCorrect(getString(R.string.android_developers_meet_up), R.id.upcomingEventDescriptionText)
+                .checkIfElementWithIdIsDisplayed(R.id.upcomingEventLocationImage)
+                .checkIfElementWithIdIsDisplayed(R.id.upcomingEventPlaceTitleText)
+                .checkIfElementWithIdIsDisplayed(R.id.upcomingEventPlaceLocationText)
+                .checkIfElementWithIdIsDisplayed(R.id.upcomingEventCalendarImage)
+                .checkIfElementWithIdIsDisplayed(R.id.upcomingEventDateText)
+                .checkIfElementWithIdIsDisplayed(R.id.upcomingEventClockImage)
+                .checkIfElementWithIdIsDisplayed(R.id.upcomingEventTimeText)
 
+    }
+
+    @Test
+    fun isEveryDividerDisplayedOnUpcomingEventCard() {
+        HomeRobot().checkIfElementWithIdIsDisplayed(R.id.upcomingEventTitleDivider)
+                .checkIfElementWithIdIsDisplayed(R.id.upcomingEventlocationDivider)
+                .checkIfElementWithIdIsDisplayed(R.id.upcomingEventTimeDivider)
+                .checkIfElementWithIdIsDisplayed(R.id.upcomingEventDateDivider)
+
+    }
 }
