@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,9 +13,21 @@
         android:elevation="@dimen/home_toolbar_elevation"
         android:translationY="-10dp"/>
 
+    <include
+        android:id="@+id/sortingBarLayout"
+        layout="@layout/layout_speakers_sorting_bar"
+        app:layout_constraintBottom_toTopOf="@+id/speakersRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/speakersRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"/>
-</FrameLayout>
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sortingBarLayout"/>
+</android.support.constraint.ConstraintLayout>
