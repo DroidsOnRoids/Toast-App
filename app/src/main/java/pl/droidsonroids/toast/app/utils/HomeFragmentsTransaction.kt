@@ -44,11 +44,11 @@ class HomeFragmentsTransaction(private val supportFragmentManager: FragmentManag
         supportFragmentManager.beginTransaction {
             setCustomAnimations(R.anim.animation_translated_cross_fade_in, R.anim.animation_cross_fade_out)
 
-            currentFragment?.let { detach(it) }
+            currentFragment?.let { hide(it) }
 
             val fragmentToReplace = supportFragmentManager.findFragmentByTag(fragmentTag)
             fragmentToReplace?.let {
-                attach(it)
+                show(it)
                 currentFragment = it
             } ?: run {
                 val newFragment = fragmentCreator()

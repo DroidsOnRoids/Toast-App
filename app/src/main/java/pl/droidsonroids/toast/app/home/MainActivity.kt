@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.utils.HomeFragmentsTransaction
-import pl.droidsonroids.toast.utils.Consts.SEARCH_ITEM_HIDDEN_OFFSET
+import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_HIDDEN_OFFSET
 
 
 class MainActivity : BaseActivity() {
@@ -50,15 +50,15 @@ class MainActivity : BaseActivity() {
             when (item.itemId) {
                 R.id.actionEvents -> {
                     homeFragmentTransaction.showEventsFragment()
-                    homeTitle.text = getText(R.string.events_title)
+                    setHomeTitleText(R.string.events_title)
                 }
                 R.id.actionSpeakers -> {
                     homeFragmentTransaction.showSpeakersFragment()
-                    homeTitle.text = getText(R.string.speakers_title)
+                    setHomeTitleText(R.string.speakers_title)
                 }
                 R.id.actionContact -> {
                     homeFragmentTransaction.showContactFragment()
-                    homeTitle.text = getText(R.string.contact_title)
+                    setHomeTitleText(R.string.contact_title)
                 }
             }
             true
@@ -71,6 +71,10 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    private fun setHomeTitleText(titleRes: Int) {
+        homeTitle.text = getText(titleRes)
+    }
+
     private fun initHomeFragmentTransaction() {
         homeFragmentTransaction = HomeFragmentsTransaction(supportFragmentManager)
     }
@@ -79,10 +83,7 @@ class MainActivity : BaseActivity() {
         menu.findItem(R.id.menuItemSearch)
                 .setActionView(R.layout.menu_search_action_layout)
                 .actionView
-                .animate()
-                .y(SEARCH_ITEM_HIDDEN_OFFSET)
-                .setDuration(0)
-                .start()
+                .translationY = SEARCH_ITEM_HIDDEN_OFFSET
     }
 
     private fun consume(func: () -> Unit): Boolean {

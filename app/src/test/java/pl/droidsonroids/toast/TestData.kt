@@ -7,11 +7,11 @@ import pl.droidsonroids.toast.data.api.ApiEventDetails
 import pl.droidsonroids.toast.data.api.ApiImage
 import pl.droidsonroids.toast.data.dto.SplitEvents
 import pl.droidsonroids.toast.data.mapper.toDto
-import pl.droidsonroids.toast.utils.Consts
+import pl.droidsonroids.toast.utils.Constants
 import java.text.SimpleDateFormat
 import java.util.*
 
-val testDate: Date = SimpleDateFormat(Consts.DATE_PATTERN).parse("1.12.2017")
+val testDate: Date = SimpleDateFormat(Constants.DATE_PATTERN).parse("1.12.2017")
 
 val testEventDetails = ApiEventDetails(
         1,
