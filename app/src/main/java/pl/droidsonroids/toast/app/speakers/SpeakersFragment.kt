@@ -9,12 +9,12 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_speakers.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.base.BaseFragment
-import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_ANIM_DURATION
-import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_HIDDEN_OFFSET
-import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_SHOWN_OFFSET
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.wrapWithState
+import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_ANIM_DURATION
+import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_HIDDEN_OFFSET
+import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_SHOWN_OFFSET
 import pl.droidsonroids.toast.viewmodels.SpeakerItemViewModel
 
 class SpeakersFragment : BaseFragment() {
@@ -28,10 +28,11 @@ class SpeakersFragment : BaseFragment() {
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
-        if (hidden)
+        if (hidden) {
             hideSearchMenuItemWithAnimation()
-        else
+        } else {
             showSearchMenuItemWithAnimation()
+        }
     }
 
     private fun showSearchMenuItemWithAnimation() {
@@ -58,12 +59,16 @@ class SpeakersFragment : BaseFragment() {
             adapter = speakersAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             addItemDecoration(SpeakerItemDecoration(context.applicationContext))
+
             // TODO: TOA-56 add lazy loading && data retrieving
-            val sampleData = (0..10L)
-                    .map { getSampleSpeaker(it) }
-                    .map(::wrapWithState) + State.Loading + State.Error {}
-            speakersAdapter.setData(sampleData)
+            speakersAdapter.setData(getSampleData())
         }
+    }
+
+    private fun getSampleData(): List<State<SpeakerItemViewModel>> {
+        return (0..10L)
+                .map { getSampleSpeaker(it) }
+                .map(::wrapWithState) + State.Loading + State.Error {}
     }
 
     private fun getSampleSpeaker(id: Long): SpeakerItemViewModel {

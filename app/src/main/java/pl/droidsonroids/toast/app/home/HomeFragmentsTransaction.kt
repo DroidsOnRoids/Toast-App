@@ -1,12 +1,12 @@
-package pl.droidsonroids.toast.app.utils
+package pl.droidsonroids.toast.app.home
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.contact.ContactFragment
 import pl.droidsonroids.toast.app.events.EventsFragment
-import pl.droidsonroids.toast.app.home.InfoDialogFragment
 import pl.droidsonroids.toast.app.speakers.SpeakersFragment
+import pl.droidsonroids.toast.app.utils.beginTransaction
 
 private const val EVENTS_FRAGMENT_TAG = "events_fragment_tag"
 private const val SPEAKERS_FRAGMENT_TAG = "speakers_fragment_tag"

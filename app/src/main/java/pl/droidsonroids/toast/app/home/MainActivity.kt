@@ -6,7 +6,6 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.base.BaseActivity
-import pl.droidsonroids.toast.app.utils.HomeFragmentsTransaction
 import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_HIDDEN_OFFSET
 
 
