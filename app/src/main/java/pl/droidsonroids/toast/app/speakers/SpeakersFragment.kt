@@ -12,6 +12,9 @@ import pl.droidsonroids.toast.app.base.BaseFragment
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.wrapWithState
+import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_ANIM_DURATION_MILLIS
+import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_HIDDEN_OFFSET
+import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_SHOWN_OFFSET
 import pl.droidsonroids.toast.viewmodels.SpeakerItemViewModel
 
 class SpeakersFragment : BaseFragment() {
@@ -20,7 +23,34 @@ class SpeakersFragment : BaseFragment() {
             inflater.inflate(R.layout.fragment_speakers, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        showSearchMenuItemWithAnimation()
         setupRecyclerView()
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        if (hidden) {
+            hideSearchMenuItemWithAnimation()
+        } else {
+            showSearchMenuItemWithAnimation()
+        }
+    }
+
+    private fun showSearchMenuItemWithAnimation() {
+        animateViewByY(SEARCH_ITEM_SHOWN_OFFSET)
+    }
+
+    private fun hideSearchMenuItemWithAnimation() {
+        animateViewByY(SEARCH_ITEM_HIDDEN_OFFSET)
+    }
+
+    private fun animateViewByY(offset: Float) {
+        activity?.run {
+            findViewById<View>(R.id.menuItemSearch)
+                    .animate()
+                    .y(offset)
+                    .setDuration(SEARCH_ITEM_ANIM_DURATION_MILLIS)
+                    .start()
+        }
     }
 
     private fun setupRecyclerView() {
@@ -29,12 +59,16 @@ class SpeakersFragment : BaseFragment() {
             adapter = speakersAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             addItemDecoration(SpeakerItemDecoration(context.applicationContext))
+
             // TODO: TOA-56 add lazy loading && data retrieving
-            val sampleData = (0..10L)
-                    .map { getSampleSpeaker(it) }
-                    .map(::wrapWithState) + State.Loading + State.Error {}
-            speakersAdapter.setData(sampleData)
+            speakersAdapter.setData(getSampleData())
         }
+    }
+
+    private fun getSampleData(): List<State<SpeakerItemViewModel>> {
+        return (0..10L)
+                .map { getSampleSpeaker(it) }
+                .map(::wrapWithState) + State.Loading + State.Error {}
     }
 
     private fun getSampleSpeaker(id: Long): SpeakerItemViewModel {
@@ -52,4 +86,3 @@ class SpeakersFragment : BaseFragment() {
         }
     }
 }
-
