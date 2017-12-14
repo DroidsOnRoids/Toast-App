@@ -6,7 +6,7 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.base.BaseActivity
-import pl.droidsonroids.toast.app.utils.HomeFragmentsTransaction
+import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_HIDDEN_OFFSET
 
 
 class MainActivity : BaseActivity() {
@@ -24,6 +24,7 @@ class MainActivity : BaseActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+        hideSearchMenuItem(menu)
         return true
     }
 
@@ -46,9 +47,18 @@ class MainActivity : BaseActivity() {
     private fun setHomeNavigationItemSelectedListener() {
         homeNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.actionEvents -> homeFragmentTransaction.showEventsFragment()
-                R.id.actionSpeakers -> homeFragmentTransaction.showSpeakersFragment()
-                R.id.actionContact -> homeFragmentTransaction.showContactFragment()
+                R.id.actionEvents -> {
+                    homeFragmentTransaction.showEventsFragment()
+                    setHomeTitleText(R.string.events_title)
+                }
+                R.id.actionSpeakers -> {
+                    homeFragmentTransaction.showSpeakersFragment()
+                    setHomeTitleText(R.string.speakers_title)
+                }
+                R.id.actionContact -> {
+                    homeFragmentTransaction.showContactFragment()
+                    setHomeTitleText(R.string.contact_title)
+                }
             }
             true
         }
@@ -60,8 +70,19 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    private fun setHomeTitleText(titleRes: Int) {
+        homeTitle.text = getText(titleRes)
+    }
+
     private fun initHomeFragmentTransaction() {
         homeFragmentTransaction = HomeFragmentsTransaction(supportFragmentManager)
+    }
+
+    private fun hideSearchMenuItem(menu: Menu) {
+        menu.findItem(R.id.menuItemSearch)
+                .setActionView(R.layout.menu_search_action_layout)
+                .actionView
+                .translationY = SEARCH_ITEM_HIDDEN_OFFSET
     }
 
     private fun consume(func: () -> Unit): Boolean {

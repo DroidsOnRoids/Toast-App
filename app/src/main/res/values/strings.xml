@@ -24,4 +24,6 @@
     <string name="sort">Sort</string>
     <string name="alphabetical">Alphabetical</string>
     <string name="date">Date</string>
+    <string name="toast_title">TOAST</string>
+    <string name="search">Search</string>
 </resources>

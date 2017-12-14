@@ -1,12 +1,12 @@
-package pl.droidsonroids.toast.app.utils
+package pl.droidsonroids.toast.app.home
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.contact.ContactFragment
 import pl.droidsonroids.toast.app.events.EventsFragment
-import pl.droidsonroids.toast.app.home.InfoDialogFragment
 import pl.droidsonroids.toast.app.speakers.SpeakersFragment
+import pl.droidsonroids.toast.app.utils.beginTransaction
 
 private const val EVENTS_FRAGMENT_TAG = "events_fragment_tag"
 private const val SPEAKERS_FRAGMENT_TAG = "speakers_fragment_tag"
@@ -44,13 +44,17 @@ class HomeFragmentsTransaction(private val supportFragmentManager: FragmentManag
         supportFragmentManager.beginTransaction {
             setCustomAnimations(R.anim.animation_translated_cross_fade_in, R.anim.animation_cross_fade_out)
 
-            currentFragment?.let { detach(it) }
+            currentFragment?.let { hide(it) }
 
             val fragmentToReplace = supportFragmentManager.findFragmentByTag(fragmentTag)
             fragmentToReplace?.let {
-                attach(it)
-            } ?: add(R.id.fragmentContainer, fragmentCreator(), fragmentTag)
-            currentFragment = fragmentToReplace
+                show(it)
+                currentFragment = it
+            } ?: run {
+                val newFragment = fragmentCreator()
+                add(R.id.fragmentContainer, newFragment, fragmentTag)
+                currentFragment = newFragment
+            }
         }
     }
 
