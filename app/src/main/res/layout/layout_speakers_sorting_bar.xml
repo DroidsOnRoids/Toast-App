@@ -84,21 +84,21 @@
             app:layout_constraintEnd_toStartOf="@+id/titleSortingLayout"
             app:layout_constraintTop_toTopOf="parent"/>
 
+        <View
+            android:id="@+id/sortTopBarDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/paleGray"
+            app:layout_constraintTop_toBottomOf="@+id/sortTitleDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
         <android.support.constraint.ConstraintLayout
             android:id="@+id/sortingDetailsLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:visibility="@{sortingViewModel.isSortingDetailsVisible()}"
             app:layout_constraintBottom_toBottomOf="parent">
-
-            <View
-                android:id="@+id/sortTopBarDivider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/paleGray"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
 
             <ImageView
                 android:id="@+id/alphabeticalSortImage"
@@ -108,7 +108,7 @@
                 android:src="@drawable/ic_sorting_alphabetical"
                 app:layout_constraintBottom_toTopOf="@+id/alphabeticalDivider"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sortTopBarDivider"/>
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
                 android:id="@+id/alphabeticalText"
@@ -119,7 +119,7 @@
                 android:text="@string/alphabetical"
                 app:layout_constraintBottom_toTopOf="@+id/alphabeticalDivider"
                 app:layout_constraintStart_toEndOf="@+id/alphabeticalSortImage"
-                app:layout_constraintTop_toBottomOf="@+id/sortTopBarDivider"/>
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <View
                 android:id="@+id/alphabeticalDivider"
