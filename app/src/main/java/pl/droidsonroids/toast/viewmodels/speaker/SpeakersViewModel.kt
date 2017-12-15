@@ -93,14 +93,14 @@ class SpeakersViewModel @Inject constructor(private val speakersRepository: Spea
         Log.e(simpleClassName, "Something went wrong with fetching data for SpeakersViewModel", throwable)
     }
 
-    fun loadNextPage() {
+    fun loadPage() {
         val nextPageNumber = this.nextPageNumber
         if (!isNextPageLoading && nextPageNumber != null) {
-            loadNextPage(nextPageNumber)
+            loadPage(nextPageNumber)
         }
     }
 
-    private fun loadNextPage(pageNumber: Int) {
+    private fun loadPage(pageNumber: Int) {
         isNextPageLoading = true
         speakersDisposable = speakersRepository.getSpeakersPage(pageNumber)
                 .flatMap(::mapToSingleSpeakerItemViewModelsPage)
@@ -124,7 +124,7 @@ class SpeakersViewModel @Inject constructor(private val speakersRepository: Spea
     private fun onErrorClick() {
         val previousEvents = mergeWithExistingSpeakers(listOf(State.Loading))
         speakersSubject.onNext(previousEvents)
-        nextPageNumber?.let { loadNextPage(it) }
+        nextPageNumber?.let { loadPage(it) }
     }
 
     override fun onCleared() {

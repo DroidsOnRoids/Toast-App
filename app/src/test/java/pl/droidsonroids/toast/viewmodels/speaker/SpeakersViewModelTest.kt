@@ -86,7 +86,7 @@ class SpeakersViewModelTest : RxTestBase() {
         whenever(speakersRepository.getSpeakersPage(2)).thenReturn(Single.error(Exception()))
         speakersViewModel = SpeakersViewModel(speakersRepository)
 
-        speakersViewModel.loadNextPage()
+        speakersViewModel.loadPage()
 
         val speakerItemViewModelList = speakersViewModel.speakersSubject.value
         assertThat(speakerItemViewModelList.last() is State.Error, `is`(true))
@@ -101,7 +101,7 @@ class SpeakersViewModelTest : RxTestBase() {
         whenever(speakersRepository.getSpeakersPage(2)).thenReturn(Single.just(secondSpeakersPage))
         speakersViewModel = SpeakersViewModel(speakersRepository)
 
-        speakersViewModel.loadNextPage()
+        speakersViewModel.loadPage()
 
         val speakerItemViewModelList = speakersViewModel.speakersSubject.value
         assertThat(speakerItemViewModelList.size, equalTo(itemsCountOnAllPages))
