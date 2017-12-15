@@ -93,7 +93,7 @@ class SpeakersViewModel @Inject constructor(private val speakersRepository: Spea
         Log.e(simpleClassName, "Something went wrong with fetching data for SpeakersViewModel", throwable)
     }
 
-    fun loadPage() {
+    fun loadNextPage() {
         val nextPageNumber = this.nextPageNumber
         if (!isNextPageLoading && nextPageNumber != null) {
             loadPage(nextPageNumber)

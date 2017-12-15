@@ -74,7 +74,7 @@ class SpeakersFragment : BaseFragment() {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             addItemDecoration(SpeakerItemDecoration(context.applicationContext))
             addOnScrollListener(LazyLoadingScrollListener {
-                speakersViewModel.loadPage()
+                speakersViewModel.loadNextPage()
             })
 
             subscribeToSpeakersChange(speakersAdapter)
