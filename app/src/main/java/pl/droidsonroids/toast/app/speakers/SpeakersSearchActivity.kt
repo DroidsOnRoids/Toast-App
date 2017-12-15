@@ -17,6 +17,5 @@ class SpeakersSearchActivity : BaseActivity() {
         setContentView(R.layout.activity_speakers_search)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        searchBox.requestFocus()
     }
 }
