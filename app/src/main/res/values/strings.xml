@@ -21,4 +21,9 @@
     <string name="android_developers_meet_up">Android Developers Meet-up</string>
     <string name="oops_no_internet_connection">Oops! No internet connection.</string>
     <string name="please_check_your_internet_settings">Please check your internet settings.</string>
+    <string name="sort">Sort</string>
+    <string name="alphabetical">Alphabetical</string>
+    <string name="date">Date</string>
+    <string name="toast_title">TOAST</string>
+    <string name="search">Search</string>
 </resources>
