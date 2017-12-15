@@ -7,7 +7,7 @@
 
         <variable
             name="speakersViewModel"
-            type="pl.droidsonroids.toast.viewmodels.SpeakersViewModel"/>
+            type="pl.droidsonroids.toast.viewmodels.speaker.SpeakersViewModel"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -40,6 +40,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sortingBarLayout"/>
+
+        <include
+            android:id="@+id/loadingLayout"
+            layout="@layout/layout_loading"
+            app:loadingViewModel="@{speakersViewModel}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
     </android.support.constraint.ConstraintLayout>
 
 </layout>

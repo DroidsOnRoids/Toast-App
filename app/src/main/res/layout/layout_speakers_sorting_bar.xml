@@ -7,7 +7,7 @@
 
         <variable
             name="sortingViewModel"
-            type="pl.droidsonroids.toast.viewmodels.SpeakersViewModel"/>
+            type="pl.droidsonroids.toast.viewmodels.speaker.SpeakersViewModel"/>
     </data>
 
     <android.support.constraint.ConstraintLayout

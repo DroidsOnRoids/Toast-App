@@ -14,11 +14,12 @@ import pl.droidsonroids.toast.app.base.BaseFragment
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.wrapWithState
+import pl.droidsonroids.toast.databinding.FragmentSpeakersBinding
 import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_ANIM_DURATION_MILLIS
 import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_HIDDEN_OFFSET
 import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_SHOWN_OFFSET
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakerItemViewModel
-import pl.droidsonroids.toast.viewmodels.SpeakersViewModel
+import pl.droidsonroids.toast.viewmodels.speaker.SpeakersViewModel
 
 class SpeakersFragment : BaseFragment() {
 

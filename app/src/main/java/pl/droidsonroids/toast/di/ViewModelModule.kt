@@ -6,7 +6,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import pl.droidsonroids.toast.viewmodels.event.EventsViewModel
-import pl.droidsonroids.toast.viewmodels.SpeakersViewModel
+import pl.droidsonroids.toast.viewmodels.speaker.SpeakersViewModel
 
 @Module
 abstract class ViewModelModule {

@@ -22,6 +22,7 @@ import javax.inject.Inject
 class SpeakersViewModel @Inject constructor(private val speakersRepository: SpeakersRepository) : ViewModel(), LoadingViewModel {
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField()
     val speakersSubject: BehaviorSubject<List<State<SpeakerItemViewModel>>> = BehaviorSubject.create()
+    val isSortingDetailsVisible: ObservableField<Boolean> = ObservableField()
 
     private var isNextPageLoading: Boolean = false
     private var nextPageNumber: Int? = null
@@ -29,7 +30,12 @@ class SpeakersViewModel @Inject constructor(private val speakersRepository: Spea
     private val Any.simpleClassName: String get() = javaClass.simpleName
 
     init {
+        isSortingDetailsVisible.set(false)
         loadFirstPage()
+    }
+
+    fun toggleSortingDetailsVisibility() {
+        isSortingDetailsVisible.set(!isSortingDetailsVisible.get())
     }
 
     override fun retryLoading() {
