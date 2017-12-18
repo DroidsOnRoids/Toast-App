@@ -9,4 +9,7 @@ import retrofit2.http.Query
 interface SpeakerService {
     @GET("speakers")
     fun getSpeakers(@Query("per_page") pageSize: Int = Constants.PAGE_SIZE, @Query("page") pageNumber: Int = Constants.FIRST_PAGE): Single<SpeakersResponse>
+
+    @GET("speakers")
+    fun searchSpeakers(@Query("query") query: String, @Query("per_page") pageSize: Int = Constants.PAGE_SIZE, @Query("page") pageNumber: Int = Constants.FIRST_PAGE): Single<SpeakersResponse>
 }
