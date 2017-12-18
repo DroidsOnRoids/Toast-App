@@ -1,17 +1,31 @@
 package pl.droidsonroids.toast.app.home
 
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonroids.toast.R
+import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_HIDDEN_OFFSET
+import pl.droidsonroids.toast.viewmodels.MainViewModel
+import javax.inject.Inject
 
 
 class MainActivity : BaseActivity() {
 
     private lateinit var homeFragmentTransaction: HomeFragmentsTransaction
+
+    @Inject
+    lateinit var navigator: Navigator
+
+    private val mainViewModel by lazy {
+        ViewModelProviders.of(this)[MainViewModel::class.java]
+    }
+
+    private var navigationDisposable: Disposable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,11 +34,13 @@ class MainActivity : BaseActivity() {
         setupToolbar()
         setupNavigationView()
         initHomeFragmentTransaction()
+
+        setupViewModel()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-        hideSearchMenuItem(menu)
+        prepareSearchMenuItem(menu)
         return true
     }
 
@@ -42,6 +58,11 @@ class MainActivity : BaseActivity() {
     private fun setupNavigationView() {
         setHomeNavigationItemReselectedListener()
         setHomeNavigationItemSelectedListener()
+    }
+
+    private fun setupViewModel() {
+        navigationDisposable = mainViewModel.navigationSubject
+                .subscribe { navigator.dispatch(this, it) }
     }
 
     private fun setHomeNavigationItemSelectedListener() {
@@ -78,11 +99,19 @@ class MainActivity : BaseActivity() {
         homeFragmentTransaction = HomeFragmentsTransaction(supportFragmentManager)
     }
 
-    private fun hideSearchMenuItem(menu: Menu) {
+    private fun prepareSearchMenuItem(menu: Menu) {
         menu.findItem(R.id.menuItemSearch)
                 .setActionView(R.layout.menu_search_action_layout)
                 .actionView
-                .translationY = SEARCH_ITEM_HIDDEN_OFFSET
+                .apply {
+                    translationY = SEARCH_ITEM_HIDDEN_OFFSET
+                    setOnClickListener { mainViewModel.onSpeakerSearchRequested() }
+                }
+    }
+
+    override fun onDestroy() {
+        navigationDisposable?.dispose()
+        super.onDestroy()
     }
 
     private fun consume(func: () -> Unit): Boolean {
