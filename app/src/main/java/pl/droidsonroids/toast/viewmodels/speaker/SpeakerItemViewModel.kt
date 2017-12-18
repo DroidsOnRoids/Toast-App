@@ -1,4 +1,4 @@
-package pl.droidsonroids.toast.viewmodels
+package pl.droidsonroids.toast.viewmodels.speaker
 
 import pl.droidsonroids.toast.data.dto.ImageDto
 

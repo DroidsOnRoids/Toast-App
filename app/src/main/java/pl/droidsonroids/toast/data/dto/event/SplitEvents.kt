@@ -1,4 +1,4 @@
-package pl.droidsonroids.toast.data.dto
+package pl.droidsonroids.toast.data.dto.event
 
 import pl.droidsonroids.toast.data.Page
 

@@ -1,4 +1,4 @@
-package pl.droidsonroids.toast.viewmodels
+package pl.droidsonroids.toast.viewmodels.event
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
@@ -10,13 +10,14 @@ import io.reactivex.rxkotlin.toObservable
 import io.reactivex.subjects.BehaviorSubject
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
-import pl.droidsonroids.toast.data.dto.EventDetailsDto
-import pl.droidsonroids.toast.data.dto.EventDto
+import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
+import pl.droidsonroids.toast.data.dto.event.EventDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.data.wrapWithState
-import pl.droidsonroids.toast.repositories.EventsRepository
+import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.toPage
+import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import javax.inject.Inject
 
 class EventsViewModel @Inject constructor(private val eventsRepository: EventsRepository) : ViewModel(), LoadingViewModel {
