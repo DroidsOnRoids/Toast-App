@@ -11,11 +11,20 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/paleGrayBackground</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="AppTheme.AppBarOverlay.Light" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorControlNormal">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.PopupOverlay.Light" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="colorControlNormal">@color/colorAccent</item>
+    </style>
 
     <style name="TextAppearance.Roboto" parent="TextAppearance.AppCompat">
         <item name="android:fontFamily">@font/roboto</item>
@@ -35,6 +44,13 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:letterSpacing">0.1</item>
         <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="SearchTextStyle">
+        <item name="android:textSize">@dimen/text_size_normal</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textColor">@color/blueDark</item>
+        <item name="android:letterSpacing">0.1</item>
     </style>
 
     <style name="EventHeaderStyle">
