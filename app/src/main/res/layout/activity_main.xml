@@ -45,7 +45,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="4dp"
-        android:layout_gravity="bottom"
         android:background="@drawable/bottom_nav_bar_shadow"
         app:layout_anchor="@+id/homeNavigationView"/>
 
