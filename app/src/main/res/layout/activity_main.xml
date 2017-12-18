@@ -39,7 +39,7 @@
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="56dp"
+        android:paddingBottom="@dimen/bottom_bar_height"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <View
@@ -47,7 +47,7 @@
         android:layout_height="4dp"
         android:layout_gravity="bottom"
         android:background="@drawable/bottom_nav_bar_shadow"
-        android:layout_marginBottom="56dp"/>
+        app:layout_anchor="@+id/homeNavigationView"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/homeNavigationView"
