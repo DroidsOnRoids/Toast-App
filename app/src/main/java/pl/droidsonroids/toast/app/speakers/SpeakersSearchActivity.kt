@@ -6,6 +6,8 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_speakers_search.*
@@ -32,6 +34,18 @@ class SpeakersSearchActivity : BaseActivity() {
         setupToolbar()
         setupViewModel(speakersSearchBinding)
         setupRecyclerView()
+        setupSearchAction()
+    }
+
+    private fun setupSearchAction() {
+        searchBox.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                speakersSearchViewModel.search()
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(searchBox.windowToken, 0)
+            }
+            true
+        }
     }
 
     private fun setupToolbar() {

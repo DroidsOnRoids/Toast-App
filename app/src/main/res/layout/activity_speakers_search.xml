@@ -30,19 +30,35 @@
                 app:contentInsetEnd="@dimen/margin_large"
                 app:popupTheme="@style/AppTheme.PopupOverlay.Light">
 
-                <EditText
-                    android:id="@+id/searchBox"
-                    style="@style/SearchTextStyle"
+                <LinearLayout
+                    android:id="@+id/searchBoxContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:background="@null"
-                    android:hint="@string/search_hint"
-                    android:imeOptions="actionSearch"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:text="@={speakersSearchViewModel.searchPhrase}"
-                    android:textAllCaps="true"/>
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/searchBox"
+                        style="@style/SearchTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:hint="@string/search_hint"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:text="@={speakersSearchViewModel.searchPhrase}"
+                        android:textAllCaps="true"/>
+
+                    <ProgressBar
+                        android:id="@+id/loadingIndicator"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="@dimen/margin_large"
+                        app:loadingIndicatorVisibility="@{speakersSearchViewModel.loadingStatus}"/>
+                </LinearLayout>
+
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>
