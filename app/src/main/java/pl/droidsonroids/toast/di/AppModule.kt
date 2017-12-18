@@ -8,8 +8,6 @@ import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import pl.droidsonroids.toast.BuildConfig
-import pl.droidsonroids.toast.app.Navigator
-import pl.droidsonroids.toast.app.NavigatorImpl
 import pl.droidsonroids.toast.repositories.EventsRepository
 import pl.droidsonroids.toast.repositories.EventsRepositoryImpl
 import pl.droidsonroids.toast.services.EventService
@@ -42,10 +40,6 @@ class AppModule {
                     .client(httpClient)
                     .build()
                     .create(EventService::class.java)
-
-    @Singleton
-    @Provides
-    fun provideNavigator(): Navigator = NavigatorImpl()
 
     @Singleton
     @Provides

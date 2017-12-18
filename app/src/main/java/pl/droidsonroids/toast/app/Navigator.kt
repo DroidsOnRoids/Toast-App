@@ -1,8 +1,21 @@
 package pl.droidsonroids.toast.app
 
 import android.content.Context
+import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
 import pl.droidsonroids.toast.utils.NavigationRequest
+import javax.inject.Inject
+import javax.inject.Singleton
 
-interface Navigator {
-    fun dispatch(context: Context, navigationRequest: NavigationRequest)
+@Singleton
+class Navigator @Inject constructor() {
+    fun dispatch(context: Context, navigationRequest: NavigationRequest) {
+        when (navigationRequest) {
+            is NavigationRequest.SpeakersSearch -> showSpeakersSearch(context)
+        }
+    }
+
+    private fun showSpeakersSearch(context: Context) {
+        val intent = SpeakersSearchActivity.createIntent(context)
+        context.startActivity(intent)
+    }
 }
