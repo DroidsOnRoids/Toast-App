@@ -59,7 +59,7 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel {
     protected fun mergeWithExistingSpeakers(newList: List<State<SpeakerItemViewModel>>): List<State<SpeakerItemViewModel>> {
         val previousList = speakersSubject.value
                 ?.filter { it is State.Item }
-                ?: listOf()
+                ?: emptyList()
         return previousList + newList
     }
 

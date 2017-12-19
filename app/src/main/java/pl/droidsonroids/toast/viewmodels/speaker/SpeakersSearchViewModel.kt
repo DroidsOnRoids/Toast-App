@@ -26,6 +26,7 @@ class SpeakersSearchViewModel @Inject constructor(private val speakersRepository
     init {
         searchDisposable = searchObservable
                 .debounce(1, TimeUnit.SECONDS)
+                .map(String::trim)
                 .filter(::shouldPerformSearch)
                 .doOnNext { disposePreviousLoad() }
                 .doOnNext { lastSearchedPhrase = it }
@@ -67,7 +68,7 @@ class SpeakersSearchViewModel @Inject constructor(private val speakersRepository
     }
 
     fun requestSearch() {
-        val query = searchPhrase.get()
+        val query = searchPhrase.get().trim()
         if (shouldPerformSearch(query)) {
             search(query)
         }
