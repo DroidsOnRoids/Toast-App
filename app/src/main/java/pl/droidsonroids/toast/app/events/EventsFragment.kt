@@ -13,17 +13,24 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_events.*
 import pl.droidsonroids.toast.R
+import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseFragment
 import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
 import pl.droidsonroids.toast.databinding.FragmentEventsBinding
 import pl.droidsonroids.toast.viewmodels.event.EventsViewModel
+import javax.inject.Inject
 
 private const val TOP_BAR_TRANSLATION_FACTOR = 2f
 
 class EventsFragment : BaseFragment() {
 
+    @Inject
+    lateinit var navigator: Navigator
     private lateinit var eventsViewModel: EventsViewModel
+
     private var previousEventsDisposable: Disposable? = null
+
+    private var navigationDisposable: Disposable? = null
 
     private val topBarHeight by lazy {
         resources.getDimension(R.dimen.events_top_bar_height)
@@ -35,15 +42,23 @@ class EventsFragment : BaseFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        eventsViewModel = ViewModelProviders.of(this, viewModelFactory)[EventsViewModel::class.java]
+        setupViewModel()
     }
+
+    private fun setupViewModel() {
+        eventsViewModel = ViewModelProviders.of(this, viewModelFactory)[EventsViewModel::class.java]
+        navigationDisposable = eventsViewModel.navigationSubject
+                .subscribe { request ->
+                    context?.let { navigator.dispatch(it, request) }
+                }
+    }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = FragmentEventsBinding.inflate(inflater, container, false)
         binding.eventsViewModel = eventsViewModel
         return binding.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupRecyclerView()
@@ -87,6 +102,11 @@ class EventsFragment : BaseFragment() {
     override fun onDestroyView() {
         previousEventsDisposable?.dispose()
         super.onDestroyView()
+    }
+
+    override fun onDetach() {
+        navigationDisposable?.dispose()
+        super.onDetach()
     }
 }
 
