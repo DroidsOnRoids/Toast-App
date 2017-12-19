@@ -38,14 +38,7 @@ class SpeakersFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         showSearchMenuItemWithAnimation()
         setupRecyclerView()
-    }
-
-    override fun onHiddenChanged(hidden: Boolean) {
-        if (hidden) {
-            hideSearchMenuItemWithAnimation()
-        } else {
-            showSearchMenuItemWithAnimation()
-        }
+        showSearchMenuItemWithAnimation()
     }
 
     private fun showSearchMenuItemWithAnimation() {
@@ -81,6 +74,7 @@ class SpeakersFragment : BaseFragment() {
     }
 
     override fun onDestroyView() {
+        hideSearchMenuItemWithAnimation()
         speakersDisposable?.dispose()
         super.onDestroyView()
     }

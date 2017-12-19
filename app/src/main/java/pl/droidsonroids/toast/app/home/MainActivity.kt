@@ -10,10 +10,11 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.utils.Constants
-import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_HIDDEN_OFFSET
 import pl.droidsonroids.toast.viewmodels.MainViewModel
 import javax.inject.Inject
 
+
+private const val CURRENT_TITLE: String = "current_title"
 
 class MainActivity : BaseActivity() {
 
@@ -31,11 +32,9 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        savedInstanceState?.clear()
-
-        setupToolbar()
+        setupToolbar(savedInstanceState)
         setupNavigationView()
-        initHomeFragmentTransaction()
+        initHomeFragmentTransaction(savedInstanceState == null)
         initSpeakersSearchButton()
 
         setupViewModel()
@@ -60,9 +59,12 @@ class MainActivity : BaseActivity() {
                 .start()
     }
 
-    private fun setupToolbar() {
+    private fun setupToolbar(savedInstanceState: Bundle?) {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+        savedInstanceState?.let {
+            homeTitle.text = it.getString(CURRENT_TITLE)
+        }
     }
 
     private fun setupNavigationView() {
@@ -105,15 +107,20 @@ class MainActivity : BaseActivity() {
         homeTitle.text = getText(titleRes)
     }
 
-    private fun initHomeFragmentTransaction() {
+    private fun initHomeFragmentTransaction(showEventsFragment: Boolean) {
         homeFragmentTransaction = HomeFragmentsTransaction(supportFragmentManager)
+        if (showEventsFragment) {
+            homeFragmentTransaction.showEventsFragment()
+        }
     }
 
     private fun initSpeakersSearchButton() {
-        searchImageButton.apply {
-            translationY = SEARCH_ITEM_HIDDEN_OFFSET
-            setOnClickListener { mainViewModel.onSpeakerSearchRequested() }
-        }
+        searchImageButton.setOnClickListener { mainViewModel.onSpeakerSearchRequested() }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(CURRENT_TITLE, homeTitle.text.toString())
     }
 
     override fun onDestroy() {
