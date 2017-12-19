@@ -5,4 +5,6 @@ object Constants {
     const val SEARCH_ITEM_SHOWN_OFFSET = 0f
     const val SEARCH_ITEM_HIDDEN_OFFSET = -200f
     const val SEARCH_ITEM_ANIM_DURATION_MILLIS = 200L
+    val PAGE_SIZE = 10
+    val FIRST_PAGE = 1
 }

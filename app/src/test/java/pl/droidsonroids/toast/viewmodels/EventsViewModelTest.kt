@@ -11,11 +11,12 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import pl.droidsonroids.toast.data.State
-import pl.droidsonroids.toast.repositories.EventsRepository
+import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.testEventDetails
 import pl.droidsonroids.toast.testPreviousEvents
 import pl.droidsonroids.toast.testSplitEvents
 import pl.droidsonroids.toast.utils.LoadingStatus
+import pl.droidsonroids.toast.viewmodels.event.EventsViewModel
 
 @RunWith(MockitoJUnitRunner::class)
 class EventsViewModelTest {

@@ -1,19 +1,18 @@
-package pl.droidsonroids.toast.repositories
+package pl.droidsonroids.toast.repositories.event
 
 import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
 import pl.droidsonroids.toast.data.Page
-import pl.droidsonroids.toast.data.api.ApiEvent
-import pl.droidsonroids.toast.data.dto.EventDetailsDto
-import pl.droidsonroids.toast.data.dto.EventDto
-import pl.droidsonroids.toast.data.dto.SplitEvents
+import pl.droidsonroids.toast.data.api.event.ApiEvent
+import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
+import pl.droidsonroids.toast.data.dto.event.EventDto
+import pl.droidsonroids.toast.data.dto.event.SplitEvents
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.services.EventService
+import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.toPage
 import javax.inject.Inject
-
-const val FIRST_PAGE = 1
 
 class EventsRepositoryImpl @Inject constructor(private val eventService: EventService) : EventsRepository {
 
@@ -35,7 +34,7 @@ class EventsRepositoryImpl @Inject constructor(private val eventService: EventSe
     private fun EventDto.getSplitEventsMaybe(previousEvents: List<EventDto>, pageCount: Int): Maybe<SplitEvents> {
         return getEvent(id)
                 .map { featuredEvent ->
-                    SplitEvents(featuredEvent, Page(previousEvents, FIRST_PAGE, pageCount))
+                    SplitEvents(featuredEvent, Page(previousEvents, Constants.FIRST_PAGE, pageCount))
                 }
                 .toMaybe()
     }

@@ -16,7 +16,7 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.base.BaseFragment
 import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
 import pl.droidsonroids.toast.databinding.FragmentEventsBinding
-import pl.droidsonroids.toast.viewmodels.EventsViewModel
+import pl.droidsonroids.toast.viewmodels.event.EventsViewModel
 
 private const val TOP_BAR_TRANSLATION_FACTOR = 2f
 

@@ -1,11 +1,12 @@
 package pl.droidsonroids.toast
 
 import pl.droidsonroids.toast.data.Page
-import pl.droidsonroids.toast.data.api.ApiCoordinates
-import pl.droidsonroids.toast.data.api.ApiEvent
-import pl.droidsonroids.toast.data.api.ApiEventDetails
 import pl.droidsonroids.toast.data.api.ApiImage
-import pl.droidsonroids.toast.data.dto.SplitEvents
+import pl.droidsonroids.toast.data.api.event.ApiCoordinates
+import pl.droidsonroids.toast.data.api.event.ApiEvent
+import pl.droidsonroids.toast.data.api.event.ApiEventDetails
+import pl.droidsonroids.toast.data.api.speaker.ApiSpeaker
+import pl.droidsonroids.toast.data.dto.event.SplitEvents
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.utils.Constants
 import java.text.SimpleDateFormat
@@ -37,3 +38,15 @@ val testPreviousEvents = listOf(
 val testPreviousEventsPage = Page(testPreviousEvents.map { it.toDto() }, 1, 1)
 
 val testSplitEvents = SplitEvents(testEventDetails.toDto(), testPreviousEventsPage)
+
+val testSpeakers = listOf(
+        ApiSpeaker(
+                0,
+                "name",
+                "job",
+                ApiImage("bigImageFirst", "thumbImageFirst"),
+                "bio"
+        )
+)
+
+val testSpeakersPage = Page(testSpeakers.map { it.toDto() }, 1, 1)

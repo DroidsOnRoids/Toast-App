@@ -4,12 +4,14 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_speakers.*
 import pl.droidsonroids.toast.app.base.BaseFragment
+import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
 import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.dto.ImageDto
@@ -17,12 +19,13 @@ import pl.droidsonroids.toast.data.wrapWithState
 import pl.droidsonroids.toast.databinding.FragmentSpeakersBinding
 import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_HIDDEN_OFFSET
 import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_SHOWN_OFFSET
-import pl.droidsonroids.toast.viewmodels.SpeakerItemViewModel
-import pl.droidsonroids.toast.viewmodels.SpeakersViewModel
+import pl.droidsonroids.toast.viewmodels.speaker.SpeakersViewModel
 
 class SpeakersFragment : BaseFragment() {
 
     private lateinit var speakersViewModel: SpeakersViewModel
+
+    private var speakersDisposable: Disposable? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -66,30 +69,22 @@ class SpeakersFragment : BaseFragment() {
             adapter = speakersAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             addItemDecoration(SpeakerItemDecoration(context.applicationContext))
+            addOnScrollListener(LazyLoadingScrollListener {
+                speakersViewModel.loadNextPage()
+            })
 
-            // TODO: TOA-56 add lazy loading && data retrieving
-            speakersAdapter.setData(getSampleData())
+            subscribeToSpeakersChange(speakersAdapter)
         }
     }
 
-    private fun getSampleData(): List<State<SpeakerItemViewModel>> {
-        return (0..10L)
-                .map { getSampleSpeaker(it) }
-                .map(::wrapWithState) + State.Loading + State.Error {}
+    private fun subscribeToSpeakersChange(speakersAdapter: SpeakersAdapter) {
+        speakersDisposable = speakersViewModel.speakersSubject
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(speakersAdapter::setData)
     }
 
-    private fun getSampleSpeaker(id: Long): SpeakerItemViewModel {
-        // TODO: TOA-56  Change to real data
-        return SpeakerItemViewModel(
-                id,
-                "John Doe",
-                "Android Developer",
-                ImageDto(
-                        "http://api.letswift.pl/uploads/cache/efdebb744b2ca985de9d567eaa512c40.jpg",
-                        "http://api.letswift.pl/uploads/cache/ba0e0f28e20aa16a657ea291b2eed477.jpg"
-                )
-        ) {
-            Log.d(this::class.java.simpleName, "Clicked $it")
-        }
+    override fun onDestroyView() {
+        speakersDisposable?.dispose()
+        super.onDestroyView()
     }
 }

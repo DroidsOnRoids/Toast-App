@@ -43,11 +43,15 @@ fun setCoverImage(imageView: ImageView, imageDto: ImageDto?) {
 
 @BindingAdapter("roundImage")
 fun setRoundImage(imageView: ImageView, imageDto: ImageDto?) {
-    val thumbnailLoader = Glide.with(imageView).load(imageDto?.thumbSizeUrl)
+    val thumbnailLoader = Glide.with(imageView)
+            .load(imageDto?.thumbSizeUrl)
+            .apply(RequestOptions.circleCropTransform())
+
     Glide.with(imageView)
             .load(imageDto?.originalSizeUrl)
             .thumbnail(thumbnailLoader)
-            .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_toast)
+            .apply(RequestOptions
+                    .placeholderOf(R.drawable.ic_placeholder_toast)
                     .circleCrop())
             .into(imageView)
 }
