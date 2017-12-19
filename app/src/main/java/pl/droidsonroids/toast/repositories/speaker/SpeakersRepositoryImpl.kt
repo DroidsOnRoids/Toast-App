@@ -19,4 +19,13 @@ class SpeakersRepositoryImpl @Inject constructor(private val speakerService: Spe
                             .toPage(pageNumber, allPagesCount)
                 }
     }
+
+    override fun searchSpeakersPage(query: String, pageNumber: Int): Single<Page<SpeakerDto>> {
+        return speakerService.searchSpeakers(query = query, pageNumber = pageNumber)
+                .flatMap { (apiSpeakers, allPagesCount) ->
+                    apiSpeakers.toObservable()
+                            .map { it.toDto() }
+                            .toPage(pageNumber, allPagesCount)
+                }
+    }
 }

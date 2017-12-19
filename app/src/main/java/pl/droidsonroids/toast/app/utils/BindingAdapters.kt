@@ -64,6 +64,15 @@ fun setLoadingContainerVisibility(loadingContainer: View, loadingStatus: Loading
     }
 }
 
+
+@BindingAdapter("loadingIndicatorVisibility")
+fun setLoadingIndicatorVisibility(loadingContainer: View, loadingStatus: LoadingStatus) {
+    loadingContainer.visibility = when (loadingStatus) {
+        LoadingStatus.PENDING -> View.VISIBLE
+        else -> View.INVISIBLE
+    }
+}
+
 @BindingAdapter("connectionErrorContainerVisibility")
 fun setConnectionErrorContainerVisibility(errorConnectionContainer: View, loadingStatus: LoadingStatus) {
     errorConnectionContainer.visibility = when (loadingStatus) {
