@@ -3,7 +3,6 @@ package pl.droidsonroids.toast.app.speakers
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
-import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.inputmethod.EditorInfo
@@ -11,7 +10,6 @@ import android.view.inputmethod.InputMethodManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_speakers_search.*
-import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
 import pl.droidsonroids.toast.databinding.ActivitySpeakersSearchBinding
@@ -30,7 +28,8 @@ class SpeakersSearchActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val speakersSearchBinding = DataBindingUtil.setContentView<ActivitySpeakersSearchBinding>(this, R.layout.activity_speakers_search)
+        val speakersSearchBinding = ActivitySpeakersSearchBinding.inflate(layoutInflater)
+        setContentView(speakersSearchBinding.root)
         setupToolbar()
         setupViewModel(speakersSearchBinding)
         setupRecyclerView()
