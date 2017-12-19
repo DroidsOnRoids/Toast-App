@@ -24,7 +24,7 @@ class MainActivity : BaseActivity() {
     lateinit var navigator: Navigator
 
     private val mainViewModel by lazy {
-        ViewModelProviders.of(this)[MainViewModel::class.java]
+        ViewModelProviders.of(this, viewModelFactory)[MainViewModel::class.java]
     }
 
     private var navigationDisposable: Disposable? = null

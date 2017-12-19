@@ -2,7 +2,8 @@ package pl.droidsonroids.toast.viewmodels.speaker
 
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Single
-import org.hamcrest.CoreMatchers.*
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Test
 import org.mockito.Mock
@@ -50,9 +51,9 @@ class SpeakersViewModelTest : RxTestBase() {
         whenever(speakersRepository.getSpeakersPage()).thenReturn(Single.error(Exception()))
         speakersViewModel = SpeakersViewModel(speakersRepository)
 
-        val speakerItemViewModelList: List<State<SpeakerItemViewModel>>? = speakersViewModel.speakersSubject.value
+        val speakerItemViewModelList: List<State<SpeakerItemViewModel>> = speakersViewModel.speakersSubject.value
 
-        assertThat(speakerItemViewModelList, nullValue())
+        assertThat(speakerItemViewModelList.isEmpty(), `is`(true))
         assertThat(speakersViewModel.loadingStatus.get(), equalTo(LoadingStatus.ERROR))
     }
 
