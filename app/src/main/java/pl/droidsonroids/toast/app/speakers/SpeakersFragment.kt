@@ -11,11 +11,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_speakers.*
 import pl.droidsonroids.toast.app.base.BaseFragment
-import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
 import pl.droidsonroids.toast.app.home.MainActivity
-import pl.droidsonroids.toast.data.State
-import pl.droidsonroids.toast.data.dto.ImageDto
-import pl.droidsonroids.toast.data.wrapWithState
+import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
 import pl.droidsonroids.toast.databinding.FragmentSpeakersBinding
 import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_HIDDEN_OFFSET
 import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_SHOWN_OFFSET
