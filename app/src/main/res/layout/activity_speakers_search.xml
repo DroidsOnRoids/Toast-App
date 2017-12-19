@@ -1,39 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".app.speakers.SpeakersSearchActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBar"
+    <data>
+
+        <variable
+            name="speakersSearchViewModel"
+            type="pl.droidsonroids.toast.viewmodels.speaker.SpeakersSearchViewModel"/>
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay.Light">
+        android:layout_height="match_parent"
+        tools:context=".app.speakers.SpeakersSearchActivity">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/white"
-            app:contentInsetEnd="@dimen/margin_large"
-            app:popupTheme="@style/AppTheme.PopupOverlay.Light">
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay.Light">
 
-            <EditText
-                android:id="@+id/searchBox"
-                style="@style/SearchTextStyle"
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@null"
-                android:hint="@string/search_hint"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:maxLines="1"
-                android:textAllCaps="true"/>
-        </android.support.v7.widget.Toolbar>
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/white"
+                app:contentInsetEnd="@dimen/margin_large"
+                app:popupTheme="@style/AppTheme.PopupOverlay.Light">
 
-    </android.support.design.widget.AppBarLayout>
-</android.support.design.widget.CoordinatorLayout>
+                <LinearLayout
+                    android:id="@+id/searchBoxContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/searchBox"
+                        style="@style/SearchTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:hint="@string/search_hint"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:text="@={speakersSearchViewModel.searchPhrase}"
+                        android:textAllCaps="true"/>
+
+                    <ProgressBar
+                        android:id="@+id/loadingIndicator"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="@dimen/margin_large"
+                        app:loadingIndicatorVisibility="@{speakersSearchViewModel.loadingStatus}"/>
+                </LinearLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <FrameLayout
+            android:id="@+id/speakersSearchContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/speakersSearchRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:scrollbars="vertical"
+                android:visibility="@{!speakersSearchViewModel.noItemsFound}"/>
+
+            <TextView
+                style="@style/EventHeaderStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="@dimen/margin_large"
+                android:text="@string/no_speakers_found"
+                android:visibility="@{speakersSearchViewModel.noItemsFound}"/>
+
+            <include
+                layout="@layout/layout_error_overlay"
+                app:loadingViewModel="@{speakersSearchViewModel}"/>
+        </FrameLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

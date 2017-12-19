@@ -27,4 +27,5 @@
     <string name="toast_title">TOAST</string>
     <string name="search">Search</string>
     <string name="search_hint">Search</string>
+    <string name="no_speakers_found">No speakers found</string>
 </resources>

@@ -5,8 +5,9 @@ import android.arch.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import pl.droidsonroids.toast.viewmodels.event.EventsViewModel
 import pl.droidsonroids.toast.viewmodels.MainViewModel
+import pl.droidsonroids.toast.viewmodels.event.EventsViewModel
+import pl.droidsonroids.toast.viewmodels.speaker.SpeakersSearchViewModel
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersViewModel
 
 @Module
@@ -21,6 +22,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SpeakersViewModel::class)
     abstract fun bindSpeakersViewModel(speakersViewModel: SpeakersViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SpeakersSearchViewModel::class)
+    abstract fun bindSpeakersListViewModel(speakersSearchViewModel: SpeakersSearchViewModel): ViewModel
 
     @Binds
     @IntoMap
