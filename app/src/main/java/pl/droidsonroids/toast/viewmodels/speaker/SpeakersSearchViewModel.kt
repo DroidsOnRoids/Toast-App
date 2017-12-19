@@ -16,7 +16,7 @@ import javax.inject.Inject
 class SpeakersSearchViewModel @Inject constructor(private val speakersRepository: SpeakersRepository) : BaseSpeakerListViewModel() {
     val searchPhrase: ObservableField<String> = ObservableField("")
     private val searchObservable: Observable<String> = searchPhrase.toObservable()
-    private var lastSearchPhrase: String = ""
+    private var lastSearchedPhrase: String = ""
     val noItemsFound: ObservableField<Boolean> = ObservableField(false)
 
     private var searchDisposable: Disposable? = null
@@ -26,11 +26,10 @@ class SpeakersSearchViewModel @Inject constructor(private val speakersRepository
     init {
         searchDisposable = searchObservable
                 .debounce(1, TimeUnit.SECONDS)
-                .filter { it.isNotEmpty() && it != lastSearchPhrase }
+                .filter(::shouldPerformSearch)
                 .doOnNext { disposePreviousLoad() }
-                .doOnNext { lastSearchPhrase = it }
+                .doOnNext { lastSearchedPhrase = it }
                 .switchMapSingle(::searchSpeakers)
-                .doAfterNext(::isEmptyResponse)
                 .doOnError(::onFirstPageLoadError)
                 .retry()
                 .subscribeBy(
@@ -38,8 +37,11 @@ class SpeakersSearchViewModel @Inject constructor(private val speakersRepository
                 )
     }
 
+    private fun shouldPerformSearch(search: String) =
+            search.isNotEmpty() && search != lastSearchedPhrase
+
     private fun onNewSpeakersPageLoaded(page: Page<State.Item<SpeakerItemViewModel>>) {
-        val speakers = page.items.addLoadingIfNextPageAvailable(page)
+        val speakers = page.items.appendLoadingItemIfNextPageAvailable(page)
         speakersSubject.onNext(speakers)
         loadingStatus.set(LoadingStatus.SUCCESS)
     }
@@ -53,6 +55,7 @@ class SpeakersSearchViewModel @Inject constructor(private val speakersRepository
         loadingStatus.set(LoadingStatus.PENDING)
         return speakersRepository.searchSpeakersPage(query)
                 .flatMap(::mapToSingleSpeakerItemViewModelsPage)
+                .doAfterSuccess(::isEmptyResponse)
     }
 
     private fun isEmptyResponse(page: Page<State<SpeakerItemViewModel>>) {
@@ -60,18 +63,19 @@ class SpeakersSearchViewModel @Inject constructor(private val speakersRepository
     }
 
     override fun retryLoading() {
-        search(lastSearchPhrase)
+        search(lastSearchedPhrase)
     }
 
-    fun search() {
+    fun requestSearch() {
         val query = searchPhrase.get()
-        if (query != lastSearchPhrase) {
+        if (shouldPerformSearch(query)) {
             search(query)
         }
     }
 
     private fun search(query: String) {
         disposePreviousLoad()
+        lastSearchedPhrase = query
         firstPageDisposable = searchSpeakers(query)
                 .subscribeBy(
                         onSuccess = (::onNewSpeakersPageLoaded),
@@ -83,14 +87,14 @@ class SpeakersSearchViewModel @Inject constructor(private val speakersRepository
     fun loadNextPage() {
         val nextPageNumber = this.nextPageNumber
         if (!isNextPageLoading && nextPageNumber != null) {
-            loadPage(searchPhrase.get(), nextPageNumber)
+            loadPage(lastSearchedPhrase, nextPageNumber)
         }
     }
 
     override fun onErrorClick() {
         val previousEvents = mergeWithExistingSpeakers(listOf(State.Loading))
         speakersSubject.onNext(previousEvents)
-        nextPageNumber?.let { loadPage(lastSearchPhrase, it) }
+        nextPageNumber?.let { loadPage(lastSearchedPhrase, it) }
     }
 
 

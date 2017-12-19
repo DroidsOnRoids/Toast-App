@@ -42,10 +42,11 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel {
 
     private fun getSpeakers(page: Page<State.Item<SpeakerItemViewModel>>): List<State<SpeakerItemViewModel>> {
         val speakers = mergeWithExistingSpeakers(page.items)
-        return speakers.addLoadingIfNextPageAvailable(page)
+        return speakers.appendLoadingItemIfNextPageAvailable(page)
     }
 
-    protected fun List<State<SpeakerItemViewModel>>.addLoadingIfNextPageAvailable(page: Page<State.Item<SpeakerItemViewModel>>): List<State<SpeakerItemViewModel>> {
+    protected fun List<State<SpeakerItemViewModel>>.appendLoadingItemIfNextPageAvailable(page: Page<State.Item<SpeakerItemViewModel>>)
+            : List<State<SpeakerItemViewModel>> {
         return if (page.pageNumber < page.allPagesCount) {
             nextPageNumber = page.pageNumber + 1
             this + State.Loading
@@ -65,13 +66,13 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel {
     protected fun onFirstPageLoadError(throwable: Throwable) {
         speakersSubject.onNext(listOf())
         loadingStatus.set(LoadingStatus.ERROR)
-        Log.e(simpleClassName, "Something went wrong with fetching data for SpeakersSearchViewModel", throwable)
+        Log.e(simpleClassName, "Something went wrong with fetching data for SpeakersListViewModel", throwable)
     }
 
     protected fun onNextPageLoadError(throwable: Throwable) {
         val speakers = mergeWithExistingSpeakers(listOf(createErrorState()))
         speakersSubject.onNext(speakers)
-        Log.e(simpleClassName, "Something went wrong with fetching next speakers page for SpeakersSearchViewModel", throwable)
+        Log.e(simpleClassName, "Something went wrong with fetching next speakers page for SpeakersListViewModel", throwable)
     }
 
     private fun createErrorState(): State.Error {
