@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ImageButton
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="?attr/actionBarSize"
-    android:background="?selectableItemBackgroundBorderless"
-    android:src="@drawable/ic_menu_search"/>

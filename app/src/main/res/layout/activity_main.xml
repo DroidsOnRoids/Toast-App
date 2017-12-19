@@ -31,6 +31,16 @@
                 android:layout_gravity="center"
                 android:text="@string/events_title"
                 android:textAllCaps="true"/>
+
+            <ImageButton
+                android:id="@+id/searchImageButton"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/margin_large"
+                android:background="?selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_menu_search"/>
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>

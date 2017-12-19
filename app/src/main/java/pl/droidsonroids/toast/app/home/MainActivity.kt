@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
+import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_HIDDEN_OFFSET
 import pl.droidsonroids.toast.viewmodels.MainViewModel
 import javax.inject.Inject
@@ -34,13 +35,13 @@ class MainActivity : BaseActivity() {
         setupToolbar()
         setupNavigationView()
         initHomeFragmentTransaction()
+        initSpeakersSearchButton()
 
         setupViewModel()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-        prepareSearchMenuItem(menu)
         return true
     }
 
@@ -49,6 +50,14 @@ class MainActivity : BaseActivity() {
                 R.id.menuItemAbout -> consume { homeFragmentTransaction.showInfoDialog() }
                 else -> super.onOptionsItemSelected(item)
             }
+
+    fun animateSearchButton(offset: Float) {
+        searchImageButton
+                .animate()
+                .y(offset)
+                .setDuration(Constants.SEARCH_ITEM_ANIM_DURATION_MILLIS)
+                .start()
+    }
 
     private fun setupToolbar() {
         setSupportActionBar(toolbar)
@@ -99,14 +108,11 @@ class MainActivity : BaseActivity() {
         homeFragmentTransaction = HomeFragmentsTransaction(supportFragmentManager)
     }
 
-    private fun prepareSearchMenuItem(menu: Menu) {
-        menu.findItem(R.id.menuItemSearch)
-                .setActionView(R.layout.menu_search_action_layout)
-                .actionView
-                .apply {
-                    translationY = SEARCH_ITEM_HIDDEN_OFFSET
-                    setOnClickListener { mainViewModel.onSpeakerSearchRequested() }
-                }
+    private fun initSpeakersSearchButton() {
+        searchImageButton.apply {
+            translationY = SEARCH_ITEM_HIDDEN_OFFSET
+            setOnClickListener { mainViewModel.onSpeakerSearchRequested() }
+        }
     }
 
     override fun onDestroy() {
