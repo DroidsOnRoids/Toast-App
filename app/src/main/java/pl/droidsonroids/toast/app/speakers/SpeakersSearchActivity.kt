@@ -34,13 +34,15 @@ class SpeakersSearchActivity : BaseActivity() {
         setupToolbar()
         setupViewModel(speakersSearchBinding)
         setupRecyclerView()
-        setupSearchAction()
+        setupSearchBox()
     }
 
-    private fun setupSearchAction() {
+    private fun setupSearchBox() {
+        searchBox.requestFocus()
         searchBox.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 speakersSearchViewModel.requestSearch()
+                searchBox.clearFocus()
                 hideKeyboard()
             }
             true
