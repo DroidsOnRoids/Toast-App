@@ -11,7 +11,6 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
-import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
 import pl.droidsonroids.toast.data.dto.event.EventDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.data.wrapWithState
@@ -48,8 +47,11 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
         loadingStatus.set(LoadingStatus.PENDING)
         eventsDisposable = eventsRepository.getEvents()
                 .flatMap { (featuredEvent, previousEventsPage) ->
+                    val upcomingEventViewModel = featuredEvent.toViewModel {
+                        navigationSubject.onNext(NavigationRequest.EventDetails(it))
+                    }
                     mapToSingleEventItemViewModelsPage(previousEventsPage)
-                            .map { featuredEvent to it }
+                            .map { upcomingEventViewModel to it }
                             .toMaybe()
                 }
                 .subscribeBy(
@@ -66,9 +68,9 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
         }
     }
 
-    private fun onEventsLoaded(events: Pair<EventDetailsDto, Page<State.Item<EventItemViewModel>>>) {
-        val (upcomingEvent, previousEventsPage) = events
-        this.upcomingEvent.set(UpcomingEventViewModel.create(upcomingEvent))
+    private fun onEventsLoaded(events: Pair<UpcomingEventViewModel, Page<State.Item<EventItemViewModel>>>) {
+        val (upcomingEventViewModel, previousEventsPage) = events
+        this.upcomingEvent.set(upcomingEventViewModel)
         onPreviousEventsPageLoaded(previousEventsPage)
         loadingStatus.set(LoadingStatus.SUCCESS)
     }
@@ -151,3 +153,4 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
     }
 
 }
+

@@ -67,6 +67,7 @@
     </style>
 
     <style name="FacebookAttend">
+        <item name="android:textAllCaps">true</item>
         <item name="android:textAppearance">@style/TextAppearance.Roboto</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/colorPrimary</item>

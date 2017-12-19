@@ -71,7 +71,7 @@ class EventsViewModelTest {
 
 
     @Test
-    fun shouldRequestNavigationToEventDetails() {
+    fun shouldRequestNavigationToPreviousEventDetails() {
         whenever(eventsRepository.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
         eventsViewModel = EventsViewModel(eventsRepository)
         val previousEventsState = eventsViewModel.previousEventsSubject.value.firstOrNull() as? State.Item
@@ -83,6 +83,22 @@ class EventsViewModelTest {
         testObserver.assertValue {
             it is NavigationRequest.EventDetails
                     && it.id == testApiEvent.id
+        }
+                .assertNoErrors()
+    }
+
+
+    @Test
+    fun shouldRequestNavigationToFeaturedEventDetails() {
+        whenever(eventsRepository.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
+        eventsViewModel = EventsViewModel(eventsRepository)
+        val testObserver = eventsViewModel.navigationSubject.test()
+
+        eventsViewModel.upcomingEvent.get().onClick()
+
+        testObserver.assertValue {
+            it is NavigationRequest.EventDetails
+                    && it.id == testEventDetails.id
         }
                 .assertNoErrors()
     }
