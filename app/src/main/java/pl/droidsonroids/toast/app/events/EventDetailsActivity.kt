@@ -9,9 +9,8 @@ import pl.droidsonroids.toast.utils.NavigationRequest
 class EventDetailsActivity : BaseActivity() {
     companion object {
         fun createIntent(context: Context, eventDetailsRequest: NavigationRequest.EventDetails): Intent {
-            return Intent(context, EventDetailsActivity::class.java).apply {
-                putExtra(EVENT_ID, eventDetailsRequest.id)
-            }
+            return Intent(context, EventDetailsActivity::class.java)
+                    .putExtra(EVENT_ID, eventDetailsRequest.id)
         }
     }
 }
