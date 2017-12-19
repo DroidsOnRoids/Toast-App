@@ -18,7 +18,16 @@ class HomeFragmentsTransaction(private val supportFragmentManager: FragmentManag
     private var currentFragment: Fragment? = null
 
     init {
+        hideSavedFragments()
         showEventsFragment()
+    }
+
+    private fun hideSavedFragments() {
+        supportFragmentManager.beginTransaction{
+            supportFragmentManager.fragments.forEach{
+                hide(it)
+            }
+        }
     }
 
 
