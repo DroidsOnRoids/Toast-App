@@ -24,6 +24,10 @@ class SpeakersSearchViewModel @Inject constructor(private val speakersRepository
     private var nextPageDisposable: Disposable? = null
 
     init {
+        subscribeToSearchTextChanges()
+    }
+
+    private fun subscribeToSearchTextChanges() {
         searchDisposable = searchObservable
                 .debounce(1, TimeUnit.SECONDS)
                 .map(String::trim)
