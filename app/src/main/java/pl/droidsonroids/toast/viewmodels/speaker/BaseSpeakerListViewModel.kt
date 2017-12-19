@@ -64,7 +64,7 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel {
     }
 
     protected fun onFirstPageLoadError(throwable: Throwable) {
-        speakersSubject.onNext(listOf())
+        speakersSubject.onNext(emptyList())
         loadingStatus.set(LoadingStatus.ERROR)
         Log.e(simpleClassName, "Something went wrong with fetching data for SpeakersListViewModel", throwable)
     }
