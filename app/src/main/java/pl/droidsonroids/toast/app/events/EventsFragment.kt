@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.fragment_events.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
@@ -28,9 +29,9 @@ class EventsFragment : BaseFragment() {
     lateinit var navigator: Navigator
     private lateinit var eventsViewModel: EventsViewModel
 
-    private var previousEventsDisposable: Disposable? = null
+    private var previousEventsDisposable: Disposable = Disposables.disposed()
 
-    private var navigationDisposable: Disposable? = null
+    private var navigationDisposable: Disposable = Disposables.disposed()
 
     private val topBarHeight by lazy {
         resources.getDimension(R.dimen.events_top_bar_height)
@@ -100,12 +101,12 @@ class EventsFragment : BaseFragment() {
     }
 
     override fun onDestroyView() {
-        previousEventsDisposable?.dispose()
+        previousEventsDisposable.dispose()
         super.onDestroyView()
     }
 
     override fun onDetach() {
-        navigationDisposable?.dispose()
+        navigationDisposable.dispose()
         super.onDetach()
     }
 }

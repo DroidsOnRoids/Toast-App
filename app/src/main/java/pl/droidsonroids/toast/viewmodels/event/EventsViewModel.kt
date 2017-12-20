@@ -5,6 +5,7 @@ import android.databinding.ObservableField
 import android.util.Log
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.Disposables
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.subjects.BehaviorSubject
@@ -32,7 +33,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
 
     private var isPreviousEventsLoading: Boolean = false
     private var nextPageNumber: Int? = null
-    private var eventsDisposable: Disposable? = null
+    private var eventsDisposable: Disposable = Disposables.disposed()
     private val Any.simpleClassName: String get() = javaClass.simpleName
 
     init {
@@ -70,7 +71,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
 
     private fun onEventsLoaded(events: Pair<UpcomingEventViewModel, Page<State.Item<EventItemViewModel>>>) {
         val (upcomingEventViewModel, previousEventsPage) = events
-        this.upcomingEvent.set(upcomingEventViewModel)
+        upcomingEvent.set(upcomingEventViewModel)
         onPreviousEventsPageLoaded(previousEventsPage)
         loadingStatus.set(LoadingStatus.SUCCESS)
     }
@@ -149,7 +150,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
     }
 
     override fun onCleared() {
-        eventsDisposable?.dispose()
+        eventsDisposable.dispose()
     }
 
 }
