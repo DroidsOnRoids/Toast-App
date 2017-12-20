@@ -41,11 +41,11 @@ class HomeFragmentsTransaction(private val supportFragmentManager: FragmentManag
             currentFragment?.let { detach(it) }
 
             val fragmentToReplace = supportFragmentManager.findFragmentByTag(fragmentTag)
-            fragmentToReplace?.let {
-                attach(it)
-            } ?: run {
-                val newFragment = fragmentCreator()
-                add(R.id.fragmentContainer, newFragment, fragmentTag)
+
+            if (fragmentToReplace != null) {
+                attach(fragmentToReplace)
+            } else {
+                add(R.id.fragmentContainer, fragmentCreator(), fragmentTag)
             }
         }
     }
