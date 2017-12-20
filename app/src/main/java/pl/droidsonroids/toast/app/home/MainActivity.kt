@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
+import pl.droidsonroids.toast.databinding.ActivityMainBinding
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.viewmodels.MainViewModel
 import javax.inject.Inject
@@ -31,13 +32,13 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        val mainBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(mainBinding.root)
         setupToolbar(savedInstanceState)
         setupNavigationView()
         initHomeFragmentTransaction(showEventsFragment = savedInstanceState == null)
-        initSpeakersSearchButton()
 
-        setupViewModel()
+        setupViewModel(mainBinding)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -72,7 +73,8 @@ class MainActivity : BaseActivity() {
         setHomeNavigationItemSelectedListener()
     }
 
-    private fun setupViewModel() {
+    private fun setupViewModel(mainBinding: ActivityMainBinding) {
+        mainBinding.mainViewModel = mainViewModel
         navigationDisposable = mainViewModel.navigationSubject
                 .subscribe { navigator.dispatch(this, it) }
     }
@@ -112,10 +114,6 @@ class MainActivity : BaseActivity() {
         if (showEventsFragment) {
             homeFragmentTransaction.showEventsFragment()
         }
-    }
-
-    private fun initSpeakersSearchButton() {
-        searchImageButton.setOnClickListener { mainViewModel.onSpeakerSearchRequested() }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
