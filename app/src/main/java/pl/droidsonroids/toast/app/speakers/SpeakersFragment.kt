@@ -10,13 +10,11 @@ import android.view.ViewGroup
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_speakers.*
-import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.base.BaseFragment
+import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
 import pl.droidsonroids.toast.databinding.FragmentSpeakersBinding
-import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_ANIM_DURATION_MILLIS
-import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_HIDDEN_OFFSET
-import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_SHOWN_OFFSET
+import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersViewModel
 
 class SpeakersFragment : BaseFragment() {
@@ -39,32 +37,19 @@ class SpeakersFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         showSearchMenuItemWithAnimation()
         setupRecyclerView()
-    }
-
-    override fun onHiddenChanged(hidden: Boolean) {
-        if (hidden) {
-            hideSearchMenuItemWithAnimation()
-        } else {
-            showSearchMenuItemWithAnimation()
-        }
+        showSearchMenuItemWithAnimation()
     }
 
     private fun showSearchMenuItemWithAnimation() {
-        animateViewByY(SEARCH_ITEM_SHOWN_OFFSET)
+        animateViewByY(Constants.SearchMenuItem.SHOWN_OFFSET)
     }
 
     private fun hideSearchMenuItemWithAnimation() {
-        animateViewByY(SEARCH_ITEM_HIDDEN_OFFSET)
+        animateViewByY(Constants.SearchMenuItem.HIDDEN_OFFSET)
     }
 
     private fun animateViewByY(offset: Float) {
-        activity?.run {
-            findViewById<View>(R.id.menuItemSearch)
-                    .animate()
-                    .y(offset)
-                    .setDuration(SEARCH_ITEM_ANIM_DURATION_MILLIS)
-                    .start()
-        }
+        (activity as MainActivity).animateSearchButton(offset)
     }
 
     private fun setupRecyclerView() {
@@ -88,6 +73,7 @@ class SpeakersFragment : BaseFragment() {
     }
 
     override fun onDestroyView() {
+        hideSearchMenuItemWithAnimation()
         speakersDisposable?.dispose()
         super.onDestroyView()
     }

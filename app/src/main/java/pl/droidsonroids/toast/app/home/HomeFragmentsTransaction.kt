@@ -15,13 +15,6 @@ private const val INFO_DIALOG_TAG = "info_dialog_tag"
 
 class HomeFragmentsTransaction(private val supportFragmentManager: FragmentManager) {
 
-    private var currentFragment: Fragment? = null
-
-    init {
-        showEventsFragment()
-    }
-
-
     fun showEventsFragment() {
         showFragmentWithAnimation(EVENTS_FRAGMENT_TAG) {
             EventsFragment()
@@ -44,16 +37,15 @@ class HomeFragmentsTransaction(private val supportFragmentManager: FragmentManag
         supportFragmentManager.beginTransaction {
             setCustomAnimations(R.anim.animation_translated_cross_fade_in, R.anim.animation_cross_fade_out)
 
-            currentFragment?.let { hide(it) }
+            val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
+            currentFragment?.let { detach(it) }
 
             val fragmentToReplace = supportFragmentManager.findFragmentByTag(fragmentTag)
-            fragmentToReplace?.let {
-                show(it)
-                currentFragment = it
-            } ?: run {
-                val newFragment = fragmentCreator()
-                add(R.id.fragmentContainer, newFragment, fragmentTag)
-                currentFragment = newFragment
+
+            if (fragmentToReplace != null) {
+                attach(fragmentToReplace)
+            } else {
+                add(R.id.fragmentContainer, fragmentCreator(), fragmentTag)
             }
         }
     }
