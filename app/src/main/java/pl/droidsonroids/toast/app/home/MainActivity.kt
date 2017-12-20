@@ -9,10 +9,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
-import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_HIDDEN_OFFSET
+import pl.droidsonroids.toast.databinding.ActivityMainBinding
+import pl.droidsonroids.toast.utils.Constants.SearchMenuItem.ANIM_DURATION_MILLIS
 import pl.droidsonroids.toast.viewmodels.MainViewModel
 import javax.inject.Inject
 
+
+private const val CURRENT_TITLE: String = "current_title"
 
 class MainActivity : BaseActivity() {
 
@@ -29,18 +32,17 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        setupToolbar()
+        val mainBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(mainBinding.root)
+        setupToolbar(savedInstanceState)
         setupNavigationView()
-        initHomeFragmentTransaction()
+        initHomeFragmentTransaction(showEventsFragment = savedInstanceState == null)
 
-        setupViewModel()
+        setupViewModel(mainBinding)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-        prepareSearchMenuItem(menu)
         return true
     }
 
@@ -50,9 +52,20 @@ class MainActivity : BaseActivity() {
                 else -> super.onOptionsItemSelected(item)
             }
 
-    private fun setupToolbar() {
+    fun animateSearchButton(offset: Float) {
+        searchImageButton
+                .animate()
+                .y(offset)
+                .setDuration(ANIM_DURATION_MILLIS)
+                .start()
+    }
+
+    private fun setupToolbar(savedInstanceState: Bundle?) {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+        savedInstanceState?.let {
+            homeTitle.text = it.getString(CURRENT_TITLE)
+        }
     }
 
     private fun setupNavigationView() {
@@ -60,7 +73,8 @@ class MainActivity : BaseActivity() {
         setHomeNavigationItemSelectedListener()
     }
 
-    private fun setupViewModel() {
+    private fun setupViewModel(mainBinding: ActivityMainBinding) {
+        mainBinding.mainViewModel = mainViewModel
         navigationDisposable = mainViewModel.navigationSubject
                 .subscribe { navigator.dispatch(this, it) }
     }
@@ -95,18 +109,16 @@ class MainActivity : BaseActivity() {
         homeTitle.text = getText(titleRes)
     }
 
-    private fun initHomeFragmentTransaction() {
+    private fun initHomeFragmentTransaction(showEventsFragment: Boolean) {
         homeFragmentTransaction = HomeFragmentsTransaction(supportFragmentManager)
+        if (showEventsFragment) {
+            homeFragmentTransaction.showEventsFragment()
+        }
     }
 
-    private fun prepareSearchMenuItem(menu: Menu) {
-        menu.findItem(R.id.menuItemSearch)
-                .setActionView(R.layout.menu_search_action_layout)
-                .actionView
-                .apply {
-                    translationY = SEARCH_ITEM_HIDDEN_OFFSET
-                    setOnClickListener { mainViewModel.onSpeakerSearchRequested() }
-                }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(CURRENT_TITLE, homeTitle.text.toString())
     }
 
     override fun onDestroy() {

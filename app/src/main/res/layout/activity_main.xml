@@ -1,63 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainCoordinatorLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/paleGrayBackground"
-    tools:context="pl.droidsonroids.toast.app.home.MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:elevation="0dp">
+    <data>
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+        <variable
+            name="mainViewModel"
+            type="pl.droidsonroids.toast.viewmodels.MainViewModel"/>
+    </data>
 
-            <TextView
-                android:id="@+id/homeTitle"
-                style="@style/TitleTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/events_title"
-                android:textAllCaps="true"/>
-        </android.support.v7.widget.Toolbar>
-
-    </android.support.design.widget.AppBarLayout>
-
-    <FrameLayout
-        android:id="@+id/fragmentContainer"
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/mainCoordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/bottom_bar_height"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        android:background="@color/paleGrayBackground"
+        tools:context="pl.droidsonroids.toast.app.home.MainActivity">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:background="@drawable/bottom_nav_bar_shadow"
-        app:layout_anchor="@+id/homeNavigationView"/>
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:elevation="0dp">
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/homeNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/colorAccent"
-        app:itemIconTint="@color/home_navigation_items_color_selector"
-        app:itemTextColor="@color/home_navigation_items_color_selector"
-        app:layout_anchor="@id/fragmentContainer"
-        app:layout_anchorGravity="bottom"
-        app:menu="@menu/home_navigation_items"/>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
 
-</android.support.design.widget.CoordinatorLayout>
+                <TextView
+                    android:id="@+id/homeTitle"
+                    style="@style/TitleTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/events_title"
+                    android:textAllCaps="true"/>
+
+                <ImageButton
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/searchImageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:onClick="@{() -> mainViewModel.onSpeakerSearchRequested()}"
+                    android:src="@drawable/ic_menu_search"
+                    android:translationY="-200dp"/>
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <FrameLayout
+            android:id="@+id/fragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/bottom_bar_height"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@drawable/bottom_nav_bar_shadow"
+            app:layout_anchor="@+id/homeNavigationView"/>
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/homeNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/colorAccent"
+            app:itemIconTint="@color/home_navigation_items_color_selector"
+            app:itemTextColor="@color/home_navigation_items_color_selector"
+            app:layout_anchor="@id/fragmentContainer"
+            app:layout_anchorGravity="bottom"
+            app:menu="@menu/home_navigation_items"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+</layout>
