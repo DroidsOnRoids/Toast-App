@@ -34,7 +34,7 @@ class EventsRepositoryImpl @Inject constructor(private val eventService: EventSe
     private fun EventDto.getSplitEventsMaybe(previousEvents: List<EventDto>, pageCount: Int): Maybe<SplitEvents> {
         return getEvent(id)
                 .map { featuredEvent ->
-                    SplitEvents(featuredEvent, Page(previousEvents, Constants.FIRST_PAGE, pageCount))
+                    SplitEvents(featuredEvent, Page(previousEvents, Constants.Page.FIRST, pageCount))
                 }
                 .toMaybe()
     }

@@ -12,7 +12,7 @@ import pl.droidsonroids.toast.utils.Constants
 import java.text.SimpleDateFormat
 import java.util.*
 
-val testDate: Date = SimpleDateFormat(Constants.DATE_PATTERN).parse("1.12.2017")
+val testDate: Date = SimpleDateFormat(Constants.Date.PATTERN).parse("1.12.2017")
 
 val testEventDetails = ApiEventDetails(
         1,
