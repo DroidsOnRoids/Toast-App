@@ -9,8 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.fragment_speakers.*
 import pl.droidsonroids.toast.R
+import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseFragment
 import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
 import pl.droidsonroids.toast.databinding.FragmentSpeakersBinding
@@ -18,16 +20,30 @@ import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_ANIM_DURATION_MILLIS
 import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_HIDDEN_OFFSET
 import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_SHOWN_OFFSET
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersViewModel
+import javax.inject.Inject
 
 class SpeakersFragment : BaseFragment() {
 
+    @Inject
+    lateinit var navigator: Navigator
+
     private lateinit var speakersViewModel: SpeakersViewModel
 
-    private var speakersDisposable: Disposable? = null
+    private var navigationDisposable: Disposable = Disposables.disposed()
+
+    private var speakersDisposable: Disposable = Disposables.disposed()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        setupViewModel()
+    }
+
+    private fun setupViewModel() {
         speakersViewModel = ViewModelProviders.of(this, viewModelFactory)[SpeakersViewModel::class.java]
+        navigationDisposable = speakersViewModel.navigationSubject
+                .subscribe { request ->
+                    context?.let { navigator.dispatch(it, request) }
+                }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -88,7 +104,12 @@ class SpeakersFragment : BaseFragment() {
     }
 
     override fun onDestroyView() {
-        speakersDisposable?.dispose()
+        speakersDisposable.dispose()
         super.onDestroyView()
+    }
+
+    override fun onDetach() {
+        navigationDisposable.dispose()
+        super.onDetach()
     }
 }
