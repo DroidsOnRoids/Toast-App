@@ -34,7 +34,7 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
         setupToolbar(savedInstanceState)
         setupNavigationView()
-        initHomeFragmentTransaction(isSavedFragmentExists(savedInstanceState))
+        initHomeFragmentTransaction(showEventsFragment = savedInstanceState == null)
         initSpeakersSearchButton()
 
         setupViewModel()
@@ -117,9 +117,6 @@ class MainActivity : BaseActivity() {
     private fun initSpeakersSearchButton() {
         searchImageButton.setOnClickListener { mainViewModel.onSpeakerSearchRequested() }
     }
-
-    private fun isSavedFragmentExists(savedInstanceState: Bundle?) =
-            savedInstanceState == null
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
