@@ -14,8 +14,7 @@ import pl.droidsonroids.toast.app.base.BaseFragment
 import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
 import pl.droidsonroids.toast.databinding.FragmentSpeakersBinding
-import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_HIDDEN_OFFSET
-import pl.droidsonroids.toast.utils.Constants.SEARCH_ITEM_SHOWN_OFFSET
+import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersViewModel
 
 class SpeakersFragment : BaseFragment() {
@@ -42,11 +41,11 @@ class SpeakersFragment : BaseFragment() {
     }
 
     private fun showSearchMenuItemWithAnimation() {
-        animateViewByY(SEARCH_ITEM_SHOWN_OFFSET)
+        animateViewByY(Constants.SearchMenuItem.SHOWN_OFFSET)
     }
 
     private fun hideSearchMenuItemWithAnimation() {
-        animateViewByY(SEARCH_ITEM_HIDDEN_OFFSET)
+        animateViewByY(Constants.SearchMenuItem.HIDDEN_OFFSET)
     }
 
     private fun animateViewByY(offset: Float) {

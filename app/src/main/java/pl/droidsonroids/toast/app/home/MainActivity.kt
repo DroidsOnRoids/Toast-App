@@ -10,7 +10,7 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.databinding.ActivityMainBinding
-import pl.droidsonroids.toast.utils.Constants
+import pl.droidsonroids.toast.utils.Constants.SearchMenuItem.ANIM_DURATION_MILLIS
 import pl.droidsonroids.toast.viewmodels.MainViewModel
 import javax.inject.Inject
 
@@ -56,7 +56,7 @@ class MainActivity : BaseActivity() {
         searchImageButton
                 .animate()
                 .y(offset)
-                .setDuration(Constants.SEARCH_ITEM_ANIM_DURATION_MILLIS)
+                .setDuration(ANIM_DURATION_MILLIS)
                 .start()
     }
 

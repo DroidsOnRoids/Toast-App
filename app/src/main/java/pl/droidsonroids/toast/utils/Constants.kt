@@ -1,10 +1,19 @@
 package pl.droidsonroids.toast.utils
 
 object Constants {
-    const val DATE_PATTERN = "dd.MM.yyyy"
-    const val SEARCH_ITEM_SHOWN_OFFSET = 0f
-    const val SEARCH_ITEM_HIDDEN_OFFSET = -200f
-    const val SEARCH_ITEM_ANIM_DURATION_MILLIS = 200L
-    val PAGE_SIZE = 10
-    val FIRST_PAGE = 1
+    object SearchMenuItem {
+        const val SHOWN_OFFSET = 0f
+        const val HIDDEN_OFFSET = -200f
+        const val ANIM_DURATION_MILLIS = 200L
+    }
+
+    object Page {
+        const val SIZE = 10
+        const val FIRST = 1
+    }
+
+    object Date{
+        const val PATTERN = "dd.MM.yyyy"
+    }
+
 }

@@ -26,7 +26,7 @@ fun setEventTime(textView: TextView, date: Date?) {
 
 @BindingAdapter("eventDate")
 fun setEventDate(textView: TextView, date: Date?) {
-    val timeFormatter = SimpleDateFormat(Constants.DATE_PATTERN, Locale.getDefault())
+    val timeFormatter = SimpleDateFormat(Constants.Date.PATTERN, Locale.getDefault())
     textView.text = date?.let { timeFormatter.format(it) }
 }
 
