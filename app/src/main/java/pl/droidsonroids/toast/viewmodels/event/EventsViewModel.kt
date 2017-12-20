@@ -47,8 +47,8 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
     private fun loadEvents() {
         loadingStatus.set(LoadingStatus.PENDING)
         eventsDisposable = eventsRepository.getEvents()
-                .flatMap { (featuredEvent, previousEventsPage) ->
-                    val upcomingEventViewModel = featuredEvent.toViewModel {
+                .flatMap { (upcomingEvent, previousEventsPage) ->
+                    val upcomingEventViewModel = upcomingEvent.toViewModel {
                         navigationSubject.onNext(NavigationRequest.EventDetails(it))
                     }
                     mapToSingleEventItemViewModelsPage(previousEventsPage)
