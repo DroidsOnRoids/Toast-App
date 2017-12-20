@@ -13,4 +13,6 @@
     <color name="paleGrayBackground">#edf1f5</color>
     <color name="paleGray">#e0e7f0</color>
     <color name="gray">#989ea6</color>
+    <color name="blackAlpha10">#1F000000</color>
+    <color name="transparent">#00000000</color>
 </resources>

@@ -4,12 +4,13 @@
     <string name="about">About</string>
     <string name="events_title">Events</string>
     <string name="speakers_title">Speakers</string>
+    <string name="contact_title">Contact</string>
     <string name="created_with">Created with</string>
-    <string translatable="false" name="toast_facebook_fanpage">Toast\'s Facebook fanpage</string>
+    <string name="toast_facebook_fanpage">Toast\'s Facebook fanpage</string>
     <string name="by_toast_team">by TOAST Team</string>
     <string name="for_more_information_visit_our">For more information visit our</string>
     <string name="error_internet_browser_not_found">Internet browser not found.</string>
-    <string name="toast_fanpage_url">https://www.facebook.com/toastwroclaw/</string>
+    <string name="toast_fanpage_url" translatable="false">https://www.facebook.com/toastwroclaw/</string>
     <string name="application_version_title">Application Version:</string>
     <string name="attend">ATTEND</string>
     <string name="previous_events_label">Previous events</string>
@@ -20,4 +21,11 @@
     <string name="android_developers_meet_up">Android Developers Meet-up</string>
     <string name="oops_no_internet_connection">Oops! No internet connection.</string>
     <string name="please_check_your_internet_settings">Please check your internet settings.</string>
+    <string name="sort">Sort</string>
+    <string name="alphabetical">Alphabetical</string>
+    <string name="date">Date</string>
+    <string name="toast_title">TOAST</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Search</string>
+    <string name="no_speakers_found">No speakers found</string>
 </resources>
