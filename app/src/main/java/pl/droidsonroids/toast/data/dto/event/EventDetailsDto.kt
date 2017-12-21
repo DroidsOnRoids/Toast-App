@@ -4,7 +4,7 @@ import pl.droidsonroids.toast.data.dto.ImageDto
 import java.util.*
 
 data class EventDetailsDto(
-        val id: Int,
+        val id: Long,
         val title: String,
         val date: Date,
         val facebookId: String,

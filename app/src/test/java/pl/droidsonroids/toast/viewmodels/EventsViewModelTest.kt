@@ -16,6 +16,7 @@ import pl.droidsonroids.toast.testEventDetails
 import pl.droidsonroids.toast.testPreviousEvents
 import pl.droidsonroids.toast.testSplitEvents
 import pl.droidsonroids.toast.utils.LoadingStatus
+import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.event.EventsViewModel
 
 @RunWith(MockitoJUnitRunner::class)
@@ -66,6 +67,38 @@ class EventsViewModelTest {
         val eventsLoadingStatus = eventsViewModel.loadingStatus
 
         assertThat(eventsLoadingStatus.get(), equalTo(LoadingStatus.ERROR))
+    }
+
+
+    @Test
+    fun shouldRequestNavigationToPreviousEventDetails() {
+        whenever(eventsRepository.getEvents()).thenReturn(Maybe.just(testSplitEvents))
+        eventsViewModel = EventsViewModel(eventsRepository)
+        val previousEventsState = eventsViewModel.previousEventsSubject.value.firstOrNull() as? State.Item
+        val testApiEvent = testPreviousEvents.first()
+        val testObserver = eventsViewModel.navigationSubject.test()
+
+        previousEventsState?.item?.onClick()
+
+        testObserver.assertValue {
+            it is NavigationRequest.EventDetails
+                    && it.id == testApiEvent.id
+        }
+    }
+
+
+    @Test
+    fun shouldRequestNavigationToFeaturedEventDetails() {
+        whenever(eventsRepository.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
+        eventsViewModel = EventsViewModel(eventsRepository)
+        val testObserver = eventsViewModel.navigationSubject.test()
+
+        eventsViewModel.upcomingEvent.get().onClick()
+
+        testObserver.assertValue {
+            it is NavigationRequest.EventDetails
+                    && it.id == testEventDetails.id
+        }
     }
 
 }

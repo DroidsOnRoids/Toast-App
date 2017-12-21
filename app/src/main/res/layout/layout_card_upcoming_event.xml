@@ -19,6 +19,7 @@
         android:layout_marginEnd="@dimen/margin_small"
         android:layout_marginStart="@dimen/margin_small"
         android:layout_marginTop="@dimen/margin_small"
+        android:onClick="@{() -> upcomingEvent.onClick()}"
         app:cardCornerRadius="3dp"
         app:layout_constraintBottom_toTopOf="@+id/previousEventsLabel"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,18 +31,19 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground">
 
             <ImageView
                 android:id="@+id/upcomingEventImage"
                 android:layout_width="0dp"
                 android:layout_height="182dp"
                 android:layout_marginBottom="@dimen/margin_large"
+                android:scaleType="centerCrop"
                 app:coverImage="@{upcomingEvent.coverImage}"
                 app:layout_constraintBottom_toTopOf="@+id/upcomingEventTitleText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:scaleType="centerCrop"
                 app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
@@ -188,7 +190,6 @@
                 android:layout_height="1dp"
                 android:layout_marginBottom="@dimen/margin_medium"
                 android:background="@color/paleGray"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/upcomingEventFacebookAttendText"
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventDateText"/>
 
@@ -216,6 +217,19 @@
                 app:layout_constraintStart_toEndOf="@+id/upcomingEventClockImage"
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventlocationDivider"
                 tools:text="07:00 PM CET"/>
+
+            <FrameLayout
+                android:id="@+id/facebookTouchArea"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/white"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/upcomingEventDateDivider"/>
 
             <ImageView
                 android:id="@+id/upcomingEventFacebookImage"
