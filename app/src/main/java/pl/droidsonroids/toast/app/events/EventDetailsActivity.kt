@@ -14,4 +14,6 @@ class EventDetailsActivity : BaseActivity() {
                     .putExtra(EVENT_ID, eventDetailsRequest.id)
         }
     }
+
+
 }

@@ -6,6 +6,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import pl.droidsonroids.toast.viewmodels.MainViewModel
+import pl.droidsonroids.toast.viewmodels.event.EventDetailsViewModel
 import pl.droidsonroids.toast.viewmodels.event.EventsViewModel
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersSearchViewModel
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersViewModel
@@ -32,6 +33,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MainViewModel::class)
     abstract fun bindMainViewModel(mainViewModel: MainViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EventDetailsViewModel::class)
+    abstract fun bindEventDetailsViewModel(eventDetailsViewModel: EventDetailsViewModel): ViewModel
 
     @Binds
     internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
