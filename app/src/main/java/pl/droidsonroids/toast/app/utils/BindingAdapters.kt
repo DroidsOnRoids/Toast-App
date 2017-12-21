@@ -3,12 +3,14 @@
 package pl.droidsonroids.toast.app.utils
 
 import android.databinding.BindingAdapter
+import android.graphics.drawable.GradientDrawable
 import android.text.format.DateFormat
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.github.florent37.glidepalette.GlidePalette
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.utils.Constants
@@ -54,6 +56,30 @@ fun setRoundImage(imageView: ImageView, imageDto: ImageDto?) {
                     .placeholderOf(R.drawable.ic_placeholder_toast)
                     .circleCrop())
             .into(imageView)
+}
+
+
+@BindingAdapter("coverImage", "coverImageTitleColorListener")
+fun setCoverImageWithPaletteListener(imageView: ImageView, imageDto: ImageDto?, onPaletteLoaded: (Int) -> Unit) {
+    val thumbnailLoader = Glide.with(imageView)
+            .load(imageDto?.thumbSizeUrl)
+    Glide.with(imageView)
+            .load(imageDto?.originalSizeUrl)
+            .thumbnail(thumbnailLoader)
+            .listener(GlidePalette.with(imageDto?.originalSizeUrl)
+                    .intoCallBack { palette ->
+                        palette?.darkVibrantSwatch?.rgb?.let { onPaletteLoaded(it) }
+                    })
+            .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_toast))
+            .into(imageView)
+}
+
+@BindingAdapter("gradientBackground")
+fun setGradientBackground(view: View, color: Int?) {
+    color?.let {
+        val transparent = color and 0x00FFFFFF
+        view.background = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(color, transparent, transparent))
+    }
 }
 
 @BindingAdapter("loadingContainerVisibility")

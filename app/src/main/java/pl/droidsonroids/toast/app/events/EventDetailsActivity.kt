@@ -1,9 +1,14 @@
 package pl.droidsonroids.toast.app.events
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
+import kotlinx.android.synthetic.main.activity_event_details.*
 import pl.droidsonroids.toast.app.base.BaseActivity
+import pl.droidsonroids.toast.databinding.ActivityEventDetailsBinding
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.viewmodels.event.EventDetailsViewModel
 
 class EventDetailsActivity : BaseActivity() {
     companion object {
@@ -15,5 +20,26 @@ class EventDetailsActivity : BaseActivity() {
         }
     }
 
+    private val eventId: Long by lazy {
+        intent.getLongExtra(EVENT_ID, 0)
+    }
+    private val eventDetailsViewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory)
+                .get(eventId.toString(), EventDetailsViewModel::class.java)
+    }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val eventDetailsBinding = ActivityEventDetailsBinding.inflate(layoutInflater)
+        setContentView(eventDetailsBinding.root)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setupViewModel(eventDetailsBinding)
+        // TODO: 21/12/2017 Handle collapsing toolbar bug & refactor event details
+    }
+
+    private fun setupViewModel(eventDetailsBinding: ActivityEventDetailsBinding) {
+        eventDetailsViewModel.init(eventId)
+        eventDetailsBinding.eventDetailsViewModel = eventDetailsViewModel
+    }
 }
