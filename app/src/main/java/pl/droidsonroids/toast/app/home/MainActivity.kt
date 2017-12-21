@@ -76,7 +76,7 @@ class MainActivity : BaseActivity() {
     private fun setupViewModel(mainBinding: ActivityMainBinding) {
         mainBinding.mainViewModel = mainViewModel
         navigationDisposable = mainViewModel.navigationSubject
-                .subscribe { navigator.dispatch(this, it) }
+                .subscribe { navigator.dispatch(this, searchImageButton, it) }
     }
 
     private fun setHomeNavigationItemSelectedListener() {
