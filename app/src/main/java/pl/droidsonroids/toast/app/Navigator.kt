@@ -1,6 +1,7 @@
 package pl.droidsonroids.toast.app
 
 import android.content.Context
+import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakerDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
 import pl.droidsonroids.toast.utils.NavigationRequest
@@ -13,7 +14,13 @@ class Navigator @Inject constructor() {
         when (navigationRequest) {
             is NavigationRequest.SpeakersSearch -> showSpeakersSearch(context)
             is NavigationRequest.SpeakerDetails -> showSpeakerDetails(context, navigationRequest)
+            is NavigationRequest.EventDetails -> showEventDetails(context, navigationRequest)
         }
+    }
+
+    private fun showEventDetails(context: Context, navigationRequest: NavigationRequest.EventDetails) {
+        val intent = EventDetailsActivity.createIntent(context, navigationRequest)
+        context.startActivity(intent)
     }
 
     private fun showSpeakerDetails(context: Context, navigationRequest: NavigationRequest.SpeakerDetails) {
@@ -26,4 +33,3 @@ class Navigator @Inject constructor() {
         context.startActivity(intent)
     }
 }
-
