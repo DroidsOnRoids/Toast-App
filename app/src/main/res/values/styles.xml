@@ -15,7 +15,7 @@
     </style>
 
     <style name="AppTheme.NoActionBar.TransparentStatusBar">
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">@color/transparent</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>

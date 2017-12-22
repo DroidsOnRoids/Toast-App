@@ -12,6 +12,7 @@
     </data>
 
     <android.support.design.widget.CoordinatorLayout
+        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".app.events.EventDetailsActivity">
@@ -46,7 +47,7 @@
                 <View
                     android:fitsSystemWindows="true"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="80dp"
                     app:gradientBackground="@{eventDetailsViewModel.gradientColor}"/>
 
                 <android.support.v7.widget.Toolbar

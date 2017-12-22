@@ -20,7 +20,7 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
     val placeName: ObservableField<String> = ObservableField()
     val placeStreet: ObservableField<String> = ObservableField()
     val coverImage: ObservableField<ImageDto?> = ObservableField()
-    val gradientColor: ObservableField<Int> = ObservableField(0xFF000000.toInt())
+    val gradientColor: ObservableField<Int> = ObservableField(0xE0000000.toInt())
     val onPaletteLoaded: (Int) -> Unit = {
         gradientColor.set(it and 0xE0FFFFFF.toInt())
     }

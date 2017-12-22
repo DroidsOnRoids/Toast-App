@@ -78,7 +78,7 @@ fun setCoverImageWithPaletteListener(imageView: ImageView, imageDto: ImageDto?, 
 fun setGradientBackground(view: View, color: Int?) {
     color?.let {
         val transparent = color and 0x00FFFFFF
-        view.background = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(color, transparent, transparent))
+        view.background = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(color, transparent))
     }
 }
 
