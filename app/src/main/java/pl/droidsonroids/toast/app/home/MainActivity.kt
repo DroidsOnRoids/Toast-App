@@ -1,14 +1,17 @@
 package pl.droidsonroids.toast.app.home
 
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
+import pl.droidsonroids.toast.app.utils.RevealAnimationCreator
 import pl.droidsonroids.toast.databinding.ActivityMainBinding
 import pl.droidsonroids.toast.utils.Constants.SearchMenuItem.ANIM_DURATION_MILLIS
 import pl.droidsonroids.toast.viewmodels.MainViewModel
@@ -18,6 +21,10 @@ import javax.inject.Inject
 private const val CURRENT_TITLE: String = "current_title"
 
 class MainActivity : BaseActivity() {
+
+    companion object {
+        const val IS_SEARCH_SPEAKERS_CLOSED_KEY = "is_search_speakers_closed_key"
+    }
 
     private lateinit var homeFragmentTransaction: HomeFragmentsTransaction
 
@@ -39,6 +46,19 @@ class MainActivity : BaseActivity() {
         initHomeFragmentTransaction(showEventsFragment = savedInstanceState == null)
 
         setupViewModel(mainBinding)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        animateCollapsingSearchItem(intent.getBooleanExtra(IS_SEARCH_SPEAKERS_CLOSED_KEY, false))
+    }
+
+    private fun animateCollapsingSearchItem(isAnimationNeeded: Boolean) {
+        if (isAnimationNeeded) {
+            collapsingSearchView.visibility = View.VISIBLE
+            val revealX = (searchImageButton.x + searchImageButton.width / 2).toInt()
+            val revealY = (searchImageButton.y + searchImageButton.height / 2).toInt()
+            RevealAnimationCreator(false).showAnimation(collapsingSearchView, revealX, revealY)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

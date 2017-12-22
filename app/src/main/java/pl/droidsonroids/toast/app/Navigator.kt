@@ -32,7 +32,7 @@ class Navigator @Inject constructor() {
     }
 
     private fun showSpeakersSearchWithAnimation(activity: Activity, rootView: View) {
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, rootView, "transitionSearch")
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, rootView, "transition")
         val revealX = (rootView.x + rootView.width / 2).toInt()
         val revealY = (rootView.y + rootView.height / 2).toInt()
 

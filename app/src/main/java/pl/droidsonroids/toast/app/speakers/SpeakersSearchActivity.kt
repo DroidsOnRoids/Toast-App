@@ -4,17 +4,21 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.NavUtils
 import android.support.v7.widget.LinearLayoutManager
+import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_speakers_search.*
 import pl.droidsonroids.toast.app.base.BaseActivity
+import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
 import pl.droidsonroids.toast.app.utils.RevealAnimationCreator
 import pl.droidsonroids.toast.databinding.ActivitySpeakersSearchBinding
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersSearchViewModel
+
 
 class SpeakersSearchActivity : BaseActivity() {
 
@@ -42,6 +46,16 @@ class SpeakersSearchActivity : BaseActivity() {
         val haveNoSavedInstances = savedInstanceState == null
         showEnterAnimation(isAnimationNeeded = haveNoSavedInstances && hasCircularRevealExtras())
     }
+
+    override fun onBackPressed() {
+        showParentWithoutAnimation()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) =
+            when (item.itemId) {
+                android.R.id.home -> consume { showParentWithoutAnimation() }
+                else -> super.onOptionsItemSelected(item)
+            }
 
     private fun setupSearchBox() {
         searchBox.requestFocus()
@@ -94,12 +108,27 @@ class SpeakersSearchActivity : BaseActivity() {
         if (isAnimationNeeded) {
             val revealX = intent.getIntExtra(SpeakersSearchActivity.EXTRA_CIRCULAR_REVEAL_X, 0)
             val revealY = intent.getIntExtra(SpeakersSearchActivity.EXTRA_CIRCULAR_REVEAL_Y, 0)
-            RevealAnimationCreator().showAnimation(toolbar, revealX, revealY)
+            RevealAnimationCreator(true).showAnimation(toolbar, revealX, revealY)
         }
+    }
+
+    private fun showParentWithoutAnimation() {
+        val intent = NavUtils.getParentActivityIntent(this)
+        intent?.let {
+            it.putExtra(MainActivity.IS_SEARCH_SPEAKERS_CLOSED_KEY, true)
+            NavUtils.navigateUpTo(this, it)
+        } ?: NavUtils.navigateUpFromSameTask(this)
+
+        overridePendingTransition(0, 0)
     }
 
     private fun hasCircularRevealExtras() =
             intent.hasExtra(EXTRA_CIRCULAR_REVEAL_X) && intent.hasExtra(EXTRA_CIRCULAR_REVEAL_Y)
+
+    private fun consume(func: () -> Unit): Boolean {
+        func()
+        return true
+    }
 
     override fun onDestroy() {
         speakersDisposable?.dispose()
