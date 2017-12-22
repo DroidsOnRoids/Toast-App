@@ -1,5 +1,7 @@
 package pl.droidsonroids.toast.app
 
+import android.content.Context
+import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import android.app.Activity
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
@@ -14,7 +16,13 @@ class Navigator @Inject constructor() {
     fun dispatch(activity: Activity, searchIcon: ImageButton, navigationRequest: NavigationRequest) {
         when (navigationRequest) {
             is NavigationRequest.SpeakersSearch -> showSpeakersSearchWithAnimation(activity, searchIcon)
+            is NavigationRequest.EventDetails -> showEventDetails(activity, navigationRequest)
         }
+    }
+
+    private fun showEventDetails(context: Context, navigationRequest: NavigationRequest.EventDetails) {
+        val intent = EventDetailsActivity.createIntent(context, navigationRequest)
+        context.startActivity(intent)
     }
 
     private fun showSpeakersSearchWithAnimation(activity: Activity, searchIcon: ImageButton) {
