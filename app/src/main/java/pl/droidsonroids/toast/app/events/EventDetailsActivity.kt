@@ -35,7 +35,7 @@ class EventDetailsActivity : BaseActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setupViewModel(eventDetailsBinding)
-        // TODO: 21/12/2017 Handle collapsing toolbar bug & refactor event details
+        // TODO: 21/12/2017 refactor event details
     }
 
     private fun setupViewModel(eventDetailsBinding: ActivityEventDetailsBinding) {
