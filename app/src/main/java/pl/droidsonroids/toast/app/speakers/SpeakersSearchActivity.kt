@@ -1,18 +1,10 @@
 package pl.droidsonroids.toast.app.speakers
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.NavUtils
 import android.support.v7.widget.LinearLayoutManager
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewAnimationUtils
-import android.view.ViewTreeObserver
-import android.view.animation.AccelerateInterpolator
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -20,6 +12,7 @@ import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_speakers_search.*
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
+import pl.droidsonroids.toast.app.utils.RevealAnimationCreator
 import pl.droidsonroids.toast.databinding.ActivitySpeakersSearchBinding
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersSearchViewModel
 
@@ -49,12 +42,6 @@ class SpeakersSearchActivity : BaseActivity() {
         val haveNoSavedInstances = savedInstanceState == null
         showEnterAnimation(isAnimationNeeded = haveNoSavedInstances && hasCircularRevealExtras())
     }
-
-    override fun onOptionsItemSelected(item: MenuItem) =
-            when (item.itemId) {
-                android.R.id.home -> consume { showParentActivityWithAnimation() }
-                else -> super.onOptionsItemSelected(item)
-            }
 
     private fun setupSearchBox() {
         searchBox.requestFocus()
@@ -105,73 +92,14 @@ class SpeakersSearchActivity : BaseActivity() {
 
     private fun showEnterAnimation(isAnimationNeeded: Boolean) {
         if (isAnimationNeeded) {
-            val revealX = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_X, 0)
-            val revealY = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_Y, 0)
-
-            with(toolbar.viewTreeObserver) {
-                if (isAlive) {
-                    addOnGlobalLayoutListener(this, revealX, revealY)
-                }
-            }
+            val revealX = intent.getIntExtra(SpeakersSearchActivity.EXTRA_CIRCULAR_REVEAL_X, 0)
+            val revealY = intent.getIntExtra(SpeakersSearchActivity.EXTRA_CIRCULAR_REVEAL_Y, 0)
+            RevealAnimationCreator().showAnimation(toolbar, revealX, revealY)
         }
-    }
-
-    private fun addOnGlobalLayoutListener(viewTreeObserver: ViewTreeObserver, revealX: Int, revealY: Int) {
-        viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                showRevealAnimation(revealX, revealY)
-                toolbar.viewTreeObserver.removeOnGlobalLayoutListener(this)
-            }
-        })
     }
 
     private fun hasCircularRevealExtras() =
             intent.hasExtra(EXTRA_CIRCULAR_REVEAL_X) && intent.hasExtra(EXTRA_CIRCULAR_REVEAL_Y)
-
-    private fun showRevealAnimation(rootX: Int, rootY: Int) {
-        val finalRadius = getToolbarRadius()
-        val revealAnimation = ViewAnimationUtils.createCircularReveal(toolbar, rootX, rootY, 0f, finalRadius)
-
-        with(revealAnimation) {
-            duration = 300
-            interpolator = AccelerateInterpolator()
-            start()
-        }
-    }
-
-    private fun getToolbarRadius() = (Math.max(toolbar.width, toolbar.height)).toFloat()
-
-    private fun showParentActivityWithAnimation() {
-        if (hasCircularRevealExtras()) {
-            val revealX = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_X,0)
-            val revealY = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_Y, 0)
-            val finalRadius = getToolbarRadius()
-            val circularReveal = ViewAnimationUtils.createCircularReveal(toolbar, revealX, revealY, finalRadius, 0f)
-
-            with(circularReveal) {
-                duration = 300
-                addAnimationEndListener(this)
-                start()
-            }
-        } else {
-            NavUtils.navigateUpFromSameTask(this@SpeakersSearchActivity)
-        }
-    }
-
-    private fun addAnimationEndListener(animator: Animator) {
-        animator.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                toolbar.visibility = View.INVISIBLE
-                NavUtils.navigateUpFromSameTask(this@SpeakersSearchActivity)
-                overridePendingTransition(0, 0)
-            }
-        })
-    }
-
-    private fun consume(func: () -> Unit): Boolean {
-        func()
-        return true
-    }
 
     override fun onDestroy() {
         speakersDisposable?.dispose()

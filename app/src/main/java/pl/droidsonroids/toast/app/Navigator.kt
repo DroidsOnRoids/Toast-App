@@ -1,11 +1,11 @@
 package pl.droidsonroids.toast.app
 
-import android.content.Context
-import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import android.app.Activity
+import android.content.Context
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
-import android.widget.ImageButton
+import android.view.View
+import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
 import pl.droidsonroids.toast.utils.NavigationRequest
 import javax.inject.Inject
@@ -13,10 +13,16 @@ import javax.inject.Singleton
 
 @Singleton
 class Navigator @Inject constructor() {
-    fun dispatch(activity: Activity, searchIcon: ImageButton, navigationRequest: NavigationRequest) {
+
+    fun dispatch(context: Context, navigationRequest: NavigationRequest) {
         when (navigationRequest) {
-            is NavigationRequest.SpeakersSearch -> showSpeakersSearchWithAnimation(activity, searchIcon)
-            is NavigationRequest.EventDetails -> showEventDetails(activity, navigationRequest)
+            is NavigationRequest.EventDetails -> showEventDetails(context, navigationRequest)
+        }
+    }
+
+    fun dispatch(activity: Activity, rootView: View, navigationRequest: NavigationRequest) {
+        when (navigationRequest) {
+            is NavigationRequest.SpeakersSearch -> showSpeakersSearchWithAnimation(activity, rootView)
         }
     }
 
@@ -25,10 +31,10 @@ class Navigator @Inject constructor() {
         context.startActivity(intent)
     }
 
-    private fun showSpeakersSearchWithAnimation(activity: Activity, searchIcon: ImageButton) {
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, searchIcon, "transition")
-        val revealX = (searchIcon.x + searchIcon.width / 2).toInt()
-        val revealY = (searchIcon.y + searchIcon.height / 2).toInt()
+    private fun showSpeakersSearchWithAnimation(activity: Activity, rootView: View) {
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, rootView, "transitionSearch")
+        val revealX = (rootView.x + rootView.width / 2).toInt()
+        val revealY = (rootView.y + rootView.height / 2).toInt()
 
         val intent = SpeakersSearchActivity.createIntent(activity)
         intent.putExtra(SpeakersSearchActivity.EXTRA_CIRCULAR_REVEAL_X, revealX)

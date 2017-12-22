@@ -61,7 +61,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setupToolbar(savedInstanceState: Bundle?) {
-        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbarMain)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         savedInstanceState?.let {
             homeTitle.text = it.getString(CURRENT_TITLE)
