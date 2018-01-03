@@ -4,6 +4,8 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.FrameLayout
+import android.widget.ImageView
 import kotlinx.android.synthetic.main.activity_event_details.*
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.databinding.ActivityEventDetailsBinding
@@ -35,11 +37,19 @@ class EventDetailsActivity : BaseActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setupViewModel(eventDetailsBinding)
-        // TODO: 21/12/2017 refactor event details
+        setupGradientSwitcher()
     }
 
     private fun setupViewModel(eventDetailsBinding: ActivityEventDetailsBinding) {
         eventDetailsViewModel.init(eventId)
         eventDetailsBinding.eventDetailsViewModel = eventDetailsViewModel
+    }
+
+    private fun setupGradientSwitcher() {
+        gradientSwitcher.setFactory {
+            ImageView(applicationContext).apply {
+                layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
+            }
+        }
     }
 }

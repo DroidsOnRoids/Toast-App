@@ -12,9 +12,9 @@
     </data>
 
     <android.support.design.widget.CoordinatorLayout
-        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         tools:context=".app.events.EventDetailsActivity">
 
         <android.support.design.widget.AppBarLayout
@@ -44,10 +44,14 @@
                     app:coverImageTitleColorListener="@{eventDetailsViewModel.onPaletteLoaded}"
                     app:layout_collapseMode="parallax"/>
 
-                <View
-                    android:fitsSystemWindows="true"
+                <ImageSwitcher
+                    android:id="@+id/gradientSwitcher"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
+                    app:layout_collapseMode="parallax"
+                    android:fitsSystemWindows="true"
+                    android:inAnimation="@anim/animation_cross_fade_in"
+                    android:outAnimation="@anim/animation_cross_fade_out"
                     app:gradientBackground="@{eventDetailsViewModel.gradientColor}"/>
 
                 <android.support.v7.widget.Toolbar

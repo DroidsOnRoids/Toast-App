@@ -12,20 +12,23 @@ import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import java.util.*
 import javax.inject.Inject
 
+private const val DEFAULT_GRADIENT_COLOR = 0xA0000000.toInt()
+private const val GRADIENT_COLOR_MASK = 0xE0FFFFFF.toInt()
+
 class EventDetailsViewModel @Inject constructor(private val eventsRepository: EventsRepository) : ViewModel(), LoadingViewModel {
-    override val loadingStatus: ObservableField<LoadingStatus> = ObservableField()
+    private val Any.simpleClassName: String get() = javaClass.simpleName
+    override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.SUCCESS)
     private var eventId: Long? = null
     val title: ObservableField<String> = ObservableField()
     val date: ObservableField<Date> = ObservableField()
     val placeName: ObservableField<String> = ObservableField()
     val placeStreet: ObservableField<String> = ObservableField()
     val coverImage: ObservableField<ImageDto?> = ObservableField()
-    val gradientColor: ObservableField<Int> = ObservableField(0xE0000000.toInt())
+    val gradientColor: ObservableField<Int> = ObservableField(DEFAULT_GRADIENT_COLOR)
     val onPaletteLoaded: (Int) -> Unit = {
-        gradientColor.set(it and 0xE0FFFFFF.toInt())
+        gradientColor.set(it and GRADIENT_COLOR_MASK)
     }
 
-    private val Any.simpleClassName: String get() = javaClass.simpleName
 
 
     fun init(id: Long) {
@@ -41,7 +44,7 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
             eventsRepository.getEvent(it)
                     .subscribeBy(
                             onSuccess = (::onEventLoaded),
-                            onError = { onEventLoadError(it) }
+                            onError = (::onEventLoadError)
                     )
         }
     }

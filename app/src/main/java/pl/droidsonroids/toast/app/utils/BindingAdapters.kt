@@ -3,9 +3,12 @@
 package pl.droidsonroids.toast.app.utils
 
 import android.databinding.BindingAdapter
+
+
 import android.graphics.drawable.GradientDrawable
 import android.text.format.DateFormat
 import android.view.View
+import android.widget.ImageSwitcher
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -18,6 +21,7 @@ import pl.droidsonroids.toast.utils.LoadingStatus
 import java.text.SimpleDateFormat
 import java.util.*
 
+private const val COLOR_TRANSPARENT = 0x00FFFFFF
 
 @BindingAdapter("eventTime")
 fun setEventTime(textView: TextView, date: Date?) {
@@ -32,7 +36,6 @@ fun setEventDate(textView: TextView, date: Date?) {
     textView.text = date?.let { timeFormatter.format(it) }
 }
 
-
 @BindingAdapter("coverImage")
 fun setCoverImage(imageView: ImageView, imageDto: ImageDto?) {
     val thumbnailLoader = Glide.with(imageView).load(imageDto?.thumbSizeUrl)
@@ -42,6 +45,7 @@ fun setCoverImage(imageView: ImageView, imageDto: ImageDto?) {
             .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_toast))
             .into(imageView)
 }
+
 
 @BindingAdapter("roundImage")
 fun setRoundImage(imageView: ImageView, imageDto: ImageDto?) {
@@ -58,7 +62,6 @@ fun setRoundImage(imageView: ImageView, imageDto: ImageDto?) {
             .into(imageView)
 }
 
-
 @BindingAdapter("coverImage", "coverImageTitleColorListener")
 fun setCoverImageWithPaletteListener(imageView: ImageView, imageDto: ImageDto?, onPaletteLoaded: (Int) -> Unit) {
     val thumbnailLoader = Glide.with(imageView)
@@ -73,12 +76,10 @@ fun setCoverImageWithPaletteListener(imageView: ImageView, imageDto: ImageDto?, 
             .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_toast))
             .into(imageView)
 }
-
 @BindingAdapter("gradientBackground")
-fun setGradientBackground(view: View, color: Int?) {
+fun setGradientBackground(imageSwitcher: ImageSwitcher, color: Int?) {
     color?.let {
-        val transparent = color and 0x00FFFFFF
-        view.background = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(color, transparent))
+        imageSwitcher.setImageDrawable(GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(color, COLOR_TRANSPARENT)))
     }
 }
 
