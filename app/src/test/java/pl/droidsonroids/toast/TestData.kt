@@ -39,14 +39,13 @@ val testPreviousEventsPage = Page(testPreviousEvents.map { it.toDto() }, 1, 1)
 
 val testSplitEvents = SplitEvents(testEventDetails.toDto(), testPreviousEventsPage)
 
-val testSpeakers = listOf(
-        ApiSpeaker(
-                0,
-                "name",
-                "job",
-                ApiImage("bigImageFirst", "thumbImageFirst"),
-                "bio"
-        )
+val testSpeaker = ApiSpeaker(
+        0,
+        "name",
+        "job",
+        ApiImage("bigImageFirst", "thumbImageFirst"),
+        "bio"
 )
+val testSpeakers = listOf(testSpeaker)
 
 val testSpeakersPage = Page(testSpeakers.map { it.toDto() }, 1, 1)

@@ -12,9 +12,11 @@ import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.api.speaker.ApiSpeaker
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
+import pl.droidsonroids.toast.testSpeaker
 import pl.droidsonroids.toast.testSpeakers
 import pl.droidsonroids.toast.testSpeakersPage
 import pl.droidsonroids.toast.utils.LoadingStatus
+import pl.droidsonroids.toast.utils.NavigationRequest
 
 class SpeakersViewModelTest : RxTestBase() {
 
@@ -107,5 +109,21 @@ class SpeakersViewModelTest : RxTestBase() {
         val speakerItemViewModelList = speakersViewModel.speakersSubject.value
         assertThat(speakerItemViewModelList.size, equalTo(itemsCountOnAllPages))
         assertSpeaker((speakerItemViewModelList[1] as? State.Item)?.item, testSpeakers.first())
+    }
+
+    @Test
+    fun shouldRequestNavigationToSpeakerDetails() {
+        whenever(speakersRepository.getSpeakersPage()).thenReturn(Single.just(testSpeakersPage))
+        speakersViewModel = SpeakersViewModel(speakersRepository)
+        val speakerItemViewModelList = speakersViewModel.speakersSubject.value
+        val speakerItemViewModel = (speakerItemViewModelList.first() as? State.Item)?.item
+        val testObserver = speakersViewModel.navigationSubject.test()
+
+        speakerItemViewModel?.onClick()
+
+        testObserver.assertValue {
+            it is NavigationRequest.SpeakerDetails
+                    && it.id == testSpeaker.id
+        }
     }
 }
