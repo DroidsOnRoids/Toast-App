@@ -62,8 +62,8 @@ fun setRoundImage(imageView: ImageView, imageDto: ImageDto?) {
             .into(imageView)
 }
 
-@BindingAdapter("coverImage", "coverImageTitleColorListener")
-fun setCoverImageWithPaletteListener(imageView: ImageView, imageDto: ImageDto?, onPaletteLoaded: (Int) -> Unit) {
+@BindingAdapter("coverImage", "coverImageColorListener")
+fun setCoverImageWithPaletteListener(imageView: ImageView, imageDto: ImageDto?, onColorLoaded: (Int) -> Unit) {
     val thumbnailLoader = Glide.with(imageView)
             .load(imageDto?.thumbSizeUrl)
     Glide.with(imageView)
@@ -71,13 +71,14 @@ fun setCoverImageWithPaletteListener(imageView: ImageView, imageDto: ImageDto?, 
             .thumbnail(thumbnailLoader)
             .listener(GlidePalette.with(imageDto?.originalSizeUrl)
                     .intoCallBack { palette ->
-                        palette?.darkVibrantSwatch?.rgb?.let { onPaletteLoaded(it) }
+                        palette?.darkVibrantSwatch?.rgb?.let { onColorLoaded(it) }
                     })
             .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_toast))
             .into(imageView)
 }
-@BindingAdapter("gradientBackground")
-fun setGradientBackground(imageSwitcher: ImageSwitcher, color: Int?) {
+
+@BindingAdapter("gradientColor")
+fun setGradientColor(imageSwitcher: ImageSwitcher, color: Int?) {
     color?.let {
         imageSwitcher.setImageDrawable(GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(color, COLOR_TRANSPARENT)))
     }

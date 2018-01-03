@@ -17,7 +17,7 @@ private const val GRADIENT_COLOR_MASK = 0xE0FFFFFF.toInt()
 
 class EventDetailsViewModel @Inject constructor(private val eventsRepository: EventsRepository) : ViewModel(), LoadingViewModel {
     private val Any.simpleClassName: String get() = javaClass.simpleName
-    override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.SUCCESS)
+    override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.PENDING)
     private var eventId: Long? = null
     val title: ObservableField<String> = ObservableField()
     val date: ObservableField<Date> = ObservableField()
@@ -25,7 +25,7 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
     val placeStreet: ObservableField<String> = ObservableField()
     val coverImage: ObservableField<ImageDto?> = ObservableField()
     val gradientColor: ObservableField<Int> = ObservableField(DEFAULT_GRADIENT_COLOR)
-    val onPaletteLoaded: (Int) -> Unit = {
+    val onGradientColorLoaded: (Int) -> Unit = {
         gradientColor.set(it and GRADIENT_COLOR_MASK)
     }
 
