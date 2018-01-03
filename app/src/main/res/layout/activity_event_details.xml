@@ -214,7 +214,6 @@
                 android:id="@+id/eventDateDivider"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/margin_medium"
                 android:background="@color/paleGray"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventDate"/>
