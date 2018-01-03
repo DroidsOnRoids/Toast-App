@@ -35,6 +35,7 @@
         <activity
             android:name=".app.events.EventDetailsActivity"
             android:label=""
+            android:parentActivityName=".app.home.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.TransparentStatusBar"/>
     </application>
