@@ -19,8 +19,8 @@ buildscript {
     }
 }
 
-
 import org.ajoberstar.grgit.Grgit
+
 
 def git = Grgit.open(currentDir: projectDir)
 def commitsOnBranchCount = git.log(includes: ['HEAD']).size()
@@ -140,6 +140,10 @@ dependencies {
 
 repositories {
     mavenCentral()
+}
+
+uiTest {
+    uiTestReporter 'test%sComposer'
 }
 
 tasks.addRule("Pattern: jacoco<Variant>TestReport") { String taskName ->
