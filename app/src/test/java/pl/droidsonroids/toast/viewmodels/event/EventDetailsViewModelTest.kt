@@ -22,11 +22,12 @@ class EventDetailsViewModelTest : RxTestBase() {
     @InjectMocks
     lateinit var eventDetailsViewModel: EventDetailsViewModel
 
+    private val eventId: Long = 1
+
     @Test
     fun shouldLoadEventDetails() {
-        val id: Long = 1
-        whenever(eventsRepository.getEvent(id)).thenReturn(testEventDetails.toDto().toSingle())
-        eventDetailsViewModel.init(id)
+        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
+        eventDetailsViewModel.init(eventId)
 
         assertEventDetails()
         assertThat(eventDetailsViewModel.loadingStatus.get(), equalTo(LoadingStatus.SUCCESS))
@@ -34,30 +35,27 @@ class EventDetailsViewModelTest : RxTestBase() {
 
     @Test
     fun shouldLoadEventDetailsOnlyOnce() {
-        val id: Long = 1
-        whenever(eventsRepository.getEvent(id)).thenReturn(testEventDetails.toDto().toSingle())
-        eventDetailsViewModel.init(id)
+        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
+        eventDetailsViewModel.init(eventId)
 
-        eventDetailsViewModel.init(id)
+        eventDetailsViewModel.init(eventId)
 
-        verify(eventsRepository, times(1)).getEvent(id)
+        verify(eventsRepository, times(1)).getEvent(eventId)
     }
 
     @Test
     fun shouldFailLoadEventDetails() {
-        val id: Long = 1
-        whenever(eventsRepository.getEvent(id)).thenReturn(Single.error(Exception()))
-        eventDetailsViewModel.init(id)
+        whenever(eventsRepository.getEvent(eventId)).thenReturn(Single.error(Exception()))
+        eventDetailsViewModel.init(eventId)
 
         assertThat(eventDetailsViewModel.loadingStatus.get(), equalTo(LoadingStatus.ERROR))
     }
 
     @Test
     fun shouldRetryLoadEventDetails() {
-        val id: Long = 1
-        whenever(eventsRepository.getEvent(id)).thenReturn(Single.error(Exception()))
-        eventDetailsViewModel.init(id)
-        whenever(eventsRepository.getEvent(id)).thenReturn(testEventDetails.toDto().toSingle())
+        whenever(eventsRepository.getEvent(eventId)).thenReturn(Single.error(Exception()))
+        eventDetailsViewModel.init(eventId)
+        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
 
         eventDetailsViewModel.retryLoading()
 
