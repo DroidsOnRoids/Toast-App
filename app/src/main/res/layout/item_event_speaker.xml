@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="eventSpeakersItemViewModel"
+            type="pl.droidsonroids.toast.viewmodels.event.EventSpeakerItemViewModel"/>
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_small"
+        app:cardCornerRadius="3dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <include
+                android:id="@+id/speaker"
+                layout="@layout/item_speaker"
+                app:itemViewModel="@{eventSpeakersItemViewModel.speakerItemViewModel}"
+                app:layout_constraintBottom_toTopOf="@+id/speakerDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <View
+                android:id="@+id/speakerDivider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/paleGray"
+                app:layout_constraintBottom_toTopOf="@+id/talkTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/speaker"/>
+
+            <TextView
+                android:id="@+id/talkTitle"
+                style="@style/LectureTitleStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{eventSpeakersItemViewModel.title}"
+                android:layout_marginBottom="6dp"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:layout_marginStart="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_large"
+                app:layout_constraintBottom_toTopOf="@+id/talkDescription"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/speakerDivider"
+                tools:text="Continuous delivery with ease"/>
+
+            <TextView
+                android:id="@+id/talkDescription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{eventSpeakersItemViewModel.description}"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:layout_marginStart="@dimen/margin_large"
+                android:maxLines="5"
+                app:layout_constraintBottom_toTopOf="@+id/talkDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/talkTitle"
+                tools:text="Description"/>
+
+            <View
+                android:id="@+id/descriptionGradient"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/gradient_white"
+                app:layout_constraintBottom_toTopOf="@+id/talkDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_max="40dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/talkTitle"
+                app:layout_constraintVertical_bias="1"/>
+
+            <View
+                android:id="@+id/talkDivider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:background="@color/paleGray"
+                app:layout_constraintBottom_toTopOf="@+id/readMore"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/talkDescription"/>
+
+            <TextView
+                android:id="@+id/readMore"
+                style="@style/FacebookAttend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:drawablePadding="@dimen/margin_small"
+                android:drawableStart="@drawable/ic_read_more"
+                android:gravity="center"
+                android:text="@string/readMore"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/talkDivider"/>
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+
+</layout>

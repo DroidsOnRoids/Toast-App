@@ -28,4 +28,5 @@
     <string name="search">Search</string>
     <string name="search_hint">Search</string>
     <string name="no_speakers_found">No speakers found</string>
+    <string name="readMore">Read more</string>
 </resources>
