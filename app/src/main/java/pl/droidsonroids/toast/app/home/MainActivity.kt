@@ -52,15 +52,6 @@ class MainActivity : BaseActivity() {
         animateCollapsingSearchItem(intent.getBooleanExtra(IS_SEARCH_SPEAKERS_CLOSED_KEY, false))
     }
 
-    private fun animateCollapsingSearchItem(isAnimationNeeded: Boolean) {
-        if (isAnimationNeeded) {
-            collapsingSearchView.visibility = View.VISIBLE
-            val revealX = (searchImageButton.x + searchImageButton.width / 2).toInt()
-            val revealY = (searchImageButton.y + searchImageButton.height / 2).toInt()
-            RevealAnimationCreator(false).showAnimation(collapsingSearchView, revealX, revealY)
-        }
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
@@ -78,6 +69,15 @@ class MainActivity : BaseActivity() {
                 .y(offset)
                 .setDuration(ANIM_DURATION_MILLIS)
                 .start()
+    }
+
+    private fun animateCollapsingSearchItem(isAnimationNeeded: Boolean) {
+        if (isAnimationNeeded) {
+            collapsingSearchView.visibility = View.VISIBLE
+            val animationCenterX = (searchImageButton.x + searchImageButton.width / 2).toInt()
+            val animationCenterY = (searchImageButton.y + searchImageButton.height / 2).toInt()
+            RevealAnimationCreator(false).showAnimation(collapsingSearchView, animationCenterX, animationCenterY)
+        }
     }
 
     private fun setupToolbar(savedInstanceState: Bundle?) {

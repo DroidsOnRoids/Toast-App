@@ -17,15 +17,14 @@ class Navigator @Inject constructor() {
 
     fun dispatch(context: Context, navigationRequest: NavigationRequest) {
         when (navigationRequest) {
-            is NavigationRequest.SpeakersSearch -> showSpeakersSearch(context)
             is NavigationRequest.SpeakerDetails -> showSpeakerDetails(context, navigationRequest)
             is NavigationRequest.EventDetails -> showEventDetails(context, navigationRequest)
         }
     }
 
-    fun dispatch(activity: Activity, rootView: View, navigationRequest: NavigationRequest) {
+    fun dispatch(activity: Activity, animatedView: View, navigationRequest: NavigationRequest) {
         when (navigationRequest) {
-            is NavigationRequest.SpeakersSearch -> showSpeakersSearchWithAnimation(activity, rootView)
+            is NavigationRequest.SpeakersSearch -> showSpeakersSearchWithRevealAnimation(activity, animatedView)
         }
     }
 
@@ -39,10 +38,10 @@ class Navigator @Inject constructor() {
         context.startActivity(intent)
     }
 
-    private fun showSpeakersSearchWithAnimation(activity: Activity, rootView: View) {
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, rootView, "transition")
-        val revealX = (rootView.x + rootView.width / 2).toInt()
-        val revealY = (rootView.y + rootView.height / 2).toInt()
+    private fun showSpeakersSearchWithRevealAnimation(activity: Activity, animatedView: View) {
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, animatedView, animatedView.transitionName)
+        val revealX = (animatedView.x + animatedView.width / 2).toInt()
+        val revealY = (animatedView.y + animatedView.height / 2).toInt()
 
         val intent = SpeakersSearchActivity.createIntent(activity)
         intent.putExtra(SpeakersSearchActivity.EXTRA_CIRCULAR_REVEAL_X, revealX)

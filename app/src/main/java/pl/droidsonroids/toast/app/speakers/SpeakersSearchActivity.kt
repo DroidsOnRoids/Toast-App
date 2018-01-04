@@ -46,13 +46,13 @@ class SpeakersSearchActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         val speakersSearchBinding = ActivitySpeakersSearchBinding.inflate(layoutInflater)
         setContentView(speakersSearchBinding.root)
-        setupToolbar()
         setupViewModel(speakersSearchBinding)
+        setupToolbar()
         setupRecyclerView()
         setupSearchBox()
 
         val haveNoSavedInstances = savedInstanceState == null
-        showEnterAnimation(isAnimationNeeded = haveNoSavedInstances && hasCircularRevealExtras())
+        showEnterAnimation(isAnimationNeeded = haveNoSavedInstances && haveCircularRevealExtras())
     }
 
     override fun onBackPressed() {
@@ -115,9 +115,9 @@ class SpeakersSearchActivity : BaseActivity() {
 
     private fun showEnterAnimation(isAnimationNeeded: Boolean) {
         if (isAnimationNeeded) {
-            val revealX = intent.getIntExtra(SpeakersSearchActivity.EXTRA_CIRCULAR_REVEAL_X, 0)
-            val revealY = intent.getIntExtra(SpeakersSearchActivity.EXTRA_CIRCULAR_REVEAL_Y, 0)
-            RevealAnimationCreator(true).showAnimation(toolbar, revealX, revealY)
+            val animationCenterX = intent.getIntExtra(SpeakersSearchActivity.EXTRA_CIRCULAR_REVEAL_X, 0)
+            val animationCenterY = intent.getIntExtra(SpeakersSearchActivity.EXTRA_CIRCULAR_REVEAL_Y, 0)
+            RevealAnimationCreator(true).showAnimation(toolbar, animationCenterX, animationCenterY)
         }
     }
 
@@ -131,7 +131,7 @@ class SpeakersSearchActivity : BaseActivity() {
         overridePendingTransition(0, 0)
     }
 
-    private fun hasCircularRevealExtras() =
+    private fun haveCircularRevealExtras() =
             intent.hasExtra(EXTRA_CIRCULAR_REVEAL_X) && intent.hasExtra(EXTRA_CIRCULAR_REVEAL_Y)
 
     private fun consume(func: () -> Unit): Boolean {

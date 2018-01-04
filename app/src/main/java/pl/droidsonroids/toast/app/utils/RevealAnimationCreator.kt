@@ -10,39 +10,39 @@ import android.view.animation.AccelerateInterpolator
 
 class RevealAnimationCreator(private val isGrowing: Boolean) {
 
-    fun showAnimation(viewRoot: View, revealX: Int, revealY: Int) {
-        with(viewRoot.viewTreeObserver) {
+    fun showAnimation(animatedView: View, centerX: Int, centerY: Int) {
+        with(animatedView.viewTreeObserver) {
             if (isAlive) {
-                addOnGlobalLayoutListener(this, viewRoot, revealX, revealY)
+                addOnGlobalLayoutListener(this, animatedView, centerX, centerY)
             }
         }
     }
 
-    private fun addOnGlobalLayoutListener(viewTreeObserver: ViewTreeObserver, viewRoot: View, revealX: Int, revealY: Int) {
+    private fun addOnGlobalLayoutListener(viewTreeObserver: ViewTreeObserver, animatedView: View, centerX: Int, centerY: Int) {
         viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
-                showRevealAnimation(viewRoot, revealX, revealY)
-                viewRoot.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                showRevealAnimation(animatedView, centerX, centerY)
+                animatedView.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })
     }
 
-    private fun showRevealAnimation(viewRoot: View, rootX: Int, rootY: Int) {
-        val finalRadius = (Math.max(viewRoot.width, viewRoot.height)).toFloat()
+    private fun showRevealAnimation(animatedView: View, centerX: Int, centerY: Int) {
+        val finalRadius = (Math.max(animatedView.width, animatedView.height)).toFloat()
         val revealAnimation: Animator
         if (isGrowing) {
-            revealAnimation = ViewAnimationUtils.createCircularReveal(viewRoot, rootX, rootY, 0f, finalRadius)
+            revealAnimation = ViewAnimationUtils.createCircularReveal(animatedView, centerX, centerY, 0f, finalRadius)
         } else {
-            revealAnimation = ViewAnimationUtils.createCircularReveal(viewRoot, rootX, rootY, finalRadius, 0f)
+            revealAnimation = ViewAnimationUtils.createCircularReveal(animatedView, centerX, centerY, finalRadius, 0f)
             revealAnimation.addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
-                    viewRoot.visibility = View.GONE
+                    animatedView.visibility = View.GONE
                 }
             })
         }
 
         with(revealAnimation) {
-            viewRoot.visibility = View.VISIBLE
+            animatedView.visibility = View.VISIBLE
             duration = 300
             interpolator = AccelerateInterpolator()
             start()
