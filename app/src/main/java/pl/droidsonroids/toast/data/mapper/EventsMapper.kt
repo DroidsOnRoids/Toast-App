@@ -2,13 +2,17 @@ package pl.droidsonroids.toast.data.mapper
 
 import pl.droidsonroids.toast.data.api.event.ApiEvent
 import pl.droidsonroids.toast.data.api.event.ApiEventDetails
+import pl.droidsonroids.toast.data.api.event.ApiTalk
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
 import pl.droidsonroids.toast.data.dto.event.EventDto
+import pl.droidsonroids.toast.data.dto.event.TalkDto
 import pl.droidsonroids.toast.viewmodels.event.EventItemViewModel
+import pl.droidsonroids.toast.viewmodels.event.EventSpeakerItemViewModel
 import pl.droidsonroids.toast.viewmodels.event.UpcomingEventViewModel
 
 fun ApiEventDetails.toDto(): EventDetailsDto {
     val imagesDto = coverImages.map { it.toDto() }
+    val talksDto = talks.map { it.toDto() }
     return EventDetailsDto(
             id = id,
             title = title,
@@ -16,7 +20,17 @@ fun ApiEventDetails.toDto(): EventDetailsDto {
             facebookId = facebookId,
             placeName = placeName,
             placeStreet = placeStreet,
-            coverImages = imagesDto
+            coverImages = imagesDto,
+            talks = talksDto
+    )
+}
+
+private fun ApiTalk.toDto(): TalkDto {
+    return TalkDto(
+            id = id,
+            title = title,
+            description = description,
+            speaker = speaker.toDto()
     )
 }
 
@@ -49,5 +63,15 @@ fun EventDetailsDto.toViewModel(onClick: (Long) -> Unit): UpcomingEventViewModel
             placeStreet = placeStreet,
             coverImage = coverImages.firstOrNull(),
             action = onClick
+    )
+}
+
+fun TalkDto.toViewModel(onReadMore: (Long) -> Unit, onSpeakerClick: (Long) -> Unit): EventSpeakerItemViewModel {
+    return EventSpeakerItemViewModel(
+            id,
+            title,
+            description,
+            speaker.toViewModel(onSpeakerClick),
+            onReadMore
     )
 }

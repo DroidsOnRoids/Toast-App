@@ -4,8 +4,11 @@ import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import android.util.Log
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.subjects.BehaviorSubject
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
+import pl.droidsonroids.toast.data.dto.event.TalkDto
+import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
@@ -28,7 +31,7 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
     val onGradientColorLoaded: (Int) -> Unit = {
         gradientColor.set(it and GRADIENT_COLOR_MASK)
     }
-
+    val eventSpeakers: BehaviorSubject<List<EventSpeakerItemViewModel>> = BehaviorSubject.create()
 
 
     fun init(id: Long) {
@@ -57,7 +60,21 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
             placeName.set(it.placeName)
             placeStreet.set(it.placeStreet)
             coverImage.set(it.coverImages.firstOrNull())
+            onTalksLoaded(it.talks)
         }
+    }
+
+    private fun onTalksLoaded(talks: List<TalkDto>) {
+        val eventSpeakerViewModels = talks.map { it.toViewModel(::onReadMore, ::onSpeakerClick) }
+        eventSpeakers.onNext(eventSpeakerViewModels)
+    }
+
+    private fun onReadMore(talkId: Long) {
+        // TODO: 04/01/2018 Add click action
+    }
+
+    private fun onSpeakerClick(speakerId: Long) {
+        // TODO: 04/01/2018 Add click action
     }
 
     private fun onEventLoadError(throwable: Throwable) {
