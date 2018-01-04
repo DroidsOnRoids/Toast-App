@@ -15,9 +15,11 @@ import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.api.speaker.ApiSpeaker
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
+import pl.droidsonroids.toast.testSpeaker
 import pl.droidsonroids.toast.testSpeakers
 import pl.droidsonroids.toast.testSpeakersPage
 import pl.droidsonroids.toast.utils.LoadingStatus
+import pl.droidsonroids.toast.utils.NavigationRequest
 
 class SpeakersSearchViewModelTest : RxTestBase() {
 
@@ -99,5 +101,24 @@ class SpeakersSearchViewModelTest : RxTestBase() {
         assertThat(resultSpeakerViewModel?.id, equalTo(testSpeaker.id))
         assertThat(resultSpeakerViewModel?.name, equalTo(testSpeaker.name))
         assertThat(resultSpeakerViewModel?.avatar, equalTo(testSpeaker.avatar.toDto()))
+    }
+
+
+    @Test
+    fun shouldRequestNavigationToSpeakerDetails() {
+        val query = "test"
+        whenever(speakersRepository.searchSpeakersPage(query)).thenReturn(Single.just(testSpeakersPage))
+        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository)
+        speakersSearchViewModel.searchPhrase.set(query)
+        val speakerItemViewModelList = speakersSearchViewModel.speakersSubject.value
+        val speakerItemViewModel = (speakerItemViewModelList.first() as? State.Item)?.item
+        val testObserver = speakersSearchViewModel.navigationSubject.test()
+
+        speakerItemViewModel?.onClick()
+
+        testObserver.assertValue {
+            it is NavigationRequest.SpeakerDetails
+                    && it.id == testSpeaker.id
+        }
     }
 }

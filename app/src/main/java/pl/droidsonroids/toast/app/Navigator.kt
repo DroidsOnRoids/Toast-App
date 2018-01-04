@@ -6,6 +6,7 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
 import android.view.View
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
+import pl.droidsonroids.toast.app.speakers.SpeakerDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
 import pl.droidsonroids.toast.utils.NavigationRequest
 import javax.inject.Inject
@@ -16,6 +17,8 @@ class Navigator @Inject constructor() {
 
     fun dispatch(context: Context, navigationRequest: NavigationRequest) {
         when (navigationRequest) {
+            is NavigationRequest.SpeakersSearch -> showSpeakersSearch(context)
+            is NavigationRequest.SpeakerDetails -> showSpeakerDetails(context, navigationRequest)
             is NavigationRequest.EventDetails -> showEventDetails(context, navigationRequest)
         }
     }
@@ -28,6 +31,11 @@ class Navigator @Inject constructor() {
 
     private fun showEventDetails(context: Context, navigationRequest: NavigationRequest.EventDetails) {
         val intent = EventDetailsActivity.createIntent(context, navigationRequest)
+        context.startActivity(intent)
+    }
+
+    private fun showSpeakerDetails(context: Context, navigationRequest: NavigationRequest.SpeakerDetails) {
+        val intent = SpeakerDetailsActivity.createIntent(context, navigationRequest)
         context.startActivity(intent)
     }
 

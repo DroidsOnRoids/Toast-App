@@ -6,17 +6,21 @@ import android.util.Log
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.data.wrapWithState
 import pl.droidsonroids.toast.utils.LoadingStatus
+import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.toPage
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
+import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 
-abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel {
+abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, NavigatingViewModel {
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.SUCCESS)
+    override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
     val speakersSubject: BehaviorSubject<List<State<SpeakerItemViewModel>>> = BehaviorSubject.create()
     protected var isNextPageLoading: Boolean = false
     protected var nextPageNumber: Int? = null
@@ -27,7 +31,7 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel {
         return items.toObservable()
                 .map {
                     it.toViewModel { id ->
-                        Log.d(simpleClassName, "Event item clicked $id")
+                        navigationSubject.onNext(NavigationRequest.SpeakerDetails(id))
                     }
                 }
                 .map { wrapWithState(it) }
