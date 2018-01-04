@@ -34,8 +34,10 @@
             android:windowSoftInputMode="stateVisible|adjustResize"/>
         <activity
             android:name=".app.events.EventDetailsActivity"
+            android:label=""
+            android:parentActivityName=".app.home.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar.TransparentStatusBar"/>
         <activity
             android:name=".app.speakers.SpeakerDetailsActivity"
             android:screenOrientation="portrait"

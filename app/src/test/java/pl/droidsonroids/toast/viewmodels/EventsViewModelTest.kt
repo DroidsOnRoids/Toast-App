@@ -3,8 +3,8 @@ package pl.droidsonroids.toast.viewmodels
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Maybe
 import io.reactivex.internal.operators.maybe.MaybeJust
-import junit.framework.Assert.assertNotNull
 import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,7 +32,7 @@ class EventsViewModelTest {
         eventsViewModel = EventsViewModel(eventsRepository)
         val upcomingEventViewModel = eventsViewModel.upcomingEvent.get()
 
-        assertNotNull(upcomingEventViewModel)
+        assertThat(upcomingEventViewModel, notNullValue())
         assertThat(upcomingEventViewModel.id, equalTo(testEventDetails.id))
         assertThat(upcomingEventViewModel.title, equalTo(testEventDetails.title))
     }
