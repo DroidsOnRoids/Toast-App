@@ -3,6 +3,9 @@
     <color name="colorPrimary">#20c685</color>
     <color name="colorPrimaryDark">#1cb076</color>
     <color name="colorAccent">#20c685</color>
+    <color name="darkGreen">#1a9a68</color>
+    <color name="avatarBorderSmallGreen">#4AD09C</color>
+    <color name="avatarBorderBigGreen">#36CB90</color>
     <color name="blueLink">#4266B2</color>
     <color name="greenLogo">#99CC34</color>
     <color name="lightGray">#f2f2f2</color>

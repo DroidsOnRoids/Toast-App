@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary">
+
+    <ImageView
+        android:id="@+id/backArrowImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_large"
+        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <View
+        android:id="@+id/avatarBorderBig"
+        android:layout_width="104dp"
+        android:layout_height="104dp"
+        android:layout_marginTop="45dp"
+        android:background="@drawable/shape_circle"
+        android:backgroundTint="@color/avatarBorderBigGreen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <View
+        android:id="@+id/avatarBorderSmall"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:layout_marginTop="53dp"
+        android:background="@drawable/shape_circle"
+        android:backgroundTint="@color/avatarBorderSmallGreen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/speakerAvatarImage"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="57dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="@drawable/shape_circle"
+        tools:backgroundTint="@color/white"/>
+
+    <TextView
+        android:id="@+id/speakerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_large"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="center"
+        android:letterSpacing="0.06"
+        android:lineSpacingExtra="6sp"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/speakerAvatarImage"
+        tools:text="Paulina Szklarska"
+        />
+
+    <TextView
+        android:id="@+id/speakerJob"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_small"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="center"
+        android:letterSpacing="0.06"
+        android:lineSpacingExtra="6sp"
+        android:textColor="@color/darkGreen"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/speakerName"
+        tools:text="Android Developer"/>
+
+</android.support.constraint.ConstraintLayout>
