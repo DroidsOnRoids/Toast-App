@@ -1,26 +1,72 @@
 package pl.droidsonroids.toast.app.speakers
 
+import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.fragment_speakers.*
 import pl.droidsonroids.toast.R
+import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseFragment
-import pl.droidsonroids.toast.data.State
-import pl.droidsonroids.toast.data.dto.ImageDto
-import pl.droidsonroids.toast.data.wrapWithState
-import pl.droidsonroids.toast.viewmodels.SpeakerItemViewModel
+import pl.droidsonroids.toast.app.home.MainActivity
+import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
+import pl.droidsonroids.toast.databinding.FragmentSpeakersBinding
+import pl.droidsonroids.toast.utils.Constants
+import pl.droidsonroids.toast.viewmodels.speaker.SpeakersViewModel
+import javax.inject.Inject
 
 class SpeakersFragment : BaseFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-            inflater.inflate(R.layout.fragment_speakers, container, false)
+    @Inject
+    lateinit var navigator: Navigator
+
+    private lateinit var speakersViewModel: SpeakersViewModel
+
+    private var navigationDisposable: Disposable = Disposables.disposed()
+
+    private var speakersDisposable: Disposable = Disposables.disposed()
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        setupViewModel()
+    }
+
+    private fun setupViewModel() {
+        speakersViewModel = ViewModelProviders.of(this, viewModelFactory)[SpeakersViewModel::class.java]
+        navigationDisposable = speakersViewModel.navigationSubject
+                .subscribe { request ->
+                    context?.let { navigator.dispatch(it, request) }
+                }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        val binding = FragmentSpeakersBinding.inflate(inflater, container, false)
+        binding.speakersViewModel = speakersViewModel
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        showSearchMenuItemWithAnimation()
         setupRecyclerView()
+        showSearchMenuItemWithAnimation()
+    }
+
+    private fun showSearchMenuItemWithAnimation() {
+        animateViewByY(Constants.SearchMenuItem.SHOWN_OFFSET)
+    }
+
+    private fun hideSearchMenuItemWithAnimation() {
+        animateViewByY(Constants.SearchMenuItem.HIDDEN_OFFSET)
+    }
+
+    private fun animateViewByY(offset: Float) {
+        (activity as MainActivity).animateSearchButton(offset)
     }
 
     private fun setupRecyclerView() {
@@ -29,27 +75,28 @@ class SpeakersFragment : BaseFragment() {
             adapter = speakersAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             addItemDecoration(SpeakerItemDecoration(context.applicationContext))
-            // TODO: TOA-56 add lazy loading && data retrieving
-            val sampleData = (0..10L)
-                    .map { getSampleSpeaker(it) }
-                    .map(::wrapWithState) + State.Loading + State.Error {}
-            speakersAdapter.setData(sampleData)
+            addOnScrollListener(LazyLoadingScrollListener {
+                speakersViewModel.loadNextPage()
+            })
+
+            subscribeToSpeakersChange(speakersAdapter)
         }
     }
 
-    private fun getSampleSpeaker(id: Long): SpeakerItemViewModel {
-        // TODO: TOA-56  Change to real data
-        return SpeakerItemViewModel(
-                id,
-                "John Doe",
-                "Android Developer",
-                ImageDto(
-                        "http://api.letswift.pl/uploads/cache/efdebb744b2ca985de9d567eaa512c40.jpg",
-                        "http://api.letswift.pl/uploads/cache/ba0e0f28e20aa16a657ea291b2eed477.jpg"
-                )
-        ) {
-            Log.d(this::class.java.simpleName, "Clicked $it")
-        }
+    private fun subscribeToSpeakersChange(speakersAdapter: SpeakersAdapter) {
+        speakersDisposable = speakersViewModel.speakersSubject
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(speakersAdapter::setData)
+    }
+
+    override fun onDestroyView() {
+        hideSearchMenuItemWithAnimation()
+        speakersDisposable.dispose()
+        super.onDestroyView()
+    }
+
+    override fun onDetach() {
+        navigationDisposable.dispose()
+        super.onDetach()
     }
 }
-

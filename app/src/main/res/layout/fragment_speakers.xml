@@ -1,20 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <View
-        android:id="@+id/shadowCreator"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/colorPrimary"
-        android:elevation="@dimen/home_toolbar_elevation"
-        android:translationY="-10dp"/>
+    <data>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/speakersRecyclerView"
+        <variable
+            name="speakersViewModel"
+            type="pl.droidsonroids.toast.viewmodels.speaker.SpeakersViewModel"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"/>
-</FrameLayout>
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/shadowCreator"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/colorPrimary"
+            android:elevation="@dimen/home_toolbar_elevation"
+            android:translationY="-10dp"/>
+
+        <include
+            android:id="@+id/sortingBarLayout"
+            layout="@layout/layout_speakers_sorting_bar"
+            app:layout_constraintBottom_toTopOf="@+id/speakersRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:sortingViewModel="@{speakersViewModel}"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/speakersRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sortingBarLayout"/>
+
+        <include
+            android:id="@+id/loadingLayout"
+            layout="@layout/layout_loading"
+            app:loadingViewModel="@{speakersViewModel}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
+
+</layout>
