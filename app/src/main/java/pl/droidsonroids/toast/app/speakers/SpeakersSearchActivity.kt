@@ -28,7 +28,13 @@ class SpeakersSearchActivity : BaseActivity() {
     companion object {
         val EXTRA_CIRCULAR_REVEAL_X = "EXTRA_CIRCULAR_REVEAL_X"
         val EXTRA_CIRCULAR_REVEAL_Y = "EXTRA_CIRCULAR_REVEAL_Y"
-        fun createIntent(context: Context): Intent = Intent(context, SpeakersSearchActivity::class.java)
+
+        fun createIntent(context: Context, revealCenterX: Int, revealCenterY: Int): Intent {
+            val intent = Intent(context, SpeakersSearchActivity::class.java)
+            intent.putExtra(EXTRA_CIRCULAR_REVEAL_X, revealCenterX)
+            intent.putExtra(EXTRA_CIRCULAR_REVEAL_Y, revealCenterY)
+            return intent
+        }
     }
 
     @Inject
@@ -117,7 +123,7 @@ class SpeakersSearchActivity : BaseActivity() {
         if (isAnimationNeeded) {
             val animationCenterX = intent.getIntExtra(SpeakersSearchActivity.EXTRA_CIRCULAR_REVEAL_X, 0)
             val animationCenterY = intent.getIntExtra(SpeakersSearchActivity.EXTRA_CIRCULAR_REVEAL_Y, 0)
-            RevealAnimationCreator(true).showAnimation(toolbar, animationCenterX, animationCenterY)
+            RevealAnimationCreator.showAnimation(toolbar, animationCenterX, animationCenterY, true)
         }
     }
 
@@ -126,8 +132,12 @@ class SpeakersSearchActivity : BaseActivity() {
         intent?.let {
             it.putExtra(MainActivity.IS_SEARCH_SPEAKERS_CLOSED_KEY, true)
             NavUtils.navigateUpTo(this, it)
-        } ?: NavUtils.navigateUpFromSameTask(this)
+        }
 
+        turnOffActivityClosingAnimation()
+    }
+
+    private fun turnOffActivityClosingAnimation() {
         overridePendingTransition(0, 0)
     }
 

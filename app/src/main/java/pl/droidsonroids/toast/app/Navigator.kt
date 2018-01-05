@@ -40,13 +40,10 @@ class Navigator @Inject constructor() {
 
     private fun showSpeakersSearchWithRevealAnimation(activity: Activity, animatedView: View) {
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, animatedView, animatedView.transitionName)
-        val revealX = (animatedView.x + animatedView.width / 2).toInt()
-        val revealY = (animatedView.y + animatedView.height / 2).toInt()
+        val revealCenterX = (animatedView.x + animatedView.width / 2).toInt()
+        val revealCenterY = (animatedView.y + animatedView.height / 2).toInt()
 
-        val intent = SpeakersSearchActivity.createIntent(activity)
-        intent.putExtra(SpeakersSearchActivity.EXTRA_CIRCULAR_REVEAL_X, revealX)
-        intent.putExtra(SpeakersSearchActivity.EXTRA_CIRCULAR_REVEAL_Y, revealY)
-
+        val intent = SpeakersSearchActivity.createIntent(activity, revealCenterX, revealCenterY)
         ActivityCompat.startActivity(activity, intent, options.toBundle())
     }
 }

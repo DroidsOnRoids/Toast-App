@@ -76,7 +76,7 @@ class MainActivity : BaseActivity() {
             collapsingSearchView.visibility = View.VISIBLE
             val animationCenterX = (searchImageButton.x + searchImageButton.width / 2).toInt()
             val animationCenterY = (searchImageButton.y + searchImageButton.height / 2).toInt()
-            RevealAnimationCreator(false).showAnimation(collapsingSearchView, animationCenterX, animationCenterY)
+            RevealAnimationCreator.showAnimation(collapsingSearchView, animationCenterX, animationCenterY, false)
         }
     }
 

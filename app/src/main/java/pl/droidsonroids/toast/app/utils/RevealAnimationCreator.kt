@@ -8,26 +8,25 @@ import android.view.ViewTreeObserver
 import android.view.animation.AccelerateInterpolator
 
 
-class RevealAnimationCreator(private val isGrowing: Boolean) {
-
-    fun showAnimation(animatedView: View, centerX: Int, centerY: Int) {
+object RevealAnimationCreator {
+    fun showAnimation(animatedView: View, centerX: Int, centerY: Int, isGrowing: Boolean) {
         with(animatedView.viewTreeObserver) {
             if (isAlive) {
-                addOnGlobalLayoutListener(this, animatedView, centerX, centerY)
+                addOnGlobalLayoutListener(this, animatedView, centerX, centerY, isGrowing)
             }
         }
     }
 
-    private fun addOnGlobalLayoutListener(viewTreeObserver: ViewTreeObserver, animatedView: View, centerX: Int, centerY: Int) {
+    private fun addOnGlobalLayoutListener(viewTreeObserver: ViewTreeObserver, animatedView: View, centerX: Int, centerY: Int,  isGrowing: Boolean) {
         viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
-                showRevealAnimation(animatedView, centerX, centerY)
+                showRevealAnimation(animatedView, centerX, centerY, isGrowing)
                 animatedView.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })
     }
 
-    private fun showRevealAnimation(animatedView: View, centerX: Int, centerY: Int) {
+    private fun showRevealAnimation(animatedView: View, centerX: Int, centerY: Int, isGrowing: Boolean) {
         val finalRadius = (Math.max(animatedView.width, animatedView.height)).toFloat()
         val revealAnimation: Animator
         if (isGrowing) {
