@@ -19,6 +19,7 @@ import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
 import pl.droidsonroids.toast.app.utils.RevealAnimationCreator
 import pl.droidsonroids.toast.databinding.ActivitySpeakersSearchBinding
+import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersSearchViewModel
 import javax.inject.Inject
 
@@ -143,11 +144,6 @@ class SpeakersSearchActivity : BaseActivity() {
 
     private fun haveCircularRevealExtras() =
             intent.hasExtra(EXTRA_CIRCULAR_REVEAL_X) && intent.hasExtra(EXTRA_CIRCULAR_REVEAL_Y)
-
-    private fun consume(func: () -> Unit): Boolean {
-        func()
-        return true
-    }
 
     override fun onDestroy() {
         speakersDisposable.dispose()

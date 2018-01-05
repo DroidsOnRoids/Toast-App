@@ -14,6 +14,7 @@ import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.utils.RevealAnimationCreator
 import pl.droidsonroids.toast.databinding.ActivityMainBinding
 import pl.droidsonroids.toast.utils.Constants.SearchMenuItem.ANIM_DURATION_MILLIS
+import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.MainViewModel
 import javax.inject.Inject
 
@@ -81,7 +82,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setupToolbar(savedInstanceState: Bundle?) {
-        setSupportActionBar(toolbarMain)
+        setSupportActionBar(mainToolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         savedInstanceState?.let {
             homeTitle.text = it.getString(CURRENT_TITLE)
@@ -144,11 +145,6 @@ class MainActivity : BaseActivity() {
     override fun onDestroy() {
         navigationDisposable?.dispose()
         super.onDestroy()
-    }
-
-    private fun consume(func: () -> Unit): Boolean {
-        func()
-        return true
     }
 
 }
