@@ -76,159 +76,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <android.support.constraint.ConstraintLayout
-                    android:id="@+id/eventInfoContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white">
-
-                    <TextView
-                        android:id="@+id/eventTitleText"
-                        style="@style/EventHeaderStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_large"
-                        android:layout_marginStart="@dimen/margin_large"
-                        android:layout_marginTop="@dimen/margin_large"
-                        android:text="@{eventDetailsViewModel.title}"
-                        app:layout_constraintBottom_toTopOf="@+id/eventDescriptionText"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_chainStyle="packed"
-                        tools:text="TOAST #9"/>
-
-                    <TextView
-                        android:id="@+id/eventDescriptionText"
-                        style="@style/EventSubHeaderStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_large"
-                        android:layout_marginEnd="@dimen/margin_large"
-                        android:layout_marginStart="@dimen/margin_large"
-                        android:text="@string/android_developers_meet_up"
-                        app:layout_constraintBottom_toTopOf="@+id/eventTitleDivider"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/eventTitleText"/>
-
-                    <View
-                        android:id="@+id/eventTitleDivider"
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_marginBottom="@dimen/margin_medium"
-                        android:background="@color/paleGray"
-                        app:layout_constraintBottom_toTopOf="@+id/eventPlaceTitleText"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/eventDescriptionText"/>
-
-                    <ImageView
-                        android:id="@+id/eventLocationImage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="17dp"
-                        android:src="@drawable/ic_location"
-                        app:layout_constraintBottom_toTopOf="@+id/eventLocationDivider"
-                        app:layout_constraintEnd_toStartOf="@+id/eventPlaceTitleText"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/eventTitleDivider"/>
-
-                    <TextView
-                        android:id="@+id/eventPlaceTitleText"
-                        style="@style/EventHeaderStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_large"
-                        android:layout_marginStart="@dimen/margin_medium"
-                        android:text="@{eventDetailsViewModel.placeName}"
-                        app:layout_constraintBottom_toTopOf="@+id/eventPlaceLocationText"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/eventLocationImage"
-                        app:layout_constraintTop_toBottomOf="@+id/eventTitleDivider"
-                        tools:text="PROZA — Wrocławski Klub Literacki"/>
-
-                    <TextView
-                        android:id="@+id/eventPlaceLocationText"
-                        style="@style/EventSubHeaderStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_medium"
-                        android:layout_marginEnd="@dimen/margin_large"
-                        android:layout_marginStart="@dimen/margin_medium"
-                        android:text="@{eventDetailsViewModel.placeStreet}"
-                        app:layout_constraintBottom_toTopOf="@+id/eventLocationDivider"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/eventLocationImage"
-                        app:layout_constraintTop_toBottomOf="@+id/eventPlaceTitleText"
-                        tools:text="Przejście Garncarskie 2, Rynek Wrocław"/>
-
-                    <View
-                        android:id="@+id/eventLocationDivider"
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_marginBottom="@dimen/margin_medium"
-                        android:background="@color/paleGray"
-                        app:layout_constraintBottom_toTopOf="@id/eventDate"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/eventPlaceLocationText"/>
-
-                    <TextView
-                        android:id="@+id/eventDate"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_medium"
-                        android:layout_marginEnd="@dimen/margin_large"
-                        android:layout_marginStart="@dimen/margin_large"
-                        android:drawablePadding="10.5dp"
-                        android:drawableStart="@drawable/ic_calendar"
-                        android:letterSpacing="0.07"
-                        android:textColor="@color/blueGray"
-                        app:eventDate="@{eventDetailsViewModel.date}"
-                        app:layout_constraintBottom_toTopOf="@+id/eventDateDivider"
-                        app:layout_constraintEnd_toStartOf="@+id/eventDateTimeDivider"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/eventLocationDivider"
-                        tools:text="02.03.2017"/>
-
-                    <View
-                        android:id="@+id/eventDateTimeDivider"
-                        android:layout_width="1dp"
-                        android:layout_height="0dp"
-                        android:background="@color/paleGray"
-                        app:layout_constraintBottom_toBottomOf="@+id/eventDateDivider"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/eventLocationDivider"/>
-
-                    <TextView
-                        android:id="@+id/eventTime"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_medium"
-                        android:layout_marginEnd="@dimen/margin_large"
-                        android:layout_marginStart="@dimen/margin_large"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:drawablePadding="9dp"
-                        android:drawableStart="@drawable/ic_clock"
-                        android:letterSpacing="0.07"
-                        android:textColor="@color/blueGray"
-                        app:eventTime="@{eventDetailsViewModel.date}"
-                        app:layout_constraintBottom_toTopOf="@+id/eventDateDivider"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/eventDateTimeDivider"
-                        app:layout_constraintTop_toBottomOf="@+id/eventLocationDivider"
-                        tools:text="02.03.2017"/>
-
-                    <View
-                        android:id="@+id/eventDateDivider"
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:background="@color/paleGray"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/eventDate"/>
-                </android.support.constraint.ConstraintLayout>
+                <include
+                    layout="@layout/layout_event_details_info"
+                    app:eventDetailsViewModel="@{eventDetailsViewModel}"/>
 
                 <TextView
                     android:id="@+id/speakersListHeaderText"
@@ -236,10 +86,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginStart="@dimen/margin_large"
-                    android:layout_marginEnd="@dimen/margin_large"
-                    android:layout_marginTop="@dimen/margin_large"
                     android:layout_marginBottom="@dimen/margin_small"
+                    android:layout_marginEnd="@dimen/margin_large"
+                    android:layout_marginStart="@dimen/margin_large"
+                    android:layout_marginTop="@dimen/margin_large"
                     android:text="@string/speakers_title"
                     android:textAllCaps="true"/>
 
@@ -247,9 +97,9 @@
                     android:id="@+id/eventSpeakersRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/margin_small"
-                    android:nestedScrollingEnabled="false"
                     android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingBottom="@dimen/margin_small"
                     android:scrollbars="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

@@ -23,12 +23,17 @@ class EventSpeakersAdapter : RecyclerView.Adapter<EventSpeakerViewHolder>() {
     override fun getItemCount() = eventSpeakerViewModels.size
 
     fun setData(newEventSpeakerViewModels: List<EventSpeakerItemViewModel>) {
-        val diff = DiffUtil.calculateDiff(EventSpeakerItemDiffCallback(eventSpeakerViewModels, newEventSpeakerViewModels))
+        val diffCallback = EventSpeakerItemDiffCallback(eventSpeakerViewModels, newEventSpeakerViewModels)
+        val diff = DiffUtil.calculateDiff(diffCallback)
         eventSpeakerViewModels = newEventSpeakerViewModels
         diff.dispatchUpdatesTo(this)
     }
 
-    class EventSpeakerItemDiffCallback(private val oldList: List<EventSpeakerItemViewModel>, private val newList: List<EventSpeakerItemViewModel>) : DiffUtil.Callback() {
+    class EventSpeakerItemDiffCallback(
+            private val oldList: List<EventSpeakerItemViewModel>,
+            private val newList: List<EventSpeakerItemViewModel>
+    ) : DiffUtil.Callback() {
+
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
             return oldList[oldItemPosition].id == newList[newItemPosition].id
         }
