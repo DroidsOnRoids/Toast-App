@@ -19,7 +19,8 @@
             android:layout_width="0dp"
             android:layout_height="53dp"
             android:layout_margin="@dimen/margin_large"
-            android:background="@drawable/contact_form_shape"
+            android:background="@drawable/contact_spinner_shape"
+            android:foreground="?attr/selectableItemBackground"
             android:gravity="center_vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,8 +31,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_medium"
-            app:errorEnabled="true"
             android:layout_marginTop="@dimen/margin_large"
+            app:errorEnabled="true"
             app:layout_constraintEnd_toStartOf="@+id/contactEmailInputLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iWantToSpinner">
@@ -41,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:fontFamily="@font/roboto"
+                android:fontFamily="@font/roboto_regular"
                 android:hint="@string/your_name"
                 android:paddingEnd="@dimen/margin_medium"
                 android:paddingStart="@dimen/margin_medium"
@@ -56,8 +57,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_medium"
             android:layout_marginTop="@dimen/margin_large"
-            app:layout_constraintEnd_toEndOf="parent"
             app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/contactNameInputLayout"
             app:layout_constraintTop_toBottomOf="@+id/iWantToSpinner">
 
@@ -66,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:fontFamily="@font/roboto"
+                android:fontFamily="@font/roboto_regular"
                 android:hint="@string/email_address"
                 android:inputType="textEmailAddress"
                 android:paddingEnd="@dimen/margin_medium"
@@ -84,8 +85,8 @@
             android:layout_marginEnd="@dimen/margin_large"
             android:layout_marginStart="@dimen/margin_large"
             android:layout_marginTop="@dimen/margin_large"
-            app:layout_constraintEnd_toEndOf="parent"
             app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/contactNameInputLayout">
 
@@ -93,14 +94,16 @@
                 android:id="@+id/contactMessageEditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/contact_form_shape"
-                android:fontFamily="@font/roboto"
+                android:background="@drawable/contact_message_shape"
+                android:fontFamily="@font/roboto_regular"
                 android:gravity="top|start"
                 android:hint="@string/your_message"
-                android:padding="@dimen/margin_medium"
+                android:paddingBottom="12dp"
+                android:paddingEnd="@dimen/margin_medium"
+                android:paddingStart="@dimen/margin_medium"
+                android:paddingTop="18dp"
                 android:textColor="@color/blueGray"
-                android:textSize="14sp"
-                android:translationY="6dp"/>
+                android:textSize="14sp"/>
         </android.support.design.widget.TextInputLayout>
 
         <FrameLayout
