@@ -5,21 +5,25 @@ import android.databinding.ObservableField
 import android.util.Log
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
 import pl.droidsonroids.toast.data.dto.event.TalkDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
+import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
+import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import java.util.*
 import javax.inject.Inject
 
 private const val DEFAULT_GRADIENT_COLOR = 0xA0000000.toInt()
 private const val GRADIENT_COLOR_MASK = 0xE0FFFFFF.toInt()
 
-class EventDetailsViewModel @Inject constructor(private val eventsRepository: EventsRepository) : ViewModel(), LoadingViewModel {
+class EventDetailsViewModel @Inject constructor(private val eventsRepository: EventsRepository) : ViewModel(), LoadingViewModel, NavigatingViewModel {
     private val Any.simpleClassName: String get() = javaClass.simpleName
+    override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.PENDING)
     private var eventId: Long? = null
     val title: ObservableField<String> = ObservableField()
@@ -70,11 +74,11 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
     }
 
     private fun onReadMore(talkId: Long) {
-        // TODO: 04/01/2018 Add click action
+        Log.d(simpleClassName, "onReadMore: $talkId")
     }
 
     private fun onSpeakerClick(speakerId: Long) {
-        // TODO: 04/01/2018 Add click action
+        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId))
     }
 
     private fun onEventLoadError(throwable: Throwable) {

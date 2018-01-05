@@ -10,10 +10,12 @@ import android.widget.ImageView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.activity_event_details.*
+import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.databinding.ActivityEventDetailsBinding
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.event.EventDetailsViewModel
+import javax.inject.Inject
 
 class EventDetailsActivity : BaseActivity() {
     companion object {
@@ -30,6 +32,10 @@ class EventDetailsActivity : BaseActivity() {
     }
 
     private var eventSpeakersDisposable = Disposables.disposed()
+    private var navigationDisposable = Disposables.disposed()
+
+    @Inject
+    lateinit var navigator: Navigator
 
     private val eventDetailsViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory)
@@ -50,6 +56,8 @@ class EventDetailsActivity : BaseActivity() {
     private fun setupViewModel(eventDetailsBinding: ActivityEventDetailsBinding) {
         eventDetailsViewModel.init(eventId)
         eventDetailsBinding.eventDetailsViewModel = eventDetailsViewModel
+        navigationDisposable = eventDetailsViewModel.navigationSubject
+                .subscribe { navigator.dispatch(this, it) }
     }
 
     private fun setupGradientSwitcher() {
@@ -80,6 +88,7 @@ class EventDetailsActivity : BaseActivity() {
 
     override fun onDestroy() {
         eventSpeakersDisposable.dispose()
+        navigationDisposable.dispose()
         super.onDestroy()
     }
 }
