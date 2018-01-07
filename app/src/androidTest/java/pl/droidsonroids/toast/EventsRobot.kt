@@ -1,3 +1,3 @@
 package pl.droidsonroids.toast
 
-class HomeRobot : BaseRobot()
+class EventsRobot : BaseRobot()
