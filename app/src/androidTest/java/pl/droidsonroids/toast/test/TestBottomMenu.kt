@@ -1,8 +1,7 @@
-package pl.droidsonroids.toast
+package pl.droidsonroids.toast.test
 
 import android.support.test.rule.ActivityTestRule
 import org.junit.Rule
-import org.junit.Test
 import pl.droidsonroids.toast.app.home.MainActivity
 
 class TestBottomMenu {

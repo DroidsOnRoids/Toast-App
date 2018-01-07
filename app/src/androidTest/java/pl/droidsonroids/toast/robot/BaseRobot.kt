@@ -1,4 +1,4 @@
-package pl.droidsonroids.toast
+package pl.droidsonroids.toast.robot
 
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.action.ViewActions.click

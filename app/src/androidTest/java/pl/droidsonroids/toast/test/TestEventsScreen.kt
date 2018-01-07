@@ -1,9 +1,12 @@
-package pl.droidsonroids.toast
+package pl.droidsonroids.toast.test
 
 import android.support.test.rule.ActivityTestRule
 import org.junit.Rule
 import org.junit.Test
+import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.home.MainActivity
+import pl.droidsonroids.toast.function.getString
+import pl.droidsonroids.toast.robot.EventsRobot
 
 
 class TestEventsScreen {

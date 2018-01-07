@@ -1,4 +1,4 @@
-package pl.droidsonroids.toast
+package pl.droidsonroids.toast.test
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso
@@ -6,7 +6,10 @@ import android.support.test.rule.ActivityTestRule
 import android.support.test.uiautomator.UiDevice
 import org.junit.Rule
 import org.junit.Test
+import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.home.MainActivity
+import pl.droidsonroids.toast.function.getString
+import pl.droidsonroids.toast.robot.InfoDialogRobot
 
 class TestInfoDialog {
     @Suppress("unused")
