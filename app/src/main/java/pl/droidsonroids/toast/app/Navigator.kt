@@ -2,12 +2,11 @@ package pl.droidsonroids.toast.app
 
 import android.app.Activity
 import android.content.Context
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.ActivityOptionsCompat
 import android.view.View
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakerDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
+import pl.droidsonroids.toast.app.utils.turnOffActivityClosingAnimation
 import pl.droidsonroids.toast.utils.NavigationRequest
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -39,11 +38,11 @@ class Navigator @Inject constructor() {
     }
 
     private fun showSpeakersSearchWithRevealAnimation(activity: Activity, animatedView: View) {
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, animatedView, animatedView.transitionName)
         val revealCenterX = (animatedView.x + animatedView.width / 2).toInt()
         val revealCenterY = (animatedView.y + animatedView.height / 2).toInt()
 
         val intent = SpeakersSearchActivity.createIntent(activity, revealCenterX, revealCenterY)
-        ActivityCompat.startActivity(activity, intent, options.toBundle())
+        activity.startActivity(intent)
+        activity.turnOffActivityClosingAnimation()
     }
 }

@@ -18,6 +18,7 @@ import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
 import pl.droidsonroids.toast.app.utils.RevealAnimationCreator
+import pl.droidsonroids.toast.app.utils.turnOffActivityClosingAnimation
 import pl.droidsonroids.toast.databinding.ActivitySpeakersSearchBinding
 import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersSearchViewModel
@@ -30,12 +31,10 @@ class SpeakersSearchActivity : BaseActivity() {
         val EXTRA_CIRCULAR_REVEAL_X = "EXTRA_CIRCULAR_REVEAL_X"
         val EXTRA_CIRCULAR_REVEAL_Y = "EXTRA_CIRCULAR_REVEAL_Y"
 
-        fun createIntent(context: Context, revealCenterX: Int, revealCenterY: Int): Intent {
-            val intent = Intent(context, SpeakersSearchActivity::class.java)
-            intent.putExtra(EXTRA_CIRCULAR_REVEAL_X, revealCenterX)
-            intent.putExtra(EXTRA_CIRCULAR_REVEAL_Y, revealCenterY)
-            return intent
-        }
+        fun createIntent(context: Context, revealCenterX: Int, revealCenterY: Int): Intent =
+                Intent(context, SpeakersSearchActivity::class.java)
+                        .putExtra(EXTRA_CIRCULAR_REVEAL_X, revealCenterX)
+                        .putExtra(EXTRA_CIRCULAR_REVEAL_Y, revealCenterY)
     }
 
     @Inject
@@ -136,10 +135,6 @@ class SpeakersSearchActivity : BaseActivity() {
         }
 
         turnOffActivityClosingAnimation()
-    }
-
-    private fun turnOffActivityClosingAnimation() {
-        overridePendingTransition(0, 0)
     }
 
     private fun haveCircularRevealExtras() =
