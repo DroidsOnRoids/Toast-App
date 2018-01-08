@@ -51,7 +51,6 @@
                     android:background="?selectableItemBackgroundBorderless"
                     android:onClick="@{() -> mainViewModel.onSpeakerSearchRequested()}"
                     android:src="@drawable/ic_menu_search"
-                    android:transitionName="transitionSearchReveal"
                     android:translationY="-200dp"/>
             </android.support.v7.widget.Toolbar>
 
