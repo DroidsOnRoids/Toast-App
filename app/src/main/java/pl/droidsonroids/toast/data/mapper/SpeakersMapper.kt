@@ -22,3 +22,12 @@ fun SpeakerDto.toViewModel(onClick: (Long) -> Unit): SpeakerItemViewModel {
             action = onClick
     )
 }
+
+fun SpeakerItemViewModel.toDto(): SpeakerDto {
+    return SpeakerDto(
+            id = id,
+            name = name,
+            job = job,
+            avatar = avatar
+    )
+}
