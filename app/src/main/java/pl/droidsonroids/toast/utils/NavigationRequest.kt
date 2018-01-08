@@ -7,4 +7,5 @@ sealed class NavigationRequest {
     data class EventDetails(val id: Long) : NavigationRequest()
     data class SpeakerDetails(val id: Long) : NavigationRequest()
     data class TalkDetails(val talkDto: TalkDto) : NavigationRequest()
+    object Close : NavigationRequest()
 }
