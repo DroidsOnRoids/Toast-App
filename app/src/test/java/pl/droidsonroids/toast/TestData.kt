@@ -17,40 +17,45 @@ val testDate: Date = SimpleDateFormat(Constants.Date.PATTERN).parse("1.12.2017")
 
 val testPreviousEvents = listOf(
         ApiEvent(
-                0,
-                "titleFirst",
-                testDate,
-                listOf(ApiImage("bigImageFirst", "thumbImageFirst"))
+                id = 0,
+                title = "titleFirst",
+                date = testDate,
+                coverImages = listOf(ApiImage("bigImageFirst", "thumbImageFirst"))
         )
 )
 
-val testPreviousEventsPage = Page(testPreviousEvents.map { it.toDto() }, 1, 1)
+val testPreviousEventsPage = Page(items = testPreviousEvents.map { it.toDto() }, pageNumber = 1, allPagesCount = 1)
 
 val testSpeaker = ApiSpeaker(
-        0,
-        "name",
-        "job",
-        ApiImage("bigImageFirst", "thumbImageFirst"),
-        "bio"
+        id = 0,
+        name = "name",
+        job = "job",
+        avatar = ApiImage("bigImageFirst", "thumbImageFirst"),
+        bio = "bio"
 )
 
-val testApiTalk = ApiTalk(0, "title", "description", testSpeaker)
+val testApiTalk = ApiTalk(
+        id = 0,
+        title = "title",
+        description = "description",
+        speaker = testSpeaker
+)
 
 val testEventDetails = ApiEventDetails(
-        1,
-        "title",
-        testDate,
-        "facebookId",
-        "placeName",
-        "placeStreet",
-        ApiCoordinates(51.1098206, 17.0251941),
-        listOf(ApiImage("bigCoverImageFirst", "thumbCoverImageFirst")),
-        listOf(ApiImage("bigImageFirst", "thumbImageFirst")),
-        listOf(testApiTalk)
+        id = 1,
+        title = "title",
+        date = testDate,
+        facebookId = "facebookId",
+        placeName = "placeName",
+        placeStreet = "placeStreet",
+        placeCoordinates = ApiCoordinates(51.1098206, 17.0251941),
+        coverImages = listOf(ApiImage("bigCoverImageFirst", "thumbCoverImageFirst")),
+        photos = listOf(ApiImage("bigImageFirst", "thumbImageFirst")),
+        talks = listOf(testApiTalk)
 )
 
-val testSplitEvents = SplitEvents(testEventDetails.toDto(), testPreviousEventsPage)
+val testSplitEvents = SplitEvents(upcomingEvent = testEventDetails.toDto(), previousEvents = testPreviousEventsPage)
 
 val testSpeakers = listOf(testSpeaker)
 
-val testSpeakersPage = Page(testSpeakers.map { it.toDto() }, 1, 1)
+val testSpeakersPage = Page(items = testSpeakers.map { it.toDto() }, pageNumber = 1, allPagesCount = 1)

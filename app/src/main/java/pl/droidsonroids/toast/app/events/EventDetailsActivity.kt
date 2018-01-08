@@ -79,7 +79,7 @@ class EventDetailsActivity : BaseActivity() {
     }
 
     private fun subscribeToSpeakersChange(eventSpeakersAdapter: EventSpeakersAdapter) {
-        compositeDisposable += eventDetailsViewModel.eventSpeakers
+        compositeDisposable += eventDetailsViewModel.eventSpeakersSubject
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     eventSpeakersAdapter.setData(it)

@@ -18,9 +18,9 @@
         app:cardCornerRadius="3dp">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <include
                 android:id="@+id/speaker"
@@ -28,16 +28,16 @@
                 app:itemViewModel="@{eventSpeakersItemViewModel.speakerItemViewModel}"
                 app:layout_constraintBottom_toTopOf="@+id/speakerDivider"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintVertical_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"/>
 
             <LinearLayout
-                android:onClick="@{() -> eventSpeakersItemViewModel.onReadMore()}"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:foreground="?attr/selectableItemBackground">
+                android:foreground="?attr/selectableItemBackground"
+                android:onClick="@{() -> eventSpeakersItemViewModel.onReadMore()}"
+                android:orientation="vertical">
 
                 <View
                     android:id="@+id/speakerDivider"
@@ -54,11 +54,11 @@
                     style="@style/LectureTitleStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{eventSpeakersItemViewModel.title}"
                     android:layout_marginBottom="6dp"
                     android:layout_marginEnd="@dimen/margin_large"
                     android:layout_marginStart="@dimen/margin_large"
                     android:layout_marginTop="@dimen/margin_large"
+                    android:text="@{eventSpeakersItemViewModel.title}"
                     app:layout_constraintBottom_toTopOf="@+id/talkDescription"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -73,11 +73,11 @@
                         android:id="@+id/talkDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{eventSpeakersItemViewModel.description}"
                         android:layout_marginBottom="@dimen/margin_small"
                         android:layout_marginEnd="@dimen/margin_large"
                         android:layout_marginStart="@dimen/margin_large"
                         android:maxLines="5"
+                        android:text="@{eventSpeakersItemViewModel.description}"
                         app:layout_constraintBottom_toTopOf="@+id/talkDivider"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -113,20 +113,19 @@
                     style="@style/FacebookAttend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/margin_medium"
                     android:layout_marginEnd="@dimen/margin_medium"
                     android:layout_marginStart="@dimen/margin_medium"
                     android:drawablePadding="@dimen/margin_small"
                     android:drawableStart="@drawable/ic_read_more"
                     android:gravity="center"
-                    android:layout_gravity="center"
-                    android:text="@string/readMore"
+                    android:text="@string/read_more"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/talkDivider"/>
-            </LinearLayout
-                >
+            </LinearLayout>
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
