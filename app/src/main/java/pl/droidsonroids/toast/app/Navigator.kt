@@ -1,6 +1,10 @@
 package pl.droidsonroids.toast.app
 
 import android.content.Context
+import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.util.Pair
+import android.support.v7.app.AppCompatActivity
+import android.view.View
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.events.TalkDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakerDetailsActivity
@@ -16,11 +20,17 @@ class Navigator @Inject constructor() {
             is NavigationRequest.SpeakersSearch -> showSpeakersSearch(context)
             is NavigationRequest.SpeakerDetails -> showSpeakerDetails(context, navigationRequest)
             is NavigationRequest.EventDetails -> showEventDetails(context, navigationRequest)
-            is NavigationRequest.TalkDetails -> showSpeechDetails(context, navigationRequest)
+            is NavigationRequest.TalkDetails -> showTalkDetails(context, navigationRequest)
         }
     }
 
-    private fun showSpeechDetails(context: Context, navigationRequest: NavigationRequest.TalkDetails) {
+    fun showTalkDetailsWithSharedAnimation(activity: AppCompatActivity, navigationRequest: NavigationRequest.TalkDetails, sharedViews: Array<Pair<View, String>>) {
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, *sharedViews).toBundle()
+        val intent = TalkDetailsActivity.createIntent(activity, navigationRequest)
+        activity.startActivity(intent, options)
+    }
+
+    private fun showTalkDetails(context: Context, navigationRequest: NavigationRequest.TalkDetails) {
         val intent = TalkDetailsActivity.createIntent(context, navigationRequest)
         context.startActivity(intent)
     }

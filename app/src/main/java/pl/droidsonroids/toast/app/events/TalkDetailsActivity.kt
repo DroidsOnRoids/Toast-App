@@ -38,9 +38,12 @@ class TalkDetailsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportPostponeEnterTransition()
         val binding = ActivityTalkDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupViewModel(binding)
+        binding.executePendingBindings()
+        supportStartPostponedEnterTransition()
     }
 
     private fun setupViewModel(binding: ActivityTalkDetailsBinding) {

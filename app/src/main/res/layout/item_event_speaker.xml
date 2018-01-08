@@ -9,18 +9,23 @@
         <variable
             name="eventSpeakersItemViewModel"
             type="pl.droidsonroids.toast.viewmodels.event.EventSpeakerItemViewModel"/>
+
+        <import type="pl.droidsonroids.toast.utils.Constants.TalkTransition"/>
     </data>
 
     <android.support.v7.widget.CardView
+        android:id="@+id/talkCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_small"
-        app:cardCornerRadius="3dp">
+        app:cardCornerRadius="3dp"
+        app:elementId="@{eventSpeakersItemViewModel.id}"
+        app:transitionName="@{TalkTransition.CARD}">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <include
                 android:id="@+id/speaker"
@@ -28,16 +33,16 @@
                 app:itemViewModel="@{eventSpeakersItemViewModel.speakerItemViewModel}"
                 app:layout_constraintBottom_toTopOf="@+id/speakerDivider"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintVertical_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"/>
 
             <LinearLayout
-                android:onClick="@{() -> eventSpeakersItemViewModel.onReadMore()}"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:foreground="?attr/selectableItemBackground">
+                android:foreground="?attr/selectableItemBackground"
+                android:onClick="@{() -> eventSpeakersItemViewModel.onReadMore()}"
+                android:orientation="vertical">
 
                 <View
                     android:id="@+id/speakerDivider"
@@ -54,15 +59,17 @@
                     style="@style/LectureTitleStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{eventSpeakersItemViewModel.title}"
                     android:layout_marginBottom="6dp"
                     android:layout_marginEnd="@dimen/margin_large"
                     android:layout_marginStart="@dimen/margin_large"
                     android:layout_marginTop="@dimen/margin_large"
+                    android:text="@{eventSpeakersItemViewModel.title}"
+                    app:elementId="@{eventSpeakersItemViewModel.id}"
                     app:layout_constraintBottom_toTopOf="@+id/talkDescription"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/speakerDivider"
+                    app:transitionName="@{TalkTransition.TITLE}"
                     tools:text="Continuous delivery with ease"/>
 
                 <FrameLayout
@@ -73,15 +80,17 @@
                         android:id="@+id/talkDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{eventSpeakersItemViewModel.description}"
                         android:layout_marginBottom="@dimen/margin_small"
                         android:layout_marginEnd="@dimen/margin_large"
                         android:layout_marginStart="@dimen/margin_large"
                         android:maxLines="5"
+                        android:text="@{eventSpeakersItemViewModel.description}"
+                        app:elementId="@{eventSpeakersItemViewModel.id}"
                         app:layout_constraintBottom_toTopOf="@+id/talkDivider"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/talkTitle"
+                        app:transitionName="@{TalkTransition.DESCRIPTION}"
                         tools:text="Description"/>
 
                     <View
@@ -113,18 +122,20 @@
                     style="@style/FacebookAttend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/margin_medium"
                     android:layout_marginEnd="@dimen/margin_medium"
                     android:layout_marginStart="@dimen/margin_medium"
                     android:drawablePadding="@dimen/margin_small"
                     android:drawableStart="@drawable/ic_read_more"
-                    android:gravity="center"
-                    android:layout_gravity="center"
+                    android:gravity="center_vertical"
                     android:text="@string/readMore"
+                    app:elementId="@{eventSpeakersItemViewModel.id}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/talkDivider"/>
+                    app:layout_constraintTop_toBottomOf="@+id/talkDivider"
+                    app:transitionName="@{TalkTransition.BUTTON}"/>
             </LinearLayout>
 
         </LinearLayout>

@@ -4,15 +4,19 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.util.Pair
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_event_details.*
+import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
+import pl.droidsonroids.toast.data.dto.event.TalkDto
 import pl.droidsonroids.toast.databinding.ActivityEventDetailsBinding
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.event.EventDetailsViewModel
@@ -57,7 +61,32 @@ class EventDetailsActivity : BaseActivity() {
         eventDetailsViewModel.init(eventId)
         eventDetailsBinding.eventDetailsViewModel = eventDetailsViewModel
         compositeDisposable += eventDetailsViewModel.navigationSubject
-                .subscribe { navigator.dispatch(this, it) }
+                .subscribe(::handleNavigationRequest)
+    }
+
+    private fun handleNavigationRequest(it: NavigationRequest) {
+        if (it is NavigationRequest.TalkDetails) {
+            navigator.showTalkDetailsWithSharedAnimation(this, it, getSharedViews(it.talkDto))
+        } else {
+            navigator.dispatch(this, it)
+        }
+    }
+
+    private fun getSharedViews(it: TalkDto): Array<Pair<View, String>> {
+        return eventSpeakersRecyclerView.findViewHolderForItemId(it.id)
+                ?.itemView
+                ?.run {
+                    val talkTitle = findViewById<View>(R.id.talkTitle)
+                    val talkDescription = findViewById<View>(R.id.talkDescription)
+                    val talkCard = findViewById<View>(R.id.talkCard)
+                    val readMore = findViewById<View>(R.id.readMore)
+                    arrayOf(
+                            Pair(talkTitle, talkTitle.transitionName),
+                            Pair(talkDescription, talkDescription.transitionName),
+                            Pair(talkCard, talkCard.transitionName),
+                            Pair(readMore, readMore.transitionName)
+                    )
+                } ?: arrayOf()
     }
 
     private fun setupGradientSwitcher() {
