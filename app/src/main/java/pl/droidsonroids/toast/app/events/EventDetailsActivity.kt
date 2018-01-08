@@ -72,7 +72,7 @@ class EventDetailsActivity : BaseActivity() {
         with(eventSpeakersRecyclerView) {
             val eventSpeakersAdapter = EventSpeakersAdapter()
             adapter = eventSpeakersAdapter
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(context)
 
             subscribeToSpeakersChange(eventSpeakersAdapter)
         }
