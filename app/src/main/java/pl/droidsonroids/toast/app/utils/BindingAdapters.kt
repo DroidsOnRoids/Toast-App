@@ -3,6 +3,7 @@
 package pl.droidsonroids.toast.app.utils
 
 import android.databinding.BindingAdapter
+import android.graphics.drawable.Drawable
 
 
 import android.graphics.drawable.GradientDrawable
@@ -69,12 +70,17 @@ fun setCoverImageWithPaletteListener(imageView: ImageView, imageDto: ImageDto?, 
     Glide.with(imageView)
             .load(imageDto?.originalSizeUrl)
             .thumbnail(thumbnailLoader)
-            .listener(GlidePalette.with(imageDto?.originalSizeUrl)
-                    .intoCallBack { palette ->
-                        palette?.darkVibrantSwatch?.rgb?.let { onColorLoaded(it) }
-                    })
+            .listener(createGlidePaletteListener(imageDto, onColorLoaded))
             .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_toast))
             .into(imageView)
+}
+
+private fun createGlidePaletteListener(imageDto: ImageDto?, onColorLoaded: (Int) -> Unit): GlidePalette<Drawable> {
+    return GlidePalette.with(imageDto?.originalSizeUrl)
+            .intoCallBack { palette ->
+                val darkVibrantColor = palette?.darkVibrantSwatch?.rgb
+                darkVibrantColor?.let { onColorLoaded(it) }
+            }
 }
 
 @BindingAdapter("gradientColor")
