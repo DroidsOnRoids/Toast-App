@@ -8,7 +8,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.widget.FrameLayout
 import android.widget.ImageView
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposables
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_event_details.*
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
@@ -31,8 +32,7 @@ class EventDetailsActivity : BaseActivity() {
         intent.getLongExtra(EVENT_ID, 0)
     }
 
-    private var eventSpeakersDisposable = Disposables.disposed()
-    private var navigationDisposable = Disposables.disposed()
+    private val compositeDisposable = CompositeDisposable()
 
     @Inject
     lateinit var navigator: Navigator
@@ -56,7 +56,7 @@ class EventDetailsActivity : BaseActivity() {
     private fun setupViewModel(eventDetailsBinding: ActivityEventDetailsBinding) {
         eventDetailsViewModel.init(eventId)
         eventDetailsBinding.eventDetailsViewModel = eventDetailsViewModel
-        navigationDisposable = eventDetailsViewModel.navigationSubject
+        compositeDisposable += eventDetailsViewModel.navigationSubject
                 .subscribe { navigator.dispatch(this, it) }
     }
 
@@ -79,7 +79,7 @@ class EventDetailsActivity : BaseActivity() {
     }
 
     private fun subscribeToSpeakersChange(eventSpeakersAdapter: EventSpeakersAdapter) {
-        eventSpeakersDisposable = eventDetailsViewModel.eventSpeakers
+        compositeDisposable += eventDetailsViewModel.eventSpeakers
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     eventSpeakersAdapter.setData(it)
@@ -87,8 +87,7 @@ class EventDetailsActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
-        eventSpeakersDisposable.dispose()
-        navigationDisposable.dispose()
+        compositeDisposable.clear()
         super.onDestroy()
     }
 }
