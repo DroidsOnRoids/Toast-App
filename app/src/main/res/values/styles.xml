@@ -121,5 +121,21 @@
         <item name="android:gravity">end</item>
     </style>
 
-    <color name="tomato">#f04b48</color>
+    <style name="ContactDataInputStyle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@style/TextAppearance.Roboto</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/blueGray</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="ContactMessageInputStyle">
+        <item name="android:background">@drawable/contact_message_shape</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@style/TextAppearance.Roboto</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/blueGray</item>
+        <item name="android:gravity">top|start</item>
+    </style>
+
 </resources>
