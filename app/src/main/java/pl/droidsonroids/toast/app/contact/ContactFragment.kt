@@ -39,8 +39,9 @@ class ContactFragment : BaseFragment() {
         val adapter = object : ArrayAdapter<String>(context, R.layout.item_contact_spinner, resources.getStringArray(R.array.contact_topics)) {
             override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
                 val dropDownView = super.getDropDownView(position, convertView, parent)
-                dropDownView.isClickable = position == 0
-                dropDownView.isEnabled = position != 0
+                val isFirstItem = position == 0
+                dropDownView.isClickable = isFirstItem
+                dropDownView.isEnabled = !isFirstItem
                 return dropDownView
             }
         }
