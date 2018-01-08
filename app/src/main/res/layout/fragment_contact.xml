@@ -26,6 +26,7 @@
                 android:background="@drawable/contact_spinner_shape"
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center_vertical"
+                and
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
