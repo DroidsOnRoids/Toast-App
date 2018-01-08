@@ -2,16 +2,16 @@
 
 buildscript {
     ext {
-    //    add versions that occur at least twice
+        //    add versions that occur at least twice
         versions = [
-                buildTools : "27.0.1",
-                kotlin : "1.2.10",
-                support : "27.0.2",
-                dagger : "2.13",
-                retrofit: "2.3.0",
-                chuck: "1.1.0",
+                buildTools: "27.0.1",
+                kotlin    : "1.2.10",
+                support   : "27.0.2",
+                dagger    : "2.13",
+                retrofit  : "2.3.0",
+                chuck     : "1.1.0",
                 lifecycle : '1.0.0',
-                glide : '4.4.0'
+                glide     : '4.4.0'
         ]
     }
     repositories {
@@ -20,12 +20,16 @@ buildscript {
         maven {
             url "https://plugins.gradle.org/m2/"
         }
+        maven {
+            url "https://jitpack.io"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
         classpath 'org.jacoco:org.jacoco.core:0.7.9'
         classpath "gradle.plugin.pl.droidsonroids.gradle.ui.test:plugin:2.0.2"
+        classpath 'com.github.trevjonez.composer-gradle-plugin:plugin:0.5.1'
     }
 }
 
