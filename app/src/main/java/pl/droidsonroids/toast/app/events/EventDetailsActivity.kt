@@ -87,7 +87,7 @@ class EventDetailsActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
-        compositeDisposable.clear()
+        compositeDisposable.dispose()
         super.onDestroy()
     }
 }
