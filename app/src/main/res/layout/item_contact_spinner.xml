@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/margin_large"
+    android:paddingEnd="22dp"
+    android:drawableEnd="@drawable/ic_arrow_down"
+    android:fontFamily="@font/roboto_medium"
+    android:gravity="center_vertical"
+    android:textColor="@color/blueGray"
+    android:textSize="16sp"
+    android:textStyle="normal"
+    tools:text="I want to…"/>
