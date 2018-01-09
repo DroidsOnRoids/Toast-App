@@ -32,13 +32,20 @@ class ContactFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupSpinner()
+        setupIWantToSpinner()
     }
 
-    private fun setupSpinner() {
-        val adapter = ArrayAdapter.createFromResource(context, R.array.contact_topics, R.layout.item_contact_spinner)
+    private fun setupIWantToSpinner() {
+        val adapter = object : ArrayAdapter<String>(context, R.layout.item_contact_spinner, resources.getStringArray(R.array.contact_topics)) {
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
+                val dropDownView = super.getDropDownView(position, convertView, parent)
+                val isHintItem = position == 0
+                dropDownView.isClickable = isHintItem
+                dropDownView.isEnabled = !isHintItem
+                return dropDownView
+            }
+        }
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
         iWantToSpinner.adapter = adapter
     }
 
