@@ -48,7 +48,8 @@
                     android:layout_centerHorizontal="true"
                     android:hint="@string/your_name"
                     android:paddingEnd="@dimen/margin_medium"
-                    android:paddingStart="@dimen/margin_medium"/>
+                    android:paddingStart="@dimen/margin_medium"
+                    app:validateEmpty="@{true}"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -70,7 +71,8 @@
                     android:hint="@string/email_address"
                     android:inputType="textEmailAddress"
                     android:paddingEnd="@dimen/margin_medium"
-                    android:paddingStart="@dimen/margin_medium"/>
+                    android:paddingStart="@dimen/margin_medium"
+                    app:validateEmpty="@{true}"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -94,7 +96,10 @@
                     android:paddingBottom="12dp"
                     android:paddingEnd="@dimen/margin_medium"
                     android:paddingStart="@dimen/margin_medium"
-                    android:paddingTop="18dp"/>
+                    android:paddingTop="18dp"
+                    app:validateMaxLength="@{120}"
+                    app:validateMinLength="@{40}"
+                    app:validateMinLengthMessage="@{@string/send}"/>
             </android.support.design.widget.TextInputLayout>
 
             <FrameLayout

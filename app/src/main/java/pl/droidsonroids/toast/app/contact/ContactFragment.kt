@@ -7,9 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import br.com.ilhasoft.support.validation.Validator
 import kotlinx.android.synthetic.main.fragment_contact.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.base.BaseFragment
+import pl.droidsonroids.toast.app.utils.ContactInputFormTextWatcher
 import pl.droidsonroids.toast.databinding.FragmentContactBinding
 import pl.droidsonroids.toast.viewmodels.contact.ContactViewModel
 
@@ -17,6 +19,7 @@ import pl.droidsonroids.toast.viewmodels.contact.ContactViewModel
 class ContactFragment : BaseFragment() {
 
     private lateinit var contactViewModel: ContactViewModel
+    private lateinit var validator: Validator
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -26,6 +29,15 @@ class ContactFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = FragmentContactBinding.inflate(inflater, container, false)
         binding.contactViewModel = contactViewModel
+
+        validator = Validator(binding)
+        validator.setValidationListener(object : Validator.ValidationListener {
+            override fun onValidationError() {}
+
+            override fun onValidationSuccess() {}
+        })
+        validator.enableFormValidationMode()
+
         return binding.root
     }
 
@@ -33,6 +45,15 @@ class ContactFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupIWantToSpinner()
+        validateInputForm()
+    }
+
+
+
+    private fun validateInputForm() {
+        with(contactEmailEditText) { addTextChangedListener(ContactInputFormTextWatcher(validator, this)) }
+        with(contactNameEditText) { addTextChangedListener(ContactInputFormTextWatcher(validator, this)) }
+        with(contactMessageEditText) { addTextChangedListener(ContactInputFormTextWatcher(validator, this)) }
     }
 
     private fun setupIWantToSpinner() {
