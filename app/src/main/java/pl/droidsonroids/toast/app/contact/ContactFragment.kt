@@ -61,8 +61,6 @@ class ContactFragment : BaseFragment() {
     }
 
     private fun scrollToMessage() {
-        contactMessageEditText.post {
-            contactScrollContainer.smoothScrollTo(0, contactMessageInputLayout.top)
-        }
+        contactScrollContainer.smoothScrollTo(0, contactMessageInputLayout.top)
     }
 }
