@@ -1,4 +1,4 @@
-package pl.droidsonroids.toast.viewmodels
+package pl.droidsonroids.toast.viewmodels.event
 
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Maybe
@@ -17,7 +17,6 @@ import pl.droidsonroids.toast.testPreviousEvents
 import pl.droidsonroids.toast.testSplitEvents
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
-import pl.droidsonroids.toast.viewmodels.event.EventsViewModel
 
 @RunWith(MockitoJUnitRunner::class)
 class EventsViewModelTest {

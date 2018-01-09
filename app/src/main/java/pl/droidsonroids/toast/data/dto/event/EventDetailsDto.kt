@@ -10,5 +10,6 @@ data class EventDetailsDto(
         val facebookId: String,
         val placeName: String,
         val placeStreet: String,
-        val coverImages: List<ImageDto>
+        val coverImages: List<ImageDto>,
+        val talks: List<TalkDto>
 )
