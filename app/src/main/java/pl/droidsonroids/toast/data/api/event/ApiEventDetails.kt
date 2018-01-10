@@ -6,7 +6,7 @@ import java.util.*
 
 data class ApiEventDetails(
         @SerializedName("id")
-        val id: Int,
+        val id: Long,
         @SerializedName("title")
         val title: String,
         @SerializedName("date")
@@ -22,5 +22,7 @@ data class ApiEventDetails(
         @SerializedName("cover_images")
         val coverImages: List<ApiImage>,
         @SerializedName("photos")
-        val photos: List<ApiImage>
+        val photos: List<ApiImage>,
+        @SerializedName("talks")
+        val talks: List<ApiTalk>
 )

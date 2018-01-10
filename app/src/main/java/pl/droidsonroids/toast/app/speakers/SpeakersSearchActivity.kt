@@ -9,22 +9,30 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.activity_speakers_search.*
+import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
 import pl.droidsonroids.toast.databinding.ActivitySpeakersSearchBinding
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersSearchViewModel
+import javax.inject.Inject
 
 class SpeakersSearchActivity : BaseActivity() {
     companion object {
         fun createIntent(context: Context): Intent = Intent(context, SpeakersSearchActivity::class.java)
     }
 
+    @Inject
+    lateinit var navigator: Navigator
+
     private val speakersSearchViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory)[SpeakersSearchViewModel::class.java]
     }
 
-    private var speakersDisposable: Disposable? = null
+    private var speakersDisposable: Disposable = Disposables.disposed()
+
+    private var navigationDisposable: Disposable = Disposables.disposed()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +68,8 @@ class SpeakersSearchActivity : BaseActivity() {
 
     private fun setupViewModel(speakersSearchBinding: ActivitySpeakersSearchBinding) {
         speakersSearchBinding.speakersSearchViewModel = speakersSearchViewModel
-
+        navigationDisposable = speakersSearchViewModel.navigationSubject
+                .subscribe { navigator.dispatch(this, it) }
     }
 
     private fun setupRecyclerView() {
@@ -84,7 +93,8 @@ class SpeakersSearchActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
-        speakersDisposable?.dispose()
+        speakersDisposable.dispose()
+        navigationDisposable.dispose()
         super.onDestroy()
     }
 }

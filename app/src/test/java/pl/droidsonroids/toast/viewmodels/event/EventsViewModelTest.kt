@@ -1,10 +1,10 @@
-package pl.droidsonroids.toast.viewmodels
+package pl.droidsonroids.toast.viewmodels.event
 
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Maybe
 import io.reactivex.internal.operators.maybe.MaybeJust
-import junit.framework.Assert.assertNotNull
 import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,7 +16,7 @@ import pl.droidsonroids.toast.testEventDetails
 import pl.droidsonroids.toast.testPreviousEvents
 import pl.droidsonroids.toast.testSplitEvents
 import pl.droidsonroids.toast.utils.LoadingStatus
-import pl.droidsonroids.toast.viewmodels.event.EventsViewModel
+import pl.droidsonroids.toast.utils.NavigationRequest
 
 @RunWith(MockitoJUnitRunner::class)
 class EventsViewModelTest {
@@ -31,7 +31,7 @@ class EventsViewModelTest {
         eventsViewModel = EventsViewModel(eventsRepository)
         val upcomingEventViewModel = eventsViewModel.upcomingEvent.get()
 
-        assertNotNull(upcomingEventViewModel)
+        assertThat(upcomingEventViewModel, notNullValue())
         assertThat(upcomingEventViewModel.id, equalTo(testEventDetails.id))
         assertThat(upcomingEventViewModel.title, equalTo(testEventDetails.title))
     }
@@ -66,6 +66,38 @@ class EventsViewModelTest {
         val eventsLoadingStatus = eventsViewModel.loadingStatus
 
         assertThat(eventsLoadingStatus.get(), equalTo(LoadingStatus.ERROR))
+    }
+
+
+    @Test
+    fun shouldRequestNavigationToPreviousEventDetails() {
+        whenever(eventsRepository.getEvents()).thenReturn(Maybe.just(testSplitEvents))
+        eventsViewModel = EventsViewModel(eventsRepository)
+        val previousEventsState = eventsViewModel.previousEventsSubject.value.firstOrNull() as? State.Item
+        val testApiEvent = testPreviousEvents.first()
+        val testObserver = eventsViewModel.navigationSubject.test()
+
+        previousEventsState?.item?.onClick()
+
+        testObserver.assertValue {
+            it is NavigationRequest.EventDetails
+                    && it.id == testApiEvent.id
+        }
+    }
+
+
+    @Test
+    fun shouldRequestNavigationToFeaturedEventDetails() {
+        whenever(eventsRepository.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
+        eventsViewModel = EventsViewModel(eventsRepository)
+        val testObserver = eventsViewModel.navigationSubject.test()
+
+        eventsViewModel.upcomingEvent.get().onClick()
+
+        testObserver.assertValue {
+            it is NavigationRequest.EventDetails
+                    && it.id == testEventDetails.id
+        }
     }
 
 }

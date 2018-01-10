@@ -12,7 +12,7 @@
     <string name="error_internet_browser_not_found">Internet browser not found.</string>
     <string name="toast_fanpage_url" translatable="false">https://www.facebook.com/toastwroclaw/</string>
     <string name="application_version_title">Application Version:</string>
-    <string name="attend">ATTEND</string>
+    <string name="attend">Attend</string>
     <string name="previous_events_label">Previous events</string>
     <string name="previous_event_cover_desc">Previous event cover</string>
     <string name="previous_event_arrow_desc">Go to previous event details</string>
@@ -28,4 +28,13 @@
     <string name="search">Search</string>
     <string name="search_hint">Search</string>
     <string name="no_speakers_found">No speakers found</string>
+    <string name="read_more">Read more</string>
+    <string name="your_name">Your name</string>
+    <string name="email_address">Email address</string>
+    <string name="your_message">Your message</string>
+    <string name="send">Send</string>
+    <string name="i_want_to">I want to…</string>
+    <string name="speak_on_the_next_event">speak on the next event</string>
+    <string name="claim_a_reward">claim a reward</string>
+    <string name="become_a_partner">become a partner</string>
 </resources>

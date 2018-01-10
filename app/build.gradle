@@ -8,6 +8,10 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'jacoco'
 
+apply plugin: 'composer'
+
+apply plugin: "pl.droidsonroids.ui.test"
+
 buildscript {
     repositories {
         jcenter()
@@ -18,6 +22,7 @@ buildscript {
 }
 
 import org.ajoberstar.grgit.Grgit
+
 
 def git = Grgit.open(currentDir: projectDir)
 def commitsOnBranchCount = git.log(includes: ['HEAD']).size()
@@ -93,6 +98,7 @@ dependencies {
     implementation "com.android.support:design:$versions.support"
     implementation "com.android.support:support-v4:$versions.support"
     implementation "com.android.support:cardview-v7:$versions.support"
+    implementation "com.android.support:palette-v7:$versions.support"
 
     // retrofit
     implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
@@ -123,6 +129,7 @@ dependencies {
 
     // glide
     implementation "com.github.bumptech.glide:glide:$versions.glide"
+    implementation 'com.github.florent37:glidepalette:2.1.1'
 
     // tests
     testImplementation 'junit:junit:4.12'
@@ -137,6 +144,10 @@ dependencies {
 
 repositories {
     mavenCentral()
+}
+
+uiTest {
+    uiTestReporter 'test%sComposer'
 }
 
 tasks.addRule("Pattern: jacoco<Variant>TestReport") { String taskName ->
