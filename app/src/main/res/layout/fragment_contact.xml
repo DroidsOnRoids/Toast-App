@@ -23,6 +23,7 @@
                 android:layout_width="0dp"
                 android:layout_height="53dp"
                 android:layout_margin="@dimen/margin_large"
+                android:selectedItemPosition="@={contactViewModel.topic}"
                 android:background="@drawable/contact_spinner_shape"
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center_vertical"
@@ -42,6 +43,7 @@
 
                 <EditText
                     android:id="@+id/contactNameEditText"
+                    android:text="@={contactViewModel.name}"
                     style="@style/ContactDataInputStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -64,6 +66,7 @@
                 <EditText
                     android:id="@+id/contactEmailEditText"
                     style="@style/ContactDataInputStyle"
+                    android:text="@={contactViewModel.email}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -88,6 +91,7 @@
                 <EditText
                     android:id="@+id/contactMessageEditText"
                     style="@style/ContactMessageInputStyle"
+                    android:text="@={contactViewModel.message}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/your_message"
@@ -105,6 +109,7 @@
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginStart="@dimen/margin_large"
                 android:layout_marginTop="32dp"
+                android:onClick="@{() -> contactViewModel.onSendClick()}"
                 android:background="@drawable/contact_disabled_send_button_shape"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
