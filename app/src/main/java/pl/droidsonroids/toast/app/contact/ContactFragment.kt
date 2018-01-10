@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import br.com.ilhasoft.support.validation.Validator
 import kotlinx.android.synthetic.main.fragment_contact.*
 import pl.droidsonroids.toast.R
@@ -44,10 +46,9 @@ class ContactFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupIWantToSpinner()
+        setupTopicSpinner()
         validateInputForm()
     }
-
 
 
     private fun validateInputForm() {
@@ -56,7 +57,7 @@ class ContactFragment : BaseFragment() {
         with(contactMessageEditText) { addTextChangedListener(ContactInputFormTextWatcher(validator, this)) }
     }
 
-    private fun setupIWantToSpinner() {
+    private fun setupTopicSpinner() {
         val adapter = object : ArrayAdapter<String>(context, R.layout.item_contact_spinner, resources.getStringArray(R.array.contact_topics)) {
             override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
                 val dropDownView = super.getDropDownView(position, convertView, parent)
@@ -67,7 +68,17 @@ class ContactFragment : BaseFragment() {
             }
         }
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        iWantToSpinner.adapter = adapter
+        topicSpinner.adapter = adapter
+        topicSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                (p1 as TextView).error = activity?.getString(R.string.email_address)
+            }
+
+        }
     }
 
 }

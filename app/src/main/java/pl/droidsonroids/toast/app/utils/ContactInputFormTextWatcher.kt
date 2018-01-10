@@ -5,7 +5,6 @@ import android.text.TextWatcher
 import android.view.View
 import br.com.ilhasoft.support.validation.Validator
 
-
 class ContactInputFormTextWatcher(private val validator: Validator, private val view: View) : TextWatcher {
 
     override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
