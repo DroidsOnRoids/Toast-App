@@ -7,20 +7,38 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.fragment_contact.*
 import pl.droidsonroids.toast.R
+import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseFragment
 import pl.droidsonroids.toast.databinding.FragmentContactBinding
+import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.contact.ContactViewModel
+import javax.inject.Inject
 
 
 class ContactFragment : BaseFragment() {
 
+    @Inject
+    lateinit var navigator: Navigator
+
     private lateinit var contactViewModel: ContactViewModel
+
+    private val forcedContext: Context get() = context ?: throw IllegalStateException()
+
+    private var navigationDisposable: Disposable = Disposables.disposed()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         contactViewModel = ViewModelProviders.of(this, viewModelFactory)[ContactViewModel::class.java]
+        navigationDisposable = contactViewModel.navigationSubject
+                .subscribe(::handleNavigationRequest)
+    }
+
+    private fun handleNavigationRequest(navigationRequest: NavigationRequest) {
+        navigator.dispatch(forcedContext, navigationRequest)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -49,4 +67,8 @@ class ContactFragment : BaseFragment() {
         iWantToSpinner.adapter = adapter
     }
 
+    override fun onDetach() {
+        navigationDisposable.dispose()
+        super.onDetach()
+    }
 }

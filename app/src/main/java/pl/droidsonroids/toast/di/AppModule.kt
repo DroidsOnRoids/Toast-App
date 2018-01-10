@@ -8,10 +8,13 @@ import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import pl.droidsonroids.toast.BuildConfig
+import pl.droidsonroids.toast.repositories.contact.ContactRepository
+import pl.droidsonroids.toast.repositories.contact.ContactRepositoryImpl
 import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.repositories.event.EventsRepositoryImpl
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepositoryImpl
+import pl.droidsonroids.toast.services.ContactService
 import pl.droidsonroids.toast.services.EventService
 import pl.droidsonroids.toast.services.SpeakerService
 import retrofit2.Retrofit
@@ -39,6 +42,10 @@ class AppModule {
 
     @Singleton
     @Provides
+    fun provideContactRepository(contactService: ContactService): ContactRepository = ContactRepositoryImpl(contactService)
+
+    @Singleton
+    @Provides
     fun provideEventService(httpClient: OkHttpClient): EventService =
             getRetrofitBuilder(httpClient)
                     .create(EventService::class.java)
@@ -48,6 +55,12 @@ class AppModule {
     fun provideSpeakersService(httpClient: OkHttpClient): SpeakerService =
             getRetrofitBuilder(httpClient)
                     .create(SpeakerService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideContactService(httpClient: OkHttpClient): ContactService =
+            getRetrofitBuilder(httpClient)
+                    .create(ContactService::class.java)
 
     private fun getRetrofitBuilder(httpClient: OkHttpClient) =
             Retrofit.Builder()
