@@ -8,12 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import br.com.ilhasoft.support.validation.Validator
 import kotlinx.android.synthetic.main.fragment_contact.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.base.BaseFragment
 import pl.droidsonroids.toast.app.utils.ContactInputFormTextWatcher
+import pl.droidsonroids.toast.app.utils.RevealAnimationCreator
 import pl.droidsonroids.toast.databinding.FragmentContactBinding
 import pl.droidsonroids.toast.viewmodels.contact.ContactViewModel
 
@@ -34,9 +34,13 @@ class ContactFragment : BaseFragment() {
 
         validator = Validator(binding)
         validator.setValidationListener(object : Validator.ValidationListener {
-            override fun onValidationError() {}
+            override fun onValidationError() {
+                validateForm(false)
+            }
 
-            override fun onValidationSuccess() {}
+            override fun onValidationSuccess() {
+                validateForm(true)
+            }
         })
         validator.enableFormValidationMode()
 
@@ -48,6 +52,18 @@ class ContactFragment : BaseFragment() {
 
         setupTopicSpinner()
         validateInputForm()
+    }
+
+    private fun validateForm(areInputsValid: Boolean) {
+        val isTopicSelected = topicSpinner.selectedItemPosition != 0
+        val centerX = enabledSendButton.x.toInt() + enabledSendButton.width / 2
+        val centerY = enabledSendButton.y.toInt() + enabledSendButton.height / 2
+        if (areInputsValid && isTopicSelected) {
+            RevealAnimationCreator.setVisibilityWithAnimation(enabledSendButton, true, centerX, centerY)
+        } else {
+            RevealAnimationCreator.setVisibilityWithAnimation(enabledSendButton, false, centerX, centerY)
+        }
+
     }
 
 
@@ -69,13 +85,17 @@ class ContactFragment : BaseFragment() {
         }
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         topicSpinner.adapter = adapter
+        setTopicSpinnerOnItemSelectedListener()
+    }
+
+    private fun setTopicSpinnerOnItemSelectedListener() {
         topicSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
 
             }
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                (p1 as TextView).error = activity?.getString(R.string.email_address)
+                validator.toValidate()
             }
 
         }

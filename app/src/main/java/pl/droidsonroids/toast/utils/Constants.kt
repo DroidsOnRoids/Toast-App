@@ -12,11 +12,11 @@ object Constants {
         const val FIRST = 1
     }
 
-    object Date{
+    object Date {
         const val PATTERN = "dd.MM.yyyy"
     }
 
-    object ValidationRegex{
+    object ValidationRegex {
         const val EMAIL = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-zA-Z]{2,})$"
         const val NAME = "^[a-zA-Z]+[\\-'\\s]?[a-zA-Z ]+\$"
     }

@@ -51,9 +51,9 @@
                     android:hint="@string/your_name"
                     android:paddingEnd="@dimen/margin_medium"
                     android:paddingStart="@dimen/margin_medium"
+                    app:validateEmpty="@{true}"
                     app:validateRegex="@{Constants.ValidationRegex.NAME}"
-                    app:validateRegexMessage="@{@string/invalid_name}"
-                    app:validateEmpty="@{true}"/>
+                    app:validateRegexMessage="@{@string/invalid_name}"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -133,7 +133,7 @@
             </FrameLayout>
 
             <FrameLayout
-                android:id="@+id/enabledButton"
+                android:id="@+id/enabledSendButton"
                 android:layout_width="0dp"
                 android:layout_height="54dp"
                 android:layout_marginBottom="@dimen/margin_large"
@@ -141,6 +141,9 @@
                 android:layout_marginStart="@dimen/margin_large"
                 android:background="@drawable/contact_disabled_send_button_shape"
                 android:backgroundTint="@color/colorAccent"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

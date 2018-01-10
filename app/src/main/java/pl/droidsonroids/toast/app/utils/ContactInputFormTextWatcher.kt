@@ -13,9 +13,9 @@ class ContactInputFormTextWatcher(private val validator: Validator, private val 
 
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
         validator.validate(view)
+        validator.toValidate()
     }
 
     override fun afterTextChanged(s: Editable) {
-
     }
 }
