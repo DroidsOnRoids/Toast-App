@@ -83,6 +83,7 @@
                 android:layout_marginStart="@dimen/margin_large"
                 android:layout_marginTop="@dimen/margin_large"
                 app:counterEnabled="true"
+                app:hintEnabled="false"
                 app:counterMaxLength="250"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
