@@ -36,7 +36,7 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
     val onGradientColorLoaded: (Int) -> Unit = {
         gradientColor.set(it and GRADIENT_COLOR_MASK)
     }
-    val eventSpeakers: BehaviorSubject<List<EventSpeakerItemViewModel>> = BehaviorSubject.create()
+    val eventSpeakersSubject: BehaviorSubject<List<EventSpeakerItemViewModel>> = BehaviorSubject.create()
 
 
     fun init(id: Long) {
@@ -71,7 +71,7 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
 
     private fun onTalksLoaded(talks: List<TalkDto>) {
         val eventSpeakerViewModels = talks.map { it.toViewModel(::onReadMore, ::onSpeakerClick) }
-        eventSpeakers.onNext(eventSpeakerViewModels)
+        eventSpeakersSubject.onNext(eventSpeakerViewModels)
     }
 
     private fun onReadMore(eventSpeakerItemViewModel: EventSpeakerItemViewModel) {

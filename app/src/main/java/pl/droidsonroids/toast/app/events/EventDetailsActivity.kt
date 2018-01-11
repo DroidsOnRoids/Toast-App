@@ -95,14 +95,14 @@ class EventDetailsActivity : BaseActivity() {
         with(eventSpeakersRecyclerView) {
             val eventSpeakersAdapter = EventSpeakersAdapter()
             adapter = eventSpeakersAdapter
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(context)
 
             subscribeToSpeakersChange(eventSpeakersAdapter)
         }
     }
 
     private fun subscribeToSpeakersChange(eventSpeakersAdapter: EventSpeakersAdapter) {
-        compositeDisposable += eventDetailsViewModel.eventSpeakers
+        compositeDisposable += eventDetailsViewModel.eventSpeakersSubject
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     eventSpeakersAdapter.setData(it)
@@ -110,7 +110,7 @@ class EventDetailsActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
-        compositeDisposable.clear()
+        compositeDisposable.dispose()
         super.onDestroy()
     }
 }

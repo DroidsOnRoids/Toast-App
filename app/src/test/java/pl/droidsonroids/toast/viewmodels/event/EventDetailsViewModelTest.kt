@@ -76,7 +76,7 @@ class EventDetailsViewModelTest : RxTestBase() {
 
     private fun assertEventSpeakers() {
         with(testApiTalk) {
-            eventDetailsViewModel.eventSpeakers
+            eventDetailsViewModel.eventSpeakersSubject
                     .flatMap { it.toObservable() }
                     .test()
                     .assertValue { it.id == id }

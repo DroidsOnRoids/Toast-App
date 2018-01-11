@@ -1,4 +1,4 @@
-package pl.droidsonroids.toast
+package pl.droidsonroids.toast.function
 
 import android.support.annotation.StringRes
 import android.support.test.InstrumentationRegistry

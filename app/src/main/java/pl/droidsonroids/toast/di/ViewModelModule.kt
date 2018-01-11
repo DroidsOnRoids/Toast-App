@@ -6,6 +6,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import pl.droidsonroids.toast.viewmodels.MainViewModel
+import pl.droidsonroids.toast.viewmodels.contact.ContactViewModel
 import pl.droidsonroids.toast.viewmodels.event.EventDetailsViewModel
 import pl.droidsonroids.toast.viewmodels.event.EventsViewModel
 import pl.droidsonroids.toast.viewmodels.event.TalkDetailsViewModel
@@ -14,6 +15,11 @@ import pl.droidsonroids.toast.viewmodels.speaker.SpeakersViewModel
 
 @Module
 abstract class ViewModelModule {
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ContactViewModel::class)
+    abstract fun bindContactViewModel(contactViewModel: ContactViewModel): ViewModel
 
     @Binds
     @IntoMap

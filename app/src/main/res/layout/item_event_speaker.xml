@@ -30,12 +30,7 @@
             <include
                 android:id="@+id/speaker"
                 layout="@layout/item_speaker"
-                app:itemViewModel="@{eventSpeakersItemViewModel.speakerItemViewModel}"
-                app:layout_constraintBottom_toTopOf="@+id/speakerDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed"/>
+                app:itemViewModel="@{eventSpeakersItemViewModel.speakerItemViewModel}"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -48,11 +43,7 @@
                     android:id="@+id/speakerDivider"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/paleGray"
-                    app:layout_constraintBottom_toTopOf="@+id/talkTitle"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/speaker"/>
+                    android:background="@color/paleGray"/>
 
                 <TextView
                     android:id="@+id/talkTitle"
@@ -64,10 +55,6 @@
                     android:layout_marginStart="@dimen/margin_large"
                     android:layout_marginTop="@dimen/margin_large"
                     android:text="@{eventSpeakersItemViewModel.title}"
-                    app:layout_constraintBottom_toTopOf="@+id/talkDescription"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/speakerDivider"
                     tools:text="Continuous delivery with ease"/>
 
                 <FrameLayout
@@ -83,10 +70,6 @@
                         android:layout_marginStart="@dimen/margin_large"
                         android:maxLines="5"
                         android:text="@{eventSpeakersItemViewModel.description}"
-                        app:layout_constraintBottom_toTopOf="@+id/talkDivider"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/talkTitle"
                         tools:text="Description"/>
 
                     <View
@@ -94,13 +77,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:layout_gravity="bottom"
-                        android:background="@drawable/gradient_white"
-                        app:layout_constraintBottom_toTopOf="@+id/talkDivider"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHeight_max="40dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/talkTitle"
-                        app:layout_constraintVertical_bias="1"/>
+                        android:background="@drawable/gradient_white"/>
                 </FrameLayout>
 
                 <View
@@ -108,10 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginBottom="@dimen/margin_medium"
-                    android:background="@color/paleGray"
-                    app:layout_constraintBottom_toTopOf="@+id/readMore"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/talkDescription"/>
+                    android:background="@color/paleGray"/>
 
                 <TextView
                     android:id="@+id/readMore"
@@ -125,11 +99,7 @@
                     android:drawablePadding="@dimen/margin_small"
                     android:drawableStart="@drawable/ic_read_more"
                     android:gravity="center_vertical"
-                    android:text="@string/readMore"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/talkDivider"/>
+                    android:text="@string/read_more"/>
             </LinearLayout>
 
         </LinearLayout>
