@@ -63,8 +63,6 @@
                             android:layout_marginStart="@dimen/margin_large"
                             android:layout_marginTop="@dimen/margin_large"
                             android:text="@{talkDetailsViewModel.title}"
-                            app:elementId="@{talkDetailsViewModel.id}"
-                            app:transitionName="@{TalkTransition.TITLE}"
                             tools:text="Continuous delivery with ease"/>
 
                         <TextView
@@ -75,8 +73,6 @@
                             android:layout_marginEnd="@dimen/margin_large"
                             android:layout_marginStart="@dimen/margin_large"
                             android:text="@{talkDetailsViewModel.description}"
-                            app:elementId="@{talkDetailsViewModel.id}"
-                            app:transitionName="@{TalkTransition.DESCRIPTION}"
                             tools:text="Description"/>
 
                     </LinearLayout>
@@ -107,9 +103,7 @@
                         android:drawablePadding="@dimen/margin_small"
                         android:drawableStart="@drawable/ic_read_more"
                         android:gravity="center"
-                        android:text="@string/read_less"
-                        app:elementId="@{talkDetailsViewModel.id}"
-                        app:transitionName="@{TalkTransition.BUTTON}"/>
+                        android:text="@string/read_less"/>
                 </FrameLayout>
 
             </LinearLayout>

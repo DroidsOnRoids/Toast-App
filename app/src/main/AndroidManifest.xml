@@ -44,7 +44,6 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".app.events.TalkDetailsActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.Dialog"/>
     </application>
 

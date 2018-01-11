@@ -3,6 +3,7 @@ package pl.droidsonroids.toast.app.events
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
+import android.databinding.OnRebindCallback
 import android.os.Bundle
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
@@ -42,8 +43,12 @@ class TalkDetailsActivity : BaseActivity() {
         val binding = ActivityTalkDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupViewModel(binding)
+        binding.addOnRebindCallback(object : OnRebindCallback<ActivityTalkDetailsBinding>() {
+            override fun onBound(binding: ActivityTalkDetailsBinding?) {
+                supportStartPostponedEnterTransition()
+            }
+        })
         binding.executePendingBindings()
-        supportStartPostponedEnterTransition()
     }
 
     private fun setupViewModel(binding: ActivityTalkDetailsBinding) {

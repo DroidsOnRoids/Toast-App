@@ -76,15 +76,9 @@ class EventDetailsActivity : BaseActivity() {
         return eventSpeakersRecyclerView.findViewHolderForItemId(it.id)
                 ?.itemView
                 ?.run {
-                    val talkTitle = findViewById<View>(R.id.talkTitle)
-                    val talkDescription = findViewById<View>(R.id.talkDescription)
                     val talkCard = findViewById<View>(R.id.talkCard)
-                    val readMore = findViewById<View>(R.id.readMore)
                     arrayOf(
-                            Pair(talkTitle, talkTitle.transitionName),
-                            Pair(talkDescription, talkDescription.transitionName),
-                            Pair(talkCard, talkCard.transitionName),
-                            Pair(readMore, readMore.transitionName)
+                            Pair(talkCard, talkCard.transitionName)
                     )
                 } ?: arrayOf()
     }

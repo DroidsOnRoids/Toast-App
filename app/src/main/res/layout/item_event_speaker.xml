@@ -64,12 +64,10 @@
                     android:layout_marginStart="@dimen/margin_large"
                     android:layout_marginTop="@dimen/margin_large"
                     android:text="@{eventSpeakersItemViewModel.title}"
-                    app:elementId="@{eventSpeakersItemViewModel.id}"
                     app:layout_constraintBottom_toTopOf="@+id/talkDescription"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/speakerDivider"
-                    app:transitionName="@{TalkTransition.TITLE}"
                     tools:text="Continuous delivery with ease"/>
 
                 <FrameLayout
@@ -85,12 +83,10 @@
                         android:layout_marginStart="@dimen/margin_large"
                         android:maxLines="5"
                         android:text="@{eventSpeakersItemViewModel.description}"
-                        app:elementId="@{eventSpeakersItemViewModel.id}"
                         app:layout_constraintBottom_toTopOf="@+id/talkDivider"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/talkTitle"
-                        app:transitionName="@{TalkTransition.DESCRIPTION}"
                         tools:text="Description"/>
 
                     <View
@@ -130,12 +126,10 @@
                     android:drawableStart="@drawable/ic_read_more"
                     android:gravity="center_vertical"
                     android:text="@string/readMore"
-                    app:elementId="@{eventSpeakersItemViewModel.id}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/talkDivider"
-                    app:transitionName="@{TalkTransition.BUTTON}"/>
+                    app:layout_constraintTop_toBottomOf="@+id/talkDivider"/>
             </LinearLayout>
 
         </LinearLayout>
