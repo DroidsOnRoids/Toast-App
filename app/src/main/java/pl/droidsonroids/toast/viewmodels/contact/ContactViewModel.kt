@@ -26,8 +26,6 @@ class ContactViewModel @Inject constructor(private val contactRepository: Contac
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.SUCCESS)
 
-    private val Any.simpleClassName: String get() = javaClass.simpleName
-
     val topic: ObservableField<Int> = ObservableField()
 
     val name: ObservableField<String> = ObservableField("")
@@ -43,9 +41,7 @@ class ContactViewModel @Inject constructor(private val contactRepository: Contac
         sendDisposable = contactRepository.sendMessage(message)
                 .subscribeBy(
                         onComplete = (::onSendSuccessfully),
-                        onError = {
-                            loadingStatus.set(LoadingStatus.ERROR)
-                        }
+                        onError = { loadingStatus.set(LoadingStatus.ERROR) }
                 )
     }
 
@@ -64,14 +60,14 @@ class ContactViewModel @Inject constructor(private val contactRepository: Contac
             TALK_POSITION -> TALK
             REWARD_POSITION -> REWARD
             PARTNER_POSITION -> PARTNER
-            else -> ""
+            else -> "" // TODO: TOA-90 throw Exception here, validation shouldn't allow getting here if there's a different topic
         }
     }
 
     private fun onSendSuccessfully() {
-        loadingStatus.set(LoadingStatus.SUCCESS)
         clearAllFields()
         navigationSubject.onNext(NavigationRequest.MessageSent)
+        loadingStatus.set(LoadingStatus.SUCCESS)
     }
 
     private fun clearAllFields() {

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.fragment_contact.*
@@ -34,6 +35,7 @@ class ContactFragment : BaseFragment() {
         super.onAttach(context)
         contactViewModel = ViewModelProviders.of(this, viewModelFactory)[ContactViewModel::class.java]
         navigationDisposable = contactViewModel.navigationSubject
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(::handleNavigationRequest)
     }
 
