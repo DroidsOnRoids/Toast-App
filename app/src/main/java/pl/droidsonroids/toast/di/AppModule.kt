@@ -2,6 +2,7 @@ package pl.droidsonroids.toast.di
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
@@ -16,6 +17,7 @@ import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepositoryImpl
 import pl.droidsonroids.toast.services.ContactService
 import pl.droidsonroids.toast.services.EventService
+import pl.droidsonroids.toast.services.LocalContactService
 import pl.droidsonroids.toast.services.SpeakerService
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -25,12 +27,18 @@ import javax.inject.Singleton
 
 private const val ACCEPT = "Accept"
 private const val APPLICATION_JSON = "application/json"
+private const val SHARED_PREF_NAME = "pl.droidsonroids.toast.prefs"
 
 @Module(includes = [ViewModelModule::class])
 class AppModule {
     @Singleton
     @Provides
     fun provideContext(application: Application): Context = application
+
+    @Singleton
+    @Provides
+    fun provideSharedPreference(context: Context): SharedPreferences =
+            context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
 
     @Singleton
     @Provides
@@ -42,7 +50,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideContactRepository(contactService: ContactService): ContactRepository = ContactRepositoryImpl(contactService)
+    fun provideContactRepository(contactService: ContactService, localContactService: LocalContactService): ContactRepository = ContactRepositoryImpl(contactService, localContactService)
 
     @Singleton
     @Provides

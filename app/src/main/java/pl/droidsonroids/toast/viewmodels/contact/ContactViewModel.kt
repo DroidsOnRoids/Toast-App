@@ -24,7 +24,7 @@ private const val PARTNER = "PARTNER"
 
 class ContactViewModel @Inject constructor(private val contactRepository: ContactRepository) : ViewModel(), LoadingViewModel, NavigatingViewModel {
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
-    override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.SUCCESS)
+    override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.PENDING)
 
     val topic: ObservableField<Int> = ObservableField()
 
@@ -34,6 +34,11 @@ class ContactViewModel @Inject constructor(private val contactRepository: Contac
     private var sendDisposable: Disposable = Disposables.disposed()
 
     override fun retryLoading() = onSendClick()
+
+    init {
+        contactRepository.readMessage()
+                .subscribe { _ -> loadingStatus.set(LoadingStatus.SUCCESS) }
+    }
 
     fun onSendClick() {
         val message = createMessageDto()
@@ -78,6 +83,7 @@ class ContactViewModel @Inject constructor(private val contactRepository: Contac
     }
 
     override fun onCleared() {
+        contactRepository.saveMessage(createMessageDto())
         sendDisposable.dispose()
     }
 }
