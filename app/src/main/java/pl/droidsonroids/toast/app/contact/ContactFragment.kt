@@ -6,14 +6,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import br.com.ilhasoft.support.validation.Validator
 import kotlinx.android.synthetic.main.fragment_contact.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.base.BaseFragment
-import pl.droidsonroids.toast.app.utils.ContactInputFormTextWatcher
-import pl.droidsonroids.toast.app.utils.RevealAnimationCreator
+import pl.droidsonroids.toast.app.home.ContactInputFormTextWatcher
 import pl.droidsonroids.toast.databinding.FragmentContactBinding
 import pl.droidsonroids.toast.viewmodels.contact.ContactViewModel
 
@@ -31,19 +29,7 @@ class ContactFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = FragmentContactBinding.inflate(inflater, container, false)
         binding.contactViewModel = contactViewModel
-
-        validator = Validator(binding)
-        validator.setValidationListener(object : Validator.ValidationListener {
-            override fun onValidationError() {
-                validateForm(false)
-            }
-
-            override fun onValidationSuccess() {
-                validateForm(true)
-            }
-        })
-        validator.enableFormValidationMode()
-
+        setupValidator(binding)
         return binding.root
     }
 
@@ -51,26 +37,23 @@ class ContactFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupTopicSpinner()
-        validateInputForm()
+        setupInputsTextWatcher()
     }
 
-    private fun validateForm(areInputsValid: Boolean) {
-        val isTopicSelected = topicSpinner.selectedItemPosition != 0
-        val centerX = enabledSendButton.x.toInt() + enabledSendButton.width / 2
-        val centerY = enabledSendButton.y.toInt() + enabledSendButton.height / 2
-        if (areInputsValid && isTopicSelected) {
-            RevealAnimationCreator.setVisibilityWithAnimation(enabledSendButton, true, centerX, centerY)
-        } else {
-            RevealAnimationCreator.setVisibilityWithAnimation(enabledSendButton, false, centerX, centerY)
-        }
+    private fun setupValidator(binding: FragmentContactBinding) {
+        validator = Validator(binding)
+        validator.enableFieldValidationMode()
+        validator.setValidationListener(object : Validator.ValidationListener {
 
-    }
+            override fun onValidationError() {
+                contactViewModel.validateForm(false)
+            }
 
+            override fun onValidationSuccess() {
+                contactViewModel.validateForm(true)
+            }
 
-    private fun validateInputForm() {
-        with(contactEmailEditText) { addTextChangedListener(ContactInputFormTextWatcher(validator, this)) }
-        with(contactNameEditText) { addTextChangedListener(ContactInputFormTextWatcher(validator, this)) }
-        with(contactMessageEditText) { addTextChangedListener(ContactInputFormTextWatcher(validator, this)) }
+        })
     }
 
     private fun setupTopicSpinner() {
@@ -85,20 +68,13 @@ class ContactFragment : BaseFragment() {
         }
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         topicSpinner.adapter = adapter
-        setTopicSpinnerOnItemSelectedListener()
+        topicSpinner.setOnLongClickListener { false }
     }
 
-    private fun setTopicSpinnerOnItemSelectedListener() {
-        topicSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
-
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                validator.toValidate()
-            }
-
-        }
+    private fun setupInputsTextWatcher() {
+        with(contactEmailEditText) { addTextChangedListener(ContactInputFormTextWatcher(this, validator)) }
+        with(contactNameEditText) { addTextChangedListener(ContactInputFormTextWatcher(this, validator)) }
+        with(contactMessageEditText) { addTextChangedListener(ContactInputFormTextWatcher(this, validator)) }
     }
 
 }

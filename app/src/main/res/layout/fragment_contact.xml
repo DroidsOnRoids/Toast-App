@@ -28,6 +28,7 @@
                 android:background="@drawable/contact_spinner_shape"
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center_vertical"
+                android:selectedItemPosition="@={contactViewModel.selectedTopicPosition}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -49,6 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:hint="@string/your_name"
+                    android:imeOptions="actionNext"
                     android:paddingEnd="@dimen/margin_medium"
                     android:paddingStart="@dimen/margin_medium"
                     app:validateEmpty="@{true}"
@@ -73,6 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:hint="@string/email_address"
+                    android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:paddingEnd="@dimen/margin_medium"
                     android:paddingStart="@dimen/margin_medium"
@@ -145,10 +148,12 @@
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
                 android:visibility="gone"
+                app:areInputsValid="@{contactViewModel.areInputsValid}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/contactMessageInputLayout">
+                app:layout_constraintTop_toBottomOf="@+id/contactMessageInputLayout"
+                app:selectedTopicPosition="@{contactViewModel.selectedTopicPosition}">
 
                 <TextView
                     style="@style/TitleTextStyle"

@@ -2,10 +2,9 @@
 
 package pl.droidsonroids.toast.app.utils
 
+
 import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
-
-
 import android.graphics.drawable.GradientDrawable
 import android.text.format.DateFormat
 import android.view.View
@@ -118,4 +117,11 @@ fun setConnectionErrorContainerVisibility(errorConnectionContainer: View, loadin
 @BindingAdapter("android:visibility")
 fun setVisibility(view: View, isVisible: Boolean) {
     view.visibility = if (isVisible) View.VISIBLE else View.GONE
+}
+
+@BindingAdapter(value = ["areInputsValid", "selectedTopicPosition"], requireAll = true)
+fun setVisibilityWithRevealAnimation(view: View, areInputsValid: Boolean, selectedTopicPosition: Int) {
+    val centerX = view.x.toInt() + view.width / 2
+    val centerY = view.y.toInt() + view.height / 2
+    RevealAnimationCreator.setVisibilityWithAnimation(view, areInputsValid && selectedTopicPosition != 0, centerX, centerY)
 }
