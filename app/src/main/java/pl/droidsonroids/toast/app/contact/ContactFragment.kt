@@ -27,7 +27,7 @@ class ContactFragment : BaseFragment() {
 
     private lateinit var contactViewModel: ContactViewModel
 
-    private val forcedContext: Context get() = context ?: throw IllegalStateException()
+    private val forcedContext: Context get() = context ?: throw IllegalStateException("Tried to access forced context when not available")
 
     private var navigationDisposable: Disposable = Disposables.disposed()
 
