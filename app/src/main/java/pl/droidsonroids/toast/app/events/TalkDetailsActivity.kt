@@ -43,9 +43,14 @@ class TalkDetailsActivity : BaseActivity() {
         val binding = ActivityTalkDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupViewModel(binding)
+        setupBinding(binding)
+    }
+
+    private fun setupBinding(binding: ActivityTalkDetailsBinding) {
         binding.addOnRebindCallback(object : OnRebindCallback<ActivityTalkDetailsBinding>() {
             override fun onBound(binding: ActivityTalkDetailsBinding?) {
                 supportStartPostponedEnterTransition()
+                binding?.removeOnRebindCallback(this)
             }
         })
         binding.executePendingBindings()
@@ -54,14 +59,16 @@ class TalkDetailsActivity : BaseActivity() {
     private fun setupViewModel(binding: ActivityTalkDetailsBinding) {
         talkDetailsViewModel.init(talkDto)
         navigationDisposable = talkDetailsViewModel.navigationSubject
-                .subscribe {
-                    if (it is NavigationRequest.Close) {
-                        finishAfterTransition()
-                    } else {
-                        navigator.dispatch(this, it)
-                    }
-                }
+                .subscribe(::handleNavigationRequest)
         binding.talkDetailsViewModel = talkDetailsViewModel
+    }
+
+    private fun handleNavigationRequest(it: NavigationRequest) {
+        if (it is NavigationRequest.Close) {
+            finishAfterTransition()
+        } else {
+            navigator.dispatch(this, it)
+        }
     }
 
     override fun onDestroy() {

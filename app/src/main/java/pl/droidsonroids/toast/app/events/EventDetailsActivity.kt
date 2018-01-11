@@ -77,9 +77,7 @@ class EventDetailsActivity : BaseActivity() {
                 ?.itemView
                 ?.run {
                     val talkCard = findViewById<View>(R.id.talkCard)
-                    arrayOf(
-                            Pair(talkCard, talkCard.transitionName)
-                    )
+                    arrayOf(Pair(talkCard, talkCard.transitionName))
                 } ?: arrayOf()
     }
 

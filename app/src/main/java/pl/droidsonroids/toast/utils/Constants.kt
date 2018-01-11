@@ -18,8 +18,5 @@ object Constants {
 
     object TalkTransition {
         const val CARD = "card"
-        const val TITLE = "title"
-        const val DESCRIPTION = "description"
-        const val BUTTON = "button"
     }
 }

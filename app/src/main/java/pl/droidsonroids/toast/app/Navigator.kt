@@ -20,7 +20,6 @@ class Navigator @Inject constructor() {
             is NavigationRequest.SpeakersSearch -> showSpeakersSearch(context)
             is NavigationRequest.SpeakerDetails -> showSpeakerDetails(context, navigationRequest)
             is NavigationRequest.EventDetails -> showEventDetails(context, navigationRequest)
-            is NavigationRequest.TalkDetails -> showTalkDetails(context, navigationRequest)
         }
     }
 
@@ -28,11 +27,6 @@ class Navigator @Inject constructor() {
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, *sharedViews).toBundle()
         val intent = TalkDetailsActivity.createIntent(activity, navigationRequest)
         activity.startActivity(intent, options)
-    }
-
-    private fun showTalkDetails(context: Context, navigationRequest: NavigationRequest.TalkDetails) {
-        val intent = TalkDetailsActivity.createIntent(context, navigationRequest)
-        context.startActivity(intent)
     }
 
     private fun showEventDetails(context: Context, navigationRequest: NavigationRequest.EventDetails) {
