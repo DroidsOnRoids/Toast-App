@@ -6,7 +6,6 @@ import org.junit.Test
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.function.getString
-import pl.droidsonroids.toast.robot.EventsRobot
 import pl.droidsonroids.toast.robot.MenuRobot
 
 class TestBottomsMenu {

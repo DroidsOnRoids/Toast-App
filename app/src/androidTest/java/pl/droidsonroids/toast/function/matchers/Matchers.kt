@@ -8,16 +8,12 @@ import org.hamcrest.Matcher
 
 fun isBottomNavigationItemViewChecked(): Matcher<View> {
     return object : BoundedMatcher<View, BottomNavigationItemView>(BottomNavigationItemView::class.java) {
-        internal var triedMatching: Boolean = false
 
         override fun describeTo(description: Description) {
-            if (triedMatching) {
-                description.appendText("with BottomNavigationItem check status: true, But was: false")
-            }
+            description.appendText("with BottomNavigationItem checked")
         }
 
         override fun matchesSafely(item: BottomNavigationItemView): Boolean {
-            triedMatching = true
             return item.itemData.isChecked
         }
     }
@@ -25,16 +21,12 @@ fun isBottomNavigationItemViewChecked(): Matcher<View> {
 
 fun isBottomViewElementWithCorrectTitle(title: String): Matcher<View> {
     return object : BoundedMatcher<View, BottomNavigationItemView>(BottomNavigationItemView::class.java) {
-        internal var triedMatching: Boolean = false
 
         override fun describeTo(description: Description) {
-            if (triedMatching) {
-                description.appendText("with BottomNavigationItem check title: " + title)
-            }
+            description.appendText("with BottomNavigationItem title: " + title)
         }
 
         override fun matchesSafely(item: BottomNavigationItemView): Boolean {
-            triedMatching = true
             return item.itemData.title == title
         }
     }
