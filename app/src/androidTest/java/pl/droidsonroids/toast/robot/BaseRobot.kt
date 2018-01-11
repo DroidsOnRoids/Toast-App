@@ -37,7 +37,7 @@ abstract class BaseRobot {
 
     fun checkIfElementWithIdIsClickable(id: Int): BaseRobot {
         onView(withId(id))
-                .check(matches(isClickable()))
+                .check(matches(isEnabled()))
         return this
     }
 
