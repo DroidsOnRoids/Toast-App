@@ -2,7 +2,6 @@ package pl.droidsonroids.toast.app
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import io.reactivex.Completable
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
@@ -35,14 +34,14 @@ class Navigator @Inject constructor() {
                 .setOnDismissListener { timerDisposable.dispose() }
                 .create()
                 .run {
-                    setOnShowListener { timerDisposable = startDismissTimer(it) }
+                    timerDisposable = startDismissTimer(this)
                     show()
                 }
     }
 
-    private fun startDismissTimer(dialogInterface: DialogInterface): Disposable {
+    private fun startDismissTimer(dialog: AlertDialog): Disposable {
         return Completable.timer(MESSAGE_SENT_AUTO_DISMISS_TIME, TimeUnit.SECONDS)
-                .subscribe(dialogInterface::dismiss)
+                .subscribe(dialog::dismiss)
     }
 
     private fun showEventDetails(context: Context, navigationRequest: NavigationRequest.EventDetails) {
