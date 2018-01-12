@@ -18,6 +18,7 @@ class ContactFragment : BaseFragment() {
 
     private lateinit var contactViewModel: ContactViewModel
 
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         contactViewModel = ViewModelProviders.of(this, viewModelFactory)[ContactViewModel::class.java]
@@ -33,6 +34,8 @@ class ContactFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupIWantToSpinner()
+
+        setupMessageTextBox()
     }
 
     private fun setupIWantToSpinner() {
@@ -49,4 +52,15 @@ class ContactFragment : BaseFragment() {
         iWantToSpinner.adapter = adapter
     }
 
+    private fun setupMessageTextBox() {
+        val layoutListener: View.OnLayoutChangeListener = View.OnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
+            if (v.hasFocus()) scrollToMessage()
+        }
+        contactMessageEditText.addOnLayoutChangeListener(layoutListener)
+        contactMessageEditText.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) scrollToMessage() }
+    }
+
+    private fun scrollToMessage() {
+        contactScrollContainer.smoothScrollTo(0, contactMessageInputLayout.top)
+    }
 }
