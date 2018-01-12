@@ -52,11 +52,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:afterTextChanged="@{contactViewModel::nameChanged}"
                     android:hint="@string/your_name"
                     android:imeOptions="actionNext"
+                    android:onTextChanged="@{contactViewModel::nameChanged}"
                     android:paddingEnd="@dimen/margin_medium"
-                    android:paddingStart="@dimen/margin_medium"/>
+                    android:paddingStart="@dimen/margin_medium"
+                    android:text="@{contactViewModel.name}"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -77,12 +78,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:afterTextChanged="@{contactViewModel::emailChanged}"
                     android:hint="@string/email_address"
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
+                    android:onTextChanged="@{contactViewModel::emailChanged}"
                     android:paddingEnd="@dimen/margin_medium"
-                    android:paddingStart="@dimen/margin_medium"/>
+                    android:paddingStart="@dimen/margin_medium"
+                    android:text="@{contactViewModel.email}"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -106,12 +108,13 @@
                     style="@style/ContactMessageInputStyle"
                     android:layout_width="match_parent"
                     android:layout_height="113dp"
-                    android:afterTextChanged="@{contactViewModel::messageChanged}"
                     android:hint="@string/your_message"
+                    android:onTextChanged="@{contactViewModel::messageChanged}"
                     android:paddingBottom="12dp"
                     android:paddingEnd="@dimen/margin_medium"
                     android:paddingStart="@dimen/margin_medium"
-                    android:paddingTop="18dp"/>
+                    android:paddingTop="18dp"
+                    android:text="@{contactViewModel.message}"/>
             </android.support.design.widget.TextInputLayout>
 
             <FrameLayout
@@ -152,13 +155,11 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                android:visibility="gone"
-                app:areInputsValid="@{contactViewModel.areInputsValid}"
+                android:visibility="@{contactViewModel.sendingEnabled}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/contactMessageInputLayout"
-                app:selectedTopicPosition="@{contactViewModel.selectedTopicPosition}">
+                app:layout_constraintTop_toBottomOf="@+id/contactMessageInputLayout">
 
                 <TextView
                     style="@style/TitleTextStyle"

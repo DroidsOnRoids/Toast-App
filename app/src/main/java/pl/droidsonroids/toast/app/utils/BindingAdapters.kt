@@ -22,6 +22,7 @@ import pl.droidsonroids.toast.utils.LoadingStatus
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 private const val COLOR_TRANSPARENT = 0x00FFFFFF
 
 @BindingAdapter("eventTime")
@@ -118,11 +119,6 @@ fun setConnectionErrorContainerVisibility(errorConnectionContainer: View, loadin
 @BindingAdapter("android:visibility")
 fun setVisibility(view: View, isVisible: Boolean) {
     view.visibility = if (isVisible) View.VISIBLE else View.GONE
-}
-
-@BindingAdapter(value = ["areInputsValid", "selectedTopicPosition"], requireAll = true)
-fun setSendButtonVisibility(view: View, areInputsValid: Boolean, selectedTopicPosition: Int) {
-    view.visibility = if (areInputsValid && selectedTopicPosition != 0) View.VISIBLE else View.GONE
 }
 
 @BindingAdapter("app:errorText")
