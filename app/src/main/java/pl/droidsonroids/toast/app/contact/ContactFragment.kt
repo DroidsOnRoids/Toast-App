@@ -69,6 +69,11 @@ class ContactFragment : BaseFragment() {
         iWantToSpinner.adapter = adapter
     }
 
+    override fun onStop() {
+        contactViewModel.saveMessage()
+        super.onStop()
+    }
+
     override fun onDetach() {
         navigationDisposable.dispose()
         super.onDetach()

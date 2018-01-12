@@ -1,13 +1,14 @@
 package pl.droidsonroids.toast.viewmodels.contact
 
 import com.nhaarman.mockito_kotlin.eq
+import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Completable
+import io.reactivex.Single
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
-import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
@@ -19,14 +20,14 @@ import java.io.IOException
 class ContactViewModelTest : RxTestBase() {
     @Mock
     lateinit var contactRepository: ContactRepository
-    @InjectMocks
+
     lateinit var contactViewModel: ContactViewModel
 
     private val name = "John"
     private val email = "john@example.test"
-    private val topic = 1
     private val topicType = "TALK"
     private val message = "test message"
+    private val position = 1
     private val messageDto = MessageDto(
             email = email,
             type = topicType,
@@ -36,10 +37,8 @@ class ContactViewModelTest : RxTestBase() {
 
     @Before
     fun setUp() {
-        contactViewModel.topic.set(topic)
-        contactViewModel.name.set(name)
-        contactViewModel.email.set(email)
-        contactViewModel.message.set(message)
+        whenever(contactRepository.readMessage()).thenReturn(Single.just(messageDto))
+        contactViewModel = ContactViewModel(contactRepository)
     }
 
     @Test
@@ -83,4 +82,19 @@ class ContactViewModelTest : RxTestBase() {
         assertThat(contactViewModel.loadingStatus.get(), equalTo(LoadingStatus.SUCCESS))
         assertThatFieldsAreCleared()
     }
+
+    @Test
+    fun shouldSaveFieldsState() {
+        contactViewModel.saveMessage()
+        verify(contactRepository).saveMessage(messageDto)
+    }
+
+    @Test
+    fun shouldRestoreFieldsState() {
+        assertThat(contactViewModel.topic.get(), equalTo(position))
+        assertThat(contactViewModel.email.get(), equalTo(email))
+        assertThat(contactViewModel.message.get(), equalTo(message))
+        assertThat(contactViewModel.name.get(), equalTo(name))
+    }
+
 }

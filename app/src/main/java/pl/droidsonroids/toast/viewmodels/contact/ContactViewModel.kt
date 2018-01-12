@@ -2,8 +2,8 @@ package pl.droidsonroids.toast.viewmodels.contact
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
-import io.reactivex.disposables.Disposable
-import io.reactivex.disposables.Disposables
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
@@ -31,19 +31,45 @@ class ContactViewModel @Inject constructor(private val contactRepository: Contac
     val name: ObservableField<String> = ObservableField("")
     val email: ObservableField<String> = ObservableField("")
     val message: ObservableField<String> = ObservableField("")
-    private var sendDisposable: Disposable = Disposables.disposed()
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun retryLoading() = onSendClick()
 
     init {
-        contactRepository.readMessage()
-                .subscribe { _ -> loadingStatus.set(LoadingStatus.SUCCESS) }
+        compositeDisposable += contactRepository.readMessage()
+                .subscribe { it ->
+                    setMessage(it)
+                    loadingStatus.set(LoadingStatus.SUCCESS)
+                }
+    }
+
+    private fun setMessage(messageDto: MessageDto) {
+        messageDto.let {
+            val typePosition = resolveMessageTypePosition(it.type)
+            topic.set(typePosition)
+            name.set(it.name)
+            email.set(it.email)
+            message.set(it.message)
+        }
+    }
+
+    private fun resolveMessageTypePosition(type: String): Int {
+        return when (type) {
+            TALK -> TALK_POSITION
+            REWARD -> REWARD_POSITION
+            PARTNER -> PARTNER_POSITION
+            else -> I_WANT_TO_POSITION
+        }
+    }
+
+    fun saveMessage() {
+        contactRepository.saveMessage(createMessageDto())
     }
 
     fun onSendClick() {
         val message = createMessageDto()
         loadingStatus.set(LoadingStatus.PENDING)
-        sendDisposable = contactRepository.sendMessage(message)
+        compositeDisposable += contactRepository.sendMessage(message)
                 .subscribeBy(
                         onComplete = (::onSendSuccessfully),
                         onError = { loadingStatus.set(LoadingStatus.ERROR) }
@@ -65,7 +91,7 @@ class ContactViewModel @Inject constructor(private val contactRepository: Contac
             TALK_POSITION -> TALK
             REWARD_POSITION -> REWARD
             PARTNER_POSITION -> PARTNER
-            else -> "" // TODO: TOA-90 throw Exception here, validation shouldn't allow getting here if there's a different topic
+            else -> ""
         }
     }
 
@@ -80,10 +106,10 @@ class ContactViewModel @Inject constructor(private val contactRepository: Contac
         name.set("")
         email.set("")
         message.set("")
+        saveMessage()
     }
 
     override fun onCleared() {
-        contactRepository.saveMessage(createMessageDto())
-        sendDisposable.dispose()
+        compositeDisposable.dispose()
     }
 }

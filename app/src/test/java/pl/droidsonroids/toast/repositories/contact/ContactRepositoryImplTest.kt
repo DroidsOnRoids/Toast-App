@@ -9,9 +9,12 @@ import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
 import pl.droidsonroids.toast.services.ContactService
+import pl.droidsonroids.toast.services.ContactStorage
 import java.io.IOException
 
 class ContactRepositoryImplTest : RxTestBase() {
+    @Mock
+    lateinit var contactStorage: ContactStorage
     @Mock
     lateinit var contactService: ContactService
     @InjectMocks

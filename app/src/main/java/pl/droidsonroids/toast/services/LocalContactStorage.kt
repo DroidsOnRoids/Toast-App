@@ -13,9 +13,9 @@ private const val MESSAGE_NAME_KEY = "message_name_key"
 private const val MESSAGE_KEY = "message_key"
 
 @Singleton
-class LocalContactService @Inject constructor(private val sharedPreferences: SharedPreferences) {
+class LocalContactStorage @Inject constructor(private val sharedPreferences: SharedPreferences) : ContactStorage {
 
-    fun saveMessage(messageDto: MessageDto) {
+    override fun saveMessage(messageDto: MessageDto) {
         sharedPreferences.edit().apply {
             putString(MESSAGE_TYPE_KEY, messageDto.type)
             putString(MESSAGE_EMAIL_KEY, messageDto.email)
@@ -24,7 +24,7 @@ class LocalContactService @Inject constructor(private val sharedPreferences: Sha
         }.apply()
     }
 
-    fun readMessage(): Single<MessageDto> {
+    override fun readMessage(): Single<MessageDto> {
         return Single.fromCallable {
             MessageDto(
                     email = sharedPreferences.getString(MESSAGE_EMAIL_KEY, ""),
