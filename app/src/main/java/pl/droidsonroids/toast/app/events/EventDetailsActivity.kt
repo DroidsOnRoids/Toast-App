@@ -22,6 +22,8 @@ import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.event.EventDetailsViewModel
 import javax.inject.Inject
 
+private const val ALPHA_MAX_VALUE = 255
+
 class EventDetailsActivity : BaseActivity() {
     companion object {
         private const val EVENT_ID = "event_id"
@@ -72,7 +74,7 @@ class EventDetailsActivity : BaseActivity() {
 
     private fun setToolbarScrim(verticalOffset: Int, appBarLayout: AppBarLayout, contentScrimColor: Int, statusBarScrimColor: Int) {
         val offsetFraction = -verticalOffset / appBarLayout.totalScrollRange.toFloat()
-        val alphaValue = (offsetFraction * 255).toInt()
+        val alphaValue = (offsetFraction * ALPHA_MAX_VALUE).toInt()
         val contentScrimWithAlpha = ColorUtils.setAlphaComponent(contentScrimColor, alphaValue)
         val statusBarScrimWithAlpha = ColorUtils.setAlphaComponent(statusBarScrimColor, alphaValue)
 
