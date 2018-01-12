@@ -78,7 +78,7 @@ class EventDetailsActivity : BaseActivity() {
                 ?.run {
                     val talkCard = findViewById<View>(R.id.talkCard)
                     arrayOf(Pair(talkCard, talkCard.transitionName))
-                } ?: arrayOf()
+                } ?: emptyArray()
     }
 
     private fun setupGradientSwitcher() {
