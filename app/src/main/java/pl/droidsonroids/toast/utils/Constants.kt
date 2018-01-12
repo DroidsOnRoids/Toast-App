@@ -18,7 +18,7 @@ object Constants {
 
     object ValidationRegex {
         const val EMAIL = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-zA-Z]{2,})$"
-        const val NAME = "^[a-zA-Z]+[\\-'\\s]?[a-zA-Z ]+\$"
+        const val NAME = "^[a-zA-Z-0-9]+[\\-'\\s]?[a-zA-Z-0-9 ]+\$"
     }
 
 }
