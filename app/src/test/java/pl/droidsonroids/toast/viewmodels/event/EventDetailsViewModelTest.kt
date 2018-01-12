@@ -4,6 +4,7 @@ import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Single
+import io.reactivex.rxkotlin.toObservable
 import io.reactivex.rxkotlin.toSingle
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
@@ -13,6 +14,7 @@ import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.event.EventsRepository
+import pl.droidsonroids.toast.testApiTalk
 import pl.droidsonroids.toast.testEventDetails
 import pl.droidsonroids.toast.utils.LoadingStatus
 
@@ -69,5 +71,17 @@ class EventDetailsViewModelTest : RxTestBase() {
         assertThat(eventDetailsViewModel.placeName.get(), equalTo(testEventDetails.placeName))
         assertThat(eventDetailsViewModel.placeStreet.get(), equalTo(testEventDetails.placeStreet))
         assertThat(eventDetailsViewModel.coverImage.get(), equalTo(testEventDetails.coverImages.firstOrNull()?.toDto()))
+        assertEventSpeakers()
+    }
+
+    private fun assertEventSpeakers() {
+        with(testApiTalk) {
+            eventDetailsViewModel.eventSpeakersSubject
+                    .flatMap { it.toObservable() }
+                    .test()
+                    .assertValue { it.id == id }
+                    .assertValue { it.title == title }
+                    .assertValue { it.description == it.description }
+        }
     }
 }
