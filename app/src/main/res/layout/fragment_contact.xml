@@ -39,6 +39,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_medium"
                 android:layout_marginTop="@dimen/margin_large"
+                app:errorEnabled="true"
+                app:errorText="@{contactViewModel.nameInputError}"
                 app:layout_constraintEnd_toStartOf="@+id/contactEmailInputLayout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/topicSpinner">
@@ -49,13 +51,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
+                    android:afterTextChanged="@{contactViewModel::nameChanged}"
                     android:hint="@string/your_name"
                     android:imeOptions="actionNext"
                     android:paddingEnd="@dimen/margin_medium"
-                    android:paddingStart="@dimen/margin_medium"
-                    app:validateEmpty="@{true}"
-                    app:validateRegex="@{Constants.ValidationRegex.NAME}"
-                    app:validateRegexMessage="@{@string/invalid_name}"/>
+                    android:paddingStart="@dimen/margin_medium"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -64,6 +64,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_medium"
                 android:layout_marginTop="@dimen/margin_large"
+                app:errorEnabled="true"
+                app:errorText="@{contactViewModel.emailInputError}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/contactNameInputLayout"
                 app:layout_constraintTop_toBottomOf="@+id/topicSpinner">
@@ -74,14 +76,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
+                    android:afterTextChanged="@{contactViewModel::emailChanged}"
                     android:hint="@string/email_address"
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:paddingEnd="@dimen/margin_medium"
-                    android:paddingStart="@dimen/margin_medium"
-                    app:validateEmpty="@{true}"
-                    app:validateRegex="@{Constants.ValidationRegex.EMAIL}"
-                    app:validateRegexMessage="@{@string/invalid_email_address}"/>
+                    android:paddingStart="@dimen/margin_medium"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -92,6 +92,8 @@
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginStart="@dimen/margin_large"
                 android:layout_marginTop="@dimen/margin_large"
+                app:errorEnabled="true"
+                app:errorText="@{contactViewModel.messageInputError}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/contactNameInputLayout">
@@ -101,14 +103,12 @@
                     style="@style/ContactMessageInputStyle"
                     android:layout_width="match_parent"
                     android:layout_height="113dp"
+                    android:afterTextChanged="@{contactViewModel::messageChanged}"
                     android:hint="@string/your_message"
                     android:paddingBottom="12dp"
                     android:paddingEnd="@dimen/margin_medium"
                     android:paddingStart="@dimen/margin_medium"
-                    android:paddingTop="18dp"
-                    app:validateEmpty="@{true}"
-                    app:validateMaxLength="@{120}"
-                    app:validateMinLength="@{40}"/>
+                    android:paddingTop="18dp"/>
             </android.support.design.widget.TextInputLayout>
 
             <FrameLayout

@@ -6,6 +6,7 @@ package pl.droidsonroids.toast.app.utils
 import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.support.design.widget.TextInputLayout
 import android.text.format.DateFormat
 import android.view.View
 import android.widget.ImageSwitcher
@@ -120,8 +121,11 @@ fun setVisibility(view: View, isVisible: Boolean) {
 }
 
 @BindingAdapter(value = ["areInputsValid", "selectedTopicPosition"], requireAll = true)
-fun setVisibilityWithRevealAnimation(view: View, areInputsValid: Boolean, selectedTopicPosition: Int) {
-    val centerX = view.x.toInt() + view.width / 2
-    val centerY = view.y.toInt() + view.height / 2
-    RevealAnimationCreator.setVisibilityWithAnimation(view, areInputsValid && selectedTopicPosition != 0, centerX, centerY)
+fun setSendButtonVisibility(view: View, areInputsValid: Boolean, selectedTopicPosition: Int) {
+    view.visibility = if (areInputsValid && selectedTopicPosition != 0) View.VISIBLE else View.GONE
+}
+
+@BindingAdapter("app:errorText")
+fun setInputErrorMessage(view: TextInputLayout, errorMessage: String?) {
+    view.error = errorMessage
 }
