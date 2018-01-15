@@ -53,13 +53,13 @@ class EventDetailsActivity : BaseActivity() {
         val eventDetailsBinding = ActivityEventDetailsBinding.inflate(layoutInflater)
         setContentView(eventDetailsBinding.root)
 
-        setupAppbar()
+        setupAppBar()
         setupViewModel(eventDetailsBinding)
         setupGradientSwitcher()
         setupRecyclerView()
     }
 
-    private fun setupAppbar() {
+    private fun setupAppBar() {
         val contentScrimColor = ContextCompat.getColor(this, R.color.colorPrimary)
         val statusBarScrimColor = ContextCompat.getColor(this, R.color.colorPrimaryDark)
 
