@@ -119,3 +119,8 @@ fun setConnectionErrorContainerVisibility(errorConnectionContainer: View, loadin
 fun setVisibility(view: View, isVisible: Boolean) {
     view.visibility = if (isVisible) View.VISIBLE else View.GONE
 }
+
+@BindingAdapter("transitionName", "elementId")
+fun setTransitionName(view: View, transitionName: String, elementId: Long?) {
+    view.transitionName = "$transitionName$elementId"
+}
