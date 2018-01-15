@@ -9,6 +9,7 @@ import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
 import pl.droidsonroids.toast.data.dto.event.TalkDto
+import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
@@ -73,8 +74,9 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
         eventSpeakersSubject.onNext(eventSpeakerViewModels)
     }
 
-    private fun onReadMore(talkId: Long) {
-        Log.d(simpleClassName, "onReadMore: $talkId")
+    private fun onReadMore(eventSpeakerItemViewModel: EventSpeakerItemViewModel) {
+        navigationSubject.onNext(NavigationRequest.TalkDetails(eventSpeakerItemViewModel.toDto()))
+        Log.d(simpleClassName, "onReadMore: ${eventSpeakerItemViewModel.id}")
     }
 
     private fun onSpeakerClick(speakerId: Long) {

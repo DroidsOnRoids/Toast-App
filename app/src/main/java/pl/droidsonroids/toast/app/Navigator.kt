@@ -6,7 +6,12 @@ import io.reactivex.Completable
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
 import pl.droidsonroids.toast.R
+import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.util.Pair
+import android.support.v7.app.AppCompatActivity
+import android.view.View
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
+import pl.droidsonroids.toast.app.events.TalkDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakerDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
 import pl.droidsonroids.toast.utils.NavigationRequest
@@ -26,7 +31,7 @@ class Navigator @Inject constructor() {
             is NavigationRequest.MessageSent -> showMessageSentDialog(context)
         }
     }
-
+  
     private fun showMessageSentDialog(context: Context) {
         var timerDisposable = Disposables.disposed()
         AlertDialog.Builder(context)
@@ -42,6 +47,12 @@ class Navigator @Inject constructor() {
     private fun startDismissTimer(dialog: AlertDialog): Disposable {
         return Completable.timer(MESSAGE_SENT_AUTO_DISMISS_TIME, TimeUnit.SECONDS)
                 .subscribe(dialog::dismiss)
+    }
+      
+    fun showTalkDetailsWithSharedAnimation(activity: AppCompatActivity, navigationRequest: NavigationRequest.TalkDetails, sharedViews: Array<Pair<View, String>>) {
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, *sharedViews).toBundle()
+        val intent = TalkDetailsActivity.createIntent(activity, navigationRequest)
+        activity.startActivity(intent, options)
     }
 
     private fun showEventDetails(context: Context, navigationRequest: NavigationRequest.EventDetails) {
