@@ -3,6 +3,7 @@ package pl.droidsonroids.toast.di
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
@@ -24,7 +25,6 @@ import javax.inject.Singleton
 
 private const val ACCEPT = "Accept"
 private const val APPLICATION_JSON = "application/json"
-private const val SHARED_PREF_NAME = "pl.droidsonroids.toast.prefs"
 
 @Module(includes = [ViewModelModule::class])
 class AppModule {
@@ -35,7 +35,7 @@ class AppModule {
     @Singleton
     @Provides
     fun provideSharedPreference(context: Context): SharedPreferences =
-            context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
+            PreferenceManager.getDefaultSharedPreferences(context)
 
     @Singleton
     @Provides
