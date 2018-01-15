@@ -38,4 +38,12 @@
     <string name="speak_on_the_next_event">speak on the next event</string>
     <string name="claim_a_reward">claim a reward</string>
     <string name="become_a_partner">become a partner</string>
+
+    <string name="min_message_length_error">Message must have at least 40 characters</string>
+    <string name="max_message_length_error">Message should not have more than 250 characters</string>
+    <string name="empty_name_error">Name is empty</string>
+    <string name="empty_email_error">Email is empty</string>
+    <string name="empty_message_error">Message is empty</string>
+    <string name="invalid_name">Invalid name</string>
+    <string name="invalid_email">Invalid email</string>
 </resources>

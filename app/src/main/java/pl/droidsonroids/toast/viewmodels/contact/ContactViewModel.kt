@@ -7,10 +7,12 @@ import pl.droidsonroids.toast.app.utils.Validator
 import javax.inject.Inject
 
 class ContactViewModel @Inject constructor() : ViewModel() {
+    @Inject lateinit var validator: Validator
+
     val sendingEnabled = ObservableField<Boolean>()
-    val nameInputError = ObservableField<String>()
-    val emailInputError = ObservableField<String>()
-    val messageInputError = ObservableField<String>()
+    val nameInputError = ObservableField("")
+    val emailInputError = ObservableField("")
+    val messageInputError = ObservableField("")
 
     val selectedTopicPosition = ObservableField(0)
     val name: ObservableField<String> = ObservableField("")
@@ -24,21 +26,21 @@ class ContactViewModel @Inject constructor() : ViewModel() {
 
     fun nameChanged(nameInput: CharSequence, start: Int, before: Int, count: Int) {
         name.set(nameInput.toString())
-        val error = Validator.getNameError(nameInput)
+        val error = validator.getNameError(nameInput)
         nameInputError.set(error)
         updateSendingEnabled()
     }
 
     fun emailChanged(emailInput: CharSequence, start: Int, before: Int, count: Int) {
         email.set(emailInput.toString())
-        val error = Validator.getEmailError(emailInput)
+        val error = validator.getEmailError(emailInput)
         emailInputError.set(error)
         updateSendingEnabled()
     }
 
     fun messageChanged(messageInput: CharSequence, start: Int, before: Int, count: Int) {
         message.set(messageInput.toString())
-        val error = Validator.getMessageError(messageInput)
+        val error = validator.getMessageError(messageInput)
         messageInputError.set(error)
         updateSendingEnabled()
     }
@@ -63,8 +65,8 @@ class ContactViewModel @Inject constructor() : ViewModel() {
                     isObservableErrorNull(messageInputError)
 
     private fun isFormNotEmpty() =
-            name.get().isNotEmpty() && email.get().isNotEmpty() && message.get().isNotEmpty()
+            arrayOf(name, email, message).all { it.get().isNotEmpty() }
 
-    private fun isObservableErrorNull(error: ObservableField<String>) = error.get() == null
+    private fun isObservableErrorNull(error: ObservableField<String>) = error.get().isNotEmpty()
 
 }
