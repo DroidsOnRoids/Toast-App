@@ -66,12 +66,21 @@ fun EventDetailsDto.toViewModel(onClick: (Long) -> Unit): UpcomingEventViewModel
     )
 }
 
-fun TalkDto.toViewModel(onReadMore: (Long) -> Unit, onSpeakerClick: (Long) -> Unit): EventSpeakerItemViewModel {
+fun TalkDto.toViewModel(onReadMore: (EventSpeakerItemViewModel) -> Unit, onSpeakerClick: (Long) -> Unit): EventSpeakerItemViewModel {
     return EventSpeakerItemViewModel(
             id = id,
             title = title,
             description = description,
             speakerItemViewModel = speaker.toViewModel(onSpeakerClick),
             readMoreAction = onReadMore
+    )
+}
+
+fun EventSpeakerItemViewModel.toDto(): TalkDto {
+    return TalkDto(
+            id = id,
+            title = title,
+            description = description,
+            speaker = speakerItemViewModel.toDto()
     )
 }

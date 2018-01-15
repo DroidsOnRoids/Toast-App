@@ -5,6 +5,8 @@ package pl.droidsonroids.toast.app.utils
 
 import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
+
+
 import android.graphics.drawable.GradientDrawable
 import android.support.design.widget.TextInputLayout
 import android.text.format.DateFormat
@@ -124,4 +126,9 @@ fun setVisibility(view: View, isVisible: Boolean) {
 @BindingAdapter("app:errorText")
 fun setInputErrorMessage(view: TextInputLayout, errorMessage: String?) {
     view.error = errorMessage
+}
+
+@BindingAdapter("transitionName", "elementId")
+fun setTransitionName(view: View, transitionName: String, elementId: Long?) {
+    view.transitionName = "$transitionName$elementId"
 }

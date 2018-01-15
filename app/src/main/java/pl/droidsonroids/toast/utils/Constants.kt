@@ -21,4 +21,7 @@ object Constants {
         const val NAME = "^[a-zA-Z-0-9]+[\\-'\\s]?[a-zA-Z-0-9 ]+\$"
     }
 
+    object TalkTransition {
+        const val CARD = "card"
+    }
 }
