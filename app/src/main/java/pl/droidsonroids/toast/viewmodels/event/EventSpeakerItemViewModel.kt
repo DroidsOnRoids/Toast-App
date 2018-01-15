@@ -7,9 +7,9 @@ class EventSpeakerItemViewModel(
         val title: String,
         val description: String,
         val speakerItemViewModel: SpeakerItemViewModel,
-        private val readMoreAction: (Long) -> Unit
+        private val readMoreAction: (EventSpeakerItemViewModel) -> Unit
 ) {
     fun onReadMore() {
-        readMoreAction(id)
+        readMoreAction(this)
     }
 }
