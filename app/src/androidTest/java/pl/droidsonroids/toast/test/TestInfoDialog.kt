@@ -2,7 +2,7 @@ package pl.droidsonroids.toast.test
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso
-import android.support.test.rule.ActivityTestRule
+import android.support.test.espresso.intent.rule.IntentsTestRule
 import android.support.test.uiautomator.UiDevice
 import org.junit.Rule
 import org.junit.Test
@@ -14,7 +14,7 @@ import pl.droidsonroids.toast.robot.InfoDialogRobot
 class TestInfoDialog {
     @Suppress("unused")
     @get:Rule
-    val activityRule = ActivityTestRule(MainActivity::class.java, true, true)
+    val activityRule = IntentsTestRule(MainActivity::class.java, true, true)
 
     private fun showDialog() {
         InfoDialogRobot().performClickOnElementWithId(R.id.menuItemAbout)
@@ -109,7 +109,6 @@ class TestInfoDialog {
         showDialog()
         InfoDialogRobot().checkIfTextIsCorrect(getString(R.string.toast_facebook_fanpage), R.id.fanpageLinkText)
                 .performClickOnElementWithId(R.id.fanpageLinkText)
-        UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).pressBack()
-        isDialogClosed()
+        InfoDialogRobot().checkIfIntentOpensFacebook()
     }
 }
