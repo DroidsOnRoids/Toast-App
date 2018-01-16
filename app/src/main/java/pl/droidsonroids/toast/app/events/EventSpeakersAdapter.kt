@@ -10,6 +10,10 @@ import pl.droidsonroids.toast.viewmodels.event.EventSpeakerItemViewModel
 class EventSpeakersAdapter : RecyclerView.Adapter<EventSpeakerViewHolder>() {
     private var eventSpeakerViewModels: List<EventSpeakerItemViewModel> = listOf()
 
+    init {
+        setHasStableIds(true)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventSpeakerViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemEventSpeakerBinding.inflate(inflater, parent, false)
@@ -18,6 +22,10 @@ class EventSpeakersAdapter : RecyclerView.Adapter<EventSpeakerViewHolder>() {
 
     override fun onBindViewHolder(holder: EventSpeakerViewHolder, position: Int) {
         holder.bind(eventSpeakerViewModels[position])
+    }
+
+    override fun getItemId(position: Int): Long {
+        return eventSpeakerViewModels[position].id
     }
 
     override fun getItemCount() = eventSpeakerViewModels.size

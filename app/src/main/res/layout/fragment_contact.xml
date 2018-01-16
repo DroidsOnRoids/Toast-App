@@ -11,6 +11,7 @@
     </data>
 
     <ScrollView
+        android:id="@+id/contactScrollContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -77,10 +78,13 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/contactMessageInputLayout"
                 android:layout_width="0dp"
-                android:layout_height="113dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginStart="@dimen/margin_large"
                 android:layout_marginTop="@dimen/margin_large"
+                app:counterEnabled="true"
+                app:hintEnabled="false"
+                app:counterMaxLength="250"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/contactNameInputLayout">
@@ -89,7 +93,7 @@
                     android:id="@+id/contactMessageEditText"
                     style="@style/ContactMessageInputStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="113dp"
                     android:hint="@string/your_message"
                     android:paddingBottom="12dp"
                     android:paddingEnd="@dimen/margin_medium"
@@ -104,7 +108,7 @@
                 android:layout_marginBottom="@dimen/margin_large"
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginStart="@dimen/margin_large"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="@dimen/margin_small"
                 android:background="@drawable/contact_disabled_send_button_shape"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

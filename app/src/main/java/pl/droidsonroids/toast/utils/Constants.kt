@@ -16,4 +16,7 @@ object Constants {
         const val PATTERN = "dd.MM.yyyy"
     }
 
+    object TalkTransition {
+        const val CARD = "card"
+    }
 }
