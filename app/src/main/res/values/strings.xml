@@ -39,4 +39,5 @@
     <string name="claim_a_reward">claim a reward</string>
     <string name="become_a_partner">become a partner</string>
     <string name="message_sent">Message successfully sent!</string>
+    <string name="message_sent_desc">Message successfully sent icon</string>
 </resources>
