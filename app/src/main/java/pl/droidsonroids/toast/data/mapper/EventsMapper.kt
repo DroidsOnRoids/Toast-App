@@ -27,7 +27,7 @@ fun ApiEventDetails.toDto(): EventDetailsDto {
     )
 }
 
-private fun ApiTalk.toDto(): TalkDto {
+fun ApiTalk.toDto(): TalkDto {
     return TalkDto(
             id = id,
             title = title,
