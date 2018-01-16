@@ -14,7 +14,6 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.fragment_contact.*
 import pl.droidsonroids.toast.R
-import pl.droidsonroids.toast.app.MESSAGE_SENT_AUTO_DISMISS_TIME
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseFragment
 import pl.droidsonroids.toast.databinding.FragmentContactBinding
@@ -65,7 +64,7 @@ class ContactFragment : BaseFragment() {
     }
 
     private fun startDismissTimer(dialog: AlertDialog): Disposable {
-        return Completable.timer(MESSAGE_SENT_AUTO_DISMISS_TIME, TimeUnit.SECONDS)
+        return Completable.timer(2L, TimeUnit.SECONDS)
                 .subscribe(dialog::dismiss)
     }
 

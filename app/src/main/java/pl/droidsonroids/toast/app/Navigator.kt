@@ -13,8 +13,6 @@ import pl.droidsonroids.toast.utils.NavigationRequest
 import javax.inject.Inject
 import javax.inject.Singleton
 
-const val MESSAGE_SENT_AUTO_DISMISS_TIME = 2L
-
 @Singleton
 class Navigator @Inject constructor() {
     fun dispatch(context: Context, navigationRequest: NavigationRequest) {

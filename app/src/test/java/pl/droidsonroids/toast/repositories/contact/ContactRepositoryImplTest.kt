@@ -7,6 +7,7 @@ import org.junit.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
+import pl.droidsonroids.toast.data.MessageType
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
 import pl.droidsonroids.toast.services.ContactService
 import java.io.IOException
@@ -23,7 +24,7 @@ class ContactRepositoryImplTest : RxTestBase() {
 
         val messageDto = MessageDto(
                 email = "john@example.test",
-                type = "TALK",
+                type = MessageType.TALK,
                 name = "John",
                 message = "test message"
         )
@@ -38,7 +39,7 @@ class ContactRepositoryImplTest : RxTestBase() {
 
         val messageDto = MessageDto(
                 email = "john@example.test",
-                type = "TALK",
+                type = MessageType.TALK,
                 name = "John",
                 message = "test message"
         )
