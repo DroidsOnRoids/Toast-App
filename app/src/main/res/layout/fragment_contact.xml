@@ -57,7 +57,7 @@
                     android:onTextChanged="@{contactViewModel::nameChanged}"
                     android:paddingEnd="@dimen/margin_medium"
                     android:paddingStart="@dimen/margin_medium"
-                    android:text="@{contactViewModel.name}"/>
+                    android:text="@={contactViewModel.name}"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -84,7 +84,7 @@
                     android:onTextChanged="@{contactViewModel::emailChanged}"
                     android:paddingEnd="@dimen/margin_medium"
                     android:paddingStart="@dimen/margin_medium"
-                    android:text="@{contactViewModel.email}"/>
+                    android:text="@={contactViewModel.email}"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -114,7 +114,7 @@
                     android:paddingEnd="@dimen/margin_medium"
                     android:paddingStart="@dimen/margin_medium"
                     android:paddingTop="18dp"
-                    android:text="@{contactViewModel.message}"/>
+                    android:text="@={contactViewModel.message}"/>
             </android.support.design.widget.TextInputLayout>
 
             <FrameLayout

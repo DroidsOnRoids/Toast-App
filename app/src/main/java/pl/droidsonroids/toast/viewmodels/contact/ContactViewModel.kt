@@ -6,10 +6,9 @@ import android.databinding.ObservableField
 import pl.droidsonroids.toast.app.utils.Validator
 import javax.inject.Inject
 
-class ContactViewModel @Inject constructor() : ViewModel() {
-    @Inject lateinit var validator: Validator
+class ContactViewModel @Inject constructor(private var validator: Validator) : ViewModel() {
 
-    val sendingEnabled = ObservableField<Boolean>()
+    val sendingEnabled = ObservableField(false)
     val nameInputError = ObservableField("")
     val emailInputError = ObservableField("")
     val messageInputError = ObservableField("")
@@ -46,7 +45,7 @@ class ContactViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun updateSendingEnabled() {
-        sendingEnabled.set(isFormValid() && isFormNotEmpty() && isTopicSelected())
+        sendingEnabled.set(isFormNotEmpty() && isTopicSelected())
     }
 
     private fun addSelectedTopicPositionListener() {
@@ -59,14 +58,7 @@ class ContactViewModel @Inject constructor() : ViewModel() {
 
     private fun isTopicSelected() = selectedTopicPosition.get() != 0
 
-    private fun isFormValid() =
-            isObservableErrorNull(nameInputError) &&
-                    isObservableErrorNull(emailInputError) &&
-                    isObservableErrorNull(messageInputError)
-
     private fun isFormNotEmpty() =
             arrayOf(name, email, message).all { it.get().isNotEmpty() }
-
-    private fun isObservableErrorNull(error: ObservableField<String>) = error.get().isNotEmpty()
 
 }
