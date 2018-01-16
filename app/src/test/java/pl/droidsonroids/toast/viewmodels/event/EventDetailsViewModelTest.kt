@@ -17,6 +17,7 @@ import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.testApiTalk
 import pl.droidsonroids.toast.testEventDetails
 import pl.droidsonroids.toast.utils.LoadingStatus
+import pl.droidsonroids.toast.utils.NavigationRequest
 
 class EventDetailsViewModelTest : RxTestBase() {
     @Mock
@@ -63,6 +64,20 @@ class EventDetailsViewModelTest : RxTestBase() {
 
         assertEventDetails()
         assertThat(eventDetailsViewModel.loadingStatus.get(), equalTo(LoadingStatus.SUCCESS))
+    }
+
+    @Test
+    fun shouldRequestNavigationToPhotos() {
+        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
+        eventDetailsViewModel.init(eventId)
+        val testPhotos = testEventDetails.photos.map { it.toDto() }
+
+        val testObserver = eventDetailsViewModel.navigationSubject.test()
+
+        eventDetailsViewModel.onPhotosClick()
+
+        testObserver
+                .assertValue(NavigationRequest.Photos(testPhotos, eventId))
     }
 
     private fun assertEventDetails() {

@@ -48,7 +48,9 @@
             android:theme="@style/AppTheme.NoActionBar.Dialog"/>
         <activity
             android:name=".app.photos.PhotosActivity"
-            android:screenOrientation="portrait"/>
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
