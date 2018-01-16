@@ -32,12 +32,16 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
     val placeName: ObservableField<String> = ObservableField()
     val placeStreet: ObservableField<String> = ObservableField()
     val coverImage: ObservableField<ImageDto?> = ObservableField()
+    val photosAvailable: ObservableField<Boolean> = ObservableField(false)
     val gradientColor: ObservableField<Int> = ObservableField(DEFAULT_GRADIENT_COLOR)
     val onGradientColorLoaded: (Int) -> Unit = {
         gradientColor.set(it and GRADIENT_COLOR_MASK)
     }
     val eventSpeakersSubject: BehaviorSubject<List<EventSpeakerItemViewModel>> = BehaviorSubject.create()
 
+    fun onPhotosClick() {
+        Log.d(simpleClassName, "On photos clicked")
+    }
 
     fun init(id: Long) {
         if (eventId == null) {
@@ -65,6 +69,7 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
             placeName.set(it.placeName)
             placeStreet.set(it.placeStreet)
             coverImage.set(it.coverImages.firstOrNull())
+            photosAvailable.set(it.photos.isNotEmpty())
             onTalksLoaded(it.talks)
         }
     }

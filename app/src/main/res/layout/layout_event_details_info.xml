@@ -162,7 +162,38 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:background="@color/paleGray"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/eventPhotosButton"
             app:layout_constraintTop_toBottomOf="@+id/eventDate"/>
+
+        <LinearLayout
+            android:id="@+id/eventPhotosButton"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:onClick="@{() -> eventDetailsViewModel.onPhotosClick()}"
+            android:visibility="@{eventDetailsViewModel.photosAvailable}"
+            android:background="@drawable/photo_button_background"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/eventDateDivider">
+
+            <ImageView
+                android:id="@+id/eventPhotosIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_photo_camera"
+                tools:ignore="ContentDescription"/>
+
+            <TextView
+                android:id="@+id/eventPhotosText"
+                style="@style/GreenButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_small"
+                android:text="@string/see_photos"
+                android:textAllCaps="true"/>
+        </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 </layout>
