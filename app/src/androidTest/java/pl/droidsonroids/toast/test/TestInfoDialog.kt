@@ -109,6 +109,6 @@ class TestInfoDialog {
         showDialog()
         InfoDialogRobot().checkIfTextIsCorrect(getString(R.string.toast_facebook_fanpage), R.id.fanpageLinkText)
                 .performClickOnElementWithId(R.id.fanpageLinkText)
-        InfoDialogRobot().checkIfIntentedIntentOpensFacebook()
+        InfoDialogRobot().checkIfIntentOpensFacebook()
     }
 }
