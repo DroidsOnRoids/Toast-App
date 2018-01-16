@@ -179,6 +179,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/eventDateDivider">
 
+            <!--TODO: Change icon when resource from PO is available-->
             <ImageView
                 android:id="@+id/eventPhotosIcon"
                 android:layout_width="wrap_content"
