@@ -1,4 +1,4 @@
-package pl.droidsonroids.toast
+package pl.droidsonroids.toast.robot
 
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.action.ViewActions.click
@@ -37,7 +37,7 @@ abstract class BaseRobot {
 
     fun checkIfElementWithIdIsClickable(id: Int): BaseRobot {
         onView(withId(id))
-                .check(matches(isClickable()))
+                .check(matches(isEnabled()))
         return this
     }
 

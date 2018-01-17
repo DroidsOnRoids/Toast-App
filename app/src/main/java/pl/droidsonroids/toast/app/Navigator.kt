@@ -2,8 +2,12 @@ package pl.droidsonroids.toast.app
 
 import android.app.Activity
 import android.content.Context
+import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.util.Pair
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
+import pl.droidsonroids.toast.app.events.TalkDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakerDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
 import pl.droidsonroids.toast.app.utils.turnOffActivityClosingAnimation
@@ -19,6 +23,12 @@ class Navigator @Inject constructor() {
             is NavigationRequest.SpeakerDetails -> showSpeakerDetails(context, navigationRequest)
             is NavigationRequest.EventDetails -> showEventDetails(context, navigationRequest)
         }
+    }
+
+    fun showTalkDetailsWithSharedAnimation(activity: AppCompatActivity, navigationRequest: NavigationRequest.TalkDetails, sharedViews: Array<Pair<View, String>>) {
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, *sharedViews).toBundle()
+        val intent = TalkDetailsActivity.createIntent(activity, navigationRequest)
+        activity.startActivity(intent, options)
     }
 
     fun dispatch(activity: Activity, animatedView: View, navigationRequest: NavigationRequest) {

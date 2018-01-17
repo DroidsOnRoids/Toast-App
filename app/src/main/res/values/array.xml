@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="contact_topics">
+        <item>@string/i_want_to</item>
+        <item>@string/speak_on_the_next_event</item>
+        <item>@string/claim_a_reward</item>
+        <item>@string/become_a_partner</item>
+    </string-array>
+</resources>
