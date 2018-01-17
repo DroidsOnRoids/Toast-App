@@ -30,7 +30,7 @@
                 android:layout_height="260dp"
                 android:background="@color/paleGrayBackground"
                 android:fitsSystemWindows="true"
-                app:contentScrim="@color/colorPrimary"
+                app:contentScrim="@color/transparent"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
                 app:titleEnabled="false">
 
@@ -58,8 +58,19 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
+                    app:contentInsetEnd="64dp"
                     app:layout_collapseMode="pin"
-                    app:popupTheme="@style/AppTheme.PopupOverlay"/>
+                    app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                    <TextView
+                        android:id="@+id/toolbarTitle"
+                        style="@style/TitleTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@{eventDetailsViewModel.title}"/>
+
+                </android.support.v7.widget.Toolbar>
             </android.support.design.widget.CollapsingToolbarLayout>
 
         </android.support.design.widget.AppBarLayout>

@@ -4,6 +4,9 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.AppBarLayout
+import android.support.v4.content.ContextCompat
+import android.support.v4.graphics.ColorUtils
 import android.support.v4.util.Pair
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
@@ -21,6 +24,8 @@ import pl.droidsonroids.toast.databinding.ActivityEventDetailsBinding
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.event.EventDetailsViewModel
 import javax.inject.Inject
+
+private const val ALPHA_MAX_VALUE = 255
 
 class EventDetailsActivity : BaseActivity() {
     companion object {
@@ -50,11 +55,35 @@ class EventDetailsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         val eventDetailsBinding = ActivityEventDetailsBinding.inflate(layoutInflater)
         setContentView(eventDetailsBinding.root)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        setupAppBar()
         setupViewModel(eventDetailsBinding)
         setupGradientSwitcher()
         setupRecyclerView()
+    }
+
+    private fun setupAppBar() {
+        val contentScrimColor = ContextCompat.getColor(this, R.color.colorPrimary)
+        val statusBarScrimColor = ContextCompat.getColor(this, R.color.colorPrimaryDark)
+
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            setToolbarScrim(verticalOffset, appBarLayout, contentScrimColor, statusBarScrimColor)
+        }
+        collapsingToolbar.scrimVisibleHeightTrigger = Int.MAX_VALUE
+    }
+
+    private fun setToolbarScrim(verticalOffset: Int, appBarLayout: AppBarLayout, contentScrimColor: Int, statusBarScrimColor: Int) {
+        val offsetFraction = -verticalOffset / appBarLayout.totalScrollRange.toFloat()
+        val alphaValue = (offsetFraction * ALPHA_MAX_VALUE).toInt()
+        val contentScrimWithAlpha = ColorUtils.setAlphaComponent(contentScrimColor, alphaValue)
+        val statusBarScrimWithAlpha = ColorUtils.setAlphaComponent(statusBarScrimColor, alphaValue)
+
+        toolbarTitle.alpha = offsetFraction
+        collapsingToolbar.setContentScrimColor(contentScrimWithAlpha)
+        collapsingToolbar.setStatusBarScrimColor(statusBarScrimWithAlpha)
     }
 
     private fun setupViewModel(eventDetailsBinding: ActivityEventDetailsBinding) {
