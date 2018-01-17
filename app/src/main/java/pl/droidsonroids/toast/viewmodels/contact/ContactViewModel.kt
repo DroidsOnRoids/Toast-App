@@ -5,6 +5,7 @@ import android.databinding.Observable
 import android.databinding.ObservableField
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.app.utils.Validator
 import pl.droidsonroids.toast.data.MessageType
@@ -78,11 +79,11 @@ class ContactViewModel @Inject constructor(
     fun onSendClick() {
         val message = createMessageDto()
         loadingStatus.set(LoadingStatus.PENDING)
-        //        sendDisposable = contactRepository.sendMessage(message)
-        //                .subscribeBy(
-        //                        onComplete = (::onSendSuccessfully),
-        //                        onError = { loadingStatus.set(LoadingStatus.ERROR) }
-        //                )
+        sendDisposable = contactRepository.sendMessage(message)
+                .subscribeBy(
+                        onComplete = (::onSendSuccessfully),
+                        onError = { loadingStatus.set(LoadingStatus.ERROR) }
+                )
         onSendSuccessfully()
     }
 
