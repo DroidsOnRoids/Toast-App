@@ -18,7 +18,7 @@ import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import javax.inject.Inject
 
 class ContactViewModel @Inject constructor(
-        private var validator: Validator,
+        private val validator: Validator,
         private val contactRepository: ContactRepository
 ) : ViewModel(), LoadingViewModel, NavigatingViewModel {
 

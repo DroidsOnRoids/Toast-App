@@ -10,6 +10,7 @@ import org.junit.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
+import pl.droidsonroids.toast.app.utils.Validator
 import pl.droidsonroids.toast.data.MessageType
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
 import pl.droidsonroids.toast.repositories.contact.ContactRepository
@@ -20,6 +21,8 @@ import java.io.IOException
 class ContactViewModelTest : RxTestBase() {
     @Mock
     lateinit var contactRepository: ContactRepository
+    @Mock
+    lateinit var validator: Validator
     @InjectMocks
     lateinit var contactViewModel: ContactViewModel
 
