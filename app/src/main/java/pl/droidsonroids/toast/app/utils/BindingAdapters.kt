@@ -124,7 +124,7 @@ fun setVisibility(view: View, isVisible: Boolean) {
 }
 
 @BindingAdapter("app:errorText")
-fun setInputErrorMessage(view: TextInputLayout, errorMessage: String) {
+fun setInputErrorMessage(view: TextInputLayout, errorMessage: String?) {
     view.error = errorMessage
 }
 

@@ -2,6 +2,7 @@ package pl.droidsonroids.toast.app.utils
 
 import com.nhaarman.mockito_kotlin.whenever
 import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.CoreMatchers.nullValue
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -36,7 +37,7 @@ class ValidatorTest {
     fun emailValidationShouldBeValid() {
         VALID_EMAILS.forEach {
             val emailError = validator.getEmailError(it)
-            assertThat(emailError, equalTo(""))
+            assertThat(emailError, nullValue())
         }
     }
 
@@ -52,7 +53,7 @@ class ValidatorTest {
     fun nameValidationShouldBeValid() {
         VALID_NAMES.forEach {
             val nameError = validator.getNameError(it)
-            assertThat(nameError, equalTo(""))
+            assertThat(nameError, nullValue())
         }
     }
 
@@ -68,7 +69,7 @@ class ValidatorTest {
     fun messageValidationShouldBeValid() {
         VALID_MESSAGES.forEach {
             val messageError = validator.getMessageError(it)
-            assertThat(messageError, equalTo(""))
+            assertThat(messageError, nullValue())
         }
     }
 

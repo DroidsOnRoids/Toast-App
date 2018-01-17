@@ -36,7 +36,7 @@ class ContactViewModelTest : RxTestBase() {
 
     @Before
     fun setUp() {
-        contactViewModel.topic.set(topic.ordinal)
+        contactViewModel.selectedTopicPosition.set(topic.ordinal)
         contactViewModel.name.set(name)
         contactViewModel.email.set(email)
         contactViewModel.message.set(message)
@@ -63,7 +63,7 @@ class ContactViewModelTest : RxTestBase() {
     }
 
     private fun assertThatFieldsAreCleared() {
-        assertThat(contactViewModel.topic.get(), equalTo(0))
+        assertThat(contactViewModel.selectedTopicPosition.get(), equalTo(0))
         assertThat(contactViewModel.name.get(), equalTo(""))
         assertThat(contactViewModel.email.get(), equalTo(""))
         assertThat(contactViewModel.message.get(), equalTo(""))

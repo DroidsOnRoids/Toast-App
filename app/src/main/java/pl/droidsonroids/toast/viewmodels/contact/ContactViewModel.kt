@@ -5,7 +5,6 @@ import android.databinding.Observable
 import android.databinding.ObservableField
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
-import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.app.utils.Validator
 import pl.droidsonroids.toast.data.MessageType
@@ -26,9 +25,9 @@ class ContactViewModel @Inject constructor(
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.SUCCESS)
 
     val sendingEnabled = ObservableField(false)
-    val nameInputError = ObservableField("")
-    val emailInputError = ObservableField("")
-    val messageInputError = ObservableField("")
+    val nameInputError = ObservableField<String?>(null)
+    val emailInputError = ObservableField<String?>(null)
+    val messageInputError = ObservableField<String?>(null)
 
     val selectedTopicPosition = ObservableField(0)
     val name: ObservableField<String> = ObservableField("")
@@ -39,6 +38,39 @@ class ContactViewModel @Inject constructor(
     init {
         updateSendingEnabled()
         addSelectedTopicPositionListener()
+        addNameTextChangedListener()
+        addEmailTextChangedListener()
+        addMessageTextChangedListener()
+    }
+
+    private fun addMessageTextChangedListener() {
+        message.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                val error = validator.getMessageError(message.get())
+                messageInputError.set(error)
+                updateSendingEnabled()
+            }
+        })
+    }
+
+    private fun addEmailTextChangedListener() {
+        email.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                val error = validator.getEmailError(email.get())
+                emailInputError.set(error)
+                updateSendingEnabled()
+            }
+        })
+    }
+
+    private fun addNameTextChangedListener() {
+        name.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                val error = validator.getNameError(name.get())
+                nameInputError.set(error)
+                updateSendingEnabled()
+            }
+        })
     }
 
     override fun retryLoading() = onSendClick()
@@ -46,33 +78,16 @@ class ContactViewModel @Inject constructor(
     fun onSendClick() {
         val message = createMessageDto()
         loadingStatus.set(LoadingStatus.PENDING)
-        sendDisposable = contactRepository.sendMessage(message)
-                .subscribeBy(
-                        onComplete = (::onSendSuccessfully),
-                        onError = { loadingStatus.set(LoadingStatus.ERROR) }
-                )
-    }
-
-    fun nameChanged(nameInput: CharSequence, start: Int, before: Int, count: Int) {
-        val error = validator.getNameError(nameInput)
-        nameInputError.set(error)
-        updateSendingEnabled()
-    }
-
-    fun emailChanged(emailInput: CharSequence, start: Int, before: Int, count: Int) {
-        val error = validator.getEmailError(emailInput)
-        emailInputError.set(error)
-        updateSendingEnabled()
-    }
-
-    fun messageChanged(messageInput: CharSequence, start: Int, before: Int, count: Int) {
-        val error = validator.getMessageError(messageInput)
-        messageInputError.set(error)
-        updateSendingEnabled()
+        //        sendDisposable = contactRepository.sendMessage(message)
+        //                .subscribeBy(
+        //                        onComplete = (::onSendSuccessfully),
+        //                        onError = { loadingStatus.set(LoadingStatus.ERROR) }
+        //                )
+        onSendSuccessfully()
     }
 
     private fun updateSendingEnabled() {
-        sendingEnabled.set(isFormNotEmpty() && isTopicSelected())
+        sendingEnabled.set(isFormValid && isFormNotEmpty && isTopicSelected)
     }
 
     private fun addSelectedTopicPositionListener() {
@@ -83,10 +98,14 @@ class ContactViewModel @Inject constructor(
         })
     }
 
-    private fun isTopicSelected() = selectedTopicPosition.get() != 0
+    private val isFormValid
+        get() = arrayOf(nameInputError, emailInputError, messageInputError).all { it.get().isNullOrEmpty() }
 
-    private fun isFormNotEmpty() =
-            arrayOf(name, email, message).all { it.get().isNotEmpty() }
+    private val isTopicSelected
+        get() = selectedTopicPosition.get() != 0
+
+    private val isFormNotEmpty
+        get() = arrayOf(name, email, message).all { it.get().isNotEmpty() }
 
     private fun createMessageDto(): MessageDto {
         val type = resolveMessageType()
