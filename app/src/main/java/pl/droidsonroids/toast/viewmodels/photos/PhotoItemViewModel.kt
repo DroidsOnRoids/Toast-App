@@ -1,8 +1,11 @@
 package pl.droidsonroids.toast.viewmodels.photos
 
-class PhotoItemViewModel(val originalSizeUrl: String,
-                         val thumbSizeUrl: String,
-                         private val action: () -> Unit) {
+import pl.droidsonroids.toast.data.dto.ImageDto
+
+class PhotoItemViewModel(
+        val image: ImageDto,
+        private val action: () -> Unit
+) {
     fun onClick() {
         action()
     }

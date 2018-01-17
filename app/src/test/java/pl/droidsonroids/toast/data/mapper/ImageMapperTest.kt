@@ -16,8 +16,7 @@ class ImageMapperTest {
         )
         val action: () -> Unit = mock()
         val photoItemViewModel = testImageDto.toViewModel(action)
-        assertThat(photoItemViewModel.originalSizeUrl, equalTo(testImageDto.originalSizeUrl))
-        assertThat(photoItemViewModel.thumbSizeUrl, equalTo(testImageDto.thumbSizeUrl))
+        assertThat(photoItemViewModel.image, equalTo(testImageDto))
         photoItemViewModel.onClick()
         verify(action).invoke()
     }

@@ -7,8 +7,7 @@ import pl.droidsonroids.toast.viewmodels.photos.PhotoItemViewModel
 
 fun ImageDto.toViewModel(onClick: () -> Unit): PhotoItemViewModel {
     return PhotoItemViewModel(
-            originalSizeUrl = originalSizeUrl,
-            thumbSizeUrl = thumbSizeUrl,
+            image = this,
             action = onClick
     )
 }

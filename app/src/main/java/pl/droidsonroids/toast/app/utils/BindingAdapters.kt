@@ -2,10 +2,9 @@
 
 package pl.droidsonroids.toast.app.utils
 
+
 import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
-
-
 import android.graphics.drawable.GradientDrawable
 import android.text.format.DateFormat
 import android.view.View
@@ -19,7 +18,6 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
-import pl.droidsonroids.toast.viewmodels.photos.PhotoItemViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -43,16 +41,6 @@ fun setCoverImage(imageView: ImageView, imageDto: ImageDto?) {
     val thumbnailLoader = Glide.with(imageView).load(imageDto?.thumbSizeUrl)
     Glide.with(imageView)
             .load(imageDto?.originalSizeUrl)
-            .thumbnail(thumbnailLoader)
-            .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_toast))
-            .into(imageView)
-}
-
-@BindingAdapter("android:src")
-fun setCoverImageBySrc(imageView: ImageView, photoItemViewModel: PhotoItemViewModel?) {
-    val thumbnailLoader = Glide.with(imageView).load(photoItemViewModel?.thumbSizeUrl)
-    Glide.with(imageView)
-            .load(photoItemViewModel?.originalSizeUrl)
             .thumbnail(thumbnailLoader)
             .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_toast))
             .into(imageView)
