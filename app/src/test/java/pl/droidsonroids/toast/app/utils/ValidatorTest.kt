@@ -7,6 +7,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyInt
+import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import pl.droidsonroids.toast.utils.StringProvider
@@ -23,12 +24,14 @@ class ValidatorTest {
     private val VALID_MESSAGES = arrayOf("it must contain 40 characters, it must c", "it must contain 250 characters it must characters it must contain 250 characters it must characters it must contain 250 characters it must characters it must contain 250 characters it must characters it must contain 250 characters it must characters!")
     private val INVALID_MESSAGES = arrayOf("", "it contains less than 40 char", "it contains more than 250 characters, it contains more than 250 characters, it contains more than 250 characters, it contains more than 250 characters, it contains more than 250 characters, it contains more than 250 characters, it contains more than 250 characters!")
 
-    @Mock private lateinit var stringProvider: StringProvider
-    private lateinit var validator: Validator
+    @Mock
+    lateinit var stringProvider: StringProvider
+
+    @InjectMocks
+    lateinit var validator: Validator
 
     @Before
     fun setUp() {
-        validator = Validator(stringProvider)
         whenever(stringProvider.getString(anyInt())).thenReturn(ERROR_TEXT)
     }
 
