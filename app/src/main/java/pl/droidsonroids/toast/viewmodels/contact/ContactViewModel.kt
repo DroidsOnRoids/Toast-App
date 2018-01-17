@@ -84,7 +84,6 @@ class ContactViewModel @Inject constructor(
                         onComplete = (::onSendSuccessfully),
                         onError = { loadingStatus.set(LoadingStatus.ERROR) }
                 )
-        onSendSuccessfully()
     }
 
     private fun updateSendingEnabled() {
