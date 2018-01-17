@@ -46,4 +46,6 @@
     <string name="empty_message_error">Message is empty</string>
     <string name="invalid_name">Invalid name</string>
     <string name="invalid_email">Invalid email</string>
+    <string name="message_sent">Message successfully sent!</string>
+    <string name="message_sent_desc">Message successfully sent icon</string>
 </resources>
