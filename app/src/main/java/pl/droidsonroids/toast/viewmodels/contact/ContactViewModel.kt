@@ -39,20 +39,10 @@ class ContactViewModel @Inject constructor(private val contactRepository: Contac
 
     private fun setMessage(messageDto: MessageDto) {
         messageDto.let {
-            val typePosition = resolveMessageTypePosition(it.type)
-            topic.set(typePosition)
+            topic.set(it.type.ordinal)
             name.set(it.name)
             email.set(it.email)
             message.set(it.message)
-        }
-    }
-
-    private fun resolveMessageTypePosition(type: String): Int {
-        return when (type) {
-            TALK -> TALK_POSITION
-            REWARD -> REWARD_POSITION
-            PARTNER -> PARTNER_POSITION
-            else -> I_WANT_TO_POSITION
         }
     }
 
