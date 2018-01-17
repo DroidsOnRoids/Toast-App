@@ -15,6 +15,7 @@ import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.utils.ParentView
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import java.util.*
@@ -43,7 +44,7 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
     var photos: List<ImageDto> = emptyList()
 
     fun onPhotosClick() {
-        navigationSubject.onNext(NavigationRequest.Photos(photos, eventId))
+        navigationSubject.onNext(NavigationRequest.Photos(photos, eventId, ParentView.EVENT_DETAILS))
     }
 
     fun init(id: Long) {

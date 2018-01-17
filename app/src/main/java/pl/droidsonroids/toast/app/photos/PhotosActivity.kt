@@ -11,21 +11,25 @@ import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.utils.ParentView
 import pl.droidsonroids.toast.utils.consume
 
 class PhotosActivity : BaseActivity() {
     companion object {
         private const val PHOTOS_KEY = "photos_key"
         private const val EVENT_ID_KEY = "event_id_key"
+        private const val PARENT_VIEW_KEY = "parent_view_key"
 
         fun createIntent(context: Context, navigationRequest: NavigationRequest.Photos): Intent {
             return Intent(context, PhotosActivity::class.java)
-                    .putExtra(EVENT_ID_KEY, navigationRequest.eventId ?: Constants.Event.NO_EVENT_ID)
+                    .putExtra(EVENT_ID_KEY, navigationRequest.eventId)
                     .putExtra(PHOTOS_KEY, navigationRequest.photos.toTypedArray())
+                    .putExtra(PARENT_VIEW_KEY, navigationRequest.parentView)
         }
     }
 
     private val parentEventId by lazy { intent.getLongExtra(EVENT_ID_KEY, Constants.Event.NO_EVENT_ID) }
+    private val parentView by lazy { intent.getSerializableExtra(PARENT_VIEW_KEY) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +46,7 @@ class PhotosActivity : BaseActivity() {
     }
 
     private fun handleUpAction() = consume {
-        val upIntent = if (parentEventId != Constants.Event.NO_EVENT_ID) {
+        val upIntent = if (parentView == ParentView.EVENT_DETAILS) {
             val eventDetailsRequest = NavigationRequest.EventDetails(parentEventId)
             EventDetailsActivity.createIntent(this, eventDetailsRequest)
         } else {
