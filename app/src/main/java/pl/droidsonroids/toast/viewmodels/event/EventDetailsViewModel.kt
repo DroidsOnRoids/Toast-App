@@ -29,13 +29,13 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.PENDING)
     private var eventId: Long = Constants.Event.NO_EVENT_ID
-    val title: ObservableField<String> = ObservableField()
-    val date: ObservableField<Date> = ObservableField()
-    val placeName: ObservableField<String> = ObservableField()
-    val placeStreet: ObservableField<String> = ObservableField()
-    val coverImage: ObservableField<ImageDto?> = ObservableField()
-    val photosAvailable: ObservableField<Boolean> = ObservableField(false)
-    val gradientColor: ObservableField<Int> = ObservableField(DEFAULT_GRADIENT_COLOR)
+    val title = ObservableField("")
+    val date = ObservableField<Date>()
+    val placeName = ObservableField("")
+    val placeStreet = ObservableField("")
+    val coverImage = ObservableField<ImageDto?>()
+    val photosAvailable = ObservableField(false)
+    val gradientColor = ObservableField(DEFAULT_GRADIENT_COLOR)
     val onGradientColorLoaded: (Int) -> Unit = {
         gradientColor.set(it and GRADIENT_COLOR_MASK)
     }
