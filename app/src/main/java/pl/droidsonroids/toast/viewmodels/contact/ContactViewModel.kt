@@ -24,21 +24,18 @@ class ContactViewModel @Inject constructor(private var validator: Validator) : V
     }
 
     fun nameChanged(nameInput: CharSequence, start: Int, before: Int, count: Int) {
-        name.set(nameInput.toString())
         val error = validator.getNameError(nameInput)
         nameInputError.set(error)
         updateSendingEnabled()
     }
 
     fun emailChanged(emailInput: CharSequence, start: Int, before: Int, count: Int) {
-        email.set(emailInput.toString())
         val error = validator.getEmailError(emailInput)
         emailInputError.set(error)
         updateSendingEnabled()
     }
 
     fun messageChanged(messageInput: CharSequence, start: Int, before: Int, count: Int) {
-        message.set(messageInput.toString())
         val error = validator.getMessageError(messageInput)
         messageInputError.set(error)
         updateSendingEnabled()
