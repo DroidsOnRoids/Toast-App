@@ -4,6 +4,7 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Test
 import pl.droidsonroids.toast.RxTestBase
+import pl.droidsonroids.toast.data.MessageType
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
 
 class ContactMapperTest : RxTestBase() {
@@ -11,7 +12,7 @@ class ContactMapperTest : RxTestBase() {
     @Test
     fun shouldMapMessageDtoToApi() {
         val email = "john@example.test"
-        val type = "TALK"
+        val type = MessageType.TALK
         val name = "John"
         val message = "test message"
         val messageDto = MessageDto(

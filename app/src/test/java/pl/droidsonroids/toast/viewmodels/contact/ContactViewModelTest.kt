@@ -11,6 +11,7 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
+import pl.droidsonroids.toast.data.MessageType
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
 import pl.droidsonroids.toast.repositories.contact.ContactRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
@@ -25,12 +26,11 @@ class ContactViewModelTest : RxTestBase() {
 
     private val name = "John"
     private val email = "john@example.test"
-    private val topicType = "TALK"
+    private val topic = MessageType.TALK
     private val message = "test message"
-    private val position = 1
     private val messageDto = MessageDto(
             email = email,
-            type = topicType,
+            type = topic,
             name = name,
             message = message
     )
@@ -50,6 +50,14 @@ class ContactViewModelTest : RxTestBase() {
 
         testObserver.assertValue { it is NavigationRequest.MessageSent }
         assertThat(contactViewModel.loadingStatus.get(), equalTo(LoadingStatus.SUCCESS))
+    }
+
+    @Test
+    fun shouldClearFieldsAfterMessageSent() {
+        whenever(contactRepository.sendMessage(eq(messageDto))).thenReturn(Completable.complete())
+
+        contactViewModel.onSendClick()
+
         assertThatFieldsAreCleared()
     }
 
@@ -91,7 +99,7 @@ class ContactViewModelTest : RxTestBase() {
 
     @Test
     fun shouldRestoreFieldsState() {
-        assertThat(contactViewModel.topic.get(), equalTo(position))
+        assertThat(contactViewModel.topic.get(), equalTo(topic.ordinal))
         assertThat(contactViewModel.email.get(), equalTo(email))
         assertThat(contactViewModel.message.get(), equalTo(message))
         assertThat(contactViewModel.name.get(), equalTo(name))

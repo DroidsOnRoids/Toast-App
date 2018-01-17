@@ -9,6 +9,7 @@
     tools:ignore="UseCompoundDrawables">
 
     <ImageView
+        android:contentDescription="@string/message_sent_desc"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="center"
