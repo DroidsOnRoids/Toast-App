@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import pl.droidsonroids.toast.data.MessageType
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -24,7 +25,7 @@ class LocalContactStorage @Inject constructor(private val sharedPreferences: Sha
         return Single.fromCallable {
             val message = sharedPreferences.getString(MESSAGE_KEY, null)
             gson.fromJson(message, MessageDto::class.java)
-                    ?: MessageDto(email = "", type = "", name = "", message = "")
+                    ?: MessageDto(email = "", type = MessageType.I_WANT_TO, name = "", message = "")
         }.subscribeOn(Schedulers.io())
     }
 }
