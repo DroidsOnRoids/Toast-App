@@ -5,10 +5,7 @@ package pl.droidsonroids.toast.app.utils
 
 import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
-
-
 import android.graphics.drawable.GradientDrawable
-import android.support.design.widget.TextInputLayout
 import android.text.format.DateFormat
 import android.view.View
 import android.widget.ImageSwitcher
@@ -121,11 +118,6 @@ fun setConnectionErrorContainerVisibility(errorConnectionContainer: View, loadin
 @BindingAdapter("android:visibility")
 fun setVisibility(view: View, isVisible: Boolean) {
     view.visibility = if (isVisible) View.VISIBLE else View.GONE
-}
-
-@BindingAdapter("app:errorText")
-fun setInputErrorMessage(view: TextInputLayout, errorMessage: String?) {
-    view.error = errorMessage
 }
 
 @BindingAdapter("transitionName", "elementId")
