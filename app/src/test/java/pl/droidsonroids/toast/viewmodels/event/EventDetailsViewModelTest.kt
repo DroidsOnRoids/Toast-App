@@ -18,6 +18,7 @@ import pl.droidsonroids.toast.testApiTalk
 import pl.droidsonroids.toast.testEventDetails
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.utils.ParentView
 
 class EventDetailsViewModelTest : RxTestBase() {
     @Mock
@@ -77,7 +78,7 @@ class EventDetailsViewModelTest : RxTestBase() {
         eventDetailsViewModel.onPhotosClick()
 
         testObserver
-                .assertValue(NavigationRequest.Photos(testPhotos, eventId))
+                .assertValue(NavigationRequest.Photos(testPhotos, eventId, ParentView.EVENT_DETAILS))
     }
 
     private fun assertEventDetails() {

@@ -19,6 +19,7 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
+import pl.droidsonroids.toast.viewmodels.photos.PhotoItemViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -47,6 +48,15 @@ fun setCoverImage(imageView: ImageView, imageDto: ImageDto?) {
             .into(imageView)
 }
 
+@BindingAdapter("android:src")
+fun setCoverImageBySrc(imageView: ImageView, photoItemViewModel: PhotoItemViewModel?) {
+    val thumbnailLoader = Glide.with(imageView).load(photoItemViewModel?.thumbSizeUrl)
+    Glide.with(imageView)
+            .load(photoItemViewModel?.originalSizeUrl)
+            .thumbnail(thumbnailLoader)
+            .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_toast))
+            .into(imageView)
+}
 
 @BindingAdapter("roundImage")
 fun setRoundImage(imageView: ImageView, imageDto: ImageDto?) {
