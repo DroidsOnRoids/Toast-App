@@ -47,4 +47,5 @@
     <string name="invalid_email">Invalid email</string>
     <string name="message_sent">Message successfully sent!</string>
     <string name="message_sent_desc">Message successfully sent icon</string>
+    <string name="see_photos">See photos</string>
 </resources>

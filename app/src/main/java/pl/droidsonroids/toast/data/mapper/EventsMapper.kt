@@ -11,7 +11,8 @@ import pl.droidsonroids.toast.viewmodels.event.EventSpeakerItemViewModel
 import pl.droidsonroids.toast.viewmodels.event.UpcomingEventViewModel
 
 fun ApiEventDetails.toDto(): EventDetailsDto {
-    val imagesDto = coverImages.map { it.toDto() }
+    val coverImagesDto = coverImages.map { it.toDto() }
+    val photosDto = photos.map { it.toDto() }
     val talksDto = talks.map { it.toDto() }
     return EventDetailsDto(
             id = id,
@@ -20,12 +21,13 @@ fun ApiEventDetails.toDto(): EventDetailsDto {
             facebookId = facebookId,
             placeName = placeName,
             placeStreet = placeStreet,
-            coverImages = imagesDto,
-            talks = talksDto
+            coverImages = coverImagesDto,
+            talks = talksDto,
+            photos = photosDto
     )
 }
 
-private fun ApiTalk.toDto(): TalkDto {
+fun ApiTalk.toDto(): TalkDto {
     return TalkDto(
             id = id,
             title = title,

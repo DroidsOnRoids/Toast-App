@@ -1,8 +1,10 @@
 package pl.droidsonroids.toast.viewmodels.contact
 
 import com.nhaarman.mockito_kotlin.eq
+import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Completable
+import io.reactivex.Single
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Before
@@ -39,10 +41,7 @@ class ContactViewModelTest : RxTestBase() {
 
     @Before
     fun setUp() {
-        contactViewModel.selectedTopicPosition.set(topic.ordinal)
-        contactViewModel.name.set(name)
-        contactViewModel.email.set(email)
-        contactViewModel.message.set(message)
+        whenever(contactRepository.readMessage()).thenReturn(Single.just(messageDto))
     }
 
     @Test
@@ -94,4 +93,19 @@ class ContactViewModelTest : RxTestBase() {
         assertThat(contactViewModel.loadingStatus.get(), equalTo(LoadingStatus.SUCCESS))
         assertThatFieldsAreCleared()
     }
+
+    @Test
+    fun shouldSaveFieldsState() {
+        contactViewModel.saveMessage()
+        verify(contactRepository).saveMessage(messageDto)
+    }
+
+    @Test
+    fun shouldRestoreFieldsState() {
+        assertThat(contactViewModel.topic.get(), equalTo(topic.ordinal))
+        assertThat(contactViewModel.email.get(), equalTo(email))
+        assertThat(contactViewModel.message.get(), equalTo(message))
+        assertThat(contactViewModel.name.get(), equalTo(name))
+    }
+
 }

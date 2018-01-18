@@ -107,6 +107,11 @@ class ContactFragment : BaseFragment() {
         contactScrollContainer.smoothScrollTo(0, contactMessageInputLayout.top)
     }
 
+    override fun onStop() {
+        contactViewModel.saveMessage()
+        super.onStop()
+    }
+
     override fun onDetach() {
         navigationDisposable.dispose()
         super.onDetach()
