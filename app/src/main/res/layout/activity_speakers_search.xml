@@ -12,8 +12,10 @@
     </data>
 
     <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/mainCoordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         tools:context=".app.speakers.SpeakersSearchActivity">
 
         <android.support.design.widget.AppBarLayout
@@ -69,6 +71,7 @@
             android:id="@+id/speakersSearchContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/paleGray"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <android.support.v7.widget.RecyclerView

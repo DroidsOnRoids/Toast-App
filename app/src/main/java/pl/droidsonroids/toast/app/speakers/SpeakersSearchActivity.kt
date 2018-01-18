@@ -1,5 +1,8 @@
 package pl.droidsonroids.toast.app.speakers
 
+import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
@@ -7,6 +10,8 @@ import android.os.Bundle
 import android.support.v4.app.NavUtils
 import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
+import android.view.View
+import android.view.animation.AccelerateInterpolator
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,10 +20,7 @@ import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.activity_speakers_search.*
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
-import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
-import pl.droidsonroids.toast.app.utils.RevealAnimatorBuilder
-import pl.droidsonroids.toast.app.utils.ViewTreeObserverBuilder
-import pl.droidsonroids.toast.app.utils.disableActivityTransitionAnimations
+import pl.droidsonroids.toast.app.utils.*
 import pl.droidsonroids.toast.databinding.ActivitySpeakersSearchBinding
 import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersSearchViewModel
@@ -58,16 +60,16 @@ class SpeakersSearchActivity : BaseActivity() {
         setupSearchBox()
 
         val haveNoSavedInstances = savedInstanceState == null
-        showEnterAnimation(isAnimationNeeded = haveNoSavedInstances && haveCircularRevealExtras())
+        showEnterAnimation(isAnimationNeeded = haveNoSavedInstances && hasCircularRevealExtras())
     }
 
     override fun onBackPressed() {
-        showParentWithoutAnimation()
+        showParentWithLeavingAnimation()
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
             when (item.itemId) {
-                android.R.id.home -> consume { showParentWithoutAnimation() }
+                android.R.id.home -> consume { showParentWithLeavingAnimation() }
                 else -> super.onOptionsItemSelected(item)
             }
 
@@ -119,22 +121,54 @@ class SpeakersSearchActivity : BaseActivity() {
                 .subscribe(speakersAdapter::setData)
     }
 
+    private fun showParentWithLeavingAnimation() {
+        val animatorSet = AnimatorSet()
+        val (centerX, centerY) = getAnimationCenterCoordinates()
+        val toolbarAnimator = getToolbarAnimator(centerX, centerY)
+        val contentAnimator = getContentAnimator()
+        animatorSet.playTogether(toolbarAnimator, contentAnimator)
+        animatorSet.addListener(object : AnimatorEndListener {
+            override fun onAnimationEnd(animator: Animator) {
+                NavUtils.navigateUpFromSameTask(this@SpeakersSearchActivity)
+                disableActivityTransitionAnimations()
+            }
+        })
+        animatorSet.start()
+    }
+
+    private fun getContentAnimator(): ObjectAnimator {
+        return ObjectAnimator.ofFloat(speakersSearchContainer, "alpha", 0f).apply {
+            interpolator = AccelerateInterpolator()
+            duration = 300
+        }
+    }
+
+    private fun getToolbarAnimator(centerX: Int, centerY: Int): Animator {
+        return RevealAnimatorBuilder.build(toolbar, centerX, centerY, false).apply {
+            addListener(object : AnimatorEndListener {
+                override fun onAnimationEnd(animator: Animator) {
+                    toolbar.visibility = View.INVISIBLE
+                }
+            })
+        }
+    }
+
     private fun showEnterAnimation(isAnimationNeeded: Boolean) {
         if (isAnimationNeeded) {
-            val animationCenterX = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_X, 0)
-            val animationCenterY = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_Y, 0)
             ViewTreeObserverBuilder.build(toolbar) {
-                RevealAnimatorBuilder.build(toolbar, animationCenterX, animationCenterY, true).start()
+                val (centerX, centerY) = getAnimationCenterCoordinates()
+                RevealAnimatorBuilder.build(toolbar, centerX, centerY, true).start()
             }
         }
     }
 
-    private fun showParentWithoutAnimation() {
-        NavUtils.navigateUpFromSameTask(this)
-        disableActivityTransitionAnimations()
+    private fun getAnimationCenterCoordinates(): Pair<Int, Int> {
+        val centerX = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_X, 0)
+        val centerY = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_Y, 0)
+        return Pair(centerX, centerY)
     }
 
-    private fun haveCircularRevealExtras() =
+    private fun hasCircularRevealExtras() =
             intent.hasExtra(EXTRA_CIRCULAR_REVEAL_X) && intent.hasExtra(EXTRA_CIRCULAR_REVEAL_Y)
 
     override fun onDestroy() {

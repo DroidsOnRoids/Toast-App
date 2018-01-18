@@ -35,6 +35,8 @@ class MainActivity : BaseActivity() {
         setContentView(mainBinding.root)
         setupToolbar(savedInstanceState)
         setupNavigationView()
+        initHomeFragmentTransaction(showEventsFragment = savedInstanceState == null)
+        
         setupViewModel(mainBinding)
     }
 
@@ -58,7 +60,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setupToolbar(savedInstanceState: Bundle?) {
-        setSupportActionBar(mainToolbar)
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         savedInstanceState?.let {
             homeTitle.text = it.getString(CURRENT_TITLE)
@@ -68,6 +70,13 @@ class MainActivity : BaseActivity() {
     private fun setupNavigationView() {
         setHomeNavigationItemReselectedListener()
         setHomeNavigationItemSelectedListener()
+    }
+
+    private fun initHomeFragmentTransaction(showEventsFragment: Boolean) {
+        homeFragmentTransaction = HomeFragmentsTransaction(supportFragmentManager)
+        if (showEventsFragment) {
+            homeFragmentTransaction.showEventsFragment()
+        }
     }
 
     private fun setupViewModel(mainBinding: ActivityMainBinding) {
