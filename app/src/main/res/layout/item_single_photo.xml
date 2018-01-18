@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="photo"
+            type="pl.droidsonroids.toast.data.dto.ImageDto"/>
+
+    </data>
+
+    <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+               xmlns:app="http://schemas.android.com/apk/res-auto"
+               android:id="@+id/photo"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:contentDescription="@string/meetup_photo_desc"
+               android:fitsSystemWindows="true"
+               android:scaleType="fitCenter"
+               app:coverImage="@{photo}"/>
+</layout>
+

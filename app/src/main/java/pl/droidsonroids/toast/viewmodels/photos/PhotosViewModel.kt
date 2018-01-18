@@ -14,14 +14,17 @@ class PhotosViewModel @Inject constructor() : ViewModel(), NavigatingViewModel {
 
     val photosSubject: BehaviorSubject<List<PhotoItemViewModel>> = BehaviorSubject.create()
 
+    private var photosDto: List<ImageDto> = emptyList()
+
     fun init(photos: List<ImageDto>) {
         if (photosSubject.value == null) {
-            photosSubject.onNext(photos.map { it.toViewModel(::onPhotoItemClicked) })
+            photosDto = photos
+            photosSubject.onNext(photos.mapIndexed { index, image -> image.toViewModel { onPhotoItemClicked(index) } })
         }
     }
 
-    private fun onPhotoItemClicked(image: ImageDto) {
-        navigationSubject.onNext(NavigationRequest.SinglePhoto(image))
+    private fun onPhotoItemClicked(position: Int) {
+        navigationSubject.onNext(NavigationRequest.SinglePhoto(photosDto, position))
     }
 
 }

@@ -1,42 +1,76 @@
 package pl.droidsonroids.toast.app.photos
 
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.view.PagerAdapter
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import kotlinx.android.synthetic.main.activity_single_photo.*
+import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.data.dto.ImageDto
-import pl.droidsonroids.toast.databinding.ActivitySinglePhotoBinding
+import pl.droidsonroids.toast.databinding.ItemSinglePhotoBinding
 import pl.droidsonroids.toast.utils.NavigationRequest
-import pl.droidsonroids.toast.viewmodels.photos.SinglePhotoViewModel
 
 class SinglePhotoActivity : BaseActivity() {
     companion object {
-        private const val PHOTO_KEY = "photo_key"
+        private const val PHOTOS_KEY = "photo_key"
+        private const val CURRENT_PHOTO_POSITION_KEY = "current_photo_position_key"
 
         fun createIntent(context: Context, navigationRequest: NavigationRequest.SinglePhoto): Intent {
             return Intent(context, SinglePhotoActivity::class.java)
-                    .putExtra(PHOTO_KEY, navigationRequest.image)
+                    .putExtra(PHOTOS_KEY, ArrayList(navigationRequest.photos))
+                    .putExtra(CURRENT_PHOTO_POSITION_KEY, navigationRequest.position)
         }
     }
 
-    private val photo by lazy {
-        intent.getParcelableExtra<ImageDto>(PHOTO_KEY)
+    private val photos by lazy {
+        intent.getParcelableArrayListExtra<ImageDto>(PHOTOS_KEY)
     }
 
-    private val singlePhotoViewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory)[SinglePhotoViewModel::class.java]
+    private val currentPosition by lazy {
+        intent.getIntExtra(CURRENT_PHOTO_POSITION_KEY, 0)
+    }
+
+    private val viewPagerPageMargin by lazy {
+        resources.getDimensionPixelSize(R.dimen.margin_large)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val singlePhotoBinding = ActivitySinglePhotoBinding.inflate(layoutInflater)
-        setContentView(singlePhotoBinding.root)
-        setupViewModel(singlePhotoBinding)
+        setContentView(R.layout.activity_single_photo)
+        setupViewPager()
     }
 
-    private fun setupViewModel(singlePhotoBinding: ActivitySinglePhotoBinding) {
-        singlePhotoViewModel.init(photo)
-        singlePhotoBinding.singlePhotoViewModel = singlePhotoViewModel
+    private fun setupViewPager() {
+        with(photoViewPager) {
+            adapter = PhotosViewPagerAdapter()
+            currentItem = currentPosition
+            pageMargin = viewPagerPageMargin
+        }
+
     }
+
+    inner class PhotosViewPagerAdapter : PagerAdapter() {
+        override fun isViewFromObject(view: View, other: Any) = view == other
+
+        override fun getCount() = photos.size
+
+        override fun instantiateItem(container: ViewGroup, position: Int): Any {
+            val layoutInflater = LayoutInflater.from(container.context)
+            val singlePhotoBinding = ItemSinglePhotoBinding.inflate(layoutInflater, container, false)
+            singlePhotoBinding.setPhoto(photos[position])
+            singlePhotoBinding.executePendingBindings()
+            container.addView(singlePhotoBinding.root)
+            return singlePhotoBinding.root
+        }
+
+        override fun destroyItem(container: ViewGroup, position: Int, view: Any) {
+            container.removeView(view as View)
+        }
+
+    }
+
 }
