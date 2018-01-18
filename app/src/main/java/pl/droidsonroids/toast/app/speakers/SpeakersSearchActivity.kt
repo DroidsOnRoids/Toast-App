@@ -64,35 +64,17 @@ class SpeakersSearchActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
+        setKeyboardVisibility(isVisible = false)
         showParentWithLeavingAnimation()
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
             when (item.itemId) {
-                android.R.id.home -> consume { showParentWithLeavingAnimation() }
+                android.R.id.home -> consume {
+                    setKeyboardVisibility(isVisible = false)
+                    showParentWithLeavingAnimation() }
                 else -> super.onOptionsItemSelected(item)
             }
-
-    private fun setupSearchBox() {
-        searchBox.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                speakersSearchViewModel.requestSearch()
-                searchBox.clearFocus()
-                hideKeyboard()
-            }
-            true
-        }
-    }
-
-    private fun hideKeyboard() {
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(searchBox.windowToken, 0)
-    }
-
-    private fun showKeyboard() {
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(searchBox, InputMethodManager.SHOW_IMPLICIT)
-    }
 
     private fun setupToolbar() {
         setSupportActionBar(toolbar)
@@ -125,61 +107,72 @@ class SpeakersSearchActivity : BaseActivity() {
                 .subscribe(speakersAdapter::setData)
     }
 
-    private fun showParentWithLeavingAnimation() {
-        hideKeyboard()
-        val animatorSet = AnimatorSet()
-        val (centerX, centerY) = getAnimationCenterCoordinates()
-        val toolbarAnimator = getToolbarAnimator(centerX, centerY, false) {
-            toolbar.visibility = View.INVISIBLE
-        }
-        val contentAnimator = getContentAnimator(fromAlpha = 1f, toAlpha = 0f)
-        animatorSet.playTogether(toolbarAnimator, contentAnimator)
-        animatorSet.addListener(object : AnimatorEndListener {
-            override fun onAnimationEnd(animator: Animator) {
-                NavUtils.navigateUpFromSameTask(this@SpeakersSearchActivity)
-                disableActivityTransitionAnimations()
+    private fun setupSearchBox() {
+        searchBox.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                speakersSearchViewModel.requestSearch()
+                searchBox.clearFocus()
+                setKeyboardVisibility(isVisible = false)
             }
-        })
-        animatorSet.start()
-    }
-
-    private fun getContentAnimator(fromAlpha: Float, toAlpha: Float): ObjectAnimator {
-        return ObjectAnimator.ofFloat(speakersSearchContainer, "alpha", fromAlpha, toAlpha).apply {
-            interpolator = AccelerateInterpolator()
-            duration = 300
-        }
-    }
-
-    private fun getToolbarAnimator(centerX: Int, centerY: Int, isGrowing: Boolean, endAction: (() -> Unit)? = null): Animator {
-        return RevealAnimatorBuilder.build(toolbar, centerX, centerY, isGrowing).apply {
-            addListener(object : AnimatorEndListener {
-                override fun onAnimationEnd(animator: Animator) {
-                    endAction?.invoke()
-                }
-            })
+            true
         }
     }
 
     private fun setupEnterAnimation(isAnimationNeeded: Boolean) {
         if (isAnimationNeeded) {
             ViewTreeObserverBuilder.build(toolbar) {
-                showEnterAnimation()
+                showActivityAnimation(isEntering = true) {
+                    searchBox.requestFocus()
+                    setKeyboardVisibility(isVisible = true)
+                }
             }
         }
     }
 
-    private fun showEnterAnimation() {
-        val animatorSet = AnimatorSet()
-        val (centerX, centerY) = getAnimationCenterCoordinates()
-
-        val toolbarAnimator = getToolbarAnimator(centerX, centerY, true) {
-            searchBox.requestFocus()
-            showKeyboard()
+    private fun showParentWithLeavingAnimation() {
+        showActivityAnimation(isEntering = false) {
+            toolbar.visibility = View.INVISIBLE
+            NavUtils.navigateUpFromSameTask(this@SpeakersSearchActivity)
+            disableActivityTransitionAnimations()
         }
+    }
 
-        val contentAnimator = getContentAnimator(fromAlpha = 0f, toAlpha = 1f)
-        animatorSet.playTogether(toolbarAnimator, contentAnimator)
-        animatorSet.start()
+    private fun showActivityAnimation(isEntering: Boolean, endAction: (() -> Unit)) {
+        val (centerX, centerY) = getAnimationCenterCoordinates()
+        val toolbarAnimator = RevealAnimatorBuilder.build(toolbar, centerX, centerY, isEntering)
+        val contentAnimator = getContentAnimator(speakersSearchContainer, isEntering)
+
+        playAnimatorsTogether(toolbarAnimator, contentAnimator, endAction)
+    }
+
+    private fun getContentAnimator(contentView: View, isGrowing: Boolean): ObjectAnimator {
+        val fromAlpha = if (isGrowing) 0f else 1f
+        val toAlpha = if (isGrowing) 1f else 0f
+        return ObjectAnimator.ofFloat(contentView, "alpha", fromAlpha, toAlpha).apply {
+            interpolator = AccelerateInterpolator()
+            duration = 300
+        }
+    }
+
+    private fun playAnimatorsTogether(toolbarAnimator: Animator, contentAnimator: ObjectAnimator, endAction: () -> Unit) {
+        with(AnimatorSet()) {
+            addListener(object : AnimatorEndListener {
+                override fun onAnimationEnd(animator: Animator) {
+                    endAction()
+                }
+            })
+            playTogether(toolbarAnimator, contentAnimator)
+            start()
+        }
+    }
+
+    private fun setKeyboardVisibility(isVisible: Boolean) {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (isVisible) {
+            imm.showSoftInput(searchBox, InputMethodManager.SHOW_IMPLICIT)
+        } else {
+            imm.hideSoftInputFromWindow(searchBox.windowToken, 0)
+        }
     }
 
     private fun getAnimationCenterCoordinates(): Pair<Int, Int> {
