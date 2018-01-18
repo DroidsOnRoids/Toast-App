@@ -86,7 +86,7 @@ class ContactViewModel @Inject constructor(
 
     private fun setMessage(messageDto: MessageDto) {
         messageDto.let {
-            topic.set(it.type.ordinal)
+            selectedTopicPosition.set(it.type.ordinal)
             name.set(it.name)
             email.set(it.email)
             message.set(it.message)

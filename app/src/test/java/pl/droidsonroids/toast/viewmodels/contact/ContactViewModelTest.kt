@@ -9,7 +9,6 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
-import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.app.utils.Validator
@@ -25,7 +24,7 @@ class ContactViewModelTest : RxTestBase() {
     lateinit var contactRepository: ContactRepository
     @Mock
     lateinit var validator: Validator
-    @InjectMocks
+
     lateinit var contactViewModel: ContactViewModel
 
     private val name = "John"
@@ -42,6 +41,7 @@ class ContactViewModelTest : RxTestBase() {
     @Before
     fun setUp() {
         whenever(contactRepository.readMessage()).thenReturn(Single.just(messageDto))
+        contactViewModel = ContactViewModel(validator, contactRepository)
     }
 
     @Test
@@ -102,7 +102,7 @@ class ContactViewModelTest : RxTestBase() {
 
     @Test
     fun shouldRestoreFieldsState() {
-        assertThat(contactViewModel.topic.get(), equalTo(topic.ordinal))
+        assertThat(contactViewModel.selectedTopicPosition.get(), equalTo(topic.ordinal))
         assertThat(contactViewModel.email.get(), equalTo(email))
         assertThat(contactViewModel.message.get(), equalTo(message))
         assertThat(contactViewModel.name.get(), equalTo(name))
