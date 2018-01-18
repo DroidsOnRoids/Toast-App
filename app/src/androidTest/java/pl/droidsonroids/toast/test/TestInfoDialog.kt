@@ -12,38 +12,50 @@ import pl.droidsonroids.toast.function.getString
 import pl.droidsonroids.toast.robot.InfoDialogRobot
 
 class TestInfoDialog {
-    @Suppress("unused")
-    @get:Rule
+    @JvmField
+    @Rule
     val activityRule = IntentsTestRule(MainActivity::class.java, true, true)
 
     private fun showDialog() {
-        InfoDialogRobot().performClickOnElementWithId(R.id.menuItemAbout)
+        with(InfoDialogRobot()){
+            performClickOnElementWithId(R.id.menuItemAbout)
+        }
     }
 
     private fun isDialogClosed() {
-        InfoDialogRobot().checkIfElementWithIdIsNotPresentInHierarchy(R.id.toastLogoImage)
+        with(InfoDialogRobot()){
+            checkIfElementWithIdIsNotPresentInHierarchy(R.id.toastLogoImage)
+        }
     }
 
     @Test
     fun isMenuOverflowDisplayed() {
-        InfoDialogRobot().checkIfElementWithIdIsDisplayed(R.id.menuItemAbout)
+        with(InfoDialogRobot()){
+            checkIfElementWithIdIsDisplayed(R.id.menuItemAbout)
+        }
     }
 
     @Test
     fun isMenuOverflowClickable() {
-        InfoDialogRobot().checkIfElementWithIdIsClickable(R.id.menuItemAbout)
+        with(InfoDialogRobot()){
+            checkIfElementWithIdIsClickable(R.id.menuItemAbout)
+        }
     }
 
     @Test
     fun isToastLogoDisplayed() {
         showDialog()
-        InfoDialogRobot().checkIfElementWithIdIsDisplayedInDialog(R.id.toastLogoImage)
+        with(InfoDialogRobot()){
+            checkIfElementWithIdIsDisplayedInDialog(R.id.toastLogoImage)
+        }
     }
 
     @Test
     fun isHeartImageDisplayed() {
         showDialog()
-        InfoDialogRobot().checkIfElementWithIdIsDisplayedInDialog(R.id.hearthImage)
+        with(InfoDialogRobot()){
+            checkIfElementWithIdIsDisplayedInDialog(R.id.hearthImage)
+        }
     }
 
     /*
@@ -54,9 +66,11 @@ class TestInfoDialog {
     @Test
     fun isDialogClosedAfterClickingOnCloseButton() {
         showDialog()
-        InfoDialogRobot().checkIfElementWithIdIsDisplayedInDialog(R.id.closeImageButton)
-                .performClickOnElementWithId(R.id.closeImageButton)
-        isDialogClosed()
+        with(InfoDialogRobot()) {
+            checkIfElementWithIdIsDisplayedInDialog(R.id.closeImageButton)
+            performClickOnElementWithId(R.id.closeImageButton)
+            isDialogClosed()
+        }
     }
 
     @Test
@@ -69,8 +83,10 @@ class TestInfoDialog {
     @Test
     fun isDialogNotDismissedAfterTappingOnDialog() {
         showDialog()
-        InfoDialogRobot().performClickOnElementWithId(R.id.toastLogoImage)
-                .checkIfElementWithIdIsDisplayedInDialog(R.id.toastLogoImage)
+        with(InfoDialogRobot()) {
+            performClickOnElementWithId(R.id.toastLogoImage)
+            checkIfElementWithIdIsDisplayedInDialog(R.id.toastLogoImage)
+        }
     }
 
     @Test
@@ -83,32 +99,42 @@ class TestInfoDialog {
     @Test
     fun isCreatedWithTextDisplayed() {
         showDialog()
-        InfoDialogRobot().checkIfTextIsCorrect(getString(R.string.created_with), R.id.createdWithText)
+        with(InfoDialogRobot()){
+            checkIfTextIsCorrect(getString(R.string.created_with), R.id.createdWithText)
+        }
     }
 
     @Test
     fun isByToastTeamTextDisplayed() {
         showDialog()
-        InfoDialogRobot().checkIfTextIsCorrect(getString(R.string.by_toast_team), R.id.byToastTeamText)
+        with(InfoDialogRobot()){
+            checkIfTextIsCorrect(getString(R.string.by_toast_team), R.id.byToastTeamText)
+        }
     }
 
     @Test
     fun isMoreInfoTextDisplayed() {
         showDialog()
-        InfoDialogRobot().checkIfTextIsCorrect(getString(R.string.for_more_information_visit_our), R.id.moreInfoText)
+        with(InfoDialogRobot()){
+            checkIfTextIsCorrect(getString(R.string.for_more_information_visit_our), R.id.moreInfoText)
+        }
     }
 
     @Test
     fun isAppVersionTextDisplayed() {
         showDialog()
-        InfoDialogRobot().checkIfTextIsCorrect(getString(R.string.application_version_title), R.id.appVersionTitle)
+        with(InfoDialogRobot()){
+            checkIfTextIsCorrect(getString(R.string.application_version_title), R.id.appVersionTitle)
+        }
     }
 
     @Test
     fun isFbFanPageDeepLinkDisplayedAndActive() {
         showDialog()
-        InfoDialogRobot().checkIfTextIsCorrect(getString(R.string.toast_facebook_fanpage), R.id.fanpageLinkText)
-                .performClickOnElementWithId(R.id.fanpageLinkText)
-        InfoDialogRobot().checkIfIntentOpensFacebook()
+        with(InfoDialogRobot()) {
+            checkIfTextIsCorrect(getString(R.string.toast_facebook_fanpage), R.id.fanpageLinkText)
+            performClickOnElementWithId(R.id.fanpageLinkText)
+            checkIfIntentOpensFacebook()
+        }
     }
 }
