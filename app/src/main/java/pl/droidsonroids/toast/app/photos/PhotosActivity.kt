@@ -4,8 +4,10 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.util.Pair
 import android.support.v7.widget.GridLayoutManager
 import android.view.MenuItem
+import android.view.View
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_photos.*
@@ -67,7 +69,24 @@ class PhotosActivity : BaseActivity() {
     private fun setupViewModel() {
         photosViewModel.init(photos)
         compositeDisposable += photosViewModel.navigationSubject
-                .subscribe { navigator.dispatch(this, it) }
+                .subscribe(::handleNavigationRequest)
+    }
+
+    private fun handleNavigationRequest(navigationRequest: NavigationRequest) {
+        if (navigationRequest is NavigationRequest.SinglePhoto) {
+            navigator.showSinglePhotoWithSharedAnimation(this, navigationRequest, getSharedViews(navigationRequest.position))
+        } else {
+            navigator.dispatch(this, navigationRequest)
+        }
+    }
+
+    private fun getSharedViews(position: Int): Array<Pair<View, String>> {
+        return photosRecyclerView.findViewHolderForAdapterPosition(position)
+                ?.itemView
+                ?.run {
+                    val photoView = findViewById<View>(R.id.photo)
+                    arrayOf(Pair(photoView, photoView.transitionName))
+                } ?: emptyArray()
     }
 
     private fun setupRecyclerView() {

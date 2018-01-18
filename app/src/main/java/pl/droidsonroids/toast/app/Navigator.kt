@@ -23,13 +23,13 @@ class Navigator @Inject constructor() {
             is NavigationRequest.SpeakerDetails -> showSpeakerDetails(context, navigationRequest)
             is NavigationRequest.EventDetails -> showEventDetails(context, navigationRequest)
             is NavigationRequest.Photos -> showPhotos(context, navigationRequest)
-            is NavigationRequest.SinglePhoto -> showSinglePhoto(context, navigationRequest)
         }
     }
 
-    private fun showSinglePhoto(context: Context, navigationRequest: NavigationRequest.SinglePhoto) {
-        val intent = SinglePhotoActivity.createIntent(context, navigationRequest)
-        context.startActivity(intent)
+    fun showSinglePhotoWithSharedAnimation(activity: AppCompatActivity, navigationRequest: NavigationRequest.SinglePhoto, sharedViews: Array<Pair<View, String>>) {
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, *sharedViews).toBundle()
+        val intent = SinglePhotoActivity.createIntent(activity, navigationRequest)
+        activity.startActivity(intent, options)
     }
 
     fun showTalkDetailsWithSharedAnimation(activity: AppCompatActivity, navigationRequest: NavigationRequest.TalkDetails, sharedViews: Array<Pair<View, String>>) {

@@ -38,22 +38,28 @@ class SinglePhotoActivity : BaseActivity() {
         resources.getDimensionPixelSize(R.dimen.margin_large)
     }
 
+    private var isTransitionPostponed = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single_photo)
+        supportPostponeEnterTransition()
+        isTransitionPostponed = true
         setupViewPager()
     }
 
     private fun setupViewPager() {
+        // TODO: 18/01/2018 Refactor
         with(photoViewPager) {
             adapter = PhotosViewPagerAdapter()
             currentItem = currentPosition
             pageMargin = viewPagerPageMargin
+            offscreenPageLimit = 2
         }
-
     }
 
     inner class PhotosViewPagerAdapter : PagerAdapter() {
+
         override fun isViewFromObject(view: View, other: Any) = view == other
 
         override fun getCount() = photos.size
@@ -62,7 +68,13 @@ class SinglePhotoActivity : BaseActivity() {
             val layoutInflater = LayoutInflater.from(container.context)
             val singlePhotoBinding = ItemSinglePhotoBinding.inflate(layoutInflater, container, false)
             singlePhotoBinding.setPhoto(photos[position])
-            singlePhotoBinding.executePendingBindings()
+            singlePhotoBinding.position = position.toLong()
+            singlePhotoBinding.imageLoaded = {
+                if (currentPosition == position && isTransitionPostponed) {
+                    supportStartPostponedEnterTransition()
+                    isTransitionPostponed = false
+                }
+            }
             container.addView(singlePhotoBinding.root)
             return singlePhotoBinding.root
         }

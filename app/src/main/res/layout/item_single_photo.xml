@@ -7,6 +7,16 @@
             name="photo"
             type="pl.droidsonroids.toast.data.dto.ImageDto"/>
 
+        <variable
+            name="position"
+            type="Long"/>
+
+        <variable
+            name="imageLoaded"
+            type="kotlin.jvm.functions.Function0&lt;kotlin.Unit>"/>
+
+        <import
+            type="pl.droidsonroids.toast.utils.Constants.PhotoTransition"/>
     </data>
 
     <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,9 +24,12 @@
                android:id="@+id/photo"
                android:layout_width="match_parent"
                android:layout_height="match_parent"
+               app:imageLoadedListener="@{imageLoaded}"
                android:contentDescription="@string/meetup_photo_desc"
                android:fitsSystemWindows="true"
                android:scaleType="fitCenter"
-               app:coverImage="@{photo}"/>
+               app:coverImage="@{photo}"
+               app:elementId="@{position}"
+               app:transitionName="@{PhotoTransition.PHOTO}"/>
 </layout>
 

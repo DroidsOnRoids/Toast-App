@@ -20,6 +20,10 @@ object Constants {
         const val CARD = "card"
     }
 
+    object PhotoTransition {
+        const val PHOTO = "photo"
+    }
+
     object Event {
         const val NO_EVENT_ID = -1L
     }
