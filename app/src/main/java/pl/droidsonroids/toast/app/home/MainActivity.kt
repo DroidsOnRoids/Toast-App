@@ -12,6 +12,7 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.utils.RevealAnimatorBuilder
+import pl.droidsonroids.toast.app.utils.ViewTreeObserverBuilder
 import pl.droidsonroids.toast.databinding.ActivityMainBinding
 import pl.droidsonroids.toast.utils.Constants.SearchMenuItem.ANIM_DURATION_MILLIS
 import pl.droidsonroids.toast.utils.consume
@@ -78,7 +79,9 @@ class MainActivity : BaseActivity() {
             collapsingSearchView.visibility = View.VISIBLE
             val animationCenterX = (searchImageButton.x + searchImageButton.width / 2).toInt()
             val animationCenterY = (searchImageButton.y + searchImageButton.height / 2).toInt()
-            RevealAnimatorBuilder.build(collapsingSearchView, animationCenterX, animationCenterY, false)
+            ViewTreeObserverBuilder.build(collapsingSearchView) {
+                RevealAnimatorBuilder.build(collapsingSearchView, animationCenterX, animationCenterY, false).start()
+            }
         }
     }
 

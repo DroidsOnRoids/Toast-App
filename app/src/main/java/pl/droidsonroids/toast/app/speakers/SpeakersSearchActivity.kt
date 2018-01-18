@@ -18,6 +18,7 @@ import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
 import pl.droidsonroids.toast.app.utils.RevealAnimatorBuilder
+import pl.droidsonroids.toast.app.utils.ViewTreeObserverBuilder
 import pl.droidsonroids.toast.app.utils.disableActivityTransitionAnimations
 import pl.droidsonroids.toast.databinding.ActivitySpeakersSearchBinding
 import pl.droidsonroids.toast.utils.consume
@@ -123,7 +124,9 @@ class SpeakersSearchActivity : BaseActivity() {
         if (isAnimationNeeded) {
             val animationCenterX = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_X, 0)
             val animationCenterY = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_Y, 0)
-            RevealAnimatorBuilder.build(toolbar, animationCenterX, animationCenterY, true)
+            ViewTreeObserverBuilder.build(toolbar) {
+                RevealAnimatorBuilder.build(toolbar, animationCenterX, animationCenterY, true).start()
+            }
         }
     }
 
