@@ -56,13 +56,6 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <View
-            android:id="@+id/collapsingSearchView"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/white"
-            android:visibility="gone"/>
-
         <FrameLayout
             android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"

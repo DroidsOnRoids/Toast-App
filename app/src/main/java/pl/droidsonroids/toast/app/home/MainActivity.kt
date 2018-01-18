@@ -1,18 +1,14 @@
 package pl.droidsonroids.toast.app.home
 
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
-import pl.droidsonroids.toast.app.utils.RevealAnimatorBuilder
-import pl.droidsonroids.toast.app.utils.ViewTreeObserverBuilder
 import pl.droidsonroids.toast.databinding.ActivityMainBinding
 import pl.droidsonroids.toast.utils.Constants.SearchMenuItem.ANIM_DURATION_MILLIS
 import pl.droidsonroids.toast.utils.consume
@@ -24,21 +20,14 @@ private const val CURRENT_TITLE: String = "current_title"
 
 class MainActivity : BaseActivity() {
 
-    companion object {
-        const val IS_SEARCH_SPEAKERS_CLOSED_KEY = "is_search_speakers_closed_key"
-
-    }
-
     private lateinit var homeFragmentTransaction: HomeFragmentsTransaction
-
-    @Inject
-    lateinit var navigator: Navigator
-
+    private var navigationDisposable: Disposable? = null
     private val mainViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory)[MainViewModel::class.java]
     }
 
-    private var navigationDisposable: Disposable? = null
+    @Inject
+    lateinit var navigator: Navigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,13 +35,7 @@ class MainActivity : BaseActivity() {
         setContentView(mainBinding.root)
         setupToolbar(savedInstanceState)
         setupNavigationView()
-        initHomeFragmentTransaction(showEventsFragment = savedInstanceState == null)
-
         setupViewModel(mainBinding)
-    }
-
-    override fun onNewIntent(intent: Intent) {
-        animateCollapsingSearchItem(intent.getBooleanExtra(IS_SEARCH_SPEAKERS_CLOSED_KEY, false))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -72,17 +55,6 @@ class MainActivity : BaseActivity() {
                 .y(offset)
                 .setDuration(ANIM_DURATION_MILLIS)
                 .start()
-    }
-
-    private fun animateCollapsingSearchItem(isAnimationNeeded: Boolean) {
-        if (isAnimationNeeded) {
-            collapsingSearchView.visibility = View.VISIBLE
-            val animationCenterX = (searchImageButton.x + searchImageButton.width / 2).toInt()
-            val animationCenterY = (searchImageButton.y + searchImageButton.height / 2).toInt()
-            ViewTreeObserverBuilder.build(collapsingSearchView) {
-                RevealAnimatorBuilder.build(collapsingSearchView, animationCenterX, animationCenterY, false).start()
-            }
-        }
     }
 
     private fun setupToolbar(savedInstanceState: Bundle?) {
@@ -132,13 +104,6 @@ class MainActivity : BaseActivity() {
 
     private fun setHomeTitleText(titleRes: Int) {
         homeTitle.text = getText(titleRes)
-    }
-
-    private fun initHomeFragmentTransaction(showEventsFragment: Boolean) {
-        homeFragmentTransaction = HomeFragmentsTransaction(supportFragmentManager)
-        if (showEventsFragment) {
-            homeFragmentTransaction.showEventsFragment()
-        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

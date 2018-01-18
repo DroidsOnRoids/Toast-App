@@ -15,7 +15,6 @@ import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.activity_speakers_search.*
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
-import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
 import pl.droidsonroids.toast.app.utils.RevealAnimatorBuilder
 import pl.droidsonroids.toast.app.utils.ViewTreeObserverBuilder
@@ -131,16 +130,8 @@ class SpeakersSearchActivity : BaseActivity() {
     }
 
     private fun showParentWithoutAnimation() {
-        showParentActivity()
+        NavUtils.navigateUpFromSameTask(this)
         disableActivityTransitionAnimations()
-    }
-
-    private fun showParentActivity() {
-        val intent = NavUtils.getParentActivityIntent(this)
-        intent?.let {
-            it.putExtra(MainActivity.IS_SEARCH_SPEAKERS_CLOSED_KEY, true)
-            NavUtils.navigateUpTo(this, it)
-        }
     }
 
     private fun haveCircularRevealExtras() =
