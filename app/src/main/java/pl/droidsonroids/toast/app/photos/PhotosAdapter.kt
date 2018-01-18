@@ -1,5 +1,6 @@
 package pl.droidsonroids.toast.app.photos
 
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -21,14 +22,27 @@ class PhotosAdapter : RecyclerView.Adapter<PhotoItemViewHolder>() {
     override fun getItemCount() = photoItemViewModels.size
 
     fun setData(newPhotoItemViewModels: List<PhotoItemViewModel>) {
+        val diffCallback = PhotosItemDiffCallback(photoItemViewModels, newPhotoItemViewModels)
+        val diff = DiffUtil.calculateDiff(diffCallback)
         photoItemViewModels = newPhotoItemViewModels
-        notifyDataSetChanged()
+        diff.dispatchUpdatesTo(this)
+    }
+
+    class PhotosItemDiffCallback(
+            private val oldList: List<PhotoItemViewModel>,
+            private val newList: List<PhotoItemViewModel>
+    ) : DiffUtil.Callback() {
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].image == newList[newItemPosition].image
+        }
+
+        override fun getOldListSize() = oldList.size
+
+        override fun getNewListSize() = newList.size
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
     }
 }
 
-class PhotoItemViewHolder(private val binding: ItemPhotoBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(photoItemViewModel: PhotoItemViewModel) {
-        binding.photoItemViewModel = photoItemViewModel
-        binding.executePendingBindings()
-    }
-}
