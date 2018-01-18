@@ -1,6 +1,7 @@
 package pl.droidsonroids.toast.robot
 
 import android.support.test.espresso.Espresso.onView
+import android.support.test.espresso.action.ViewActions
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.assertion.ViewAssertions.doesNotExist
 import android.support.test.espresso.assertion.ViewAssertions.matches
@@ -60,6 +61,12 @@ abstract class BaseRobot {
     fun performClickOnRecyclerViewElement(id: Int, position: Int): BaseRobot {
         onView(withId(id))
                 .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(position, click()))
+        return this
+    }
+
+    fun performTyping(text: String, id: Int): BaseRobot {
+        onView(withId(id))
+                .perform(ViewActions.typeText(text))
         return this
     }
 }

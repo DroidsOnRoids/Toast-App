@@ -8,13 +8,7 @@ import pl.droidsonroids.toast.R
 
 class SpeakersRobot : BaseRobot() {
 
-    fun checkIfTextIsTyped(text: String, id: Int): SpeakersRobot {
-        onView(withId(id))
-                .perform(typeText(text))
-        return this
-    }
-
-    fun checkSearchButtonFunctionality(): SpeakersRobot {
+    fun checkIfSearchIsPerformed(): SpeakersRobot {
         onView(withId(R.id.searchBox))
                 .perform(pressImeActionButton())
         return this
