@@ -10,7 +10,6 @@ import android.support.test.espresso.matcher.RootMatchers.isDialog
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.v7.widget.RecyclerView
 import org.hamcrest.Matchers.allOf
-import pl.droidsonroids.toast.app.base.StateViewHolder
 
 abstract class BaseRobot {
 

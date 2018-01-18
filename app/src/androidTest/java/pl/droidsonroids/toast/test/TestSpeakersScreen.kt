@@ -8,30 +8,38 @@ import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.robot.SpeakersRobot
 
 class TestSpeakersScreen {
-    @Suppress("unused")
-    @get:Rule
+    @JvmField
+    @Rule
     val activityRule = ActivityTestRule(MainActivity::class.java, true, true)
 
     private fun goToSpeakersScreen() {
-        SpeakersRobot().performClickOnElementWithId(R.id.actionSpeakers)
+        with(SpeakersRobot()){
+            performClickOnElementWithId(R.id.actionSpeakers)
+        }
     }
 
     private fun goToSearchScreen() {
         goToSpeakersScreen()
-        SpeakersRobot().performClickOnElementWithId(R.id.searchImageButton)
+        with(SpeakersRobot()){
+            performClickOnElementWithId(R.id.searchImageButton)
+        }
     }
 
     @Test
     fun isSpeakerSelectedOnSpeakersScreen() {
         goToSpeakersScreen()
-        SpeakersRobot().performClickOnRecyclerViewElement(R.id.speakersRecyclerView, 0)
+        with(SpeakersRobot()){
+            performClickOnRecyclerViewElement(R.id.speakersRecyclerView, 0)
+        }
     }
 
     @Test
     fun isSpeakerSelectedOnSearchScreen() {
         goToSearchScreen()
-        SpeakersRobot().performTyping("a", R.id.searchBox)
-        SpeakersRobot().checkIfSearchIsPerformed()
-                .performClickOnRecyclerViewElement(R.id.speakersSearchRecyclerView, 0)
+        with(SpeakersRobot()) {
+            performTyping("a", R.id.searchBox)
+            checkIfSearchIsPerformed()
+            performClickOnRecyclerViewElement(R.id.speakersSearchRecyclerView, 0)
+        }
     }
 }
