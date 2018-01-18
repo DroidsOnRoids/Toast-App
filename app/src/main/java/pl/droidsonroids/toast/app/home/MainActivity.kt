@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
-import pl.droidsonroids.toast.app.utils.RevealAnimationCreator
+import pl.droidsonroids.toast.app.utils.RevealAnimatorBuilder
 import pl.droidsonroids.toast.databinding.ActivityMainBinding
 import pl.droidsonroids.toast.utils.Constants.SearchMenuItem.ANIM_DURATION_MILLIS
 import pl.droidsonroids.toast.utils.consume
@@ -25,6 +25,7 @@ class MainActivity : BaseActivity() {
 
     companion object {
         const val IS_SEARCH_SPEAKERS_CLOSED_KEY = "is_search_speakers_closed_key"
+
     }
 
     private lateinit var homeFragmentTransaction: HomeFragmentsTransaction
@@ -77,7 +78,7 @@ class MainActivity : BaseActivity() {
             collapsingSearchView.visibility = View.VISIBLE
             val animationCenterX = (searchImageButton.x + searchImageButton.width / 2).toInt()
             val animationCenterY = (searchImageButton.y + searchImageButton.height / 2).toInt()
-            RevealAnimationCreator.showAnimation(collapsingSearchView, animationCenterX, animationCenterY, false)
+            RevealAnimatorBuilder.build(collapsingSearchView, animationCenterX, animationCenterY, false)
         }
     }
 

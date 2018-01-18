@@ -10,7 +10,7 @@ import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.events.TalkDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakerDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
-import pl.droidsonroids.toast.app.utils.turnOffActivityClosingAnimation
+import pl.droidsonroids.toast.app.utils.disableActivityTransitionAnimations
 import pl.droidsonroids.toast.utils.NavigationRequest
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -32,8 +32,8 @@ class Navigator @Inject constructor() {
     }
 
     fun dispatch(activity: Activity, animatedView: View, navigationRequest: NavigationRequest) {
-        when (navigationRequest) {
-            is NavigationRequest.SpeakersSearch -> showSpeakersSearchWithRevealAnimation(activity, animatedView)
+        if (navigationRequest is NavigationRequest.SpeakersSearch) {
+            showSpeakersSearchWithRevealAnimation(activity, animatedView)
         }
     }
 
@@ -53,6 +53,6 @@ class Navigator @Inject constructor() {
 
         val intent = SpeakersSearchActivity.createIntent(activity, revealCenterX, revealCenterY)
         activity.startActivity(intent)
-        activity.turnOffActivityClosingAnimation()
+        activity.disableActivityTransitionAnimations()
     }
 }

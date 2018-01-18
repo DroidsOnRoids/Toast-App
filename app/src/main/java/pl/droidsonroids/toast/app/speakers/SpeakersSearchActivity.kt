@@ -17,8 +17,8 @@ import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
-import pl.droidsonroids.toast.app.utils.RevealAnimationCreator
-import pl.droidsonroids.toast.app.utils.turnOffActivityClosingAnimation
+import pl.droidsonroids.toast.app.utils.RevealAnimatorBuilder
+import pl.droidsonroids.toast.app.utils.disableActivityTransitionAnimations
 import pl.droidsonroids.toast.databinding.ActivitySpeakersSearchBinding
 import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersSearchViewModel
@@ -28,8 +28,8 @@ import javax.inject.Inject
 class SpeakersSearchActivity : BaseActivity() {
 
     companion object {
-        val EXTRA_CIRCULAR_REVEAL_X = "EXTRA_CIRCULAR_REVEAL_X"
-        val EXTRA_CIRCULAR_REVEAL_Y = "EXTRA_CIRCULAR_REVEAL_Y"
+        private const val EXTRA_CIRCULAR_REVEAL_X = "EXTRA_CIRCULAR_REVEAL_X"
+        private const val EXTRA_CIRCULAR_REVEAL_Y = "EXTRA_CIRCULAR_REVEAL_Y"
 
         fun createIntent(context: Context, revealCenterX: Int, revealCenterY: Int): Intent =
                 Intent(context, SpeakersSearchActivity::class.java)
@@ -121,20 +121,23 @@ class SpeakersSearchActivity : BaseActivity() {
 
     private fun showEnterAnimation(isAnimationNeeded: Boolean) {
         if (isAnimationNeeded) {
-            val animationCenterX = intent.getIntExtra(SpeakersSearchActivity.EXTRA_CIRCULAR_REVEAL_X, 0)
-            val animationCenterY = intent.getIntExtra(SpeakersSearchActivity.EXTRA_CIRCULAR_REVEAL_Y, 0)
-            RevealAnimationCreator.showAnimation(toolbar, animationCenterX, animationCenterY, true)
+            val animationCenterX = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_X, 0)
+            val animationCenterY = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_Y, 0)
+            RevealAnimatorBuilder.build(toolbar, animationCenterX, animationCenterY, true)
         }
     }
 
     private fun showParentWithoutAnimation() {
+        showParentActivity()
+        disableActivityTransitionAnimations()
+    }
+
+    private fun showParentActivity() {
         val intent = NavUtils.getParentActivityIntent(this)
         intent?.let {
             it.putExtra(MainActivity.IS_SEARCH_SPEAKERS_CLOSED_KEY, true)
             NavUtils.navigateUpTo(this, it)
         }
-
-        turnOffActivityClosingAnimation()
     }
 
     private fun haveCircularRevealExtras() =

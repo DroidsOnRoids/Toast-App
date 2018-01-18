@@ -3,6 +3,6 @@ package pl.droidsonroids.toast.app.utils
 
 import android.app.Activity
 
-fun Activity.turnOffActivityClosingAnimation() {
+fun Activity.disableActivityTransitionAnimations() {
     overridePendingTransition(0, 0)
 }
