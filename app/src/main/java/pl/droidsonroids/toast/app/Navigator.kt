@@ -8,6 +8,7 @@ import android.view.View
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.events.TalkDetailsActivity
 import pl.droidsonroids.toast.app.photos.PhotosActivity
+import pl.droidsonroids.toast.app.photos.SinglePhotoActivity
 import pl.droidsonroids.toast.app.speakers.SpeakerDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
 import pl.droidsonroids.toast.utils.NavigationRequest
@@ -22,7 +23,13 @@ class Navigator @Inject constructor() {
             is NavigationRequest.SpeakerDetails -> showSpeakerDetails(context, navigationRequest)
             is NavigationRequest.EventDetails -> showEventDetails(context, navigationRequest)
             is NavigationRequest.Photos -> showPhotos(context, navigationRequest)
+            is NavigationRequest.SinglePhoto -> showSinglePhoto(context, navigationRequest)
         }
+    }
+
+    private fun showSinglePhoto(context: Context, navigationRequest: NavigationRequest.SinglePhoto) {
+        val intent = SinglePhotoActivity.createIntent(context, navigationRequest)
+        context.startActivity(intent)
     }
 
     fun showTalkDetailsWithSharedAnimation(activity: AppCompatActivity, navigationRequest: NavigationRequest.TalkDetails, sharedViews: Array<Pair<View, String>>) {

@@ -5,7 +5,7 @@ import pl.droidsonroids.toast.data.api.ApiImage
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.viewmodels.photos.PhotoItemViewModel
 
-fun ImageDto.toViewModel(onClick: () -> Unit): PhotoItemViewModel {
+fun ImageDto.toViewModel(onClick: (ImageDto) -> Unit): PhotoItemViewModel {
     return PhotoItemViewModel(
             image = this,
             action = onClick
