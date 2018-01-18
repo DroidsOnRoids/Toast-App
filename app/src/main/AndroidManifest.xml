@@ -32,7 +32,7 @@
             android:parentActivityName=".app.home.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.Dialog"
-            android:windowSoftInputMode="stateVisible|adjustResize"/>
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".app.events.EventDetailsActivity"
             android:label=""

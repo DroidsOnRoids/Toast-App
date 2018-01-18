@@ -60,7 +60,7 @@ class SpeakersSearchActivity : BaseActivity() {
         setupSearchBox()
 
         val haveNoSavedInstances = savedInstanceState == null
-        showEnterAnimation(isAnimationNeeded = haveNoSavedInstances && hasCircularRevealExtras())
+        setupEnterAnimation(isAnimationNeeded = haveNoSavedInstances && hasCircularRevealExtras())
     }
 
     override fun onBackPressed() {
@@ -74,7 +74,6 @@ class SpeakersSearchActivity : BaseActivity() {
             }
 
     private fun setupSearchBox() {
-        searchBox.requestFocus()
         searchBox.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 speakersSearchViewModel.requestSearch()
@@ -88,6 +87,11 @@ class SpeakersSearchActivity : BaseActivity() {
     private fun hideKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(searchBox.windowToken, 0)
+    }
+
+    private fun showKeyboard() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(searchBox, InputMethodManager.SHOW_IMPLICIT)
     }
 
     private fun setupToolbar() {
@@ -122,10 +126,13 @@ class SpeakersSearchActivity : BaseActivity() {
     }
 
     private fun showParentWithLeavingAnimation() {
+        hideKeyboard()
         val animatorSet = AnimatorSet()
         val (centerX, centerY) = getAnimationCenterCoordinates()
-        val toolbarAnimator = getToolbarAnimator(centerX, centerY)
-        val contentAnimator = getContentAnimator()
+        val toolbarAnimator = getToolbarAnimator(centerX, centerY, false) {
+            toolbar.visibility = View.INVISIBLE
+        }
+        val contentAnimator = getContentAnimator(fromAlpha = 1f, toAlpha = 0f)
         animatorSet.playTogether(toolbarAnimator, contentAnimator)
         animatorSet.addListener(object : AnimatorEndListener {
             override fun onAnimationEnd(animator: Animator) {
@@ -136,30 +143,43 @@ class SpeakersSearchActivity : BaseActivity() {
         animatorSet.start()
     }
 
-    private fun getContentAnimator(): ObjectAnimator {
-        return ObjectAnimator.ofFloat(speakersSearchContainer, "alpha", 0f).apply {
+    private fun getContentAnimator(fromAlpha: Float, toAlpha: Float): ObjectAnimator {
+        return ObjectAnimator.ofFloat(speakersSearchContainer, "alpha", fromAlpha, toAlpha).apply {
             interpolator = AccelerateInterpolator()
             duration = 300
         }
     }
 
-    private fun getToolbarAnimator(centerX: Int, centerY: Int): Animator {
-        return RevealAnimatorBuilder.build(toolbar, centerX, centerY, false).apply {
+    private fun getToolbarAnimator(centerX: Int, centerY: Int, isGrowing: Boolean, endAction: (() -> Unit)? = null): Animator {
+        return RevealAnimatorBuilder.build(toolbar, centerX, centerY, isGrowing).apply {
             addListener(object : AnimatorEndListener {
                 override fun onAnimationEnd(animator: Animator) {
-                    toolbar.visibility = View.INVISIBLE
+                    endAction?.invoke()
                 }
             })
         }
     }
 
-    private fun showEnterAnimation(isAnimationNeeded: Boolean) {
+    private fun setupEnterAnimation(isAnimationNeeded: Boolean) {
         if (isAnimationNeeded) {
             ViewTreeObserverBuilder.build(toolbar) {
-                val (centerX, centerY) = getAnimationCenterCoordinates()
-                RevealAnimatorBuilder.build(toolbar, centerX, centerY, true).start()
+                showEnterAnimation()
             }
         }
+    }
+
+    private fun showEnterAnimation() {
+        val animatorSet = AnimatorSet()
+        val (centerX, centerY) = getAnimationCenterCoordinates()
+
+        val toolbarAnimator = getToolbarAnimator(centerX, centerY, true) {
+            searchBox.requestFocus()
+            showKeyboard()
+        }
+
+        val contentAnimator = getContentAnimator(fromAlpha = 0f, toAlpha = 1f)
+        animatorSet.playTogether(toolbarAnimator, contentAnimator)
+        animatorSet.start()
     }
 
     private fun getAnimationCenterCoordinates(): Pair<Int, Int> {
