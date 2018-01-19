@@ -26,6 +26,7 @@ class ContactViewModel @Inject constructor(
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.PENDING)
 
     val sendingEnabled = ObservableField(false)
+
     val nameInputError = ObservableField<String?>(null)
     val emailInputError = ObservableField<String?>(null)
     val messageInputError = ObservableField<String?>(null)
@@ -34,17 +35,12 @@ class ContactViewModel @Inject constructor(
     val name: ObservableField<String> = ObservableField("")
     val email: ObservableField<String> = ObservableField("")
     val message: ObservableField<String> = ObservableField("")
-    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    private val nameChangedCallback by lazy {
-        OnPropertyChangedCallbackMessageSent(onTextChangedCallback(name))
-    }
-    private val emailChangedCallback by lazy {
-        OnPropertyChangedCallbackMessageSent(onTextChangedCallback(email))
-    }
-    private val messageChangedCallback by lazy {
-        OnPropertyChangedCallbackMessageSent(onTextChangedCallback(message))
-    }
+    private val nameChangedCallback = OnPropertyChangedSkippableCallback(onTextChangedCallback(name))
+    private val emailChangedCallback = OnPropertyChangedSkippableCallback(onTextChangedCallback(email))
+    private val messageChangedCallback = OnPropertyChangedSkippableCallback(onTextChangedCallback(message))
+
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     private val isFormValid
         get() = arrayOf(nameInputError, emailInputError, messageInputError).all { it.get().isNullOrEmpty() }
@@ -54,7 +50,6 @@ class ContactViewModel @Inject constructor(
 
     private val isFormNotEmpty
         get() = arrayOf(name, email, message).all { it.get().isNotEmpty() }
-
 
     init {
         updateSendingEnabled()
@@ -150,38 +145,46 @@ class ContactViewModel @Inject constructor(
     }
 
     private fun onSendSuccessfully() {
-        clearAllFields()
-        navigationSubject.onNext(NavigationRequest.MessageSent)
+        clearForm()
+        saveMessage()
+        clearErrors()
+        skipInputChangeCallbacks()
+        showSuccessDialog()
         loadingStatus.set(LoadingStatus.SUCCESS)
     }
 
-    private fun clearAllFields() {
-
+    private fun clearForm() {
         selectedTopicPosition.set(MessageType.I_WANT_TO.ordinal)
         name.set("")
         email.set("")
         message.set("")
+    }
 
+    private fun clearErrors() {
         nameInputError.set(null)
         emailInputError.set(null)
         messageInputError.set(null)
-
-        nameChangedCallback.isMessageSent = true
-        emailChangedCallback.isMessageSent = true
-        messageChangedCallback.isMessageSent = true
-
-        saveMessage()
     }
 
-    inner class OnPropertyChangedCallbackMessageSent(private val callback: Observable.OnPropertyChangedCallback) : Observable.OnPropertyChangedCallback() {
+    private fun skipInputChangeCallbacks() {
+        nameChangedCallback.skipNextInvocation = true
+        emailChangedCallback.skipNextInvocation = true
+        messageChangedCallback.skipNextInvocation = true
+    }
 
-        var isMessageSent = false
+    private fun showSuccessDialog() {
+        navigationSubject.onNext(NavigationRequest.MessageSent)
+    }
+
+    inner class OnPropertyChangedSkippableCallback(private val callback: Observable.OnPropertyChangedCallback) : Observable.OnPropertyChangedCallback() {
+
+        var skipNextInvocation = false
 
         override fun onPropertyChanged(observable: Observable?, propertyId: Int) {
-            if (!isMessageSent) {
-                callback.onPropertyChanged(observable, propertyId)
+            if (skipNextInvocation) {
+                skipNextInvocation = false
             } else {
-                isMessageSent = false
+                callback.onPropertyChanged(observable, propertyId)
             }
         }
 
