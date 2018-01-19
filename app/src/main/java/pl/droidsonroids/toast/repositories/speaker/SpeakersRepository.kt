@@ -10,4 +10,6 @@ interface SpeakersRepository {
     fun getSpeakersPage(pageNumber: Int = Constants.Page.FIRST): Single<Page<SpeakerDto>>
 
     fun searchSpeakersPage(query: String, pageNumber: Int = Constants.Page.FIRST): Single<Page<SpeakerDto>>
+
+    fun getSpeaker(id: Long): Single<SpeakerDto>
 }
