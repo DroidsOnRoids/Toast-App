@@ -42,15 +42,6 @@ class ContactViewModel @Inject constructor(
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    private val isFormValid
-        get() = arrayOf(nameInputError, emailInputError, messageInputError).all { it.get().isNullOrEmpty() }
-
-    private val isTopicSelected
-        get() = selectedTopicPosition.get() != 0
-
-    private val isFormNotEmpty
-        get() = arrayOf(name, email, message).all { it.get().isNotEmpty() }
-
     init {
         updateSendingEnabled()
         addSelectedTopicPositionListener()
@@ -99,7 +90,11 @@ class ContactViewModel @Inject constructor(
     }
 
     private fun updateSendingEnabled() {
-        sendingEnabled.set(isFormValid && isFormNotEmpty && isTopicSelected)
+        sendingEnabled.set(validator.isFormValid(
+                errors = arrayOf(nameInputError.get(), emailInputError.get(), messageInputError.get()),
+                topicPosition = selectedTopicPosition.get(),
+                inputs = arrayOf(name.get(), email.get(), message.get())
+        ))
     }
 
     private fun addSelectedTopicPositionListener() {
