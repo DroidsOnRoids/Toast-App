@@ -7,13 +7,16 @@ import io.reactivex.rxkotlin.subscribeBy
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDto
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
+import pl.droidsonroids.toast.utils.LoadingStatus
+import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import javax.inject.Inject
 
 
-class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository: SpeakersRepository) : ViewModel() {
+class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository: SpeakersRepository) : ViewModel(), LoadingViewModel {
     private val Any.simpleClassName: String get() = javaClass.simpleName
     private var speakerId: Long? = null
 
+    override val loadingStatus = ObservableField(LoadingStatus.PENDING)
     val name = ObservableField("")
     val job = ObservableField("")
     val avatar = ObservableField<ImageDto?>()
@@ -28,6 +31,7 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
 
     private fun loadSpeaker() {
         speakerId?.let {
+            loadingStatus.set(LoadingStatus.PENDING)
             speakersRepository.getSpeaker(it)
                     .subscribeBy(
                             onSuccess = (::onSpeakerLoaded),
@@ -37,6 +41,7 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
     }
 
     private fun onSpeakerLoaded(speakerDto: SpeakerDto) {
+        loadingStatus.set(LoadingStatus.SUCCESS)
         speakerDto.let {
             name.set(it.name)
             job.set(it.job)
@@ -45,6 +50,11 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
     }
 
     private fun onSpeakerLoadError(throwable: Throwable) {
+        loadingStatus.set(LoadingStatus.ERROR)
         Log.e(simpleClassName, "Something went wrong when fetching event details with id = $speakerId", throwable)
+    }
+
+    override fun retryLoading() {
+        loadSpeaker()
     }
 }

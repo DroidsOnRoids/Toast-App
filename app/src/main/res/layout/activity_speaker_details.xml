@@ -21,39 +21,23 @@
             android:background="@color/colorPrimary"
             tools:context=".app.speakers.SpeakerDetailsActivity">
 
-            <ImageView
-                android:id="@+id/backArrowImage"
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:contentInsetEnd="64dp"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+            <include
+                android:id="@+id/avatarBorderLayout"
+                layout="@layout/layout_avatar_image_borders"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_large"
-                android:layout_marginTop="@dimen/margin_large"
-                android:src="@drawable/ic_arrow_back"
+                android:layout_marginTop="45dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
-
-            <View
-                android:id="@+id/avatarBorderBig"
-                android:layout_width="104dp"
-                android:layout_height="104dp"
-                android:layout_marginTop="45dp"
-                android:background="@drawable/shape_circle"
-                android:backgroundTint="@color/avatarBorderBigGreen"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
-
-            <View
-                android:id="@+id/avatarBorderSmall"
-                android:layout_width="88dp"
-                android:layout_height="88dp"
-                android:layout_marginTop="53dp"
-                android:background="@drawable/shape_circle"
-                android:backgroundTint="@color/avatarBorderSmallGreen"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
 
             <ImageView
                 android:id="@+id/speakerAvatarImage"
@@ -104,5 +88,11 @@
                 tools:text="Android Developer"/>
 
         </android.support.constraint.ConstraintLayout>
+
+        <include
+            android:id="@+id/loadingLayout"
+            layout="@layout/layout_loading"
+            app:loadingViewModel="@{speakerDetailsViewModel}"
+            tools:visibility="gone"/>
     </FrameLayout>
 </layout>
