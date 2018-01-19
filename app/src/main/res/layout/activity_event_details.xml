@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="eventDetailsViewModel"
+            type="pl.droidsonroids.toast.viewmodels.event.EventDetailsViewModel"/>
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:context=".app.events.EventDetailsActivity">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsingToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="260dp"
+                android:background="@color/paleGrayBackground"
+                android:fitsSystemWindows="true"
+                app:contentScrim="@color/transparent"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+                app:titleEnabled="false">
+
+                <ImageView
+                    android:id="@+id/coverImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="true"
+                    android:scaleType="centerCrop"
+                    app:coverImage="@{eventDetailsViewModel.coverImage}"
+                    app:coverImageColorListener="@{eventDetailsViewModel.onGradientColorLoaded}"
+                    app:layout_collapseMode="parallax"/>
+
+                <ImageSwitcher
+                    android:id="@+id/gradientSwitcher"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:fitsSystemWindows="true"
+                    android:inAnimation="@anim/animation_cross_fade_in"
+                    android:outAnimation="@anim/animation_cross_fade_out"
+                    app:gradientColor="@{eventDetailsViewModel.gradientColor}"
+                    app:layout_collapseMode="parallax"/>
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:contentInsetEnd="64dp"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                    <TextView
+                        android:id="@+id/toolbarTitle"
+                        style="@style/TitleTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@{eventDetailsViewModel.title}"/>
+
+                </android.support.v7.widget.Toolbar>
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/eventDetailsScrollContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:id="@+id/eventDetailsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include
+                    layout="@layout/layout_event_details_info"
+                    app:eventDetailsViewModel="@{eventDetailsViewModel}"/>
+
+                <TextView
+                    android:id="@+id/speakersListHeaderText"
+                    style="@style/LectureTitleStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:layout_marginEnd="@dimen/margin_large"
+                    android:layout_marginStart="@dimen/margin_large"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:text="@string/speakers_title"
+                    android:textAllCaps="true"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/eventSpeakersRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingBottom="@dimen/margin_small"
+                    android:scrollbars="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/speakersListHeaderText"/>
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+        <include
+            android:id="@+id/loadingLayout"
+            layout="@layout/layout_loading"
+            app:loadingViewModel="@{eventDetailsViewModel}"
+            tools:visibility="gone"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

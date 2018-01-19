@@ -17,5 +17,10 @@
     <color name="paleGray">#e0e7f0</color>
     <color name="gray">#989ea6</color>
     <color name="blackAlpha10">#1F000000</color>
+    <color name="blackAlpha20">#33000000</color>
+    <color name="blackAlpha40">#66000000</color>
     <color name="transparent">#00000000</color>
+    <color name="transparentWhite">#00FFFFFF</color>
+    <color name="lightGreen">#BCEEDB</color>
+    <color name="photoButton">#0cc783</color>
 </resources>
