@@ -91,9 +91,9 @@ class ContactViewModel @Inject constructor(
 
     private fun updateSendingEnabled() {
         sendingEnabled.set(validator.isFormValid(
-                errors = arrayOf(nameInputError.get(), emailInputError.get(), messageInputError.get()),
-                topicPosition = selectedTopicPosition.get(),
-                inputs = arrayOf(name.get(), email.get(), message.get())
+                errors = listOf(nameInputError, emailInputError, messageInputError).map { it.get() },
+                inputs = listOf(name, email, message).map { it.get() },
+                topicPosition = selectedTopicPosition.get()
         ))
     }
 

@@ -10,14 +10,14 @@ private const val MAX_MESSAGE_LENGTH = 250
 
 class Validator @Inject constructor(private val stringProvider: StringProvider) {
 
-    fun isFormValid(errors: Array<String?>, topicPosition: Int, inputs: Array<String>) =
-            hasNoErrors(errors) && isTopicSelected(topicPosition) && isFormNotEmpty(inputs)
+    fun isFormValid(errors: List<String?>, inputs: List<String>, topicPosition: Int) =
+            formHasNo(errors) && isFormNotEmpty(inputs) && isTopicSelected(topicPosition)
 
-    private fun hasNoErrors(errors: Array<String?>) = errors.all { it.isNullOrEmpty() }
+    private fun formHasNo(errors: List<String?>) = errors.all { it.isNullOrEmpty() }
 
     private fun isTopicSelected(topicPosition: Int) = topicPosition != 0
 
-    private fun isFormNotEmpty(inputs: Array<String>) = inputs.all { it.isNotEmpty() }
+    private fun isFormNotEmpty(inputs: List<String>) = inputs.all { it.isNotEmpty() }
 
     fun getEmailError(emailInput: CharSequence): String? {
         return when {
