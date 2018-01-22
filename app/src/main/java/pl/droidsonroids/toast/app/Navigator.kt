@@ -1,6 +1,8 @@
 package pl.droidsonroids.toast.app
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.util.Pair
 import android.support.v7.app.AppCompatActivity
@@ -22,6 +24,17 @@ class Navigator @Inject constructor() {
             is NavigationRequest.SpeakerDetails -> showSpeakerDetails(context, navigationRequest)
             is NavigationRequest.EventDetails -> showEventDetails(context, navigationRequest)
             is NavigationRequest.Photos -> showPhotos(context, navigationRequest)
+            is NavigationRequest.Map -> showMap(context, navigationRequest)
+        }
+    }
+
+    private fun showMap(context: Context, navigationRequest: NavigationRequest.Map) {
+        with(navigationRequest) {
+            val intent = Intent(Intent.ACTION_VIEW)
+                    .setData(Uri.parse("geo:0,0?q=${coordinatesDto.latitude},${coordinatesDto.longitude}($placeName)"))
+            if (intent.resolveActivity(context.packageManager) != null) {
+                context.startActivity(intent)
+            }
         }
     }
 

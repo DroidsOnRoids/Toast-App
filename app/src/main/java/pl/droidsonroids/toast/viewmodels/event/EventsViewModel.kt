@@ -48,9 +48,14 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
         loadingStatus.set(LoadingStatus.PENDING)
         eventsDisposable = eventsRepository.getEvents()
                 .flatMap { (upcomingEvent, previousEventsPage) ->
-                    val upcomingEventViewModel = upcomingEvent.toViewModel {
-                        navigationSubject.onNext(NavigationRequest.EventDetails(it))
-                    }
+                    val upcomingEventViewModel = upcomingEvent.toViewModel(
+                            onLocationClick = {
+                                navigationSubject.onNext(NavigationRequest.Map(it, upcomingEvent.placeName))
+                            },
+                            onClick = {
+                                navigationSubject.onNext(NavigationRequest.EventDetails(it))
+                            }
+                    )
                     mapToSingleEventItemViewModelsPage(previousEventsPage)
                             .map { upcomingEventViewModel to it }
                             .toMaybe()
