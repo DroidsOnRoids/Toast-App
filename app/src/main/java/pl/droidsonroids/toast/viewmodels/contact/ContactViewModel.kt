@@ -7,7 +7,8 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
-import pl.droidsonroids.toast.app.utils.Validator
+import pl.droidsonroids.toast.app.utils.ContactFormValidator
+import pl.droidsonroids.toast.app.utils.callbacks.OnPropertyChangedSkippableCallback
 import pl.droidsonroids.toast.data.MessageType
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
 import pl.droidsonroids.toast.repositories.contact.ContactRepository
@@ -18,7 +19,7 @@ import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import javax.inject.Inject
 
 class ContactViewModel @Inject constructor(
-        private val validator: Validator,
+        private val contactFormValidator: ContactFormValidator,
         private val contactRepository: ContactRepository
 ) : ViewModel(), LoadingViewModel, NavigatingViewModel {
 
@@ -36,9 +37,9 @@ class ContactViewModel @Inject constructor(
     val email: ObservableField<String> = ObservableField("")
     val message: ObservableField<String> = ObservableField("")
 
-    private val nameChangedCallback = OnPropertyChangedSkippableCallback(onTextChangedCallback(name))
-    private val emailChangedCallback = OnPropertyChangedSkippableCallback(onTextChangedCallback(email))
-    private val messageChangedCallback = OnPropertyChangedSkippableCallback(onTextChangedCallback(message))
+    private val nameChangedCallback = OnPropertyChangedSkippableCallback { onTextChanged(name) }
+    private val emailChangedCallback = OnPropertyChangedSkippableCallback { onTextChanged(email) }
+    private val messageChangedCallback = OnPropertyChangedSkippableCallback { onTextChanged(message) }
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
@@ -67,17 +68,13 @@ class ContactViewModel @Inject constructor(
         message.addOnPropertyChangedCallback(messageChangedCallback)
     }
 
-    private fun onTextChangedCallback(property: ObservableField<String>): Observable.OnPropertyChangedCallback {
-        return object : Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                when (property) {
-                    name -> nameInputError.set(validator.getNameError(property.get()))
-                    email -> emailInputError.set(validator.getEmailError(property.get()))
-                    message -> messageInputError.set(validator.getMessageError(property.get()))
-                }
-                updateSendingEnabled()
-            }
+    private fun onTextChanged(property: ObservableField<String>) {
+        when (property) {
+            name -> nameInputError.set(contactFormValidator.getNameError(property.get()))
+            email -> emailInputError.set(contactFormValidator.getEmailError(property.get()))
+            message -> messageInputError.set(contactFormValidator.getMessageError(property.get()))
         }
+        updateSendingEnabled()
     }
 
     private fun setMessage(messageDto: MessageDto) {
@@ -90,7 +87,7 @@ class ContactViewModel @Inject constructor(
     }
 
     private fun updateSendingEnabled() {
-        sendingEnabled.set(validator.isFormValid(
+        sendingEnabled.set(contactFormValidator.isFormValid(
                 errors = listOf(nameInputError, emailInputError, messageInputError).map { it.get() },
                 inputs = listOf(name, email, message).map { it.get() },
                 topicPosition = selectedTopicPosition.get()
@@ -111,10 +108,6 @@ class ContactViewModel @Inject constructor(
         compositeDisposable.dispose()
     }
 
-    fun saveMessage() {
-        contactRepository.saveMessage(createMessageDto())
-    }
-
     fun onSendClick() {
         val message = createMessageDto()
         loadingStatus.set(LoadingStatus.PENDING)
@@ -123,6 +116,7 @@ class ContactViewModel @Inject constructor(
                         onComplete = (::onSendSuccessfully),
                         onError = { loadingStatus.set(LoadingStatus.ERROR) }
                 )
+        onSendSuccessfully()
     }
 
     private fun createMessageDto(): MessageDto {
@@ -143,8 +137,8 @@ class ContactViewModel @Inject constructor(
         clearForm()
         saveMessage()
         clearErrors()
-        skipInputChangeCallbacks()
         showSuccessDialog()
+        skipInputChangeCallbacks()
         loadingStatus.set(LoadingStatus.SUCCESS)
     }
 
@@ -153,6 +147,10 @@ class ContactViewModel @Inject constructor(
         name.set("")
         email.set("")
         message.set("")
+    }
+
+    fun saveMessage() {
+        contactRepository.saveMessage(createMessageDto())
     }
 
     private fun clearErrors() {
@@ -169,19 +167,5 @@ class ContactViewModel @Inject constructor(
 
     private fun showSuccessDialog() {
         navigationSubject.onNext(NavigationRequest.MessageSent)
-    }
-
-    inner class OnPropertyChangedSkippableCallback(private val callback: Observable.OnPropertyChangedCallback) : Observable.OnPropertyChangedCallback() {
-
-        var skipNextInvocation = false
-
-        override fun onPropertyChanged(observable: Observable?, propertyId: Int) {
-            if (skipNextInvocation) {
-                skipNextInvocation = false
-            } else {
-                callback.onPropertyChanged(observable, propertyId)
-            }
-        }
-
     }
 }
