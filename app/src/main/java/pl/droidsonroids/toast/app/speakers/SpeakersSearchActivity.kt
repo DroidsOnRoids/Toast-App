@@ -1,6 +1,7 @@
 package pl.droidsonroids.toast.app.speakers
 
 import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.arch.lifecycle.ViewModelProviders
@@ -20,7 +21,10 @@ import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.activity_speakers_search.*
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
-import pl.droidsonroids.toast.app.utils.*
+import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
+import pl.droidsonroids.toast.app.utils.RevealAnimatorBuilder
+import pl.droidsonroids.toast.app.utils.ViewTreeObserverBuilder
+import pl.droidsonroids.toast.app.utils.disableActivityTransitionAnimations
 import pl.droidsonroids.toast.databinding.ActivitySpeakersSearchBinding
 import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersSearchViewModel
@@ -71,7 +75,8 @@ class SpeakersSearchActivity : BaseActivity() {
             when (item.itemId) {
                 android.R.id.home -> consume {
                     setKeyboardVisibility(isVisible = false)
-                    showParentWithLeavingAnimation() }
+                    showParentWithLeavingAnimation()
+                }
                 else -> super.onOptionsItemSelected(item)
             }
 
@@ -155,7 +160,7 @@ class SpeakersSearchActivity : BaseActivity() {
 
     private fun playAnimatorsTogether(toolbarAnimator: Animator, contentAnimator: ObjectAnimator, endAction: () -> Unit) {
         with(AnimatorSet()) {
-            addListener(object : AnimatorListenerAdapter {
+            addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animator: Animator) {
                     endAction()
                 }
