@@ -1,6 +1,8 @@
 package pl.droidsonroids.toast.app.home
 
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -17,9 +19,16 @@ import pl.droidsonroids.toast.viewmodels.MainViewModel
 import javax.inject.Inject
 
 
-private const val CURRENT_TITLE: String = "current_title"
-
 class MainActivity : BaseActivity() {
+
+
+    companion object {
+        private const val CURRENT_TITLE = "current_title"
+
+        fun createIntent(context: Context): Intent {
+            return Intent(context, MainActivity::class.java)
+        }
+    }
 
     private lateinit var homeFragmentTransaction: HomeFragmentsTransaction
     private var navigationDisposable: Disposable? = null

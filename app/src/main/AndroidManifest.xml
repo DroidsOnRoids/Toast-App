@@ -46,6 +46,11 @@
         <activity
             android:name=".app.events.TalkDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar.Dialog.TranslucentStatusBar"/>
+        <activity
+            android:name=".app.photos.PhotosActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
