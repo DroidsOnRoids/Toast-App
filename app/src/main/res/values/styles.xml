@@ -21,11 +21,14 @@
     </style>
 
     <style name="AppTheme.NoActionBar.Dialog">
-        <item name="android:statusBarColor">@color/blackAlpha40</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.Dialog.TranslucentStatusBar">
+        <item name="android:statusBarColor">@color/blackAlpha40</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>

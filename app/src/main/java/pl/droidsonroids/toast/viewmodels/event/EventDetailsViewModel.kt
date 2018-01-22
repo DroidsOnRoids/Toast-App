@@ -41,8 +41,10 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
     }
     val eventSpeakersSubject: BehaviorSubject<List<EventSpeakerItemViewModel>> = BehaviorSubject.create()
 
+    var photos: List<ImageDto> = emptyList()
+
     fun onPhotosClick() {
-        Log.d(simpleClassName, "On photos clicked")
+        navigationSubject.onNext(NavigationRequest.Photos(photos, eventId, ParentView.EVENT_DETAILS))
     }
 
     fun init(id: Long) {
@@ -70,6 +72,7 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
             placeStreet.set(it.placeStreet)
             coverImage.set(it.coverImages.firstOrNull())
             photosAvailable.set(it.photos.isNotEmpty())
+            photos = it.photos
             onTalksLoaded(it.talks)
         }
     }
