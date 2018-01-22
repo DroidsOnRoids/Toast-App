@@ -10,9 +10,9 @@ import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.app.utils.MainCategories
+import pl.droidsonroids.toast.app.utils.ParentView
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
-import pl.droidsonroids.toast.utils.ParentView
 import pl.droidsonroids.toast.utils.consume
 
 class PhotosActivity : BaseActivity() {
@@ -29,7 +29,7 @@ class PhotosActivity : BaseActivity() {
         }
     }
 
-    private val parentEventId by lazy { intent.getLongExtra(EVENT_ID_KEY, Constants.Event.NO_EVENT_ID) }
+    private val parentEventId by lazy { intent.getLongExtra(EVENT_ID_KEY, Constants.Item.NO_ID) }
     private val parentView by lazy { intent.getSerializableExtra(PARENT_VIEW_KEY) }
 
     override fun onCreate(savedInstanceState: Bundle?) {

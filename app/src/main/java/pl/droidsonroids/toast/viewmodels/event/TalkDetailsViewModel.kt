@@ -19,7 +19,7 @@ class TalkDetailsViewModel @Inject constructor() : ViewModel(), NavigatingViewMo
     val description: ObservableField<String> = ObservableField()
     val speakerItemViewModel: ObservableField<SpeakerItemViewModel> = ObservableField()
 
-    private var eventId: Long = Constants.Event.NO_EVENT_ID
+    private var eventId: Long = Constants.Item.NO_ID
 
     fun init(eventId: Long, talkDto: TalkDto) {
         this.eventId = eventId

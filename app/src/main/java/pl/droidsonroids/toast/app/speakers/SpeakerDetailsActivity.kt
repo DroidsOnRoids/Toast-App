@@ -14,6 +14,7 @@ import pl.droidsonroids.toast.app.utils.ParentView
 import pl.droidsonroids.toast.databinding.ActivitySpeakerDetailsBinding
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakerDetailsViewModel
 
 class SpeakerDetailsActivity : BaseActivity() {
@@ -30,18 +31,22 @@ class SpeakerDetailsActivity : BaseActivity() {
         }
     }
 
-    private val speakerId: Long by lazy {
-        intent.getLongExtra(SPEAKER_ID, 0)
-    }
-
     private val speakerDetailsViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory)
                 .get(speakerId.toString(), SpeakerDetailsViewModel::class.java)
     }
 
-    private val parentEventId by lazy { intent.getLongExtra(EVENT_ID_KEY, Constants.Event.NO_EVENT_ID) }
+    private val speakerId: Long by lazy {
+        intent.getLongExtra(SPEAKER_ID, Constants.Item.NO_ID)
+    }
 
-    private val parentView by lazy { intent.getSerializableExtra(PARENT_VIEW_KEY) }
+    private val parentEventId by lazy {
+        intent.getLongExtra(EVENT_ID_KEY, Constants.Item.NO_ID)
+    }
+
+    private val parentView by lazy {
+        intent.getSerializableExtra(PARENT_VIEW_KEY)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,10 +59,7 @@ class SpeakerDetailsActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            android.R.id.home -> {
-                handleUpAction()
-                true
-            }
+            android.R.id.home -> consume { handleUpAction() }
             else -> super.onOptionsItemSelected(item)
         }
     }

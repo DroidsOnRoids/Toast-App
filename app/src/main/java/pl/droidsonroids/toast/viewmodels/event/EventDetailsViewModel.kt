@@ -28,7 +28,7 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
     private val Any.simpleClassName: String get() = javaClass.simpleName
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.PENDING)
-    private var eventId = Constants.Event.NO_EVENT_ID
+    private var eventId = Constants.Item.NO_ID
     val title = ObservableField("")
     val date = ObservableField<Date>()
     val placeName = ObservableField("")
@@ -48,7 +48,7 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
     }
 
     fun init(id: Long) {
-        if (eventId == Constants.Event.NO_EVENT_ID) {
+        if (eventId == Constants.Item.NO_ID) {
             eventId = id
             loadEvent()
         }

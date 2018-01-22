@@ -11,6 +11,7 @@ import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.data.dto.event.TalkDto
 import pl.droidsonroids.toast.databinding.ActivityTalkDetailsBinding
+import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.event.TalkDetailsViewModel
 import javax.inject.Inject
@@ -34,7 +35,7 @@ class TalkDetailsActivity : BaseActivity() {
     }
 
     private val eventId by lazy {
-        intent.getLongExtra(EVENT_ID_KEY, 0L)
+        intent.getLongExtra(EVENT_ID_KEY, Constants.Item.NO_ID)
     }
 
     private val talkDetailsViewModel by lazy {

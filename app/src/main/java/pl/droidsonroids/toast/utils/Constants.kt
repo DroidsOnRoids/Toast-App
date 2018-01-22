@@ -25,7 +25,7 @@ object Constants {
         const val CARD = "card"
     }
 
-    object Event {
-        const val NO_EVENT_ID = -1L
+    object Item {
+        const val NO_ID = -1L
     }
 }
