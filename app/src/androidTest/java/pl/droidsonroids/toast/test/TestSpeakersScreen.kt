@@ -5,6 +5,7 @@ import org.junit.Rule
 import org.junit.Test
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.home.MainActivity
+import pl.droidsonroids.toast.function.getString
 import pl.droidsonroids.toast.robot.SpeakersRobot
 
 class TestSpeakersScreen {
@@ -22,6 +23,23 @@ class TestSpeakersScreen {
         goToSpeakersScreen()
         with(SpeakersRobot()){
             performClickOnElementWithId(R.id.searchImageButton)
+        }
+    }
+
+    @Test
+    fun isToolbarDisplayed() {
+        val toolbarTitle = getString(R.string.speakers_title)
+        goToSpeakersScreen()
+        with(SpeakersRobot()){
+            checkIfToolbarWithTitleIsDisplayed(toolbarTitle, R.id.toolbar)
+        }
+    }
+
+    @Test
+    fun isSearchIconDisplayed() {
+        goToSpeakersScreen()
+        with(SpeakersRobot()) {
+            checkIfElementWithIdIsDisplayed(R.id.searchImageButton)
         }
     }
 
