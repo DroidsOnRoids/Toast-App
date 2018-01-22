@@ -33,8 +33,12 @@ class Navigator @Inject constructor() {
         activity.startActivity(intent, options)
     }
 
-    fun showSearchSpeakersWithRevealAnimation(activity: Activity, animatedView: View, revealCenterX: Int, revealCenterY: Int) {
-        val intent = SpeakersSearchActivity.createIntent(activity, revealCenterX, revealCenterY)
+    fun showSearchSpeakersWithRevealAnimation(activity: Activity, centerCoordinates: kotlin.Pair<Int, Int>) {
+        val intent = SpeakersSearchActivity.createIntent(
+                activity,
+                revealCenterX = centerCoordinates.first,
+                revealCenterY = centerCoordinates.second)
+
         activity.startActivity(intent)
         activity.disableActivityTransitionAnimations()
     }

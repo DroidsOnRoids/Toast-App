@@ -95,9 +95,7 @@ class MainActivity : BaseActivity() {
                 .subscribe {
                     navigator.showSearchSpeakersWithRevealAnimation(
                             activity = this,
-                            animatedView = searchImageButton,
-                            revealCenterX = getViewCenterCoordinates(searchImageButton).first,
-                            revealCenterY = getViewCenterCoordinates(searchImageButton).second)
+                            centerCoordinates = getViewCenterCoordinates(searchImageButton))
                 }
     }
 
@@ -134,7 +132,7 @@ class MainActivity : BaseActivity() {
     private fun getViewCenterCoordinates(view: View): Pair<Int, Int> {
         val centerX = (view.x + view.width / 2).toInt()
         val centerY = (view.y + view.height / 2).toInt()
-        return Pair(centerX, centerY)
+        return centerX to centerY
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
