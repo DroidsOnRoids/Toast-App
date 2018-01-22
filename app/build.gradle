@@ -37,7 +37,7 @@ android {
         targetSdkVersion 26
         versionCode commitTimestamp
         versionName "0.1.$commitsOnBranchCount"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "pl.droidsonroids.toast.RxAndroidJUnitRunner"
 
         buildConfigField 'String', 'BASE_API_URL', '"https://api.letswift.pl/api/v1/"'
         buildConfigField 'String', 'BASE_IMAGES_URL', '"https://api.letswift.pl"'
@@ -143,9 +143,13 @@ dependencies {
     }
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test:rules:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     androidTestImplementation 'com.android.support.test.uiautomator:uiautomator-v18:2.1.3'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.1'
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$versions.espresso"
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$versions.espresso"
+    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$versions.espresso"
+    androidTestImplementation ('com.squareup.rx.idler:rx2-idler:0.9.0'){
+        exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
+    }
 }
 
 repositories {

@@ -77,8 +77,7 @@ class EventDetailsViewModelTest : RxTestBase() {
 
         eventDetailsViewModel.onPhotosClick()
 
-        testObserver
-                .assertValue(NavigationRequest.Photos(testPhotos, eventId, ParentView.EVENT_DETAILS))
+        testObserver.assertValue(NavigationRequest.Photos(testPhotos, eventId, ParentView.EVENT_DETAILS))
     }
 
     private fun assertEventDetails() {
