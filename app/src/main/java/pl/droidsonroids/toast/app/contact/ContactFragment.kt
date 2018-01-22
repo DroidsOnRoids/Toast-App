@@ -76,13 +76,11 @@ class ContactFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setupIWantToSpinner()
-
+        setupTopicSpinner()
         setupMessageTextBox()
     }
 
-    private fun setupIWantToSpinner() {
+    private fun setupTopicSpinner() {
         val adapter = object : ArrayAdapter<String>(context, R.layout.item_contact_spinner, resources.getStringArray(R.array.contact_topics)) {
             override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
                 val dropDownView = super.getDropDownView(position, convertView, parent)
@@ -93,7 +91,8 @@ class ContactFragment : BaseFragment() {
             }
         }
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        iWantToSpinner.adapter = adapter
+        topicSpinner.adapter = adapter
+        topicSpinner.setOnLongClickListener { false }
     }
 
     private fun setupMessageTextBox() {
