@@ -8,6 +8,7 @@ import javax.inject.Inject
 
 class PhotosDetailsViewModel @Inject constructor() : ViewModel() {
     var singlePhotoViewModels: List<SinglePhotoViewModel> = emptyList()
+        private set
     val photoLoadedSubject: PublishSubject<Long> = PublishSubject.create()
 
     fun init(photos: List<ImageDto>) {

@@ -5,13 +5,9 @@ import com.nhaarman.mockito_kotlin.verify
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
-import pl.droidsonroids.toast.data.dto.ImageDto
+import pl.droidsonroids.toast.testImageDto
 
 class ImageMapperTest {
-    private val testImageDto = ImageDto(
-            "originalSizeUrl",
-            "thumbSizeUrl"
-    )
     private val position = 1L
 
     @Test
