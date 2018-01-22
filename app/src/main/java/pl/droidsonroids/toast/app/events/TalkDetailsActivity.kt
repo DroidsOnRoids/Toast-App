@@ -18,9 +18,11 @@ import javax.inject.Inject
 class TalkDetailsActivity : BaseActivity() {
     companion object {
         private const val TALK_DTO_KEY = "talkDto"
+        private const val EVENT_ID_KEY = "event_key"
         fun createIntent(context: Context, navigationRequest: NavigationRequest.TalkDetails): Intent {
             return Intent(context, TalkDetailsActivity::class.java)
                     .putExtra(TALK_DTO_KEY, navigationRequest.talkDto)
+                    .putExtra(EVENT_ID_KEY, navigationRequest.eventId)
         }
     }
 
@@ -29,6 +31,10 @@ class TalkDetailsActivity : BaseActivity() {
 
     private val talkDto by lazy {
         intent.getParcelableExtra<TalkDto>(TALK_DTO_KEY)
+    }
+
+    private val eventId by lazy {
+        intent.getLongExtra(EVENT_ID_KEY, 0L)
     }
 
     private val talkDetailsViewModel by lazy {
@@ -57,7 +63,7 @@ class TalkDetailsActivity : BaseActivity() {
     }
 
     private fun setupViewModel(binding: ActivityTalkDetailsBinding) {
-        talkDetailsViewModel.init(talkDto)
+        talkDetailsViewModel.init(eventId, talkDto)
         navigationDisposable = talkDetailsViewModel.navigationSubject
                 .subscribe(::handleNavigationRequest)
         binding.talkDetailsViewModel = talkDetailsViewModel

@@ -19,7 +19,10 @@ class TalkDetailsViewModel @Inject constructor() : ViewModel(), NavigatingViewMo
     val description: ObservableField<String> = ObservableField()
     val speakerItemViewModel: ObservableField<SpeakerItemViewModel> = ObservableField()
 
-    fun init(talkDto: TalkDto) {
+    private var eventId: Long = Constants.Event.NO_EVENT_ID
+
+    fun init(eventId: Long, talkDto: TalkDto) {
+        this.eventId = eventId
         talkDto.let {
             id.set(it.id)
             title.set(it.title)
@@ -29,7 +32,7 @@ class TalkDetailsViewModel @Inject constructor() : ViewModel(), NavigatingViewMo
     }
 
     private fun onSpeakerClick(speakerId: Long) {
-        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId, Constants.Event.NO_EVENT_ID, ParentView.EVENT_DETAILS))
+        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId, eventId, ParentView.EVENT_DETAILS))
     }
 
     fun onReadLess() {

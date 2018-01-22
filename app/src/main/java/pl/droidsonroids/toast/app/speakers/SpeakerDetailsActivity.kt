@@ -19,13 +19,13 @@ class SpeakerDetailsActivity : BaseActivity() {
     companion object {
         private const val SPEAKER_ID: String = "speaker_id"
         private const val PARENT_VIEW_KEY = "parent_view_key"
-        private const val PARENT_EVENT_ID = "parent_event_id"
+        private const val EVENT_ID_KEY = "parent_event_id"
 
         fun createIntent(context: Context, navigationRequest: NavigationRequest.SpeakerDetails): Intent {
             return Intent(context, SpeakerDetailsActivity::class.java)
                     .putExtra(SPEAKER_ID, navigationRequest.id)
                     .putExtra(PARENT_VIEW_KEY, navigationRequest.parentView)
-                    .putExtra(PARENT_EVENT_ID, navigationRequest.eventId)
+                    .putExtra(EVENT_ID_KEY, navigationRequest.eventId)
         }
     }
 
@@ -38,7 +38,7 @@ class SpeakerDetailsActivity : BaseActivity() {
                 .get(speakerId.toString(), SpeakerDetailsViewModel::class.java)
     }
 
-    private val parentEventId by lazy { intent.getLongExtra(PARENT_EVENT_ID, Constants.Event.NO_EVENT_ID) }
+    private val parentEventId by lazy { intent.getLongExtra(EVENT_ID_KEY, Constants.Event.NO_EVENT_ID) }
 
     private val parentView by lazy { intent.getSerializableExtra(PARENT_VIEW_KEY) }
 
