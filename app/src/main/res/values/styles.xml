@@ -143,7 +143,7 @@
     </style>
 
     <style name="ContactMessageInputStyle">
-        <item name="android:background">@drawable/contact_message_shape</item>
+        <item name="android:background">@drawable/contact_message_selector</item>
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@style/TextAppearance.Roboto</item>
         <item name="android:textStyle">normal</item>

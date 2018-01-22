@@ -25,6 +25,7 @@ import pl.droidsonroids.toast.utils.LoadingStatus
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 private const val COLOR_TRANSPARENT = 0x00FFFFFF
 
 @BindingAdapter("eventTime")
