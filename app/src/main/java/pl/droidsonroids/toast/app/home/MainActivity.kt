@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonroids.toast.R
@@ -36,7 +37,7 @@ class MainActivity : BaseActivity() {
         setupToolbar(savedInstanceState)
         setupNavigationView()
         initHomeFragmentTransaction(showEventsFragment = savedInstanceState == null)
-        
+
         setupViewModel(mainBinding)
     }
 
@@ -82,7 +83,13 @@ class MainActivity : BaseActivity() {
     private fun setupViewModel(mainBinding: ActivityMainBinding) {
         mainBinding.mainViewModel = mainViewModel
         navigationDisposable = mainViewModel.navigationSubject
-                .subscribe { navigator.dispatch(this, searchImageButton, it) }
+                .subscribe {
+                    navigator.showSearchSpeakersWithRevealAnimation(
+                            activity = this,
+                            animatedView = searchImageButton,
+                            revealCenterX = getViewCenterCoordinates(searchImageButton).first,
+                            revealCenterY = getViewCenterCoordinates(searchImageButton).second)
+                }
     }
 
     private fun setHomeNavigationItemSelectedListener() {
@@ -113,6 +120,12 @@ class MainActivity : BaseActivity() {
 
     private fun setHomeTitleText(titleRes: Int) {
         homeTitle.text = getText(titleRes)
+    }
+
+    private fun getViewCenterCoordinates(view: View): Pair<Int, Int> {
+        val centerX = (view.x + view.width / 2).toInt()
+        val centerY = (view.y + view.height / 2).toInt()
+        return Pair(centerX, centerY)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

@@ -31,10 +31,10 @@ class Navigator @Inject constructor() {
         activity.startActivity(intent, options)
     }
 
-    fun dispatch(activity: Activity, animatedView: View, navigationRequest: NavigationRequest) {
-        if (navigationRequest is NavigationRequest.SpeakersSearch) {
-            showSpeakersSearchWithRevealAnimation(activity, animatedView)
-        }
+    fun showSearchSpeakersWithRevealAnimation(activity: Activity, animatedView: View, revealCenterX: Int, revealCenterY: Int) {
+        val intent = SpeakersSearchActivity.createIntent(activity, revealCenterX, revealCenterY)
+        activity.startActivity(intent)
+        activity.disableActivityTransitionAnimations()
     }
 
     private fun showEventDetails(context: Context, navigationRequest: NavigationRequest.EventDetails) {
@@ -45,14 +45,5 @@ class Navigator @Inject constructor() {
     private fun showSpeakerDetails(context: Context, navigationRequest: NavigationRequest.SpeakerDetails) {
         val intent = SpeakerDetailsActivity.createIntent(context, navigationRequest)
         context.startActivity(intent)
-    }
-
-    private fun showSpeakersSearchWithRevealAnimation(activity: Activity, animatedView: View) {
-        val revealCenterX = (animatedView.x + animatedView.width / 2).toInt()
-        val revealCenterY = (animatedView.y + animatedView.height / 2).toInt()
-
-        val intent = SpeakersSearchActivity.createIntent(activity, revealCenterX, revealCenterY)
-        activity.startActivity(intent)
-        activity.disableActivityTransitionAnimations()
     }
 }

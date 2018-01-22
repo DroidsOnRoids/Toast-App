@@ -7,11 +7,12 @@ import android.view.animation.AccelerateInterpolator
 
 
 object RevealAnimatorBuilder {
+    private const val ANIM_DURATION_MILLIS = 300L
 
     fun build(animatedView: View, centerX: Int, centerY: Int, isGrowing: Boolean): Animator {
         val finalRadius = (Math.max(animatedView.width, animatedView.height)).toFloat()
         val revealAnimation = createRevealAnimation(isGrowing, animatedView, centerX, centerY, finalRadius)
-        revealAnimation.duration = 300
+        revealAnimation.duration = ANIM_DURATION_MILLIS
         revealAnimation.interpolator = AccelerateInterpolator()
 
         return revealAnimation

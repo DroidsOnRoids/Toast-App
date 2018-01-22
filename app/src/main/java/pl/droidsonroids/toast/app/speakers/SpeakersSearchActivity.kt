@@ -64,7 +64,6 @@ class SpeakersSearchActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        setKeyboardVisibility(isVisible = false)
         showParentWithLeavingAnimation()
     }
 
@@ -156,7 +155,7 @@ class SpeakersSearchActivity : BaseActivity() {
 
     private fun playAnimatorsTogether(toolbarAnimator: Animator, contentAnimator: ObjectAnimator, endAction: () -> Unit) {
         with(AnimatorSet()) {
-            addListener(object : AnimatorEndListener {
+            addListener(object : AnimatorListenerAdapter {
                 override fun onAnimationEnd(animator: Animator) {
                     endAction()
                 }

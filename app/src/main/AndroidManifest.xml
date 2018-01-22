@@ -32,7 +32,7 @@
             android:parentActivityName=".app.home.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.Dialog"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
         <activity
             android:name=".app.events.EventDetailsActivity"
             android:label=""
@@ -45,7 +45,7 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".app.events.TalkDetailsActivity"
-            android:theme="@style/AppTheme.NoActionBar.Dialog"/>
+            android:theme="@style/TranslucentStatusBarDialog"/>
     </application>
 
 </manifest>
