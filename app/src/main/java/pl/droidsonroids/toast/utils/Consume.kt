@@ -1,6 +1,5 @@
 package pl.droidsonroids.toast.utils
 
-fun consume(func: () -> Unit): Boolean {
-    func()
-    return true
+inline fun consume(func: () -> Unit): Boolean {
+   return true.also { func() }
 }

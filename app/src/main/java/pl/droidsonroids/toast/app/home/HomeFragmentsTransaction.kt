@@ -35,7 +35,7 @@ class HomeFragmentsTransaction(private val supportFragmentManager: FragmentManag
 
     private fun showFragmentWithAnimation(fragmentTag: String, fragmentCreator: () -> Fragment) {
         supportFragmentManager.beginTransaction {
-            setCustomAnimations(R.anim.animation_translated_cross_fade_in, R.anim.animation_cross_fade_out)
+            setCustomAnimations(R.anim.animation_translated_cross_fade_in, R.anim.animation_fade_out)
 
             val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
             currentFragment?.let { detach(it) }
