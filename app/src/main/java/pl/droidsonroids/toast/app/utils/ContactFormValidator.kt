@@ -8,7 +8,16 @@ import javax.inject.Inject
 private const val MIN_MESSAGE_LENGTH = 40
 private const val MAX_MESSAGE_LENGTH = 250
 
-class Validator @Inject constructor(private val stringProvider: StringProvider) {
+class ContactFormValidator @Inject constructor(private val stringProvider: StringProvider) {
+
+    fun isFormValid(errors: List<String?>, inputs: List<String>, topicPosition: Int) =
+            formHasNo(errors) && isFormNotEmpty(inputs) && isTopicSelected(topicPosition)
+
+    private fun formHasNo(errors: List<String?>) = errors.all { it.isNullOrEmpty() }
+
+    private fun isTopicSelected(topicPosition: Int) = topicPosition != 0
+
+    private fun isFormNotEmpty(inputs: List<String>) = inputs.all { it.isNotEmpty() }
 
     fun getEmailError(emailInput: CharSequence): String? {
         return when {
