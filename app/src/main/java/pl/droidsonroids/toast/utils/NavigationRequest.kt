@@ -11,6 +11,6 @@ sealed class NavigationRequest {
     data class TalkDetails(val talkDto: TalkDto) : NavigationRequest()
     object Close : NavigationRequest()
     data class Photos(val photos: List<ImageDto>, val eventId: Long, val parentView: ParentView) : NavigationRequest()
-    data class SinglePhoto(val photos: List<ImageDto>, val position: Int) : NavigationRequest()
+    data class SinglePhoto(val photos: List<ImageDto>, val position: Long) : NavigationRequest()
 }
 

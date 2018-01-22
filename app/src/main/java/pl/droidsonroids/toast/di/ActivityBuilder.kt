@@ -6,7 +6,7 @@ import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.events.TalkDetailsActivity
 import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.app.photos.PhotosActivity
-import pl.droidsonroids.toast.app.photos.SinglePhotoActivity
+import pl.droidsonroids.toast.app.photos.PhotosDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakerDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
 
@@ -31,5 +31,5 @@ abstract class ActivityBuilder {
     abstract fun bindPhotosActivity(): PhotosActivity
 
     @ContributesAndroidInjector
-    abstract fun bindSinglePhotoActivity(): SinglePhotoActivity
+    abstract fun bindSinglePhotoActivity(): PhotosDetailsActivity
 }

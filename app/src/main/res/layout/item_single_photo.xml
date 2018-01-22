@@ -1,35 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
-            name="photo"
-            type="pl.droidsonroids.toast.data.dto.ImageDto"/>
-
-        <variable
-            name="position"
-            type="Long"/>
-
-        <variable
-            name="imageLoaded"
-            type="kotlin.jvm.functions.Function0&lt;kotlin.Unit>"/>
+            name="singlePhotoViewModel"
+            type="pl.droidsonroids.toast.viewmodels.photos.SinglePhotoViewModel"/>
 
         <import
             type="pl.droidsonroids.toast.utils.Constants.PhotoTransition"/>
     </data>
 
-    <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-               xmlns:app="http://schemas.android.com/apk/res-auto"
-               android:id="@+id/photo"
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               app:imageLoadedListener="@{imageLoaded}"
-               android:contentDescription="@string/meetup_photo_desc"
-               android:fitsSystemWindows="true"
-               android:scaleType="fitCenter"
-               app:coverImage="@{photo}"
-               app:elementId="@{position}"
-               app:transitionName="@{PhotoTransition.PHOTO}"/>
+    <ImageView
+        android:id="@+id/photo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/meetup_photo_desc"
+        android:fitsSystemWindows="true"
+        android:scaleType="fitCenter"
+        app:coverImage="@{singlePhotoViewModel.image}"
+        app:elementId="@{singlePhotoViewModel.position}"
+        app:imageLoadedListener="@{singlePhotoViewModel.photoLoadedCallback}"
+        app:transitionName="@{PhotoTransition.PHOTO}"/>
 </layout>
 

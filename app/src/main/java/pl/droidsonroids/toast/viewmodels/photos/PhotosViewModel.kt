@@ -4,7 +4,7 @@ import android.arch.lifecycle.ViewModel
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.data.dto.ImageDto
-import pl.droidsonroids.toast.data.mapper.toViewModel
+import pl.droidsonroids.toast.data.mapper.toItemViewModel
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import javax.inject.Inject
@@ -17,13 +17,13 @@ class PhotosViewModel @Inject constructor() : ViewModel(), NavigatingViewModel {
     private var photosDto: List<ImageDto> = emptyList()
 
     fun init(photos: List<ImageDto>) {
-        if (photosSubject.value == null) {
+        if (!photosSubject.hasValue()) {
             photosDto = photos
-            photosSubject.onNext(photos.mapIndexed { index, image -> image.toViewModel { onPhotoItemClicked(index) } })
+            photosSubject.onNext(photos.mapIndexed { index, image -> image.toItemViewModel(index.toLong(), ::onPhotoItemClicked) })
         }
     }
 
-    private fun onPhotoItemClicked(position: Int) {
+    private fun onPhotoItemClicked(position: Long) {
         navigationSubject.onNext(NavigationRequest.SinglePhoto(photosDto, position))
     }
 

@@ -74,7 +74,7 @@ class PhotosActivity : BaseActivity() {
 
     private fun handleNavigationRequest(navigationRequest: NavigationRequest) {
         if (navigationRequest is NavigationRequest.SinglePhoto) {
-            navigator.showSinglePhotoWithSharedAnimation(this, navigationRequest, getSharedViews(navigationRequest.position))
+            navigator.showSinglePhotoWithSharedAnimation(this, navigationRequest, getSharedViews(navigationRequest.position.toInt()))
         } else {
             navigator.dispatch(this, navigationRequest)
         }
