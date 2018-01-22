@@ -85,5 +85,8 @@ class PhotosDetailsActivity : BaseActivity() {
         super.onDestroy()
     }
 
+    override fun onBackPressed() {
+        finish()
+    }
 }
 
