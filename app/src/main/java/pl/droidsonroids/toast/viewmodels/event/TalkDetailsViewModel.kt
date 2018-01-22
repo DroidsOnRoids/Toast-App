@@ -3,8 +3,10 @@ package pl.droidsonroids.toast.viewmodels.event
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import io.reactivex.subjects.PublishSubject
+import pl.droidsonroids.toast.app.utils.ParentView
 import pl.droidsonroids.toast.data.dto.event.TalkDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
+import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakerItemViewModel
@@ -27,7 +29,7 @@ class TalkDetailsViewModel @Inject constructor() : ViewModel(), NavigatingViewMo
     }
 
     private fun onSpeakerClick(speakerId: Long) {
-        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId))
+        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId, Constants.Event.NO_EVENT_ID, ParentView.EVENT_DETAILS))
     }
 
     fun onReadLess() {

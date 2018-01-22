@@ -24,4 +24,8 @@ object Constants {
     object TalkTransition {
         const val CARD = "card"
     }
+
+    object Event {
+        const val NO_EVENT_ID = -1L
+    }
 }
