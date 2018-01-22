@@ -158,6 +158,4 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:letterSpacing">0.07</item>
     </style>
-
-    <color name="black">#000000</color>
 </resources>
