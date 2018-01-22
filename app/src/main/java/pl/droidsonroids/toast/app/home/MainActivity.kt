@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
+import pl.droidsonroids.toast.app.utils.MainCategories
 import pl.droidsonroids.toast.databinding.ActivityMainBinding
 import pl.droidsonroids.toast.utils.Constants.SearchMenuItem.ANIM_DURATION_MILLIS
 import pl.droidsonroids.toast.utils.consume
@@ -23,9 +24,11 @@ class MainActivity : BaseActivity() {
 
     companion object {
         private const val CURRENT_TITLE = "current_title"
+        private const val MAIN_CATEGORIES_KEY = "main_categories_key"
 
-        fun createIntent(context: Context): Intent {
+        fun createIntent(context: Context, mainCategories: MainCategories): Intent {
             return Intent(context, MainActivity::class.java)
+                    .putExtra(MAIN_CATEGORIES_KEY, mainCategories)
         }
     }
 
@@ -38,6 +41,10 @@ class MainActivity : BaseActivity() {
     @Inject
     lateinit var navigator: Navigator
 
+    private val homeScreen by lazy {
+        intent.getSerializableExtra(MAIN_CATEGORIES_KEY)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val mainBinding = ActivityMainBinding.inflate(layoutInflater)
@@ -47,6 +54,15 @@ class MainActivity : BaseActivity() {
         initHomeFragmentTransaction(showEventsFragment = savedInstanceState == null)
 
         setupViewModel(mainBinding)
+        showHomeScreen()
+    }
+
+    private fun showHomeScreen() {
+        when (homeScreen) {
+            MainCategories.EVENTS -> homeFragmentTransaction.showEventsFragment()
+            MainCategories.SPEAKERS -> homeFragmentTransaction.showSpeakersFragment()
+            MainCategories.CONTACTS -> homeFragmentTransaction.showContactFragment()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

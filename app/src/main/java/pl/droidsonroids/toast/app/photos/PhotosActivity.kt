@@ -9,6 +9,7 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.home.MainActivity
+import pl.droidsonroids.toast.app.utils.MainCategories
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.ParentView
@@ -50,7 +51,7 @@ class PhotosActivity : BaseActivity() {
             val eventDetailsRequest = NavigationRequest.EventDetails(parentEventId)
             EventDetailsActivity.createIntent(this, eventDetailsRequest)
         } else {
-            MainActivity.createIntent(this)
+            MainActivity.createIntent(this, MainCategories.EVENTS)
         }
         upIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(upIntent)

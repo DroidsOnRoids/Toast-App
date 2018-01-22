@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.activity_speakers_search.*
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.home.MainActivity
+import pl.droidsonroids.toast.app.utils.MainCategories
 import pl.droidsonroids.toast.app.utils.ParentView
 import pl.droidsonroids.toast.databinding.ActivitySpeakerDetailsBinding
 import pl.droidsonroids.toast.utils.Constants
@@ -72,7 +73,7 @@ class SpeakerDetailsActivity : BaseActivity() {
             val eventDetailsRequest = NavigationRequest.EventDetails(parentEventId)
             EventDetailsActivity.createIntent(this, eventDetailsRequest)
         } else {
-            MainActivity.createIntent(this)
+            MainActivity.createIntent(this, MainCategories.SPEAKERS)
         }
         upIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(upIntent)
