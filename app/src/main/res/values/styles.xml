@@ -21,11 +21,14 @@
     </style>
 
     <style name="AppTheme.NoActionBar.Dialog">
-        <item name="android:statusBarColor">@color/blackAlpha40</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.Dialog.TranslucentStatusBar">
+        <item name="android:statusBarColor">@color/blackAlpha40</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
@@ -138,7 +141,7 @@
     </style>
 
     <style name="ContactMessageInputStyle">
-        <item name="android:background">@drawable/contact_message_shape</item>
+        <item name="android:background">@drawable/contact_message_selector</item>
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@style/TextAppearance.Roboto</item>
         <item name="android:textStyle">normal</item>

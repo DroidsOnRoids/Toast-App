@@ -11,6 +11,7 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
+import pl.droidsonroids.toast.app.utils.ContactFormValidator
 import pl.droidsonroids.toast.data.MessageType
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
 import pl.droidsonroids.toast.repositories.contact.ContactRepository
@@ -21,6 +22,8 @@ import java.io.IOException
 class ContactViewModelTest : RxTestBase() {
     @Mock
     lateinit var contactRepository: ContactRepository
+    @Mock
+    lateinit var contactFormValidator: ContactFormValidator
 
     lateinit var contactViewModel: ContactViewModel
 
@@ -38,7 +41,7 @@ class ContactViewModelTest : RxTestBase() {
     @Before
     fun setUp() {
         whenever(contactRepository.readMessage()).thenReturn(Single.just(messageDto))
-        contactViewModel = ContactViewModel(contactRepository)
+        contactViewModel = ContactViewModel(contactFormValidator, contactRepository)
     }
 
     @Test
@@ -62,7 +65,7 @@ class ContactViewModelTest : RxTestBase() {
     }
 
     private fun assertThatFieldsAreCleared() {
-        assertThat(contactViewModel.topic.get(), equalTo(0))
+        assertThat(contactViewModel.selectedTopicPosition.get(), equalTo(0))
         assertThat(contactViewModel.name.get(), equalTo(""))
         assertThat(contactViewModel.email.get(), equalTo(""))
         assertThat(contactViewModel.message.get(), equalTo(""))
@@ -99,7 +102,7 @@ class ContactViewModelTest : RxTestBase() {
 
     @Test
     fun shouldRestoreFieldsState() {
-        assertThat(contactViewModel.topic.get(), equalTo(topic.ordinal))
+        assertThat(contactViewModel.selectedTopicPosition.get(), equalTo(topic.ordinal))
         assertThat(contactViewModel.email.get(), equalTo(email))
         assertThat(contactViewModel.message.get(), equalTo(message))
         assertThat(contactViewModel.name.get(), equalTo(name))

@@ -12,8 +12,10 @@
     </data>
 
     <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/mainCoordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         tools:context=".app.speakers.SpeakersSearchActivity">
 
         <android.support.design.widget.AppBarLayout
@@ -49,6 +51,8 @@
                         android:hint="@string/search_hint"
                         android:imeOptions="actionSearch"
                         android:inputType="text"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
                         android:maxLines="1"
                         android:text="@={speakersSearchViewModel.searchPhrase}"
                         android:textAllCaps="true"/>
@@ -69,6 +73,7 @@
             android:id="@+id/speakersSearchContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/paleGrayBackground"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <android.support.v7.widget.RecyclerView

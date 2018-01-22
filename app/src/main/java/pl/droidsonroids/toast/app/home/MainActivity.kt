@@ -1,9 +1,12 @@
 package pl.droidsonroids.toast.app.home
 
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonroids.toast.R
@@ -11,24 +14,30 @@ import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.databinding.ActivityMainBinding
 import pl.droidsonroids.toast.utils.Constants.SearchMenuItem.ANIM_DURATION_MILLIS
+import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.MainViewModel
 import javax.inject.Inject
 
 
-private const val CURRENT_TITLE: String = "current_title"
-
 class MainActivity : BaseActivity() {
 
+
+    companion object {
+        private const val CURRENT_TITLE = "current_title"
+
+        fun createIntent(context: Context): Intent {
+            return Intent(context, MainActivity::class.java)
+        }
+    }
+
     private lateinit var homeFragmentTransaction: HomeFragmentsTransaction
-
-    @Inject
-    lateinit var navigator: Navigator
-
+    private var navigationDisposable: Disposable? = null
     private val mainViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory)[MainViewModel::class.java]
     }
 
-    private var navigationDisposable: Disposable? = null
+    @Inject
+    lateinit var navigator: Navigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,10 +82,21 @@ class MainActivity : BaseActivity() {
         setHomeNavigationItemSelectedListener()
     }
 
+    private fun initHomeFragmentTransaction(showEventsFragment: Boolean) {
+        homeFragmentTransaction = HomeFragmentsTransaction(supportFragmentManager)
+        if (showEventsFragment) {
+            homeFragmentTransaction.showEventsFragment()
+        }
+    }
+
     private fun setupViewModel(mainBinding: ActivityMainBinding) {
         mainBinding.mainViewModel = mainViewModel
         navigationDisposable = mainViewModel.navigationSubject
-                .subscribe { navigator.dispatch(this, it) }
+                .subscribe {
+                    navigator.showSearchSpeakersWithRevealAnimation(
+                            activity = this,
+                            centerCoordinates = getViewCenterCoordinates(searchImageButton))
+                }
     }
 
     private fun setHomeNavigationItemSelectedListener() {
@@ -109,11 +129,10 @@ class MainActivity : BaseActivity() {
         homeTitle.text = getText(titleRes)
     }
 
-    private fun initHomeFragmentTransaction(showEventsFragment: Boolean) {
-        homeFragmentTransaction = HomeFragmentsTransaction(supportFragmentManager)
-        if (showEventsFragment) {
-            homeFragmentTransaction.showEventsFragment()
-        }
+    private fun getViewCenterCoordinates(view: View): Pair<Int, Int> {
+        val centerX = (view.x + view.width / 2).toInt()
+        val centerY = (view.y + view.height / 2).toInt()
+        return centerX to centerY
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -124,11 +143,6 @@ class MainActivity : BaseActivity() {
     override fun onDestroy() {
         navigationDisposable?.dispose()
         super.onDestroy()
-    }
-
-    private fun consume(func: () -> Unit): Boolean {
-        func()
-        return true
     }
 
 }

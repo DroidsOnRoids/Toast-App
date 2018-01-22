@@ -12,11 +12,20 @@ object Constants {
         const val FIRST = 1
     }
 
-    object Date{
+    object Date {
         const val PATTERN = "dd.MM.yyyy"
+    }
+
+    object ValidationPatterns {
+        const val EMAIL = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-zA-Z]{2,})$"
+        const val NAME = "^[a-zA-Z-0-9]+[\\-'\\s]?[a-zA-Z-0-9 ]+\$"
     }
 
     object TalkTransition {
         const val CARD = "card"
+    }
+
+    object Event {
+        const val NO_EVENT_ID = -1L
     }
 }
