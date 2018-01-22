@@ -67,7 +67,7 @@ fun EventDto.toViewModel(onClick: (Long) -> Unit): EventItemViewModel {
     )
 }
 
-fun EventDetailsDto.toViewModel(onLocationClick: (CoordinatesDto) -> Unit, onClick: (Long) -> Unit): UpcomingEventViewModel {
+fun EventDetailsDto.toViewModel(onLocationClick: (CoordinatesDto, String) -> Unit, onClick: (Long) -> Unit): UpcomingEventViewModel {
     return UpcomingEventViewModel(
             id = id,
             title = title,

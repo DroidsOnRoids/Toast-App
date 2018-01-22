@@ -30,8 +30,8 @@ class Navigator @Inject constructor() {
 
     private fun showMap(context: Context, navigationRequest: NavigationRequest.Map) {
         with(navigationRequest) {
-            val intent = Intent(Intent.ACTION_VIEW)
-                    .setData(Uri.parse("geo:0,0?q=${coordinatesDto.latitude},${coordinatesDto.longitude}($placeName)"))
+            val locationUri = Uri.parse("geo:0,0?q=${coordinatesDto.latitude},${coordinatesDto.longitude}($placeName)")
+            val intent = Intent(Intent.ACTION_VIEW).setData(locationUri)
             if (intent.resolveActivity(context.packageManager) != null) {
                 context.startActivity(intent)
             }

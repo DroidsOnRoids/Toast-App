@@ -13,7 +13,7 @@ class UpcomingEventViewModel(
         val placeStreet: String,
         val coverImage: ImageDto?,
         val coordinates: CoordinatesDto,
-        private val locationClickCallback: (CoordinatesDto) -> Unit,
+        private val locationClickCallback: (CoordinatesDto, String) -> Unit,
         private val action: (Long) -> Unit
 ) {
     fun onClick() {
@@ -21,6 +21,6 @@ class UpcomingEventViewModel(
     }
 
     fun onLocationClick() {
-        locationClickCallback(coordinates)
+        locationClickCallback(coordinates, placeName)
     }
 }
