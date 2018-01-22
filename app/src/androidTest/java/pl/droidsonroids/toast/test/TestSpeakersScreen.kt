@@ -1,5 +1,6 @@
 package pl.droidsonroids.toast.test
 
+import android.support.test.espresso.Espresso
 import android.support.test.rule.ActivityTestRule
 import org.junit.Rule
 import org.junit.Test
@@ -13,14 +14,14 @@ class TestSpeakersScreen {
     val activityRule = ActivityTestRule(MainActivity::class.java, true, true)
 
     private fun goToSpeakersScreen() {
-        with(SpeakersRobot()){
+        with(SpeakersRobot()) {
             performClickOnElementWithId(R.id.actionSpeakers)
         }
     }
 
     private fun goToSearchScreen() {
         goToSpeakersScreen()
-        with(SpeakersRobot()){
+        with(SpeakersRobot()) {
             performClickOnElementWithId(R.id.searchImageButton)
         }
     }
@@ -28,7 +29,7 @@ class TestSpeakersScreen {
     @Test
     fun isSpeakerSelectedOnSpeakersScreen() {
         goToSpeakersScreen()
-        with(SpeakersRobot()){
+        with(SpeakersRobot()) {
             performClickOnRecyclerViewElement(R.id.speakersRecyclerView, 0)
         }
     }
@@ -40,6 +41,33 @@ class TestSpeakersScreen {
             performTyping("a", R.id.searchBox)
             checkIfSearchIsPerformed()
             performClickOnRecyclerViewElement(R.id.speakersSearchRecyclerView, 0)
+        }
+    }
+
+    @Test
+    fun isSearchIconDisplayed() {
+        goToSpeakersScreen()
+        with(SpeakersRobot()) {
+            checkIfElementWithIdIsDisplayed(R.id.searchImageButton)
+        }
+    }
+
+    @Test
+    fun isEveryElementOnSearchScreenDisplayed() {
+        goToSearchScreen()
+        with(SpeakersRobot()) {
+            checkIfElementWithIdIsDisplayed(R.id.searchBox)
+            checkIfHomeButtonIsDisplayed()
+            checkIfHintIsDisplayed(R.id.searchBox, "Search" )
+        }
+    }
+
+    @Test
+    fun isSpeakersScreenDisplayedAfterClickingOnBackButton() {
+        with(SpeakersRobot()) {
+            goToSearchScreen()
+            performNavigateUp()
+            checkIfElementWithIdIsDisplayed(R.id.searchImageButton)
         }
     }
 }
