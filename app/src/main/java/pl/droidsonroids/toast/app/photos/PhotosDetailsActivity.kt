@@ -28,16 +28,8 @@ class PhotosDetailsActivity : BaseActivity() {
         ViewModelProviders.of(this, viewModelFactory)[PhotosDetailsViewModel::class.java]
     }
 
-    private val photos by lazy {
-        intent.getParcelableArrayListExtra<ImageDto>(PHOTOS_KEY)
-    }
-
     private val currentPosition by lazy {
         intent.getLongExtra(CURRENT_PHOTO_POSITION_KEY, 0L)
-    }
-
-    private val viewPagerPageMargin by lazy {
-        resources.getDimensionPixelSize(R.dimen.margin_large)
     }
 
     private var isTransitionPostponed = false
@@ -53,6 +45,7 @@ class PhotosDetailsActivity : BaseActivity() {
     }
 
     private fun setupViewModel() {
+        val photos = intent.getParcelableArrayListExtra<ImageDto>(PHOTOS_KEY)
         photosDetailsViewModel.init(photos)
         disposable = photosDetailsViewModel.photoLoadedSubject
                 .filter { currentPosition == it && isTransitionPostponed }
@@ -75,7 +68,7 @@ class PhotosDetailsActivity : BaseActivity() {
             val photosViewPagerAdapter = PhotosViewPagerAdapter(singlePhotoViewModels)
             adapter = photosViewPagerAdapter
             currentItem = currentPosition.toInt()
-            pageMargin = viewPagerPageMargin
+            pageMargin = resources.getDimensionPixelSize(R.dimen.margin_large)
             offscreenPageLimit = 2
         }
     }
