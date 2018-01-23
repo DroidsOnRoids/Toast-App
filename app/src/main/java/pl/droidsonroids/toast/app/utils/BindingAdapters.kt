@@ -148,3 +148,9 @@ fun setVisibility(view: View, isVisible: Boolean) {
 fun setTransitionName(view: View, transitionName: String, elementId: Long?) {
     view.transitionName = "$transitionName$elementId"
 }
+
+@BindingAdapter("about")
+fun setAboutPrefix(textView: TextView, name: String) {
+    val text = "About $name"
+    textView.text = text
+}

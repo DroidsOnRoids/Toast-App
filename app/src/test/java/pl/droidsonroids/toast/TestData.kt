@@ -31,8 +31,7 @@ val testSpeaker = ApiSpeaker(
         id = 0,
         name = "name",
         job = "job",
-        avatar = ApiImage("bigImageFirst", "thumbImageFirst"),
-        bio = "bio"
+        avatar = ApiImage("bigImageFirst", "thumbImageFirst")
 )
 
 val testApiTalk = ApiTalk(
