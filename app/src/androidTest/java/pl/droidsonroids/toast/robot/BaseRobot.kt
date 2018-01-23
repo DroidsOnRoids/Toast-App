@@ -13,7 +13,7 @@ import org.hamcrest.Matchers.allOf
 
 abstract class BaseRobot {
 
-    private val HOME_BUTTON_DESCRIPTION = "Navigate up"
+    private val homeButtonDescription = android.support.v7.appcompat.R.string.abc_action_bar_up_description
 
     fun checkIfToolbarWithTitleIsDisplayed(title: String, toolbarId: Int): BaseRobot {
         onView(allOf(withText(title), isDescendantOfA(withId(toolbarId))))
@@ -53,7 +53,7 @@ abstract class BaseRobot {
     }
 
     fun checkIfHomeButtonIsDisplayed(): BaseRobot {
-        onView(withContentDescription(HOME_BUTTON_DESCRIPTION))
+        onView(withContentDescription(homeButtonDescription))
                 .check(matches(isDisplayed()))
         return this
     }
@@ -83,7 +83,7 @@ abstract class BaseRobot {
     }
 
     fun performNavigateUp(): BaseRobot {
-        onView(withContentDescription(HOME_BUTTON_DESCRIPTION))
+        onView(withContentDescription(homeButtonDescription))
                 .perform(click())
         return this
     }
