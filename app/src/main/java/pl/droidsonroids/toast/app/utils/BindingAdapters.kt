@@ -12,7 +12,11 @@ import android.widget.ImageSwitcher
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import com.github.florent37.glidepalette.GlidePalette
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.data.dto.ImageDto
@@ -62,14 +66,35 @@ fun setRoundImage(imageView: ImageView, imageDto: ImageDto?) {
             .into(imageView)
 }
 
+@BindingAdapter("coverImage", "loadingFinishedListener")
+fun setCoverImageWithLoadedListener(imageView: ImageView, imageDto: ImageDto?, onLoadingFinished: () -> Unit) {
+    val listener = object : RequestListener<Drawable> {
+        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+            onLoadingFinished()
+            return false
+        }
+
+        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+            onLoadingFinished()
+            return false
+        }
+    }
+    loadWithListener(imageView, imageDto, listener)
+}
+
 @BindingAdapter("coverImage", "coverImageColorListener")
 fun setCoverImageWithPaletteListener(imageView: ImageView, imageDto: ImageDto?, onColorLoaded: (Int) -> Unit) {
+    val listener = createGlidePaletteListener(imageDto, onColorLoaded)
+    loadWithListener(imageView, imageDto, listener)
+}
+
+private fun loadWithListener(imageView: ImageView, imageDto: ImageDto?, listener: RequestListener<Drawable>) {
     val thumbnailLoader = Glide.with(imageView)
             .load(imageDto?.thumbSizeUrl)
     Glide.with(imageView)
             .load(imageDto?.originalSizeUrl)
             .thumbnail(thumbnailLoader)
-            .listener(createGlidePaletteListener(imageDto, onColorLoaded))
+            .listener(listener)
             .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_toast))
             .into(imageView)
 }

@@ -7,6 +7,7 @@ import pl.droidsonroids.toast.data.api.event.ApiEvent
 import pl.droidsonroids.toast.data.api.event.ApiEventDetails
 import pl.droidsonroids.toast.data.api.event.ApiTalk
 import pl.droidsonroids.toast.data.api.speaker.ApiSpeaker
+import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.SplitEvents
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.utils.Constants
@@ -59,3 +60,8 @@ val testSplitEvents = SplitEvents(upcomingEvent = testEventDetails.toDto(), prev
 val testSpeakers = listOf(testSpeaker)
 
 val testSpeakersPage = Page(items = testSpeakers.map { it.toDto() }, pageNumber = 1, allPagesCount = 1)
+
+val testImageDto = ImageDto(
+        "originalSizeUrl",
+        "thumbSizeUrl"
+)
