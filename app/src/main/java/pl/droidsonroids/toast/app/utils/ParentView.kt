@@ -1,6 +1,6 @@
 package pl.droidsonroids.toast.app.utils
 
 
-enum class ParentView{
-    EVENT_DETAILS, HOME, SPEAKERS_SEARCH
+enum class ParentView {
+    EVENT_DETAILS
 }

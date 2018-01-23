@@ -88,7 +88,7 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
     }
 
     private fun onSpeakerClick(speakerId: Long) {
-        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId, eventId, ParentView.EVENT_DETAILS))
+        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId, eventId))
     }
 
     private fun onEventLoadError(throwable: Throwable) {

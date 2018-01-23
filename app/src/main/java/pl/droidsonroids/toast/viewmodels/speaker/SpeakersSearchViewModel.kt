@@ -5,7 +5,6 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
-import pl.droidsonroids.toast.app.utils.ParentView
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
@@ -26,7 +25,6 @@ class SpeakersSearchViewModel @Inject constructor(private val speakersRepository
 
     init {
         subscribeToSearchTextChanges()
-        parentView = ParentView.SPEAKERS_SEARCH
     }
 
     private fun subscribeToSearchTextChanges() {

@@ -7,13 +7,11 @@ import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import pl.droidsonroids.toast.app.utils.ParentView
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.data.wrapWithState
-import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.toPage
@@ -26,7 +24,6 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
     val speakersSubject: BehaviorSubject<List<State<SpeakerItemViewModel>>> = BehaviorSubject.create()
     protected var isNextPageLoading: Boolean = false
     protected var nextPageNumber: Int? = null
-    protected var parentView = ParentView.HOME
     private val Any.simpleClassName: String get() = javaClass.simpleName
 
     protected fun mapToSingleSpeakerItemViewModelsPage(page: Page<SpeakerDto>): Single<Page<State.Item<SpeakerItemViewModel>>> {
@@ -34,7 +31,7 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
         return items.toObservable()
                 .map {
                     it.toViewModel { id ->
-                        navigationSubject.onNext(NavigationRequest.SpeakerDetails(id, Constants.NO_ID, parentView))
+                        navigationSubject.onNext(NavigationRequest.SpeakerDetails(id))
                     }
                 }
                 .map { wrapWithState(it) }
