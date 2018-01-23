@@ -9,7 +9,7 @@ import pl.droidsonroids.toast.function.getString
 import pl.droidsonroids.toast.robot.EventsRobot
 
 
-class TestEventsScreen {
+class EventsScreenTest {
     @JvmField
     @Rule
     val activityRule = ActivityTestRule(MainActivity::class.java, true, true)
@@ -17,7 +17,7 @@ class TestEventsScreen {
     @Test
     fun isToolbarDisplayed() {
         val toolbarTitle = getString(R.string.events_title)
-        with(EventsRobot()){
+        with(EventsRobot()) {
             checkIfToolbarWithTitleIsDisplayed(toolbarTitle, R.id.toolbar)
         }
     }
