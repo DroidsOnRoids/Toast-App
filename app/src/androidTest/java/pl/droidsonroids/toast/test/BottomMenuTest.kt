@@ -43,7 +43,7 @@ class TestBottomsMenu {
 
     @Test
     fun isBottomMenuInDefaultState() {
-        with(MenuRobot()){
+        with(MenuRobot()) {
             checkIfBottomNavigationItemViewIsChecked(R.id.actionEvents)
         }
     }
