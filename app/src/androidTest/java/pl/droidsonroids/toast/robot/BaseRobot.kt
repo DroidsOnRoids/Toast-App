@@ -52,7 +52,7 @@ abstract class BaseRobot {
         return this
     }
 
-    fun checkIfHomeButtonIsDisplayed(): BaseRobot{
+    fun checkIfHomeButtonIsDisplayed(): BaseRobot {
         onView(withContentDescription(HOME_BUTTON_DESCRIPTION))
                 .check(matches(isDisplayed()))
         return this
@@ -82,7 +82,7 @@ abstract class BaseRobot {
         return this
     }
 
-    fun performNavigateUp(): BaseRobot{
+    fun performNavigateUp(): BaseRobot {
         onView(withContentDescription(HOME_BUTTON_DESCRIPTION))
                 .perform(click())
         return this

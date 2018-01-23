@@ -1,14 +1,14 @@
 package pl.droidsonroids.toast.test
 
-import android.support.test.espresso.Espresso
 import android.support.test.rule.ActivityTestRule
 import org.junit.Rule
 import org.junit.Test
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.home.MainActivity
+import pl.droidsonroids.toast.function.getString
 import pl.droidsonroids.toast.robot.SpeakersRobot
 
-class TestSpeakersScreen {
+class SpeakersScreenTest {
     @JvmField
     @Rule
     val activityRule = ActivityTestRule(MainActivity::class.java, true, true)
@@ -58,7 +58,7 @@ class TestSpeakersScreen {
         with(SpeakersRobot()) {
             checkIfElementWithIdIsDisplayed(R.id.searchBox)
             checkIfHomeButtonIsDisplayed()
-            checkIfHintIsDisplayed(R.id.searchBox, "Search" )
+            checkIfHintIsDisplayed(R.id.searchBox, getString(R.string.search_hint))
         }
     }
 
