@@ -9,7 +9,6 @@ import kotlinx.android.synthetic.main.activity_speakers_search.*
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.home.MainActivity
-import pl.droidsonroids.toast.app.utils.AppScreenType
 import pl.droidsonroids.toast.app.utils.ParentView
 import pl.droidsonroids.toast.databinding.ActivitySpeakerDetailsBinding
 import pl.droidsonroids.toast.utils.Constants
@@ -59,9 +58,21 @@ class SpeakerDetailsActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            android.R.id.home -> consume { handleUpAction() }
+            android.R.id.home -> consume {
+                if (isTaskRoot)
+                    handleUpAction()
+                else
+                    finish()
+            }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onBackPressed() {
+        if (isTaskRoot)
+            handleUpAction()
+        else
+            super.onBackPressed()
     }
 
     private fun setupViewModel(speakerDetailsBinding: ActivitySpeakerDetailsBinding) {
@@ -75,11 +86,11 @@ class SpeakerDetailsActivity : BaseActivity() {
 
 
     private fun handleUpAction() {
-        val upIntent = if (parentView == ParentView.EVENT_DETAILS) {
-            val eventDetailsRequest = NavigationRequest.EventDetails(parentEventId)
-            EventDetailsActivity.createIntent(this, eventDetailsRequest)
-        } else {
-            MainActivity.createIntent(this, AppScreenType.SPEAKERS)
+
+        val upIntent = when (parentView) {
+            ParentView.EVENT_DETAILS -> EventDetailsActivity.createIntent(this, NavigationRequest.EventDetails(parentEventId))
+            ParentView.SPEAKERS_SEARCH -> SpeakersSearchActivity.createIntent(this)
+            else -> MainActivity.createIntent(this)
         }
         upIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(upIntent)

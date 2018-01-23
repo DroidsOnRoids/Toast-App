@@ -26,6 +26,7 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
     val speakersSubject: BehaviorSubject<List<State<SpeakerItemViewModel>>> = BehaviorSubject.create()
     protected var isNextPageLoading: Boolean = false
     protected var nextPageNumber: Int? = null
+    protected var parentView = ParentView.HOME
     private val Any.simpleClassName: String get() = javaClass.simpleName
 
     protected fun mapToSingleSpeakerItemViewModelsPage(page: Page<SpeakerDto>): Single<Page<State.Item<SpeakerItemViewModel>>> {
@@ -33,7 +34,7 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
         return items.toObservable()
                 .map {
                     it.toViewModel { id ->
-                        navigationSubject.onNext(NavigationRequest.SpeakerDetails(id, Constants.NO_ID, ParentView.HOME))
+                        navigationSubject.onNext(NavigationRequest.SpeakerDetails(id, Constants.NO_ID, parentView))
                     }
                 }
                 .map { wrapWithState(it) }
@@ -85,5 +86,5 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
         return State.Error(::onErrorClick)
     }
 
-    abstract protected fun onErrorClick()
+    protected abstract fun onErrorClick()
 }

@@ -3,6 +3,7 @@ package pl.droidsonroids.toast.viewmodels.speaker
 import android.databinding.ObservableField
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
+import pl.droidsonroids.toast.app.utils.ParentView
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
@@ -15,6 +16,7 @@ class SpeakersViewModel @Inject constructor(private val speakersRepository: Spea
 
     init {
         loadFirstPage()
+        parentView = ParentView.HOME
     }
 
     fun toggleSortingDetailsVisibility() {

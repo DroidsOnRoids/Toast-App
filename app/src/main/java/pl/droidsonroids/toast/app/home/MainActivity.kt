@@ -12,12 +12,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
-import pl.droidsonroids.toast.app.utils.AppScreenType
 import pl.droidsonroids.toast.databinding.ActivityMainBinding
 import pl.droidsonroids.toast.utils.Constants.SearchMenuItem.ANIM_DURATION_MILLIS
 import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.MainViewModel
-import java.io.Serializable
 import javax.inject.Inject
 
 
@@ -25,12 +23,8 @@ class MainActivity : BaseActivity() {
 
     companion object {
         private const val CURRENT_TITLE = "current_title"
-        private const val HOME_SCREEN_TYPE = "home_screen_type"
 
-        fun createIntent(context: Context, appScreenType: AppScreenType): Intent {
-            return Intent(context, MainActivity::class.java)
-                    .putExtra(HOME_SCREEN_TYPE, appScreenType)
-        }
+        fun createIntent(context: Context) = Intent(context, MainActivity::class.java)
     }
 
     private lateinit var homeFragmentTransaction: HomeFragmentsTransaction
@@ -42,10 +36,6 @@ class MainActivity : BaseActivity() {
     @Inject
     lateinit var navigator: Navigator
 
-    private val homeScreen: Serializable? by lazy {
-        intent.getSerializableExtra(HOME_SCREEN_TYPE)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val mainBinding = ActivityMainBinding.inflate(layoutInflater)
@@ -55,15 +45,6 @@ class MainActivity : BaseActivity() {
         initHomeFragmentTransaction(showEventsFragment = savedInstanceState == null)
 
         setupViewModel(mainBinding)
-        showHomeScreen()
-    }
-
-    private fun showHomeScreen() {
-        when (homeScreen) {
-            AppScreenType.SPEAKERS -> homeFragmentTransaction.showSpeakersFragment()
-            AppScreenType.CONTACTS -> homeFragmentTransaction.showContactFragment()
-            else -> homeFragmentTransaction.showEventsFragment()
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
