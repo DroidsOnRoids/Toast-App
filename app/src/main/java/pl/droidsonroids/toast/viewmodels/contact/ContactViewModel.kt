@@ -7,7 +7,8 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
-import pl.droidsonroids.toast.app.utils.Validator
+import pl.droidsonroids.toast.app.utils.ContactFormValidator
+import pl.droidsonroids.toast.app.utils.callbacks.OnPropertyChangedSkippableCallback
 import pl.droidsonroids.toast.data.MessageType
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
 import pl.droidsonroids.toast.repositories.contact.ContactRepository
@@ -18,7 +19,7 @@ import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import javax.inject.Inject
 
 class ContactViewModel @Inject constructor(
-        private val validator: Validator,
+        private val contactFormValidator: ContactFormValidator,
         private val contactRepository: ContactRepository
 ) : ViewModel(), LoadingViewModel, NavigatingViewModel {
 
@@ -26,6 +27,7 @@ class ContactViewModel @Inject constructor(
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.PENDING)
 
     val sendingEnabled = ObservableField(false)
+
     val nameInputError = ObservableField<String?>(null)
     val emailInputError = ObservableField<String?>(null)
     val messageInputError = ObservableField<String?>(null)
@@ -34,6 +36,11 @@ class ContactViewModel @Inject constructor(
     val name: ObservableField<String> = ObservableField("")
     val email: ObservableField<String> = ObservableField("")
     val message: ObservableField<String> = ObservableField("")
+
+    private val nameChangedCallback = OnPropertyChangedSkippableCallback { onTextChanged(name) }
+    private val emailChangedCallback = OnPropertyChangedSkippableCallback { onTextChanged(email) }
+    private val messageChangedCallback = OnPropertyChangedSkippableCallback { onTextChanged(message) }
+
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     init {
@@ -42,46 +49,32 @@ class ContactViewModel @Inject constructor(
         addNameTextChangedListener()
         addEmailTextChangedListener()
         addMessageTextChangedListener()
-    }
-
-    private fun addMessageTextChangedListener() {
-        message.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val error = validator.getMessageError(message.get())
-                messageInputError.set(error)
-                updateSendingEnabled()
-            }
-        })
-    }
-
-    private fun addEmailTextChangedListener() {
-        email.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val error = validator.getEmailError(email.get())
-                emailInputError.set(error)
-                updateSendingEnabled()
-            }
-        })
-    }
-
-    private fun addNameTextChangedListener() {
-        name.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val error = validator.getNameError(name.get())
-                nameInputError.set(error)
-                updateSendingEnabled()
-            }
-        })
-    }
-
-    override fun retryLoading() = onSendClick()
-
-    init {
         compositeDisposable += contactRepository.readMessage()
                 .subscribe { it ->
                     setMessage(it)
                     loadingStatus.set(LoadingStatus.SUCCESS)
                 }
+    }
+
+    private fun addNameTextChangedListener() {
+        name.addOnPropertyChangedCallback(nameChangedCallback)
+    }
+
+    private fun addEmailTextChangedListener() {
+        email.addOnPropertyChangedCallback(emailChangedCallback)
+    }
+
+    private fun addMessageTextChangedListener() {
+        message.addOnPropertyChangedCallback(messageChangedCallback)
+    }
+
+    private fun onTextChanged(property: ObservableField<String>) {
+        when (property) {
+            name -> nameInputError.set(contactFormValidator.getNameError(property.get()))
+            email -> emailInputError.set(contactFormValidator.getEmailError(property.get()))
+            message -> messageInputError.set(contactFormValidator.getMessageError(property.get()))
+        }
+        updateSendingEnabled()
     }
 
     private fun setMessage(messageDto: MessageDto) {
@@ -93,8 +86,26 @@ class ContactViewModel @Inject constructor(
         }
     }
 
-    fun saveMessage() {
-        contactRepository.saveMessage(createMessageDto())
+    private fun updateSendingEnabled() {
+        sendingEnabled.set(contactFormValidator.isFormValid(
+                errors = listOf(nameInputError, emailInputError, messageInputError).map { it.get() },
+                inputs = listOf(name, email, message).map { it.get() },
+                topicPosition = selectedTopicPosition.get()
+        ))
+    }
+
+    private fun addSelectedTopicPositionListener() {
+        selectedTopicPosition.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                updateSendingEnabled()
+            }
+        })
+    }
+
+    override fun retryLoading() = onSendClick()
+
+    override fun onCleared() {
+        compositeDisposable.dispose()
     }
 
     fun onSendClick() {
@@ -106,27 +117,6 @@ class ContactViewModel @Inject constructor(
                         onError = { loadingStatus.set(LoadingStatus.ERROR) }
                 )
     }
-
-    private fun updateSendingEnabled() {
-        sendingEnabled.set(isFormValid && isFormNotEmpty && isTopicSelected)
-    }
-
-    private fun addSelectedTopicPositionListener() {
-        selectedTopicPosition.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                updateSendingEnabled()
-            }
-        })
-    }
-
-    private val isFormValid
-        get() = arrayOf(nameInputError, emailInputError, messageInputError).all { it.get().isNullOrEmpty() }
-
-    private val isTopicSelected
-        get() = selectedTopicPosition.get() != 0
-
-    private val isFormNotEmpty
-        get() = arrayOf(name, email, message).all { it.get().isNotEmpty() }
 
     private fun createMessageDto(): MessageDto {
         val type = resolveMessageType()
@@ -143,20 +133,38 @@ class ContactViewModel @Inject constructor(
     }
 
     private fun onSendSuccessfully() {
-        clearAllFields()
-        navigationSubject.onNext(NavigationRequest.MessageSent)
+        clearForm()
+        saveMessage()
+        clearErrors()
+        showSuccessDialog()
+        skipInputChangeCallbacks()
         loadingStatus.set(LoadingStatus.SUCCESS)
     }
 
-    private fun clearAllFields() {
+    private fun clearForm() {
         selectedTopicPosition.set(MessageType.I_WANT_TO.ordinal)
         name.set("")
         email.set("")
         message.set("")
-        saveMessage()
     }
 
-    override fun onCleared() {
-        compositeDisposable.dispose()
+    fun saveMessage() {
+        contactRepository.saveMessage(createMessageDto())
+    }
+
+    private fun clearErrors() {
+        nameInputError.set(null)
+        emailInputError.set(null)
+        messageInputError.set(null)
+    }
+
+    private fun skipInputChangeCallbacks() {
+        nameChangedCallback.skipNextInvocation = true
+        emailChangedCallback.skipNextInvocation = true
+        messageChangedCallback.skipNextInvocation = true
+    }
+
+    private fun showSuccessDialog() {
+        navigationSubject.onNext(NavigationRequest.MessageSent)
     }
 }

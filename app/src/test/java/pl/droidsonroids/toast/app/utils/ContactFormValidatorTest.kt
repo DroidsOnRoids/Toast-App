@@ -15,7 +15,7 @@ import pl.droidsonroids.toast.utils.StringProvider
 private const val ERROR_TEXT = "error_text"
 
 @RunWith(MockitoJUnitRunner::class)
-class ValidatorTest {
+class ContactFormValidatorTest {
 
     private val VALID_EMAILS = arrayOf("email@yahoo.com", "email-100@yahoo.com", "Email.100@yahoo.com", "email111@email.com", "email-100@email.net", "email.100@email.com.au", "emAil@1.com", "email@gmail.com.com", "email+100@gmail.com", "emAil-100@yahoo-test.com", "email_100@yahoo-test.ABC.CoM")
     private val INVALID_EMAILS = arrayOf("あいうえお@example.com", "email@111", "email", "email@.com.my", "email123@gmail.", "email123@.com", "email123@.com.com", ".email@email.com", "email()*@gmAil.com", "eEmail()*@gmail.com", "email@%*.com", "email..2002@gmail.com", "email.@gmail.com", "email@email@gmail.com", "email@gmail.com.")
@@ -28,7 +28,7 @@ class ValidatorTest {
     lateinit var stringProvider: StringProvider
 
     @InjectMocks
-    lateinit var validator: Validator
+    lateinit var contactFormValidator: ContactFormValidator
 
     @Before
     fun setUp() {
@@ -38,7 +38,7 @@ class ValidatorTest {
     @Test
     fun emailValidationShouldBeValid() {
         VALID_EMAILS.forEach {
-            val emailError = validator.getEmailError(it)
+            val emailError = contactFormValidator.getEmailError(it)
             assertThat(emailError, `is`(nullValue()))
         }
     }
@@ -46,7 +46,7 @@ class ValidatorTest {
     @Test
     fun emailValidationShouldBeNotValid() {
         INVALID_EMAILS.forEach {
-            val emailError = validator.getEmailError(it)
+            val emailError = contactFormValidator.getEmailError(it)
             assertThat(emailError, equalTo(ERROR_TEXT))
         }
     }
@@ -54,7 +54,7 @@ class ValidatorTest {
     @Test
     fun nameValidationShouldBeValid() {
         VALID_NAMES.forEach {
-            val nameError = validator.getNameError(it)
+            val nameError = contactFormValidator.getNameError(it)
             assertThat(nameError, `is`(nullValue()))
         }
     }
@@ -62,7 +62,7 @@ class ValidatorTest {
     @Test
     fun nameValidationShouldBeNotValid() {
         INVALID_NAMES.forEach {
-            val nameError = validator.getNameError(it)
+            val nameError = contactFormValidator.getNameError(it)
             assertThat(nameError, equalTo(ERROR_TEXT))
         }
     }
@@ -70,7 +70,7 @@ class ValidatorTest {
     @Test
     fun messageValidationShouldBeValid() {
         VALID_MESSAGES.forEach {
-            val messageError = validator.getMessageError(it)
+            val messageError = contactFormValidator.getMessageError(it)
             assertThat(messageError, `is`(nullValue()))
         }
     }
@@ -78,7 +78,7 @@ class ValidatorTest {
     @Test
     fun messageValidationShouldBeNotValid() {
         INVALID_MESSAGES.forEach {
-            val messageError = validator.getMessageError(it)
+            val messageError = contactFormValidator.getMessageError(it)
             assertThat(messageError, equalTo(ERROR_TEXT))
         }
     }

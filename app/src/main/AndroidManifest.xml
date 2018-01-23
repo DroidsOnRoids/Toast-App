@@ -31,8 +31,8 @@
             android:name=".app.speakers.SpeakersSearchActivity"
             android:parentActivityName=".app.home.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateVisible|adjustResize"/>
+            android:theme="@style/AppTheme.NoActionBar.Dialog"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
         <activity
             android:name=".app.events.EventDetailsActivity"
             android:label=""
@@ -45,12 +45,16 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".app.events.TalkDetailsActivity"
-            android:theme="@style/AppTheme.NoActionBar.Dialog"/>
+            android:theme="@style/AppTheme.NoActionBar.Dialog.TranslucentStatusBar"/>
         <activity
             android:name=".app.photos.PhotosActivity"
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".app.photos.PhotosViewerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SinglePhoto"/>
     </application>
 
 </manifest>
