@@ -20,7 +20,7 @@ import pl.droidsonroids.toast.testEventDetails
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 
-class ItemDetailsViewModelTest : RxTestBase() {
+class EventDetailsViewModelTest : RxTestBase() {
     @Mock
     lateinit var eventsRepository: EventsRepository
     @InjectMocks

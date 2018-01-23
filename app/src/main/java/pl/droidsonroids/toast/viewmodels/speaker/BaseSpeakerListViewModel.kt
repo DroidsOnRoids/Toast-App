@@ -33,7 +33,7 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
         return items.toObservable()
                 .map {
                     it.toViewModel { id ->
-                        navigationSubject.onNext(NavigationRequest.SpeakerDetails(id, Constants.Item.NO_ID, ParentView.HOME))
+                        navigationSubject.onNext(NavigationRequest.SpeakerDetails(id, Constants.NO_ID, ParentView.HOME))
                     }
                 }
                 .map { wrapWithState(it) }

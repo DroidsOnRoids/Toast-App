@@ -25,7 +25,5 @@ object Constants {
         const val CARD = "card"
     }
 
-    object Item {
-        const val NO_ID = -1L
-    }
+    const val NO_ID = -1L
 }

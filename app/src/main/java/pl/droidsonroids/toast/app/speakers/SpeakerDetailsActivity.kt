@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.activity_speakers_search.*
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.home.MainActivity
-import pl.droidsonroids.toast.app.utils.MainCategories
+import pl.droidsonroids.toast.app.utils.AppScreenType
 import pl.droidsonroids.toast.app.utils.ParentView
 import pl.droidsonroids.toast.databinding.ActivitySpeakerDetailsBinding
 import pl.droidsonroids.toast.utils.Constants
@@ -37,11 +37,11 @@ class SpeakerDetailsActivity : BaseActivity() {
     }
 
     private val speakerId: Long by lazy {
-        intent.getLongExtra(SPEAKER_ID, Constants.Item.NO_ID)
+        intent.getLongExtra(SPEAKER_ID, Constants.NO_ID)
     }
 
     private val parentEventId by lazy {
-        intent.getLongExtra(EVENT_ID_KEY, Constants.Item.NO_ID)
+        intent.getLongExtra(EVENT_ID_KEY, Constants.NO_ID)
     }
 
     private val parentView by lazy {
@@ -51,8 +51,8 @@ class SpeakerDetailsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val speakerDetailsBinding = ActivitySpeakerDetailsBinding.inflate(layoutInflater)
-        speakerDetailsBinding.speakerDetailsViewModel = speakerDetailsViewModel
         setContentView(speakerDetailsBinding.root)
+        setupViewModel(speakerDetailsBinding)
         setupToolbar()
         setupViewModel()
     }
@@ -62,6 +62,10 @@ class SpeakerDetailsActivity : BaseActivity() {
             android.R.id.home -> consume { handleUpAction() }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun setupViewModel(speakerDetailsBinding: ActivitySpeakerDetailsBinding) {
+        speakerDetailsBinding.speakerDetailsViewModel = speakerDetailsViewModel
     }
 
     private fun setupToolbar() {
@@ -75,7 +79,7 @@ class SpeakerDetailsActivity : BaseActivity() {
             val eventDetailsRequest = NavigationRequest.EventDetails(parentEventId)
             EventDetailsActivity.createIntent(this, eventDetailsRequest)
         } else {
-            MainActivity.createIntent(this, MainCategories.SPEAKERS)
+            MainActivity.createIntent(this, AppScreenType.SPEAKERS)
         }
         upIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(upIntent)

@@ -35,7 +35,7 @@ class TalkDetailsActivity : BaseActivity() {
     }
 
     private val eventId by lazy {
-        intent.getLongExtra(EVENT_ID_KEY, Constants.Item.NO_ID)
+        intent.getLongExtra(EVENT_ID_KEY, Constants.NO_ID)
     }
 
     private val talkDetailsViewModel by lazy {

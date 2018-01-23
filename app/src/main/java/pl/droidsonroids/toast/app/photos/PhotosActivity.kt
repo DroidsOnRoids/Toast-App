@@ -13,7 +13,7 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.home.MainActivity
-import pl.droidsonroids.toast.app.utils.MainCategories
+import pl.droidsonroids.toast.app.utils.AppScreenType
 import pl.droidsonroids.toast.app.utils.ParentView
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.utils.Constants
@@ -37,7 +37,7 @@ class PhotosActivity : BaseActivity() {
         }
     }
 
-    private val parentEventId by lazy { intent.getLongExtra(EVENT_ID_KEY, Constants.Item.NO_ID) }
+    private val parentEventId by lazy { intent.getLongExtra(EVENT_ID_KEY, Constants.NO_ID) }
     private val photosViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory)[PhotosViewModel::class.java]
     }
@@ -91,7 +91,7 @@ class PhotosActivity : BaseActivity() {
             val eventDetailsRequest = NavigationRequest.EventDetails(parentEventId)
             EventDetailsActivity.createIntent(this, eventDetailsRequest)
         } else {
-            MainActivity.createIntent(this, MainCategories.EVENTS)
+            MainActivity.createIntent(this, AppScreenType.EVENTS)
         }
         upIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(upIntent)
