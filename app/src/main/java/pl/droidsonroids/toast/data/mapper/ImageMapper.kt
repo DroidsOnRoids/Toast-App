@@ -14,11 +14,12 @@ fun ImageDto.toItemViewModel(position: Long, onClick: (Long) -> Unit): PhotoItem
     )
 }
 
-fun ImageDto.toSingleViewModel(position: Long, onPhotoLoadingFinished: () -> Unit): SinglePhotoViewModel {
+fun ImageDto.toSingleViewModel(position: Long, onPhotoLoadingFinished: () -> Unit, onClick: () -> Unit): SinglePhotoViewModel {
     return SinglePhotoViewModel(
             position = position,
             image = this,
-            onPhotoLoadingFinished = onPhotoLoadingFinished
+            onPhotoLoadingFinished = onPhotoLoadingFinished,
+            action = onClick
     )
 }
 

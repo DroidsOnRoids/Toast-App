@@ -20,9 +20,11 @@
         <item name="android:statusBarColor">@color/transparent</item>
     </style>
 
-    <style name="AppTheme.NoActionBar.SinglePhoto">
-        <item name="android:windowBackground">@color/black</item>
-        <item name="android:statusBarColor">@color/black</item>
+    <style name="AppTheme.NoActionBar.PhotoViewer">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:navigationBarColor">@color/blackAlpha40</item>
+        <item name="android:statusBarColor">@color/blackAlpha40</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 
     <style name="AppTheme.NoActionBar.Dialog">
