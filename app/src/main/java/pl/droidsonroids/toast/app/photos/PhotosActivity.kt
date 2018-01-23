@@ -16,8 +16,8 @@ import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.home.MainActivity
-import pl.droidsonroids.toast.app.utils.ParentView
 import pl.droidsonroids.toast.data.dto.ImageDto
+import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.consume

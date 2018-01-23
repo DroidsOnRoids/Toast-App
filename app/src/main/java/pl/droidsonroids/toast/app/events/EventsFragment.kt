@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_events.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseFragment
-import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
+import pl.droidsonroids.toast.app.utils.callbacks.LazyLoadingScrollListener
 import pl.droidsonroids.toast.databinding.FragmentEventsBinding
 import pl.droidsonroids.toast.viewmodels.event.EventsViewModel
 import javax.inject.Inject

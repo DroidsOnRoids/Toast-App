@@ -4,8 +4,8 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Test
 import pl.droidsonroids.toast.RxTestBase
-import pl.droidsonroids.toast.data.MessageType
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
+import pl.droidsonroids.toast.data.enums.MessageType
 
 class ContactMapperTest : RxTestBase() {
 

@@ -12,8 +12,8 @@ import org.junit.Test
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.app.utils.ContactFormValidator
-import pl.droidsonroids.toast.data.MessageType
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
+import pl.droidsonroids.toast.data.enums.MessageType
 import pl.droidsonroids.toast.repositories.contact.ContactRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest

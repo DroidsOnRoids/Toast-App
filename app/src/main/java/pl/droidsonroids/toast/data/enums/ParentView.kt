@@ -1,4 +1,4 @@
-package pl.droidsonroids.toast.app.utils
+package pl.droidsonroids.toast.data.enums
 
 
 enum class ParentView {
