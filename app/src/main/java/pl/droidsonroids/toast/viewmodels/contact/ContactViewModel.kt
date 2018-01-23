@@ -9,6 +9,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.app.utils.ContactFormValidator
 import pl.droidsonroids.toast.app.utils.callbacks.OnPropertyChangedSkippableCallback
+import pl.droidsonroids.toast.app.utils.getUnicodeLength
 import pl.droidsonroids.toast.data.MessageType
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
 import pl.droidsonroids.toast.repositories.contact.ContactRepository
@@ -36,6 +37,7 @@ class ContactViewModel @Inject constructor(
     val name: ObservableField<String> = ObservableField("")
     val email: ObservableField<String> = ObservableField("")
     val message: ObservableField<String> = ObservableField("")
+    val messageCounter: ObservableField<String> = ObservableField("0/250")
 
     private val nameChangedCallback = OnPropertyChangedSkippableCallback { onTextChanged(name) }
     private val emailChangedCallback = OnPropertyChangedSkippableCallback { onTextChanged(email) }
@@ -72,9 +74,16 @@ class ContactViewModel @Inject constructor(
         when (property) {
             name -> nameInputError.set(contactFormValidator.getNameError(property.get()))
             email -> emailInputError.set(contactFormValidator.getEmailError(property.get()))
-            message -> messageInputError.set(contactFormValidator.getMessageError(property.get()))
+            message -> {
+                updateMessage(property.get())
+            }
         }
         updateSendingEnabled()
+    }
+
+    private fun updateMessage(message: String) {
+        messageInputError.set(contactFormValidator.getMessageError(message))
+        messageCounter.set("${message.getUnicodeLength()} / 250")
     }
 
     private fun setMessage(messageDto: MessageDto) {
