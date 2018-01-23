@@ -11,7 +11,7 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
-import pl.droidsonroids.toast.app.utils.Validator
+import pl.droidsonroids.toast.app.utils.ContactFormValidator
 import pl.droidsonroids.toast.data.MessageType
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
 import pl.droidsonroids.toast.repositories.contact.ContactRepository
@@ -23,7 +23,7 @@ class ContactViewModelTest : RxTestBase() {
     @Mock
     lateinit var contactRepository: ContactRepository
     @Mock
-    lateinit var validator: Validator
+    lateinit var contactFormValidator: ContactFormValidator
 
     lateinit var contactViewModel: ContactViewModel
 
@@ -41,7 +41,7 @@ class ContactViewModelTest : RxTestBase() {
     @Before
     fun setUp() {
         whenever(contactRepository.readMessage()).thenReturn(Single.just(messageDto))
-        contactViewModel = ContactViewModel(validator, contactRepository)
+        contactViewModel = ContactViewModel(contactFormValidator, contactRepository)
     }
 
     @Test
