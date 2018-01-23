@@ -116,6 +116,8 @@ class SpeakersSearchViewModel @Inject constructor(private val speakersRepository
 
     override fun onCleared() {
         searchDisposable?.dispose()
+        firstPageDisposable?.dispose()
+        nextPageDisposable?.dispose()
         disposePreviousLoad()
     }
 }
