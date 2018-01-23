@@ -8,7 +8,7 @@ import android.view.View
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.events.TalkDetailsActivity
 import pl.droidsonroids.toast.app.photos.PhotosActivity
-import pl.droidsonroids.toast.app.photos.PhotosDetailsActivity
+import pl.droidsonroids.toast.app.photos.PhotosViewerActivity
 import pl.droidsonroids.toast.app.speakers.SpeakerDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
 import pl.droidsonroids.toast.utils.NavigationRequest
@@ -28,7 +28,7 @@ class Navigator @Inject constructor() {
 
     fun showSinglePhotoWithSharedAnimation(activity: AppCompatActivity, navigationRequest: NavigationRequest.SinglePhoto, sharedViews: Array<Pair<View, String>>) {
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, *sharedViews).toBundle()
-        val intent = PhotosDetailsActivity.createIntent(activity, navigationRequest)
+        val intent = PhotosViewerActivity.createIntent(activity, navigationRequest)
         activity.startActivity(intent, options)
     }
 

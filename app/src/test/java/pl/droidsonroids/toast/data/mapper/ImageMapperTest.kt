@@ -26,6 +26,6 @@ class ImageMapperTest {
         val singlePhotoViewModel = testImageDto.toSingleViewModel(position, photoLoadedCallback)
         assertThat(singlePhotoViewModel.image, equalTo(testImageDto))
         assertThat(singlePhotoViewModel.position, equalTo(position))
-        assertThat(singlePhotoViewModel.photoLoadedCallback, equalTo(photoLoadedCallback))
+        assertThat(singlePhotoViewModel.onPhotoLoadingFinished, equalTo(photoLoadedCallback))
     }
 }

@@ -10,8 +10,8 @@ import pl.droidsonroids.toast.viewmodels.contact.ContactViewModel
 import pl.droidsonroids.toast.viewmodels.event.EventDetailsViewModel
 import pl.droidsonroids.toast.viewmodels.event.EventsViewModel
 import pl.droidsonroids.toast.viewmodels.event.TalkDetailsViewModel
-import pl.droidsonroids.toast.viewmodels.photos.PhotosDetailsViewModel
 import pl.droidsonroids.toast.viewmodels.photos.PhotosViewModel
+import pl.droidsonroids.toast.viewmodels.photos.PhotosViewerViewModel
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersSearchViewModel
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersViewModel
 
@@ -60,8 +60,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(PhotosDetailsViewModel::class)
-    abstract fun bindPhotoDetailsViewModel(photosDetailsViewModel: PhotosDetailsViewModel): ViewModel
+    @ViewModelKey(PhotosViewerViewModel::class)
+    abstract fun bindPhotoDetailsViewModel(photosViewerViewModel: PhotosViewerViewModel): ViewModel
 
     @Binds
     internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory

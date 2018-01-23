@@ -52,7 +52,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".app.photos.PhotosDetailsActivity"
+            android:name=".app.photos.PhotosViewerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.SinglePhoto"/>
     </application>

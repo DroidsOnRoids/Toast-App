@@ -19,9 +19,13 @@ class PhotosViewModel @Inject constructor() : ViewModel(), NavigatingViewModel {
     fun init(photos: List<ImageDto>) {
         if (!photosSubject.hasValue()) {
             photosDto = photos
-            photosSubject.onNext(photos.mapIndexed { index, image -> image.toItemViewModel(index.toLong(), ::onPhotoItemClicked) })
+            val photosViewModels = photos.mapIndexed(::imageDtoToViewModel)
+            photosSubject.onNext(photosViewModels)
         }
     }
+
+    private fun imageDtoToViewModel(index: Int, image: ImageDto) =
+            image.toItemViewModel(index.toLong(), ::onPhotoItemClicked)
 
     private fun onPhotoItemClicked(position: Long) {
         navigationSubject.onNext(NavigationRequest.SinglePhoto(photosDto, position))

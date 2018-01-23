@@ -7,21 +7,21 @@ import org.junit.Test
 import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.testImageDto
 
-class PhotosDetailsViewModelTest : RxTestBase() {
+class PhotosViewerViewModelTest : RxTestBase() {
 
-    private lateinit var photosDetailsViewModel: PhotosDetailsViewModel
+    private lateinit var photosViewerViewModel: PhotosViewerViewModel
     private val testPhotos = listOf(testImageDto)
     private val position = 0L
 
     @Before
     fun setUp() {
-        photosDetailsViewModel = PhotosDetailsViewModel()
-        photosDetailsViewModel.init(testPhotos)
+        photosViewerViewModel = PhotosViewerViewModel()
+        photosViewerViewModel.init(testPhotos)
     }
 
     @Test
     fun shouldReturnSinglePhotoViewModel() {
-        with(photosDetailsViewModel.singlePhotoViewModels) {
+        with(photosViewerViewModel.singlePhotoViewModels) {
             assertThat(size, equalTo(1))
             assertThat(first().image, equalTo(testImageDto))
             assertThat(first().position, equalTo(position))
@@ -29,9 +29,9 @@ class PhotosDetailsViewModelTest : RxTestBase() {
     }
 
     @Test
-    fun shouldPostPhotoIdToPhotoLoadedSubject() {
-        val testObserver = photosDetailsViewModel.photoLoadedSubject.test()
-        photosDetailsViewModel.singlePhotoViewModels.first().photoLoadedCallback()
+    fun shouldPostPhotoIdToPhotoLoadingFinishedSubject() {
+        val testObserver = photosViewerViewModel.photoLoadingFinishedSubject.test()
+        photosViewerViewModel.singlePhotoViewModels.first().onPhotoLoadingFinished()
         testObserver.assertValue { it == position }
     }
 }

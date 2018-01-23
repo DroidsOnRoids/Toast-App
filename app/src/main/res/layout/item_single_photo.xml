@@ -22,7 +22,7 @@
         android:scaleType="fitCenter"
         app:coverImage="@{singlePhotoViewModel.image}"
         app:elementId="@{singlePhotoViewModel.position}"
-        app:imageLoadedListener="@{singlePhotoViewModel.photoLoadedCallback}"
+        app:loadingFinishedListener="@{singlePhotoViewModel.onPhotoLoadingFinished}"
         app:transitionName="@{PhotoTransition.PHOTO}"/>
 </layout>
 

@@ -66,16 +66,16 @@ fun setRoundImage(imageView: ImageView, imageDto: ImageDto?) {
             .into(imageView)
 }
 
-@BindingAdapter("coverImage", "imageLoadedListener")
-fun setCoverImageWithLoadedListener(imageView: ImageView, imageDto: ImageDto?, onImageLoaded: () -> Unit) {
+@BindingAdapter("coverImage", "loadingFinishedListener")
+fun setCoverImageWithLoadedListener(imageView: ImageView, imageDto: ImageDto?, onLoadingFinished: () -> Unit) {
     val listener = object : RequestListener<Drawable> {
         override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-            onImageLoaded()
+            onLoadingFinished()
             return false
         }
 
         override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-            onImageLoaded()
+            onLoadingFinished()
             return false
         }
     }

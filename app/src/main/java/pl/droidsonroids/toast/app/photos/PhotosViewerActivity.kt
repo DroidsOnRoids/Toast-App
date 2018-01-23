@@ -10,22 +10,22 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.utils.NavigationRequest
-import pl.droidsonroids.toast.viewmodels.photos.PhotosDetailsViewModel
+import pl.droidsonroids.toast.viewmodels.photos.PhotosViewerViewModel
 
-class PhotosDetailsActivity : BaseActivity() {
+class PhotosViewerActivity : BaseActivity() {
     companion object {
         private const val PHOTOS_KEY = "photo_key"
         private const val CURRENT_PHOTO_POSITION_KEY = "current_photo_position_key"
 
         fun createIntent(context: Context, navigationRequest: NavigationRequest.SinglePhoto): Intent {
-            return Intent(context, PhotosDetailsActivity::class.java)
+            return Intent(context, PhotosViewerActivity::class.java)
                     .putExtra(PHOTOS_KEY, ArrayList(navigationRequest.photos))
                     .putExtra(CURRENT_PHOTO_POSITION_KEY, navigationRequest.position)
         }
     }
 
     private val photosDetailsViewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory)[PhotosDetailsViewModel::class.java]
+        ViewModelProviders.of(this, viewModelFactory)[PhotosViewerViewModel::class.java]
     }
 
     private val currentPosition by lazy {
@@ -47,7 +47,7 @@ class PhotosDetailsActivity : BaseActivity() {
     private fun setupViewModel() {
         val photos = intent.getParcelableArrayListExtra<ImageDto>(PHOTOS_KEY)
         photosDetailsViewModel.init(photos)
-        disposable = photosDetailsViewModel.photoLoadedSubject
+        disposable = photosDetailsViewModel.photoLoadingFinishedSubject
                 .filter { currentPosition == it && isTransitionPostponed }
                 .subscribe { resumeSharedTransition() }
     }
