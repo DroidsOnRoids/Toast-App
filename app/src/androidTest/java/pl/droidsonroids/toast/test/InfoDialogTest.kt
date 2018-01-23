@@ -11,33 +11,33 @@ import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.function.getString
 import pl.droidsonroids.toast.robot.InfoDialogRobot
 
-class TestInfoDialog {
+class InfoDialogTest {
     @JvmField
     @Rule
     val activityRule = IntentsTestRule(MainActivity::class.java, true, true)
 
     private fun showDialog() {
-        with(InfoDialogRobot()){
+        with(InfoDialogRobot()) {
             performClickOnElementWithId(R.id.menuItemAbout)
         }
     }
 
     private fun isDialogClosed() {
-        with(InfoDialogRobot()){
+        with(InfoDialogRobot()) {
             checkIfElementWithIdIsNotPresentInHierarchy(R.id.toastLogoImage)
         }
     }
 
     @Test
     fun isMenuOverflowDisplayed() {
-        with(InfoDialogRobot()){
+        with(InfoDialogRobot()) {
             checkIfElementWithIdIsDisplayed(R.id.menuItemAbout)
         }
     }
 
     @Test
     fun isMenuOverflowClickable() {
-        with(InfoDialogRobot()){
+        with(InfoDialogRobot()) {
             checkIfElementWithIdIsClickable(R.id.menuItemAbout)
         }
     }
@@ -45,7 +45,7 @@ class TestInfoDialog {
     @Test
     fun isToastLogoDisplayed() {
         showDialog()
-        with(InfoDialogRobot()){
+        with(InfoDialogRobot()) {
             checkIfElementWithIdIsDisplayedInDialog(R.id.toastLogoImage)
         }
     }
@@ -53,7 +53,7 @@ class TestInfoDialog {
     @Test
     fun isHeartImageDisplayed() {
         showDialog()
-        with(InfoDialogRobot()){
+        with(InfoDialogRobot()) {
             checkIfElementWithIdIsDisplayedInDialog(R.id.hearthImage)
         }
     }
@@ -99,7 +99,7 @@ class TestInfoDialog {
     @Test
     fun isCreatedWithTextDisplayed() {
         showDialog()
-        with(InfoDialogRobot()){
+        with(InfoDialogRobot()) {
             checkIfTextIsCorrect(getString(R.string.created_with), R.id.createdWithText)
         }
     }
@@ -107,7 +107,7 @@ class TestInfoDialog {
     @Test
     fun isByToastTeamTextDisplayed() {
         showDialog()
-        with(InfoDialogRobot()){
+        with(InfoDialogRobot()) {
             checkIfTextIsCorrect(getString(R.string.by_toast_team), R.id.byToastTeamText)
         }
     }
@@ -115,7 +115,7 @@ class TestInfoDialog {
     @Test
     fun isMoreInfoTextDisplayed() {
         showDialog()
-        with(InfoDialogRobot()){
+        with(InfoDialogRobot()) {
             checkIfTextIsCorrect(getString(R.string.for_more_information_visit_our), R.id.moreInfoText)
         }
     }
@@ -123,7 +123,7 @@ class TestInfoDialog {
     @Test
     fun isAppVersionTextDisplayed() {
         showDialog()
-        with(InfoDialogRobot()){
+        with(InfoDialogRobot()) {
             checkIfTextIsCorrect(getString(R.string.application_version_title), R.id.appVersionTitle)
         }
     }
