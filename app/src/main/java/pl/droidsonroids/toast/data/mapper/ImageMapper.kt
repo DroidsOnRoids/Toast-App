@@ -3,6 +3,14 @@ package pl.droidsonroids.toast.data.mapper
 import pl.droidsonroids.toast.BuildConfig
 import pl.droidsonroids.toast.data.api.ApiImage
 import pl.droidsonroids.toast.data.dto.ImageDto
+import pl.droidsonroids.toast.viewmodels.photos.PhotoItemViewModel
+
+fun ImageDto.toViewModel(onClick: () -> Unit): PhotoItemViewModel {
+    return PhotoItemViewModel(
+            image = this,
+            action = onClick
+    )
+}
 
 fun ApiImage.toDto(): ImageDto {
     return ImageDto(
