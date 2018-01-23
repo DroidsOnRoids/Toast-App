@@ -62,14 +62,6 @@ class SpeakersScreenTest {
     }
 
     @Test
-    fun isSearchIconDisplayed() {
-        goToSpeakersScreen()
-        with(SpeakersRobot()) {
-            checkIfElementWithIdIsDisplayed(R.id.searchImageButton)
-        }
-    }
-
-    @Test
     fun isEveryElementOnSearchScreenDisplayed() {
         goToSearchScreen()
         with(SpeakersRobot()) {
