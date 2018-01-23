@@ -31,7 +31,7 @@ fun ApiEventDetails.toDto(): EventDetailsDto {
     )
 }
 
-private fun ApiCoordinates.toDto(): CoordinatesDto {
+fun ApiCoordinates.toDto(): CoordinatesDto {
     return CoordinatesDto(
             latitude = latitude,
             longitude = longitude
