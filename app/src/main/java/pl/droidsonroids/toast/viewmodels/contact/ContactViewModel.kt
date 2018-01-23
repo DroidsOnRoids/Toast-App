@@ -74,9 +74,7 @@ class ContactViewModel @Inject constructor(
         when (property) {
             name -> nameInputError.set(contactFormValidator.getNameError(property.get()))
             email -> emailInputError.set(contactFormValidator.getEmailError(property.get()))
-            message -> {
-                updateMessage(property.get())
-            }
+            message -> updateMessage(property.get())
         }
         updateSendingEnabled()
     }
