@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewCompat
+import android.view.MenuItem
 import android.view.View
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
@@ -14,6 +15,7 @@ import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.photos.PhotosViewerViewModel
 import javax.inject.Inject
 
@@ -118,7 +120,7 @@ class PhotosViewerActivity : BaseActivity() {
             for (i in 0 until photosViewPager.childCount) {
                 ViewCompat.dispatchApplyWindowInsets(photosViewPager.getChildAt(i), insets)
             }
-            insets.consumeSystemWindowInsets()
+            insets
         }
     }
 
@@ -126,6 +128,13 @@ class PhotosViewerActivity : BaseActivity() {
         window.decorView.systemUiVisibility = if (isImmersiveMode) NORMAL_MODE else IMMERSIVE_MODE
         val appBarTranslation = if (isImmersiveMode) -appBar.bottom.toFloat() else 0.0f
         appBar.animate().translationY(appBarTranslation).start()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> consume { onBackPressed() }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onDestroy() {
