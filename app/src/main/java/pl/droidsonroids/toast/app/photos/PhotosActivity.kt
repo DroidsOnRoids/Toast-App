@@ -4,12 +4,15 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.util.Pair
 import android.support.v7.widget.GridLayoutManager
 import android.view.MenuItem
-import io.reactivex.disposables.Disposable
-import io.reactivex.disposables.Disposables
+import android.view.View
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_photos.*
 import pl.droidsonroids.toast.R
+import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.home.MainActivity
@@ -20,6 +23,7 @@ import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.photos.PhotosViewModel
 import java.util.*
+import javax.inject.Inject
 
 class PhotosActivity : BaseActivity() {
     companion object {
@@ -36,6 +40,9 @@ class PhotosActivity : BaseActivity() {
         }
     }
 
+    @Inject
+    lateinit var navigator: Navigator
+
     private val parentEventId by lazy { intent.getLongExtra(EVENT_ID_KEY, Constants.NO_ID) }
     private val photosViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory)[PhotosViewModel::class.java]
@@ -44,7 +51,7 @@ class PhotosActivity : BaseActivity() {
     private val photos by lazy { intent.getParcelableArrayListExtra<ImageDto>(PHOTOS_KEY) }
     private val parentView by lazy { intent.getSerializableExtra(PARENT_VIEW_KEY) }
 
-    private var photosDisposable: Disposable = Disposables.disposed()
+    private val compositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +68,25 @@ class PhotosActivity : BaseActivity() {
 
     private fun setupViewModel() {
         photosViewModel.init(photos)
+        compositeDisposable += photosViewModel.navigationSubject
+                .subscribe(::handleNavigationRequest)
+    }
+
+    private fun handleNavigationRequest(navigationRequest: NavigationRequest) {
+        if (navigationRequest is NavigationRequest.SinglePhoto) {
+            navigator.showSinglePhotoWithSharedAnimation(this, navigationRequest, getSharedViews(navigationRequest.position.toInt()))
+        } else {
+            navigator.dispatch(this, navigationRequest)
+        }
+    }
+
+    private fun getSharedViews(position: Int): Array<Pair<View, String>> {
+        return photosRecyclerView.findViewHolderForAdapterPosition(position)
+                ?.itemView
+                ?.run {
+                    val photoView = findViewById<View>(R.id.photo)
+                    arrayOf(Pair(photoView, photoView.transitionName))
+                } ?: emptyArray()
     }
 
     private fun setupRecyclerView() {
@@ -74,7 +100,7 @@ class PhotosActivity : BaseActivity() {
     }
 
     private fun subscribeToPhotosChange(photosAdapter: PhotosAdapter) {
-        photosDisposable = photosViewModel.photosSubject
+        compositeDisposable += photosViewModel.photosSubject
                 .subscribe { photosAdapter.setData(it) }
     }
 
@@ -97,7 +123,7 @@ class PhotosActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
-        photosDisposable.dispose()
+        compositeDisposable.dispose()
         super.onDestroy()
     }
 }

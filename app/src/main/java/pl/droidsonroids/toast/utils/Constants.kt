@@ -26,4 +26,8 @@ object Constants {
     }
 
     const val NO_ID = -1L
+
+    object PhotoTransition {
+        const val PHOTO = "photo"
+    }
 }

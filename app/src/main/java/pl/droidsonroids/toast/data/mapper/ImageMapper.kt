@@ -4,11 +4,21 @@ import pl.droidsonroids.toast.BuildConfig
 import pl.droidsonroids.toast.data.api.ApiImage
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.viewmodels.photos.PhotoItemViewModel
+import pl.droidsonroids.toast.viewmodels.photos.SinglePhotoViewModel
 
-fun ImageDto.toViewModel(onClick: () -> Unit): PhotoItemViewModel {
+fun ImageDto.toItemViewModel(position: Long, onClick: (Long) -> Unit): PhotoItemViewModel {
     return PhotoItemViewModel(
+            position = position,
             image = this,
             action = onClick
+    )
+}
+
+fun ImageDto.toSingleViewModel(position: Long, onPhotoLoadingFinished: () -> Unit): SinglePhotoViewModel {
+    return SinglePhotoViewModel(
+            position = position,
+            image = this,
+            onPhotoLoadingFinished = onPhotoLoadingFinished
     )
 }
 
