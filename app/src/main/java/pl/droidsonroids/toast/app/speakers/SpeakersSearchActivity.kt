@@ -21,10 +21,10 @@ import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.activity_speakers_search.*
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
-import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
-import pl.droidsonroids.toast.app.utils.RevealAnimatorBuilder
-import pl.droidsonroids.toast.app.utils.ViewTreeObserverBuilder
-import pl.droidsonroids.toast.app.utils.disableActivityTransitionAnimations
+import pl.droidsonroids.toast.app.utils.builders.RevealAnimatorBuilder
+import pl.droidsonroids.toast.app.utils.builders.ViewTreeObserverBuilder
+import pl.droidsonroids.toast.app.utils.callbacks.LazyLoadingScrollListener
+import pl.droidsonroids.toast.app.utils.extensions.disableActivityTransitionAnimations
 import pl.droidsonroids.toast.databinding.ActivitySpeakersSearchBinding
 import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersSearchViewModel
@@ -37,10 +37,13 @@ class SpeakersSearchActivity : BaseActivity() {
         private const val EXTRA_CIRCULAR_REVEAL_X = "EXTRA_CIRCULAR_REVEAL_X"
         private const val EXTRA_CIRCULAR_REVEAL_Y = "EXTRA_CIRCULAR_REVEAL_Y"
 
-        fun createIntent(context: Context, revealCenterX: Int, revealCenterY: Int): Intent =
-                Intent(context, SpeakersSearchActivity::class.java)
-                        .putExtra(EXTRA_CIRCULAR_REVEAL_X, revealCenterX)
-                        .putExtra(EXTRA_CIRCULAR_REVEAL_Y, revealCenterY)
+        fun createIntent(context: Context, revealCenterX: Int? = null, revealCenterY: Int? = null): Intent {
+            val intent = Intent(context, SpeakersSearchActivity::class.java)
+            revealCenterX?.let { intent.putExtra(EXTRA_CIRCULAR_REVEAL_X, it) }
+            revealCenterY?.let { intent.putExtra(EXTRA_CIRCULAR_REVEAL_Y, it) }
+            return intent
+        }
+
     }
 
     @Inject

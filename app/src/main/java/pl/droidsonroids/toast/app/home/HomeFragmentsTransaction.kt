@@ -6,7 +6,7 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.contact.ContactFragment
 import pl.droidsonroids.toast.app.events.EventsFragment
 import pl.droidsonroids.toast.app.speakers.SpeakersFragment
-import pl.droidsonroids.toast.app.utils.beginTransaction
+import pl.droidsonroids.toast.app.utils.extensions.beginTransaction
 
 private const val EVENTS_FRAGMENT_TAG = "events_fragment_tag"
 private const val SPEAKERS_FRAGMENT_TAG = "speakers_fragment_tag"

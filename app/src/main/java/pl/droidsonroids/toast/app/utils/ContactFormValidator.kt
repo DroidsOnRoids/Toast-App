@@ -1,6 +1,7 @@
 package pl.droidsonroids.toast.app.utils
 
 import pl.droidsonroids.toast.R
+import pl.droidsonroids.toast.app.utils.extensions.getUnicodeLength
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.StringProvider
 import javax.inject.Inject

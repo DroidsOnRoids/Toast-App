@@ -23,7 +23,7 @@
             android:layout_margin="2dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/meetup_photo_desc"
-            android:foreground="?attr/selectableItemBackground"
+            android:foreground="@drawable/photo_item_ripple"
             android:onClick="@{() -> photoItemViewModel.onClick()}"
             android:scaleType="centerCrop"
             app:coverImage="@{photoItemViewModel.image}"

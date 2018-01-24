@@ -3,6 +3,7 @@ package pl.droidsonroids.toast.repositories.speaker
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
 import pl.droidsonroids.toast.data.Page
+import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDto
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.services.SpeakerService
@@ -28,4 +29,8 @@ class SpeakersRepositoryImpl @Inject constructor(private val speakerService: Spe
                             .toPage(pageNumber, allPagesCount)
                 }
     }
+
+    override fun getSpeaker(id: Long): Single<SpeakerDetailsDto> =
+            speakerService.getSpeaker(id).map { it.speakerItem.toDto() }
+
 }

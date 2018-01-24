@@ -9,9 +9,9 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.app.utils.ContactFormValidator
 import pl.droidsonroids.toast.app.utils.callbacks.OnPropertyChangedSkippableCallback
-import pl.droidsonroids.toast.app.utils.getUnicodeLength
-import pl.droidsonroids.toast.data.MessageType
+import pl.droidsonroids.toast.app.utils.extensions.getUnicodeLength
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
+import pl.droidsonroids.toast.data.enums.MessageType
 import pl.droidsonroids.toast.repositories.contact.ContactRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest

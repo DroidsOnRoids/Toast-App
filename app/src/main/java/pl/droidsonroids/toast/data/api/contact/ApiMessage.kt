@@ -1,7 +1,7 @@
 package pl.droidsonroids.toast.data.api.contact
 
 import com.google.gson.annotations.SerializedName
-import pl.droidsonroids.toast.data.MessageType
+import pl.droidsonroids.toast.data.enums.MessageType
 
 data class ApiMessage(
         @SerializedName("email")

@@ -4,8 +4,8 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import pl.droidsonroids.toast.data.MessageType
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
+import pl.droidsonroids.toast.data.enums.MessageType
 import javax.inject.Inject
 import javax.inject.Singleton
 

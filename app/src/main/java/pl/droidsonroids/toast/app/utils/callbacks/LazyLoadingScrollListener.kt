@@ -1,4 +1,4 @@
-package pl.droidsonroids.toast.app.utils
+package pl.droidsonroids.toast.app.utils.callbacks
 
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
