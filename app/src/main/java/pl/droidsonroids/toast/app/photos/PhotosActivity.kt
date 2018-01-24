@@ -16,10 +16,10 @@ import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.home.MainActivity
+import pl.droidsonroids.toast.app.utils.ParentView
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
-import pl.droidsonroids.toast.utils.ParentView
 import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.photos.PhotosViewModel
 import java.util.*
@@ -43,12 +43,12 @@ class PhotosActivity : BaseActivity() {
     @Inject
     lateinit var navigator: Navigator
 
+    private val parentEventId by lazy { intent.getLongExtra(EVENT_ID_KEY, Constants.NO_ID) }
     private val photosViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory)[PhotosViewModel::class.java]
     }
 
     private val photos by lazy { intent.getParcelableArrayListExtra<ImageDto>(PHOTOS_KEY) }
-    private val parentEventId by lazy { intent.getLongExtra(EVENT_ID_KEY, Constants.Event.NO_EVENT_ID) }
     private val parentView by lazy { intent.getSerializableExtra(PARENT_VIEW_KEY) }
 
     private val compositeDisposable = CompositeDisposable()
@@ -56,9 +56,14 @@ class PhotosActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photos)
+        setupWindow()
         setupToolbar()
         setupViewModel()
         setupRecyclerView()
+    }
+
+    private fun setupWindow() {
+        window.sharedElementsUseOverlay = false
     }
 
     private fun setupToolbar() {

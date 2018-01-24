@@ -13,6 +13,8 @@ import org.hamcrest.Matchers.allOf
 
 abstract class BaseRobot {
 
+    private val homeButtonDescription = android.support.v7.appcompat.R.string.abc_action_bar_up_description
+
     fun checkIfToolbarWithTitleIsDisplayed(title: String, toolbarId: Int): BaseRobot {
         onView(allOf(withText(title), isDescendantOfA(withId(toolbarId))))
                 .check(matches(isDisplayed()))
@@ -48,7 +50,18 @@ abstract class BaseRobot {
         onView(withId(id))
                 .check(matches(withText(text)))
         return this
+    }
 
+    fun checkIfHomeButtonIsDisplayed(): BaseRobot {
+        onView(withContentDescription(homeButtonDescription))
+                .check(matches(isDisplayed()))
+        return this
+    }
+
+    fun checkIfHintIsDisplayed(id: Int, text: String): BaseRobot {
+        onView(withId(id))
+                .check(matches(withHint(text)))
+        return this
     }
 
     fun performClickOnElementWithId(id: Int): BaseRobot {
@@ -66,6 +79,12 @@ abstract class BaseRobot {
     fun performTyping(text: String, id: Int): BaseRobot {
         onView(withId(id))
                 .perform(ViewActions.typeText(text))
+        return this
+    }
+
+    fun performNavigateUp(): BaseRobot {
+        onView(withContentDescription(homeButtonDescription))
+                .perform(click())
         return this
     }
 }
