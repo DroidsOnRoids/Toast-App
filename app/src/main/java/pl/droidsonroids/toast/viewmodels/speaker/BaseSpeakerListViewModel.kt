@@ -83,5 +83,5 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
         return State.Error(::onErrorClick)
     }
 
-    abstract protected fun onErrorClick()
+    protected abstract fun onErrorClick()
 }
