@@ -1,6 +1,8 @@
 package pl.droidsonroids.toast.data.mapper
 
 import pl.droidsonroids.toast.data.api.speaker.ApiSpeaker
+import pl.droidsonroids.toast.data.api.speaker.ApiSpeakerDetails
+import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDto
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakerItemViewModel
 
@@ -9,6 +11,16 @@ fun ApiSpeaker.toDto(): SpeakerDto {
             id = id,
             name = name,
             job = job,
+            avatar = avatar.toDto()
+    )
+}
+
+fun ApiSpeakerDetails.toDto(): SpeakerDetailsDto {
+    return SpeakerDetailsDto(
+            id = id,
+            name = name,
+            job = job,
+            bio = bio,
             avatar = avatar.toDto()
     )
 }

@@ -1,6 +1,6 @@
 @file:JvmName("CharSequenceExtensions")
 
-package pl.droidsonroids.toast.app.utils
+package pl.droidsonroids.toast.app.utils.extensions
 
 
 fun CharSequence.getUnicodeLength()

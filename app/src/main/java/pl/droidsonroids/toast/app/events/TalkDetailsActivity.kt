@@ -11,6 +11,7 @@ import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.data.dto.event.TalkDto
 import pl.droidsonroids.toast.databinding.ActivityTalkDetailsBinding
+import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.event.TalkDetailsViewModel
 import javax.inject.Inject
@@ -18,9 +19,11 @@ import javax.inject.Inject
 class TalkDetailsActivity : BaseActivity() {
     companion object {
         private const val TALK_DTO_KEY = "talkDto"
+        private const val EVENT_ID_KEY = "event_key"
         fun createIntent(context: Context, navigationRequest: NavigationRequest.TalkDetails): Intent {
             return Intent(context, TalkDetailsActivity::class.java)
                     .putExtra(TALK_DTO_KEY, navigationRequest.talkDto)
+                    .putExtra(EVENT_ID_KEY, navigationRequest.eventId)
         }
     }
 
@@ -29,6 +32,10 @@ class TalkDetailsActivity : BaseActivity() {
 
     private val talkDto by lazy {
         intent.getParcelableExtra<TalkDto>(TALK_DTO_KEY)
+    }
+
+    private val eventId by lazy {
+        intent.getLongExtra(EVENT_ID_KEY, Constants.NO_ID)
     }
 
     private val talkDetailsViewModel by lazy {
@@ -57,7 +64,7 @@ class TalkDetailsActivity : BaseActivity() {
     }
 
     private fun setupViewModel(binding: ActivityTalkDetailsBinding) {
-        talkDetailsViewModel.init(talkDto)
+        talkDetailsViewModel.init(eventId, talkDto)
         navigationDisposable = talkDetailsViewModel.navigationSubject
                 .subscribe(::handleNavigationRequest)
         binding.talkDetailsViewModel = talkDetailsViewModel

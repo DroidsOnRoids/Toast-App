@@ -1,4 +1,4 @@
-package pl.droidsonroids.toast.data
+package pl.droidsonroids.toast.data.enums
 
 enum class MessageType {
     I_WANT_TO, TALK, REWARD, SPONSOR;
