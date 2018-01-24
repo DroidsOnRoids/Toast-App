@@ -7,8 +7,8 @@ import org.junit.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
-import pl.droidsonroids.toast.data.MessageType
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
+import pl.droidsonroids.toast.data.enums.MessageType
 import pl.droidsonroids.toast.services.ContactService
 import pl.droidsonroids.toast.services.ContactStorage
 import java.io.IOException

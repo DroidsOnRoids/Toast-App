@@ -12,7 +12,7 @@ import org.junit.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
-import pl.droidsonroids.toast.app.utils.ParentView
+import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.testApiTalk

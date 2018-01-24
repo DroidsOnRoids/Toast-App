@@ -19,6 +19,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.github.florent37.glidepalette.GlidePalette
 import pl.droidsonroids.toast.R
+import pl.droidsonroids.toast.app.utils.extensions.firstWord
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
@@ -147,4 +148,9 @@ fun setVisibility(view: View, isVisible: Boolean) {
 @BindingAdapter("transitionName", "elementId")
 fun setTransitionName(view: View, transitionName: String, elementId: Long?) {
     view.transitionName = "$transitionName$elementId"
+}
+
+@BindingAdapter("about")
+fun setAboutPrefix(textView: TextView, name: String) {
+    textView.text = textView.context.getString(R.string.about, name.firstWord())
 }
