@@ -1,14 +1,19 @@
-package pl.droidsonroids.toast
+package pl.droidsonroids.toast.robot
 
 import android.support.test.espresso.Espresso.onView
+import android.support.test.espresso.action.ViewActions
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.assertion.ViewAssertions.doesNotExist
 import android.support.test.espresso.assertion.ViewAssertions.matches
+import android.support.test.espresso.contrib.RecyclerViewActions
 import android.support.test.espresso.matcher.RootMatchers.isDialog
 import android.support.test.espresso.matcher.ViewMatchers.*
+import android.support.v7.widget.RecyclerView
 import org.hamcrest.Matchers.allOf
 
 abstract class BaseRobot {
+
+    private val homeButtonDescription = android.support.v7.appcompat.R.string.abc_action_bar_up_description
 
     fun checkIfToolbarWithTitleIsDisplayed(title: String, toolbarId: Int): BaseRobot {
         onView(allOf(withText(title), isDescendantOfA(withId(toolbarId))))
@@ -37,7 +42,7 @@ abstract class BaseRobot {
 
     fun checkIfElementWithIdIsClickable(id: Int): BaseRobot {
         onView(withId(id))
-                .check(matches(isClickable()))
+                .check(matches(isEnabled()))
         return this
     }
 
@@ -45,11 +50,40 @@ abstract class BaseRobot {
         onView(withId(id))
                 .check(matches(withText(text)))
         return this
+    }
 
+    fun checkIfHomeButtonIsDisplayed(): BaseRobot {
+        onView(withContentDescription(homeButtonDescription))
+                .check(matches(isDisplayed()))
+        return this
+    }
+
+    fun checkIfHintIsDisplayed(id: Int, text: String): BaseRobot {
+        onView(withId(id))
+                .check(matches(withHint(text)))
+        return this
     }
 
     fun performClickOnElementWithId(id: Int): BaseRobot {
         onView(withId(id))
+                .perform(click())
+        return this
+    }
+
+    fun performClickOnRecyclerViewElement(id: Int, position: Int): BaseRobot {
+        onView(withId(id))
+                .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(position, click()))
+        return this
+    }
+
+    fun performTyping(text: String, id: Int): BaseRobot {
+        onView(withId(id))
+                .perform(ViewActions.typeText(text))
+        return this
+    }
+
+    fun performNavigateUp(): BaseRobot {
+        onView(withContentDescription(homeButtonDescription))
                 .perform(click())
         return this
     }

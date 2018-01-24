@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="photoItemViewModel"
+            type="pl.droidsonroids.toast.viewmodels.photos.PhotoItemViewModel"/>
+
+        <import type="pl.droidsonroids.toast.utils.Constants.PhotoTransition"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/photo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="2dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/meetup_photo_desc"
+            android:foreground="@drawable/photo_item_ripple"
+            android:onClick="@{() -> photoItemViewModel.onClick()}"
+            android:scaleType="centerCrop"
+            app:coverImage="@{photoItemViewModel.image}"
+            app:elementId="@{photoItemViewModel.position}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="h,1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:transitionName="@{PhotoTransition.PHOTO}"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>

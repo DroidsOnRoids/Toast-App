@@ -3,7 +3,10 @@ package pl.droidsonroids.toast.di
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
+import pl.droidsonroids.toast.app.events.TalkDetailsActivity
 import pl.droidsonroids.toast.app.home.MainActivity
+import pl.droidsonroids.toast.app.photos.PhotosActivity
+import pl.droidsonroids.toast.app.photos.PhotosViewerActivity
 import pl.droidsonroids.toast.app.speakers.SpeakerDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
 
@@ -20,4 +23,13 @@ abstract class ActivityBuilder {
 
     @ContributesAndroidInjector
     abstract fun bindEventDetailsActivity(): EventDetailsActivity
+
+    @ContributesAndroidInjector
+    abstract fun bindTalkDetailsActivity(): TalkDetailsActivity
+
+    @ContributesAndroidInjector
+    abstract fun bindPhotosActivity(): PhotosActivity
+
+    @ContributesAndroidInjector
+    abstract fun bindSinglePhotoActivity(): PhotosViewerActivity
 }

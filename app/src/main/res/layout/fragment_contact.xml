@@ -5,123 +5,182 @@
 
     <data>
 
+        <import type="pl.droidsonroids.toast.utils.Constants"/>
+
         <variable
             name="contactViewModel"
             type="pl.droidsonroids.toast.viewmodels.contact.ContactViewModel"/>
     </data>
 
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.constraint.ConstraintLayout
+        <ScrollView
+            android:id="@+id/contactScrollContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <Spinner
-                android:id="@+id/iWantToSpinner"
-                android:layout_width="0dp"
-                android:layout_height="53dp"
-                android:layout_margin="@dimen/margin_large"
-                android:background="@drawable/contact_spinner_shape"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/contactNameInputLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_medium"
-                android:layout_marginTop="@dimen/margin_large"
-                app:layout_constraintEnd_toStartOf="@+id/contactEmailInputLayout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iWantToSpinner">
+                <Spinner
+                    android:id="@+id/topicSpinner"
+                    android:layout_width="0dp"
+                    android:layout_height="53dp"
+                    android:layout_margin="@dimen/margin_large"
+                    android:background="@drawable/contact_spinner_shape"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:selectedItemPosition="@={contactViewModel.selectedTopicPosition}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
-                <EditText
-                    android:id="@+id/contactNameEditText"
-                    style="@style/ContactDataInputStyle"
-                    android:layout_width="match_parent"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/contactNameInputLayout"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:hint="@string/your_name"
-                    android:paddingEnd="@dimen/margin_medium"
-                    android:paddingStart="@dimen/margin_medium"/>
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_marginStart="@dimen/margin_medium"
+                    android:layout_marginTop="@dimen/margin_large"
+                    app:errorEnabled="true"
+                    app:error="@{contactViewModel.nameInputError}"
+                    app:layout_constraintEnd_toStartOf="@+id/contactEmailInputLayout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/topicSpinner">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/contactEmailInputLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_medium"
-                android:layout_marginTop="@dimen/margin_large"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/contactNameInputLayout"
-                app:layout_constraintTop_toBottomOf="@+id/iWantToSpinner">
+                    <EditText
+                        android:id="@+id/contactNameEditText"
+                        style="@style/ContactDataInputStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:hint="@string/your_name"
+                        android:imeOptions="actionNext"
+                        android:paddingEnd="@dimen/margin_medium"
+                        android:paddingStart="@dimen/margin_medium"
+                        android:text="@={contactViewModel.name}"/>
+                </android.support.design.widget.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/contactEmailEditText"
-                    style="@style/ContactDataInputStyle"
-                    android:layout_width="match_parent"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/contactEmailInputLayout"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:hint="@string/email_address"
-                    android:inputType="textEmailAddress"
-                    android:paddingEnd="@dimen/margin_medium"
-                    android:paddingStart="@dimen/margin_medium"/>
+                    android:layout_marginEnd="@dimen/margin_medium"
+                    android:layout_marginTop="@dimen/margin_large"
+                    app:errorEnabled="true"
+                    app:error="@{contactViewModel.emailInputError}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/contactNameInputLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/topicSpinner">
 
-            </android.support.design.widget.TextInputLayout>
+                    <EditText
+                        android:id="@+id/contactEmailEditText"
+                        style="@style/ContactDataInputStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:hint="@string/email_address"
+                        android:imeOptions="actionNext"
+                        android:inputType="textEmailAddress"
+                        android:paddingEnd="@dimen/margin_medium"
+                        android:paddingStart="@dimen/margin_medium"
+                        android:text="@={contactViewModel.email}"/>
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/contactMessageInputLayout"
-                android:layout_width="0dp"
-                android:layout_height="113dp"
-                android:layout_marginEnd="@dimen/margin_large"
-                android:layout_marginStart="@dimen/margin_large"
-                android:layout_marginTop="@dimen/margin_large"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/contactNameInputLayout">
+                </android.support.design.widget.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/contactMessageEditText"
-                    style="@style/ContactMessageInputStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="@string/your_message"
-                    android:paddingBottom="12dp"
-                    android:paddingEnd="@dimen/margin_medium"
-                    android:paddingStart="@dimen/margin_medium"
-                    android:paddingTop="18dp"/>
-            </android.support.design.widget.TextInputLayout>
-
-            <FrameLayout
-                android:id="@+id/disabledSendButton"
-                android:layout_width="0dp"
-                android:layout_height="54dp"
-                android:layout_marginBottom="@dimen/margin_large"
-                android:layout_marginEnd="@dimen/margin_large"
-                android:layout_marginStart="@dimen/margin_large"
-                android:layout_marginTop="32dp"
-                android:background="@drawable/contact_disabled_send_button_shape"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/contactMessageInputLayout">
-
-                <TextView
-                    style="@style/TitleTextStyle"
-                    android:layout_width="wrap_content"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/contactMessageInputLayout"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:drawablePadding="@dimen/margin_small"
-                    android:drawableStart="@drawable/ic_paper_plane"
-                    android:text="@string/send"
-                    android:textAllCaps="true"/>
-            </FrameLayout>
+                    android:layout_marginEnd="@dimen/margin_large"
+                    android:layout_marginStart="@dimen/margin_large"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="250"
+                    app:error="@{contactViewModel.messageInputError}"
+                    app:errorEnabled="true"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/contactNameInputLayout">
 
-        </android.support.constraint.ConstraintLayout>
-    </ScrollView>
+                    <EditText
+                        android:id="@+id/contactMessageEditText"
+                        style="@style/ContactMessageInputStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="113dp"
+                        android:hint="@string/your_message"
+                        android:paddingBottom="12dp"
+                        android:paddingEnd="@dimen/margin_medium"
+                        android:paddingStart="@dimen/margin_medium"
+                        android:paddingTop="18dp"
+                        android:text="@={contactViewModel.message}"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <FrameLayout
+                    android:id="@+id/disabledSendButton"
+                    android:layout_width="0dp"
+                    android:layout_height="54dp"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    android:layout_marginEnd="@dimen/margin_large"
+                    android:layout_marginStart="@dimen/margin_large"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:background="@drawable/contact_disabled_send_button_shape"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/contactMessageInputLayout">
+
+                    <TextView
+                        style="@style/TitleTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawablePadding="@dimen/margin_small"
+                        android:drawableStart="@drawable/ic_paper_plane"
+                        android:text="@string/send"
+                        android:textAllCaps="true"/>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/enabledSendButton"
+                    android:layout_width="0dp"
+                    android:layout_height="54dp"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    android:layout_marginEnd="@dimen/margin_large"
+                    android:layout_marginStart="@dimen/margin_large"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:background="@drawable/contact_disabled_send_button_shape"
+                    android:backgroundTint="@color/colorAccent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:onClick="@{() -> contactViewModel.onSendClick()}"
+                    android:visibility="@{contactViewModel.sendingEnabled}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/contactMessageInputLayout">
+
+                    <TextView
+                        style="@style/TitleTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawablePadding="@dimen/margin_small"
+                        android:drawableStart="@drawable/ic_paper_plane"
+                        android:text="@string/send"
+                        android:textAllCaps="true"/>
+                </FrameLayout>
+
+            </android.support.constraint.ConstraintLayout>
+        </ScrollView>
+
+        <include
+            android:id="@+id/loadingLayout"
+            layout="@layout/layout_loading"
+            app:loadingViewModel="@{contactViewModel}"/>
+    </FrameLayout>
+
 </layout>

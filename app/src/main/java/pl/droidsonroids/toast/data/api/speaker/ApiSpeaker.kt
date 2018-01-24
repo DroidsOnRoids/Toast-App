@@ -11,7 +11,5 @@ data class ApiSpeaker(
         @SerializedName("job")
         val job: String,
         @SerializedName("avatar")
-        val avatar: ApiImage,
-        @SerializedName("bio")
-        val bio: String
+        val avatar: ApiImage
 )

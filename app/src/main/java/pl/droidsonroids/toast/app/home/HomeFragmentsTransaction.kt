@@ -6,7 +6,7 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.contact.ContactFragment
 import pl.droidsonroids.toast.app.events.EventsFragment
 import pl.droidsonroids.toast.app.speakers.SpeakersFragment
-import pl.droidsonroids.toast.app.utils.beginTransaction
+import pl.droidsonroids.toast.app.utils.extensions.beginTransaction
 
 private const val EVENTS_FRAGMENT_TAG = "events_fragment_tag"
 private const val SPEAKERS_FRAGMENT_TAG = "speakers_fragment_tag"
@@ -35,7 +35,7 @@ class HomeFragmentsTransaction(private val supportFragmentManager: FragmentManag
 
     private fun showFragmentWithAnimation(fragmentTag: String, fragmentCreator: () -> Fragment) {
         supportFragmentManager.beginTransaction {
-            setCustomAnimations(R.anim.animation_translated_cross_fade_in, R.anim.animation_cross_fade_out)
+            setCustomAnimations(R.anim.animation_translated_cross_fade_in, R.anim.animation_fade_out)
 
             val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
             currentFragment?.let { detach(it) }

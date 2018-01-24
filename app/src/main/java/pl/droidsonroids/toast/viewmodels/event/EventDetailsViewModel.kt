@@ -9,8 +9,11 @@ import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
 import pl.droidsonroids.toast.data.dto.event.TalkDto
+import pl.droidsonroids.toast.data.enums.ParentView
+import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.repositories.event.EventsRepository
+import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
@@ -25,35 +28,39 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
     private val Any.simpleClassName: String get() = javaClass.simpleName
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.PENDING)
-    private var eventId: Long? = null
-    val title: ObservableField<String> = ObservableField()
-    val date: ObservableField<Date> = ObservableField()
-    val placeName: ObservableField<String> = ObservableField()
-    val placeStreet: ObservableField<String> = ObservableField()
-    val coverImage: ObservableField<ImageDto?> = ObservableField()
-    val gradientColor: ObservableField<Int> = ObservableField(DEFAULT_GRADIENT_COLOR)
+    private var eventId = Constants.NO_ID
+    val title = ObservableField("")
+    val date = ObservableField<Date>()
+    val placeName = ObservableField("")
+    val placeStreet = ObservableField("")
+    val coverImage = ObservableField<ImageDto?>()
+    val photosAvailable = ObservableField(false)
+    val gradientColor = ObservableField(DEFAULT_GRADIENT_COLOR)
     val onGradientColorLoaded: (Int) -> Unit = {
         gradientColor.set(it and GRADIENT_COLOR_MASK)
     }
     val eventSpeakersSubject: BehaviorSubject<List<EventSpeakerItemViewModel>> = BehaviorSubject.create()
 
+    var photos: List<ImageDto> = emptyList()
+
+    fun onPhotosClick() {
+        navigationSubject.onNext(NavigationRequest.Photos(photos, eventId, ParentView.EVENT_DETAILS))
+    }
 
     fun init(id: Long) {
-        if (eventId == null) {
+        if (eventId == Constants.NO_ID) {
             eventId = id
             loadEvent()
         }
     }
 
     private fun loadEvent() {
-        eventId?.let {
-            loadingStatus.set(LoadingStatus.PENDING)
-            eventsRepository.getEvent(it)
-                    .subscribeBy(
-                            onSuccess = (::onEventLoaded),
-                            onError = (::onEventLoadError)
-                    )
-        }
+        loadingStatus.set(LoadingStatus.PENDING)
+        eventsRepository.getEvent(eventId)
+                .subscribeBy(
+                        onSuccess = (::onEventLoaded),
+                        onError = (::onEventLoadError)
+                )
     }
 
     private fun onEventLoaded(eventDetailsDto: EventDetailsDto) {
@@ -64,6 +71,8 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
             placeName.set(it.placeName)
             placeStreet.set(it.placeStreet)
             coverImage.set(it.coverImages.firstOrNull())
+            photosAvailable.set(it.photos.isNotEmpty())
+            photos = it.photos
             onTalksLoaded(it.talks)
         }
     }
@@ -73,12 +82,13 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
         eventSpeakersSubject.onNext(eventSpeakerViewModels)
     }
 
-    private fun onReadMore(talkId: Long) {
-        Log.d(simpleClassName, "onReadMore: $talkId")
+    private fun onReadMore(eventSpeakerItemViewModel: EventSpeakerItemViewModel) {
+        navigationSubject.onNext(NavigationRequest.TalkDetails(eventSpeakerItemViewModel.toDto(), eventId))
+        Log.d(simpleClassName, "onReadMore: ${eventSpeakerItemViewModel.id}")
     }
 
     private fun onSpeakerClick(speakerId: Long) {
-        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId))
+        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId, eventId))
     }
 
     private fun onEventLoadError(throwable: Throwable) {

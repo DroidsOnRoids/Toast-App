@@ -12,11 +12,13 @@ import org.junit.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
+import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.testApiTalk
 import pl.droidsonroids.toast.testEventDetails
 import pl.droidsonroids.toast.utils.LoadingStatus
+import pl.droidsonroids.toast.utils.NavigationRequest
 
 class EventDetailsViewModelTest : RxTestBase() {
     @Mock
@@ -63,6 +65,19 @@ class EventDetailsViewModelTest : RxTestBase() {
 
         assertEventDetails()
         assertThat(eventDetailsViewModel.loadingStatus.get(), equalTo(LoadingStatus.SUCCESS))
+    }
+
+    @Test
+    fun shouldRequestNavigationToPhotos() {
+        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
+        eventDetailsViewModel.init(eventId)
+        val testPhotos = testEventDetails.photos.map { it.toDto() }
+
+        val testObserver = eventDetailsViewModel.navigationSubject.test()
+
+        eventDetailsViewModel.onPhotosClick()
+
+        testObserver.assertValue(NavigationRequest.Photos(testPhotos, eventId, ParentView.EVENT_DETAILS))
     }
 
     private fun assertEventDetails() {

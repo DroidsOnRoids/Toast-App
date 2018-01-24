@@ -3,6 +3,9 @@
     <color name="colorPrimary">#20c685</color>
     <color name="colorPrimaryDark">#1cb076</color>
     <color name="colorAccent">#20c685</color>
+    <color name="darkGreen">#1a9a68</color>
+    <color name="avatarBorderSmallGreen">#4AD09C</color>
+    <color name="avatarBorderBigGreen">#36CB90</color>
     <color name="blueLink">#4266B2</color>
     <color name="greenLogo">#99CC34</color>
     <color name="lightGray">#f2f2f2</color>
@@ -14,7 +17,11 @@
     <color name="paleGray">#e0e7f0</color>
     <color name="gray">#989ea6</color>
     <color name="blackAlpha10">#1F000000</color>
+    <color name="blackAlpha20">#33000000</color>
+    <color name="blackAlpha40">#66000000</color>
+    <color name="black">#000000</color>
     <color name="transparent">#00000000</color>
     <color name="transparentWhite">#00FFFFFF</color>
     <color name="lightGreen">#BCEEDB</color>
+    <color name="photoButton">#0cc783</color>
 </resources>
