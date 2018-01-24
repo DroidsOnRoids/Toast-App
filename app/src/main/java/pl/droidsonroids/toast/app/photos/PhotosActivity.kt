@@ -56,9 +56,14 @@ class PhotosActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photos)
+        setupWindow()
         setupToolbar()
         setupViewModel()
         setupRecyclerView()
+    }
+
+    private fun setupWindow() {
+        window.sharedElementsUseOverlay = false
     }
 
     private fun setupToolbar() {
