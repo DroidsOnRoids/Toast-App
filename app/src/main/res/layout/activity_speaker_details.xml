@@ -110,11 +110,22 @@
                 android:text="@{speakerDetailsViewModel.job}"
                 android:textColor="@color/darkGreen"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toTopOf="@+id/headerDivider"
+                app:layout_constraintBottom_toTopOf="@+id/linksBarLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/speakerName"
                 tools:text="Android Developer"/>
+
+            <include
+                android:id="@+id/linksBarLayout"
+                layout="@layout/layout_links_bar"
+                android:layout_width="0dp"
+                android:layout_height="54dp"
+                app:layout_constraintBottom_toTopOf="@+id/headerDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/speakerJob"
+                />
 
             <View
                 android:id="@+id/headerDivider"
@@ -124,7 +135,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/aboutBio"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/speakerJob"/>
+                app:layout_constraintTop_toBottomOf="@+id/linksBarLayout"/>
 
             <TextView
                 android:id="@+id/aboutBio"
