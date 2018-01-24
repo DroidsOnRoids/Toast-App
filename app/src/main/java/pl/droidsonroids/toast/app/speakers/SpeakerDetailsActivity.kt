@@ -1,9 +1,17 @@
 package pl.droidsonroids.toast.app.speakers
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
+import android.view.MenuItem
+import kotlinx.android.synthetic.main.activity_speakers_search.*
 import pl.droidsonroids.toast.app.base.BaseActivity
+import pl.droidsonroids.toast.databinding.ActivitySpeakerDetailsBinding
+import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.utils.consume
+import pl.droidsonroids.toast.viewmodels.speaker.SpeakerDetailsViewModel
 
 class SpeakerDetailsActivity : BaseActivity() {
     companion object {
@@ -13,6 +21,44 @@ class SpeakerDetailsActivity : BaseActivity() {
             return Intent(context, SpeakerDetailsActivity::class.java)
                     .putExtra(SPEAKER_ID, navigationRequest.id)
         }
+    }
+
+    private val speakerDetailsViewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory)
+                .get(speakerId.toString(), SpeakerDetailsViewModel::class.java)
+    }
+
+    private val speakerId: Long by lazy {
+        intent.getLongExtra(SPEAKER_ID, Constants.NO_ID)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val speakerDetailsBinding = ActivitySpeakerDetailsBinding.inflate(layoutInflater)
+        setContentView(speakerDetailsBinding.root)
+        setupViewModel(speakerDetailsBinding)
+        setupToolbar()
+        setupViewModel()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> consume { finish() }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun setupViewModel(speakerDetailsBinding: ActivitySpeakerDetailsBinding) {
+        speakerDetailsBinding.speakerDetailsViewModel = speakerDetailsViewModel
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun setupViewModel() {
+        speakerDetailsViewModel.init(speakerId)
     }
 
 }

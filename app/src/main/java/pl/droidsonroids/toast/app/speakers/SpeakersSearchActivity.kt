@@ -37,10 +37,13 @@ class SpeakersSearchActivity : BaseActivity() {
         private const val EXTRA_CIRCULAR_REVEAL_X = "EXTRA_CIRCULAR_REVEAL_X"
         private const val EXTRA_CIRCULAR_REVEAL_Y = "EXTRA_CIRCULAR_REVEAL_Y"
 
-        fun createIntent(context: Context, revealCenterX: Int, revealCenterY: Int): Intent =
-                Intent(context, SpeakersSearchActivity::class.java)
-                        .putExtra(EXTRA_CIRCULAR_REVEAL_X, revealCenterX)
-                        .putExtra(EXTRA_CIRCULAR_REVEAL_Y, revealCenterY)
+        fun createIntent(context: Context, revealCenterX: Int? = null, revealCenterY: Int? = null): Intent {
+            val intent = Intent(context, SpeakersSearchActivity::class.java)
+            revealCenterX?.let { intent.putExtra(EXTRA_CIRCULAR_REVEAL_X, it) }
+            revealCenterY?.let { intent.putExtra(EXTRA_CIRCULAR_REVEAL_Y, it) }
+            return intent
+        }
+
     }
 
     @Inject

@@ -25,11 +25,9 @@ object Constants {
         const val CARD = "card"
     }
 
+    const val NO_ID = -1L
+
     object PhotoTransition {
         const val PHOTO = "photo"
-    }
-
-    object Event {
-        const val NO_EVENT_ID = -1L
     }
 }
