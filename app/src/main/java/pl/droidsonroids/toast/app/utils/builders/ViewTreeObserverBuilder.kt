@@ -1,4 +1,4 @@
-package pl.droidsonroids.toast.app.utils
+package pl.droidsonroids.toast.app.utils.builders
 
 import android.view.View
 import android.view.ViewTreeObserver

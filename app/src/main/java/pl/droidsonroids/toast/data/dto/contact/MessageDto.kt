@@ -1,6 +1,6 @@
 package pl.droidsonroids.toast.data.dto.contact
 
-import pl.droidsonroids.toast.data.MessageType
+import pl.droidsonroids.toast.data.enums.MessageType
 
 data class MessageDto(
         val email: String,

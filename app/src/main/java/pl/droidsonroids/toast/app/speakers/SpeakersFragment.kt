@@ -11,11 +11,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.fragment_speakers.*
-import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseFragment
 import pl.droidsonroids.toast.app.home.MainActivity
-import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
+import pl.droidsonroids.toast.app.utils.callbacks.LazyLoadingScrollListener
 import pl.droidsonroids.toast.databinding.FragmentSpeakersBinding
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersViewModel

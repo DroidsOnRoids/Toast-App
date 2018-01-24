@@ -21,10 +21,10 @@ import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.activity_speakers_search.*
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
-import pl.droidsonroids.toast.app.utils.LazyLoadingScrollListener
-import pl.droidsonroids.toast.app.utils.RevealAnimatorBuilder
-import pl.droidsonroids.toast.app.utils.ViewTreeObserverBuilder
-import pl.droidsonroids.toast.app.utils.disableActivityTransitionAnimations
+import pl.droidsonroids.toast.app.utils.builders.RevealAnimatorBuilder
+import pl.droidsonroids.toast.app.utils.builders.ViewTreeObserverBuilder
+import pl.droidsonroids.toast.app.utils.callbacks.LazyLoadingScrollListener
+import pl.droidsonroids.toast.app.utils.extensions.disableActivityTransitionAnimations
 import pl.droidsonroids.toast.databinding.ActivitySpeakersSearchBinding
 import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersSearchViewModel

@@ -17,7 +17,7 @@ import pl.droidsonroids.toast.app.photos.PhotosActivity
 import pl.droidsonroids.toast.app.photos.PhotosViewerActivity
 import pl.droidsonroids.toast.app.speakers.SpeakerDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
-import pl.droidsonroids.toast.app.utils.disableActivityTransitionAnimations
+import pl.droidsonroids.toast.app.utils.extensions.disableActivityTransitionAnimations
 import pl.droidsonroids.toast.utils.NavigationRequest
 import javax.inject.Inject
 import javax.inject.Singleton
