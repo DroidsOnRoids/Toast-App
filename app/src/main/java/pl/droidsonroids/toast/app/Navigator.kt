@@ -1,11 +1,16 @@
 package pl.droidsonroids.toast.app
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.util.Pair
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.widget.Toast
+import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.events.TalkDetailsActivity
 import pl.droidsonroids.toast.app.photos.PhotosActivity
@@ -25,6 +30,29 @@ class Navigator @Inject constructor() {
             is NavigationRequest.SpeakerDetails -> showSpeakerDetails(context, navigationRequest)
             is NavigationRequest.EventDetails -> showEventDetails(context, navigationRequest)
             is NavigationRequest.Photos -> showPhotos(context, navigationRequest)
+            is NavigationRequest.Website -> openWebsite(context, navigationRequest.url)
+            is NavigationRequest.EmailClient -> openEmailClient(context, navigationRequest.email)
+        }
+    }
+
+    private fun openEmailClient(context: Context, email: String) {
+        try {
+            val intent = Intent(Intent.ACTION_SENDTO)
+            intent.type = "text/plain"
+            intent.putExtra(Intent.EXTRA_EMAIL, email)
+            context.startActivity(intent)
+        } catch (exception: ActivityNotFoundException) {
+            Toast.makeText(context, R.string.activity_not_found, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun openWebsite(context: Context, url: String) {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url)
+            context.startActivity(intent)
+        } catch (exception: ActivityNotFoundException) {
+            Toast.makeText(context, R.string.activity_not_found, Toast.LENGTH_SHORT).show()
         }
     }
 

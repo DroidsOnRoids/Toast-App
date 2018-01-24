@@ -13,5 +13,7 @@ sealed class NavigationRequest {
     object Close : NavigationRequest()
     data class Photos(val photos: List<ImageDto>, val eventId: Long, val parentView: ParentView) : NavigationRequest()
     data class SinglePhoto(val photos: List<ImageDto>, val position: Long) : NavigationRequest()
+    data class Website(val url: String): NavigationRequest()
+    data class EmailClient(val email: String): NavigationRequest()
 }
 
