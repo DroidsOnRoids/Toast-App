@@ -132,7 +132,7 @@ class PhotosViewerActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            android.R.id.home -> consume { onBackPressed() }
+            android.R.id.home -> consume { finish() }
             else -> super.onOptionsItemSelected(item)
         }
     }
