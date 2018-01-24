@@ -27,6 +27,23 @@ class SpeakersScreenTest {
     }
 
     @Test
+    fun isToolbarDisplayed() {
+        val toolbarTitle = getString(R.string.speakers_title)
+        goToSpeakersScreen()
+        with(SpeakersRobot()){
+            checkIfToolbarWithTitleIsDisplayed(toolbarTitle, R.id.toolbar)
+        }
+    }
+
+    @Test
+    fun isSearchIconDisplayed() {
+        goToSpeakersScreen()
+        with(SpeakersRobot()) {
+            checkIfElementWithIdIsDisplayed(R.id.searchImageButton)
+        }
+    }
+
+    @Test
     fun isSpeakerSelectedOnSpeakersScreen() {
         goToSpeakersScreen()
         with(SpeakersRobot()) {
@@ -41,14 +58,6 @@ class SpeakersScreenTest {
             performTyping("a", R.id.searchBox)
             checkIfSearchIsPerformed()
             performClickOnRecyclerViewElement(R.id.speakersSearchRecyclerView, 0)
-        }
-    }
-
-    @Test
-    fun isSearchIconDisplayed() {
-        goToSpeakersScreen()
-        with(SpeakersRobot()) {
-            checkIfElementWithIdIsDisplayed(R.id.searchImageButton)
         }
     }
 
