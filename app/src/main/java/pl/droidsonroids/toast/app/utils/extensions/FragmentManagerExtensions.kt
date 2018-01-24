@@ -1,6 +1,6 @@
 @file:JvmName("FragmentManagerExtensions")
 
-package pl.droidsonroids.toast.app.utils
+package pl.droidsonroids.toast.app.utils.extensions
 
 import android.annotation.SuppressLint
 import android.support.v4.app.FragmentManager

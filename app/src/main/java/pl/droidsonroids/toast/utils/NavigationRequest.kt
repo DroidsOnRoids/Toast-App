@@ -1,8 +1,8 @@
 package pl.droidsonroids.toast.utils
 
-import pl.droidsonroids.toast.app.utils.ParentView
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.TalkDto
+import pl.droidsonroids.toast.data.enums.ParentView
 
 sealed class NavigationRequest {
     object SpeakersSearch : NavigationRequest()

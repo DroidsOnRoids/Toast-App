@@ -6,10 +6,10 @@ import android.util.Log
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import pl.droidsonroids.toast.app.utils.ParentView
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
 import pl.droidsonroids.toast.data.dto.event.TalkDto
+import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.repositories.event.EventsRepository

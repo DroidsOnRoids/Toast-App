@@ -7,8 +7,10 @@ import pl.droidsonroids.toast.data.api.event.ApiEvent
 import pl.droidsonroids.toast.data.api.event.ApiEventDetails
 import pl.droidsonroids.toast.data.api.event.ApiTalk
 import pl.droidsonroids.toast.data.api.speaker.ApiSpeaker
+import pl.droidsonroids.toast.data.api.speaker.ApiSpeakerDetails
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.SplitEvents
+import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.utils.Constants
 import java.text.SimpleDateFormat
@@ -31,8 +33,7 @@ val testSpeaker = ApiSpeaker(
         id = 0,
         name = "name",
         job = "job",
-        avatar = ApiImage("bigImageFirst", "thumbImageFirst"),
-        bio = "bio"
+        avatar = ApiImage("bigImageFirst", "thumbImageFirst")
 )
 
 val testApiTalk = ApiTalk(
@@ -64,4 +65,20 @@ val testSpeakersPage = Page(items = testSpeakers.map { it.toDto() }, pageNumber 
 val testImageDto = ImageDto(
         "originalSizeUrl",
         "thumbSizeUrl"
+)
+
+val testSpeakerDetailsDto = SpeakerDetailsDto(
+        id = 0,
+        name = "name",
+        job = "job",
+        bio = "bio",
+        avatar = ImageDto("bigAvatar", "thumbAvatar")
+)
+
+val testSpeakerDetails = ApiSpeakerDetails(
+        id = 0,
+        name = "name",
+        job = "job",
+        bio = "bio",
+        avatar = ApiImage("bigAvatar", "thumbAvatar")
 )
