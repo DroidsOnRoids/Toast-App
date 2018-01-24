@@ -3,7 +3,7 @@ package pl.droidsonroids.toast.viewmodels.speaker
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toSingle
-import org.hamcrest.CoreMatchers
+import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Test
 import org.mockito.InjectMocks
@@ -27,7 +27,7 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
         speakerDetailsViewModel.init(speakerId)
 
         assertSpeakerDetails()
-        assertThat(speakerDetailsViewModel.loadingStatus.get(), CoreMatchers.equalTo(LoadingStatus.SUCCESS))
+        assertThat(speakerDetailsViewModel.loadingStatus.get(), equalTo(LoadingStatus.SUCCESS))
     }
 
     @Test
@@ -35,7 +35,7 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
         whenever(speakersRepository.getSpeaker(speakerId)).thenReturn(Single.error(Exception()))
         speakerDetailsViewModel.init(speakerId)
 
-        assertThat(speakerDetailsViewModel.loadingStatus.get(), CoreMatchers.equalTo(LoadingStatus.ERROR))
+        assertThat(speakerDetailsViewModel.loadingStatus.get(), equalTo(LoadingStatus.ERROR))
     }
 
 
@@ -49,13 +49,13 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
         speakerDetailsViewModel.retryLoading()
 
         assertSpeakerDetails()
-        assertThat(speakerDetailsViewModel.loadingStatus.get(), CoreMatchers.equalTo(LoadingStatus.SUCCESS))
+        assertThat(speakerDetailsViewModel.loadingStatus.get(), equalTo(LoadingStatus.SUCCESS))
     }
 
     private fun assertSpeakerDetails() {
-        assertThat(speakerDetailsViewModel.name.get(), CoreMatchers.equalTo(testSpeakerDetailsDto.name))
-        assertThat(speakerDetailsViewModel.job.get(), CoreMatchers.equalTo(testSpeakerDetailsDto.job))
-        assertThat(speakerDetailsViewModel.bio.get(), CoreMatchers.equalTo(testSpeakerDetailsDto.bio))
-        assertThat(speakerDetailsViewModel.avatar.get(), CoreMatchers.equalTo(testSpeakerDetailsDto.avatar))
+        assertThat(speakerDetailsViewModel.name.get(), equalTo(testSpeakerDetailsDto.name))
+        assertThat(speakerDetailsViewModel.job.get(), equalTo(testSpeakerDetailsDto.job))
+        assertThat(speakerDetailsViewModel.bio.get(), equalTo(testSpeakerDetailsDto.bio))
+        assertThat(speakerDetailsViewModel.avatar.get(), equalTo(testSpeakerDetailsDto.avatar))
     }
 }

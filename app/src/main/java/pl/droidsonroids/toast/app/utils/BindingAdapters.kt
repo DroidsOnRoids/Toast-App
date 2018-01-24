@@ -152,6 +152,6 @@ fun setTransitionName(view: View, transitionName: String, elementId: Long?) {
 
 @BindingAdapter("about")
 fun setAboutPrefix(textView: TextView, name: String) {
-    val text = "About ${name.firstWord()}"
+    val text = "${textView.context.getText(R.string.about)} ${name.firstWord()}"
     textView.text = text
 }
