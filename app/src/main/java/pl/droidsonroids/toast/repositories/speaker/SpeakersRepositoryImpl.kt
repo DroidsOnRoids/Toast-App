@@ -28,4 +28,8 @@ class SpeakersRepositoryImpl @Inject constructor(private val speakerService: Spe
                             .toPage(pageNumber, allPagesCount)
                 }
     }
+
+    override fun getSpeaker(id: Long): Single<SpeakerDto> =
+            speakerService.getSpeaker(id).map { it.speakerItem.toDto() }
+
 }

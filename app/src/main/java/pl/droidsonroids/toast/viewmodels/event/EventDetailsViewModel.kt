@@ -6,6 +6,7 @@ import android.util.Log
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import pl.droidsonroids.toast.app.utils.ParentView
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
@@ -16,7 +17,6 @@ import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
-import pl.droidsonroids.toast.utils.ParentView
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import java.util.*
@@ -29,7 +29,7 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
     private val Any.simpleClassName: String get() = javaClass.simpleName
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.PENDING)
-    private var eventId: Long = Constants.Event.NO_EVENT_ID
+    private var eventId = Constants.NO_ID
     val title = ObservableField("")
     val date = ObservableField<Date>()
     val placeName = ObservableField("")
@@ -56,7 +56,7 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
     }
 
     fun init(id: Long) {
-        if (eventId == Constants.Event.NO_EVENT_ID) {
+        if (eventId == Constants.NO_ID) {
             eventId = id
             loadEvent()
         }
@@ -69,7 +69,6 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
                         onSuccess = (::onEventLoaded),
                         onError = (::onEventLoadError)
                 )
-
     }
 
     private fun onEventLoaded(eventDetailsDto: EventDetailsDto) {
@@ -93,12 +92,12 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
     }
 
     private fun onReadMore(eventSpeakerItemViewModel: EventSpeakerItemViewModel) {
-        navigationSubject.onNext(NavigationRequest.TalkDetails(eventSpeakerItemViewModel.toDto()))
+        navigationSubject.onNext(NavigationRequest.TalkDetails(eventSpeakerItemViewModel.toDto(), eventId))
         Log.d(simpleClassName, "onReadMore: ${eventSpeakerItemViewModel.id}")
     }
 
     private fun onSpeakerClick(speakerId: Long) {
-        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId))
+        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId, eventId))
     }
 
     private fun onEventLoadError(throwable: Throwable) {

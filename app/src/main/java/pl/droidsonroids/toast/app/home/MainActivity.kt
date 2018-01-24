@@ -21,13 +21,10 @@ import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
 
-
     companion object {
         private const val CURRENT_TITLE = "current_title"
 
-        fun createIntent(context: Context): Intent {
-            return Intent(context, MainActivity::class.java)
-        }
+        fun createIntent(context: Context) = Intent(context, MainActivity::class.java)
     }
 
     private lateinit var homeFragmentTransaction: HomeFragmentsTransaction

@@ -5,6 +5,7 @@ import android.databinding.ObservableField
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.data.dto.event.TalkDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
+import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakerItemViewModel
@@ -17,7 +18,10 @@ class TalkDetailsViewModel @Inject constructor() : ViewModel(), NavigatingViewMo
     val description: ObservableField<String> = ObservableField()
     val speakerItemViewModel: ObservableField<SpeakerItemViewModel> = ObservableField()
 
-    fun init(talkDto: TalkDto) {
+    private var eventId = Constants.NO_ID
+
+    fun init(eventId: Long, talkDto: TalkDto) {
+        this.eventId = eventId
         talkDto.let {
             id.set(it.id)
             title.set(it.title)
@@ -27,7 +31,7 @@ class TalkDetailsViewModel @Inject constructor() : ViewModel(), NavigatingViewMo
     }
 
     private fun onSpeakerClick(speakerId: Long) {
-        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId))
+        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId, eventId))
     }
 
     fun onReadLess() {
