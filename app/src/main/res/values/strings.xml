@@ -11,7 +11,7 @@
     <string name="for_more_information_visit_our">For more information visit our</string>
     <string name="error_internet_browser_not_found">Internet browser not found.</string>
     <string name="toast_fanpage_url" translatable="false">https://www.facebook.com/toastwroclaw/</string>
-    <string name="application_version_title">Application Version:</string>
+    <string name="application_version">Application Version: %s</string>
     <string name="attend">Attend</string>
     <string name="previous_events_label">Previous events</string>
     <string name="previous_event_cover_desc">Previous event cover</string>
