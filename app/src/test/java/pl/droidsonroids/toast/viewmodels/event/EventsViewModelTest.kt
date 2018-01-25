@@ -11,6 +11,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import pl.droidsonroids.toast.data.State
+import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.testEventDetails
 import pl.droidsonroids.toast.testPreviousEvents
@@ -97,6 +98,21 @@ class EventsViewModelTest {
         testObserver.assertValue {
             it is NavigationRequest.EventDetails
                     && it.id == testEventDetails.id
+        }
+    }
+
+    @Test
+    fun shouldRequestNavigationToFeaturedEventLocation() {
+        whenever(eventsRepository.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
+        eventsViewModel = EventsViewModel(eventsRepository)
+        val testObserver = eventsViewModel.navigationSubject.test()
+
+        eventsViewModel.upcomingEvent.get().onLocationClick()
+
+        testObserver.assertValue {
+            it is NavigationRequest.Map
+                    && it.coordinatesDto == testEventDetails.placeCoordinates.toDto()
+                    && it.placeName == testEventDetails.placeName
         }
     }
 

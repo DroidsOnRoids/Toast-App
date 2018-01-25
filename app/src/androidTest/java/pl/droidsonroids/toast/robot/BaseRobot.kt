@@ -10,6 +10,7 @@ import android.support.test.espresso.matcher.RootMatchers.isDialog
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.v7.widget.RecyclerView
 import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.startsWith
 
 abstract class BaseRobot {
 
@@ -49,6 +50,12 @@ abstract class BaseRobot {
     fun checkIfTextIsCorrect(text: String, id: Int): BaseRobot {
         onView(withId(id))
                 .check(matches(withText(text)))
+        return this
+    }
+
+    fun checkIfTextStartsWith(text: String, id: Int): BaseRobot {
+        onView(withId(id))
+                .check(matches(withText(startsWith(text))))
         return this
     }
 

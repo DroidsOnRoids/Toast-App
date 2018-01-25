@@ -7,6 +7,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.data.dto.ImageDto
+import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
 import pl.droidsonroids.toast.data.dto.event.TalkDto
 import pl.droidsonroids.toast.data.enums.ParentView
@@ -39,12 +40,19 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
     val onGradientColorLoaded: (Int) -> Unit = {
         gradientColor.set(it and GRADIENT_COLOR_MASK)
     }
+    private var coordinates: CoordinatesDto? = null
+
     val eventSpeakersSubject: BehaviorSubject<List<EventSpeakerItemViewModel>> = BehaviorSubject.create()
 
     var photos: List<ImageDto> = emptyList()
-
     fun onPhotosClick() {
         navigationSubject.onNext(NavigationRequest.Photos(photos, eventId, ParentView.EVENT_DETAILS))
+    }
+
+    fun onLocationClick() {
+        coordinates?.let {
+            navigationSubject.onNext(NavigationRequest.Map(it, placeName.get()))
+        }
     }
 
     fun init(id: Long) {
@@ -73,6 +81,7 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
             coverImage.set(it.coverImages.firstOrNull())
             photosAvailable.set(it.photos.isNotEmpty())
             photos = it.photos
+            coordinates = it.coordinates
             onTalksLoaded(it.talks)
         }
     }
