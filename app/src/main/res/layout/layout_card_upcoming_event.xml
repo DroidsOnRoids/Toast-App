@@ -19,7 +19,6 @@
         android:layout_marginEnd="@dimen/margin_small"
         android:layout_marginStart="@dimen/margin_small"
         android:layout_marginTop="@dimen/margin_small"
-        android:onClick="@{() -> upcomingEvent.onClick()}"
         app:cardCornerRadius="3dp"
         app:layout_constraintBottom_toTopOf="@+id/previousEventsLabel"
         app:layout_constraintEnd_toEndOf="parent"
@@ -86,6 +85,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventImage"/>
 
             <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:onClick="@{() -> upcomingEvent.onClick()}"
+                android:background="?attr/selectableItemBackground"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/upcomingEventTitleDivider"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <View
                 android:id="@+id/upcomingEventTitleDivider"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
@@ -102,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="17dp"
                 android:src="@drawable/ic_location"
-                app:layout_constraintBottom_toTopOf="@+id/upcomingEventlocationDivider"
+                app:layout_constraintBottom_toTopOf="@+id/upcomingEventLocationDivider"
                 app:layout_constraintEnd_toStartOf="@+id/upcomingEventPlaceTitleText"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventTitleDivider"/>
@@ -121,6 +130,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventTitleDivider"
                 tools:text="PROZA — Wrocławski Klub Literacki"/>
 
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="?attr/selectableItemBackground"
+                android:onClick="@{() -> upcomingEvent.onLocationClick()}"
+                app:layout_constraintBottom_toBottomOf="@+id/upcomingEventLocationDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/upcomingEventTitleDivider"/>
+
             <TextView
                 android:id="@+id/upcomingEventPlaceLocationText"
                 style="@style/EventSubHeaderStyle"
@@ -130,14 +149,14 @@
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginStart="@dimen/margin_medium"
                 android:text="@{upcomingEvent.placeStreet}"
-                app:layout_constraintBottom_toTopOf="@+id/upcomingEventlocationDivider"
+                app:layout_constraintBottom_toTopOf="@+id/upcomingEventLocationDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/upcomingEventLocationImage"
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventPlaceTitleText"
                 tools:text="Przejście Garncarskie 2, Rynek Wrocław"/>
 
             <View
-                android:id="@+id/upcomingEventlocationDivider"
+                android:id="@+id/upcomingEventLocationDivider"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginBottom="@dimen/margin_medium"
@@ -156,7 +175,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/upcomingEventDateDivider"
                 app:layout_constraintEnd_toStartOf="@+id/upcomingEventDateText"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/upcomingEventlocationDivider"/>
+                app:layout_constraintTop_toBottomOf="@+id/upcomingEventLocationDivider"/>
 
             <TextView
                 android:id="@+id/upcomingEventDateText"
@@ -171,7 +190,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/upcomingEventDateDivider"
                 app:layout_constraintEnd_toStartOf="@+id/upcomingEventTimeDivider"
                 app:layout_constraintStart_toEndOf="@+id/upcomingEventCalendarImage"
-                app:layout_constraintTop_toBottomOf="@+id/upcomingEventlocationDivider"
+                app:layout_constraintTop_toBottomOf="@+id/upcomingEventLocationDivider"
                 tools:text="02.03.2017"/>
 
             <View
@@ -182,7 +201,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/upcomingEventDateDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/upcomingEventlocationDivider"/>
+                app:layout_constraintTop_toBottomOf="@+id/upcomingEventLocationDivider"/>
 
             <View
                 android:id="@+id/upcomingEventDateDivider"
@@ -201,7 +220,7 @@
                 android:src="@drawable/ic_clock"
                 app:layout_constraintBottom_toTopOf="@+id/upcomingEventDateDivider"
                 app:layout_constraintStart_toEndOf="@+id/upcomingEventTimeDivider"
-                app:layout_constraintTop_toBottomOf="@+id/upcomingEventlocationDivider"/>
+                app:layout_constraintTop_toBottomOf="@+id/upcomingEventLocationDivider"/>
 
             <TextView
                 android:id="@+id/upcomingEventTimeText"
@@ -215,7 +234,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/upcomingEventDateDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/upcomingEventClockImage"
-                app:layout_constraintTop_toBottomOf="@+id/upcomingEventlocationDivider"
+                app:layout_constraintTop_toBottomOf="@+id/upcomingEventLocationDivider"
                 tools:text="07:00 PM CET"/>
 
             <FrameLayout
