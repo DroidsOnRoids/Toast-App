@@ -43,7 +43,7 @@ class SpeakersSearchViewModel @Inject constructor(private val speakersRepository
     }
 
     private fun shouldPerformSearch(search: String) =
-            search.isNotEmpty() && search != lastSearchedPhrase
+            search.isNotEmpty() && (search != lastSearchedPhrase || loadingStatus.get() == LoadingStatus.ERROR)
 
     private fun onNewSpeakersPageLoaded(page: Page<State.Item<SpeakerItemViewModel>>) {
         val speakers = page.items.appendLoadingItemIfNextPageAvailable(page)
