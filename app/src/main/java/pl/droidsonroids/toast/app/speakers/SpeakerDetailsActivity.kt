@@ -4,14 +4,21 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.MenuItem
-import kotlinx.android.synthetic.main.activity_speakers_search.*
+import android.view.ViewGroup
+import io.reactivex.disposables.Disposables
+import kotlinx.android.synthetic.main.activity_speaker_details.*
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.databinding.ActivitySpeakerDetailsBinding
+import pl.droidsonroids.toast.databinding.ItemSpeakerTalkBinding
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakerDetailsViewModel
+import pl.droidsonroids.toast.viewmodels.speaker.SpeakerTalkViewModel
 
 class SpeakerDetailsActivity : BaseActivity() {
     companion object {
@@ -32,13 +39,40 @@ class SpeakerDetailsActivity : BaseActivity() {
         intent.getLongExtra(SPEAKER_ID, Constants.NO_ID)
     }
 
+    private var talksDisposable = Disposables.disposed()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val speakerDetailsBinding = ActivitySpeakerDetailsBinding.inflate(layoutInflater)
         setContentView(speakerDetailsBinding.root)
-        setupViewModel(speakerDetailsBinding)
         setupToolbar()
-        setupViewModel()
+        setupViewModel(speakerDetailsBinding)
+        setupRecyclerView()
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun setupViewModel(speakerDetailsBinding: ActivitySpeakerDetailsBinding) {
+        speakerDetailsViewModel.init(speakerId)
+        speakerDetailsBinding.speakerDetailsViewModel = speakerDetailsViewModel
+    }
+
+    private fun setupRecyclerView() {
+        with(talksRecyclerView) {
+            val talksAdapter = SpeakerTalksAdapter()
+            adapter = talksAdapter
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+            subscribeToTalksChanges(talksAdapter)
+        }
+    }
+
+    private fun subscribeToTalksChanges(talksAdapter: SpeakerTalksAdapter) {
+        talksDisposable = speakerDetailsViewModel.talksSubject
+                .subscribe { talksAdapter.setData(it) }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -48,17 +82,35 @@ class SpeakerDetailsActivity : BaseActivity() {
         }
     }
 
-    private fun setupViewModel(speakerDetailsBinding: ActivitySpeakerDetailsBinding) {
-        speakerDetailsBinding.speakerDetailsViewModel = speakerDetailsViewModel
+    override fun onDestroy() {
+        talksDisposable.dispose()
+        super.onDestroy()
+    }
+}
+
+class SpeakerTalksAdapter : RecyclerView.Adapter<SpeakerTalkViewHolder>() {
+    private var speakerTalkViewModels: List<SpeakerTalkViewModel> = emptyList()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SpeakerTalkViewHolder {
+        val binding = ItemSpeakerTalkBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return SpeakerTalkViewHolder(binding)
     }
 
-    private fun setupToolbar() {
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+    override fun getItemCount() = speakerTalkViewModels.size
+
+    override fun onBindViewHolder(holder: SpeakerTalkViewHolder, position: Int) {
+        holder.bind(speakerTalkViewModels[position])
     }
 
-    private fun setupViewModel() {
-        speakerDetailsViewModel.init(speakerId)
+    fun setData(newSpeakerTalkViewModels: List<SpeakerTalkViewModel>) {
+        speakerTalkViewModels = newSpeakerTalkViewModels
     }
+}
 
+class SpeakerTalkViewHolder(val binding: ItemSpeakerTalkBinding) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(speakerTalkViewModel: SpeakerTalkViewModel) {
+        binding.speakerTalkViewModel = speakerTalkViewModel
+        binding.executePendingBindings()
+    }
 }

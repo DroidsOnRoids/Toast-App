@@ -7,6 +7,7 @@ import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerTalkDto
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakerItemViewModel
+import pl.droidsonroids.toast.viewmodels.speaker.SpeakerTalkViewModel
 
 fun ApiSpeaker.toDto(): SpeakerDto {
     return SpeakerDto(
@@ -35,6 +36,15 @@ fun ApiSpeakerTalk.toDto(): SpeakerTalkDto {
             title = title,
             description = description,
             event = event.toDto()
+    )
+}
+
+fun SpeakerTalkDto.toViewModel(onEventClick: (Long) -> Unit): SpeakerTalkViewModel {
+    return SpeakerTalkViewModel(
+            id,
+            title,
+            description,
+            event.toViewModel(onEventClick)
     )
 }
 

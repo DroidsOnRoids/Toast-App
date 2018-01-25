@@ -125,7 +125,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/headerDivider"/>
 
                 <View
-                    app:layout_constraintVertical_chainStyle="packed"
                     android:id="@+id/headerDivider"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
@@ -133,7 +132,8 @@
                     app:layout_constraintBottom_toTopOf="@+id/aboutBio"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed"/>
 
                 <TextView
                     android:id="@+id/aboutBio"
@@ -171,10 +171,37 @@
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:background="@color/paleGray"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/talksListHeaderText"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/bio"/>
+
+                <TextView
+                    android:id="@+id/talksListHeaderText"
+                    style="@style/LectureTitleStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:layout_marginEnd="@dimen/margin_large"
+                    android:layout_marginStart="@dimen/margin_large"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:text="@string/participated_in"
+                    android:textAllCaps="true"
+                    app:layout_constraintBottom_toTopOf="@+id/talksRecyclerView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/bioDivider"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/talksRecyclerView"
+                    android:padding="@dimen/margin_small"
+                    android:clipToPadding="false"
+                    app:layout_constraintTop_toBottomOf="@+id/talksListHeaderText"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
 
             </android.support.constraint.ConstraintLayout>
         </android.support.v4.widget.NestedScrollView>

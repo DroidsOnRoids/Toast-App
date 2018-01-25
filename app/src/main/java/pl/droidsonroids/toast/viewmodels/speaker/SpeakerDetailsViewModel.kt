@@ -4,8 +4,10 @@ import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import android.util.Log
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.subjects.BehaviorSubject
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
+import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
@@ -21,7 +23,7 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
     val job = ObservableField("")
     val bio = ObservableField("")
     val avatar = ObservableField<ImageDto?>()
-
+    val talksSubject: BehaviorSubject<List<SpeakerTalkViewModel>> = BehaviorSubject.create()
 
     fun init(id: Long) {
         if (speakerId == null) {
@@ -48,6 +50,7 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
             job.set(it.job)
             avatar.set(it.avatar)
             bio.set(it.bio)
+            talksSubject.onNext(it.talks.map { it.toViewModel {} })
         }
     }
 
