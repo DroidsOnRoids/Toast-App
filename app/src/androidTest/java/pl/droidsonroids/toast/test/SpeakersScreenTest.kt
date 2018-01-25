@@ -73,10 +73,34 @@ class SpeakersScreenTest {
 
     @Test
     fun isSpeakersScreenDisplayedAfterClickingOnBackButton() {
+        goToSearchScreen()
         with(SpeakersRobot()) {
-            goToSearchScreen()
             performNavigateUp()
             checkIfElementWithIdIsDisplayed(R.id.searchImageButton)
+        }
+    }
+
+    @Test
+    fun isSortingBarDisplayed() {
+        goToSpeakersScreen()
+        with(SpeakersRobot()){
+            checkIfElementWithIdIsDisplayed(R.id.sortingBarLayout)
+            checkIfElementWithIdIsDisplayed(R.id.arrowDownImage)
+        }
+    }
+
+    @Test
+    fun isSortingBarExpanded(){
+        goToSpeakersScreen()
+        with(SpeakersRobot()){
+            performClickOnElementWithId(R.id.titleSortingLayout)
+            checkIfElementWithIdIsDisplayed(R.id.arrowUpImage)
+            checkIfElementWithIdIsDisplayed(R.id.alphabeticalDivider)
+            checkIfElementWithIdIsDisplayed(R.id.alphabeticalSortImage)
+            checkIfTextIsCorrect(getString(R.string.alphabetical), R.id.alphabeticalText)
+            checkIfElementWithIdIsDisplayed(R.id.dateDivider)
+            checkIfElementWithIdIsDisplayed(R.id.dateSortImage)
+            checkIfTextIsCorrect(getString(R.string.date), R.id.dateText)
         }
     }
 }
