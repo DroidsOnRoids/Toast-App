@@ -9,7 +9,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
-import pl.droidsonroids.toast.data.dto.event.TalkDto
+import pl.droidsonroids.toast.data.dto.event.EventTalkDto
 import pl.droidsonroids.toast.databinding.ActivityTalkDetailsBinding
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
@@ -18,11 +18,11 @@ import javax.inject.Inject
 
 class TalkDetailsActivity : BaseActivity() {
     companion object {
-        private const val TALK_DTO_KEY = "talkDto"
+        private const val TALK_DTO_KEY = "eventTalkDto"
         private const val EVENT_ID_KEY = "event_key"
         fun createIntent(context: Context, navigationRequest: NavigationRequest.TalkDetails): Intent {
             return Intent(context, TalkDetailsActivity::class.java)
-                    .putExtra(TALK_DTO_KEY, navigationRequest.talkDto)
+                    .putExtra(TALK_DTO_KEY, navigationRequest.eventTalkDto)
                     .putExtra(EVENT_ID_KEY, navigationRequest.eventId)
         }
     }
@@ -31,7 +31,7 @@ class TalkDetailsActivity : BaseActivity() {
     lateinit var navigator: Navigator
 
     private val talkDto by lazy {
-        intent.getParcelableExtra<TalkDto>(TALK_DTO_KEY)
+        intent.getParcelableExtra<EventTalkDto>(TALK_DTO_KEY)
     }
 
     private val eventId by lazy {

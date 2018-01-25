@@ -9,7 +9,7 @@ class EventsMapperTest {
     @Test
     fun shouldMapApiEventDetailsToDto() {
         val testCoverImages = testEventDetails.coverImages.map { it.toDto() }
-        val testTalks = testEventDetails.talks.map { it.toDto() }
+        val testTalks = testEventDetails.eventTalks.map { it.toDto() }
         val testPhotos = testEventDetails.photos.map { it.toDto() }
         with(testEventDetails.toDto()) {
             assertThat(id, equalTo(testEventDetails.id))

@@ -11,6 +11,6 @@ data class EventDetailsDto(
         val placeName: String,
         val placeStreet: String,
         val coverImages: List<ImageDto>,
-        val talks: List<TalkDto>,
+        val talks: List<EventTalkDto>,
         val photos: List<ImageDto>
 )
