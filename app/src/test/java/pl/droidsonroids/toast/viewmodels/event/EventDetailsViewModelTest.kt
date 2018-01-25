@@ -80,6 +80,18 @@ class EventDetailsViewModelTest : RxTestBase() {
         testObserver.assertValue(NavigationRequest.Photos(testPhotos, eventId, ParentView.EVENT_DETAILS))
     }
 
+    @Test
+    fun shouldRequestNavigationToEventLocation() {
+        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
+        eventDetailsViewModel.init(eventId)
+
+        val testObserver = eventDetailsViewModel.navigationSubject.test()
+
+        eventDetailsViewModel.onLocationClick()
+
+        testObserver.assertValue(NavigationRequest.Map(testEventDetails.placeCoordinates.toDto(), testEventDetails.placeName))
+    }
+
     private fun assertEventDetails() {
         assertThat(eventDetailsViewModel.title.get(), equalTo(testEventDetails.title))
         assertThat(eventDetailsViewModel.date.get(), equalTo(testEventDetails.date))
