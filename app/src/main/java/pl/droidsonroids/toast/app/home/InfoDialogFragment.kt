@@ -66,7 +66,7 @@ class InfoDialogFragment : DialogFragment() {
     }
 
     private fun setVersionText() {
-        appVersionText.text = BuildConfig.VERSION_NAME
+        appVersionText.text = getString(R.string.application_version, BuildConfig.VERSION_NAME)
     }
 }
 
