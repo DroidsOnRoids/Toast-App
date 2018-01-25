@@ -105,7 +105,6 @@
         android:layout_marginStart="16dp"
         android:fontFamily="@font/roboto"
         android:text="@string/application_version"
-        tools:text="Very vvery very very very very very very long text version"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

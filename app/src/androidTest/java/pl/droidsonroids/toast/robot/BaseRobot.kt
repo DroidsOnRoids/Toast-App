@@ -10,6 +10,7 @@ import android.support.test.espresso.matcher.RootMatchers.isDialog
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.v7.widget.RecyclerView
 import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.startsWith
 
 abstract class BaseRobot {
 
@@ -51,6 +52,13 @@ abstract class BaseRobot {
                 .check(matches(withText(text)))
         return this
     }
+
+    fun checkIfTextContains(text: String, id: Int): BaseRobot {
+        onView(withId(id))
+                .check(matches(withText(startsWith(text))))
+        return this
+    }
+
 
     fun checkIfHomeButtonIsDisplayed(): BaseRobot {
         onView(withContentDescription(homeButtonDescription))
