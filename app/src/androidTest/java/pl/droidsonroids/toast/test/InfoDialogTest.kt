@@ -124,7 +124,7 @@ class InfoDialogTest {
     fun isAppVersionTextDisplayed() {
         showDialog()
         with(InfoDialogRobot()) {
-            checkIfTextIsCorrect(getString(R.string.application_version_title), R.id.appVersionTitle)
+            checkIfTextIsCorrect(getString(R.string.application_version), R.id.appVersionText)
         }
     }
 
