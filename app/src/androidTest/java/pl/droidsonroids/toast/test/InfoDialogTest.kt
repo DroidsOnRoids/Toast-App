@@ -125,7 +125,7 @@ class InfoDialogTest {
     fun isAppVersionTextDisplayed() {
         showDialog()
         with(InfoDialogRobot()) {
-            checkIfTextStartWith(getStringWithoutFormattingArguments(R.string.application_version), R.id.appVersionText)
+            checkIfTextStartsWith(getStringWithoutFormattingArguments(R.string.application_version), R.id.appVersionText)
         }
     }
 

@@ -53,7 +53,7 @@ abstract class BaseRobot {
         return this
     }
 
-    fun checkIfTextStartWith(text: String, id: Int): BaseRobot {
+    fun checkIfTextStartsWith(text: String, id: Int): BaseRobot {
         onView(withId(id))
                 .check(matches(withText(startsWith(text))))
         return this
