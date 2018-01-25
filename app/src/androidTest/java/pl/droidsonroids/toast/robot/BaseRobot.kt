@@ -53,12 +53,11 @@ abstract class BaseRobot {
         return this
     }
 
-    fun checkIfTextContains(text: String, id: Int): BaseRobot {
+    fun checkIfTextStartWith(text: String, id: Int): BaseRobot {
         onView(withId(id))
                 .check(matches(withText(startsWith(text))))
         return this
     }
-
 
     fun checkIfHomeButtonIsDisplayed(): BaseRobot {
         onView(withContentDescription(homeButtonDescription))
