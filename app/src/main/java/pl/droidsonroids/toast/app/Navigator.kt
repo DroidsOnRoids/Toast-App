@@ -1,9 +1,8 @@
 package pl.droidsonroids.toast.app
 
 import android.app.Activity
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.Intent
+import android.content.*
+import android.content.Context.CLIPBOARD_SERVICE
 import android.net.Uri
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.util.Pair
@@ -21,6 +20,7 @@ import pl.droidsonroids.toast.app.utils.extensions.disableActivityTransitionAnim
 import pl.droidsonroids.toast.utils.NavigationRequest
 import javax.inject.Inject
 import javax.inject.Singleton
+
 
 @Singleton
 class Navigator @Inject constructor() {
@@ -51,12 +51,18 @@ class Navigator @Inject constructor() {
     private fun openEmailClient(context: Context, email: String) {
         try {
             val intent = Intent(Intent.ACTION_SENDTO)
-            intent.type = "text/plain"
-            intent.putExtra(Intent.EXTRA_EMAIL, email)
+            intent.data = Uri.parse("mailto:$email")
             context.startActivity(intent)
         } catch (exception: ActivityNotFoundException) {
-            Toast.makeText(context, R.string.activity_not_found, Toast.LENGTH_SHORT).show()
+            copyEmailToClipboard(context, email)
+            Toast.makeText(context, R.string.email_is_copied_to_clipboard, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun copyEmailToClipboard(context: Context, email: String) {
+        val clipboardManager = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        val clipData = ClipData.newPlainText("label", email)
+        clipboardManager.primaryClip = clipData
     }
 
     private fun openWebsite(context: Context, url: String) {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -19,40 +20,56 @@
 
         <ImageButton
             android:id="@+id/githubImage"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:adjustViewBounds="true"
             android:background="?attr/selectableItemBackground"
             android:onClick="@{() -> speakerDetailsViewModel.onGithubClick()}"
+            android:padding="@dimen/margin_large"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_github"
+            app:setLinkEnabled="@{speakerDetailsViewModel.github}"
             />
 
         <ImageButton
             android:id="@+id/websiteImage"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:adjustViewBounds="true"
             android:background="?attr/selectableItemBackground"
             android:onClick="@{() -> speakerDetailsViewModel.onWebsiteClick()}"
-            android:src="@drawable/ic_www"/>
+            android:padding="@dimen/margin_large"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_www"
+            app:setLinkEnabled="@{speakerDetailsViewModel.website}"/>
 
         <ImageButton
             android:id="@+id/twitterImage"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:adjustViewBounds="true"
             android:background="?attr/selectableItemBackground"
             android:onClick="@{() -> speakerDetailsViewModel.onTwitterClick()}"
-            android:src="@drawable/ic_twitter"/>
+            android:padding="@dimen/margin_large"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_twitter"
+            app:setLinkEnabled="@{speakerDetailsViewModel.twitter}"/>
 
         <ImageButton
             android:id="@+id/emailImage"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:adjustViewBounds="true"
             android:background="?attr/selectableItemBackground"
             android:onClick="@{() -> speakerDetailsViewModel.onEmailClick()}"
-            android:src="@drawable/ic_email"/>
+            android:padding="@dimen/margin_large"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_email"
+            app:setLinkEnabled="@{speakerDetailsViewModel.email}"/>
 
     </LinearLayout>
 </layout>

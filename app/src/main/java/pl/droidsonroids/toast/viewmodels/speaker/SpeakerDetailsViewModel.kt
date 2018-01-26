@@ -26,6 +26,10 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
     val job = ObservableField("")
     val bio = ObservableField("")
     val avatar = ObservableField<ImageDto?>()
+    val github = ObservableField<String?>(null)
+    val website = ObservableField<String?>(null)
+    val twitter = ObservableField<String?>(null)
+    val email = ObservableField<String?>(null)
 
 
     fun init(id: Long) {
@@ -36,26 +40,27 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
     }
 
     fun onGithubClick() {
-
+        openWebsite(github.get())
     }
 
     fun onWebsiteClick() {
-
+        openWebsite(website.get())
     }
 
     fun onTwitterClick() {
-
+        openWebsite(twitter.get())
     }
 
     fun onEmailClick() {
-        navigationSubject.onNext(NavigationRequest.EmailClient("mr.twago@gmail.com"))
+        openEmailClient(email.get())
     }
 
-    private fun openWebsite(url: String) {
+    private fun openWebsite(url: String?) {
+        url?.let { navigationSubject.onNext(NavigationRequest.Website(url = it)) }
     }
 
-    private fun openEmailClient(email: String) {
-
+    private fun openEmailClient(email: String?) {
+        email?.let { navigationSubject.onNext(NavigationRequest.EmailClient(email = it)) }
     }
 
     private fun loadSpeaker() {
@@ -76,6 +81,21 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
             job.set(it.job)
             avatar.set(it.avatar)
             bio.set(it.bio)
+            github.set(it.github)
+            website.set(it.website)
+            twitter.set(it.twitter)
+            email.set(it.email)
+        }
+
+        loadMockLinks()
+    }
+
+    private fun loadMockLinks() {
+        if (name.get() == "Test Testowski") {
+            github.set("https://github.com/panwrona")
+            website.set("https://www.thedroidsonroids.com/")
+            twitter.set("https://twitter.com/droidsonroids")
+            email.set("mariusz.brona@gmail.com")
         }
     }
 
