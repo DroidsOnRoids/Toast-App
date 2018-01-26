@@ -1,8 +1,9 @@
 package pl.droidsonroids.toast.app
 
 import android.app.Activity
-import android.content.*
-import android.content.Context.CLIPBOARD_SERVICE
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.util.Pair
@@ -16,6 +17,7 @@ import pl.droidsonroids.toast.app.photos.PhotosActivity
 import pl.droidsonroids.toast.app.photos.PhotosViewerActivity
 import pl.droidsonroids.toast.app.speakers.SpeakerDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
+import pl.droidsonroids.toast.app.utils.extensions.copyTextToClipboard
 import pl.droidsonroids.toast.app.utils.extensions.disableActivityTransitionAnimations
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
@@ -55,21 +57,14 @@ class Navigator @Inject constructor() {
             intent.data = Uri.parse("mailto:$email")
             context.startActivity(intent)
         } catch (exception: ActivityNotFoundException) {
-            copyEmailToClipboard(context, email)
+            context.copyTextToClipboard(Constants.ClipDataLabel.EMAIL, email)
             Toast.makeText(context, R.string.email_is_copied_to_clipboard, Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun copyEmailToClipboard(context: Context, email: String) {
-        val clipboardManager = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-        val clipData = ClipData.newPlainText(Constants.ClipDataLabel.EMAIL, email)
-        clipboardManager.primaryClip = clipData
-    }
-
     private fun openWebsite(context: Context, url: String) {
         try {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(url)
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             context.startActivity(intent)
         } catch (exception: ActivityNotFoundException) {
             Toast.makeText(context, R.string.browser_not_found, Toast.LENGTH_SHORT).show()

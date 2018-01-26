@@ -32,6 +32,6 @@ object Constants {
     }
 
     object ClipDataLabel {
-        const val EMAIL = "Email link"
+        const val EMAIL = "Email address"
     }
 }
