@@ -53,8 +53,8 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
                 .flatMap { (upcomingEvent, previousEventsPage) ->
                     val upcomingEventViewModel = upcomingEvent.toViewModel(
                             onLocationClick = (::onUpcomingEventLocationClick),
-                            onSeePhotosClicked = (::onSeePhotosClicked),
-                            onClick = (::onUpcomingEventClick)
+                            onSeePhotosClick = (::onSeePhotosClicked),
+                            onEventClick = (::onUpcomingEventClick)
                     )
                     mapToSingleEventItemViewModelsPage(previousEventsPage)
                             .map { upcomingEventViewModel to it }

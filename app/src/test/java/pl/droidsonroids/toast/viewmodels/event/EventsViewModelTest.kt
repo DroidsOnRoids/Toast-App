@@ -93,7 +93,7 @@ class EventsViewModelTest {
         eventsViewModel = EventsViewModel(eventsRepository)
         val testObserver = eventsViewModel.navigationSubject.test()
 
-        eventsViewModel.upcomingEvent.get().onClick()
+        eventsViewModel.upcomingEvent.get().onEventClick()
 
         testObserver.assertValue {
             it is NavigationRequest.EventDetails
