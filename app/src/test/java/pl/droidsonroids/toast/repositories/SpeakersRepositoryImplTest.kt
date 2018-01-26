@@ -46,6 +46,10 @@ class SpeakersRepositoryImplTest : RxTestBase() {
                 .assertValue { it.bio == testSpeakerDetailsDto.bio }
                 .assertValue { it.name == testSpeakerDetailsDto.name }
                 .assertValue { it.job == testSpeakerDetailsDto.job }
+                .assertValue { it.github == testSpeakerDetailsDto.github }
+                .assertValue { it.website == testSpeakerDetailsDto.website }
+                .assertValue { it.twitter == testSpeakerDetailsDto.twitter }
+                .assertValue { it.email == testSpeakerDetailsDto.email }
     }
 }
 
