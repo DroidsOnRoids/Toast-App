@@ -52,15 +52,11 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
     }
 
     fun onEmailClick() {
-        openEmailClient(email.get())
+        email.get()?.let { navigationSubject.onNext(NavigationRequest.Email(email = it)) }
     }
 
     private fun openWebsite(url: String?) {
         url?.let { navigationSubject.onNext(NavigationRequest.Website(url = it)) }
-    }
-
-    private fun openEmailClient(email: String?) {
-        email?.let { navigationSubject.onNext(NavigationRequest.EmailClient(email = it)) }
     }
 
     private fun loadSpeaker() {

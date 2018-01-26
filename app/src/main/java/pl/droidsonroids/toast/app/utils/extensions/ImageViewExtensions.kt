@@ -7,6 +7,6 @@ import android.support.v4.content.ContextCompat
 import android.widget.ImageView
 
 fun ImageView.setImageColor(colorId: Int) {
-    this.setColorFilter(ContextCompat.getColor(this.context, colorId), PorterDuff.Mode.SRC_IN)
+    setColorFilter(ContextCompat.getColor(this.context, colorId), PorterDuff.Mode.SRC_IN)
 }
 

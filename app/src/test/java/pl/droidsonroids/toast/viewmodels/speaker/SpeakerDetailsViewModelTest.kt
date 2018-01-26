@@ -101,7 +101,7 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
 
         testObserver
                 .assertNoErrors()
-                .assertValue { (it as NavigationRequest.EmailClient).email == testSpeakerDetailsDto.email }
+                .assertValue { (it as NavigationRequest.Email).email == testSpeakerDetailsDto.email }
     }
 
     private fun assertSpeakerDetails() {

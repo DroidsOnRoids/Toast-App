@@ -17,6 +17,7 @@ import pl.droidsonroids.toast.app.photos.PhotosViewerActivity
 import pl.droidsonroids.toast.app.speakers.SpeakerDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
 import pl.droidsonroids.toast.app.utils.extensions.disableActivityTransitionAnimations
+import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -32,7 +33,7 @@ class Navigator @Inject constructor() {
             is NavigationRequest.Photos -> showPhotos(context, navigationRequest)
             is NavigationRequest.Map -> showMap(context, navigationRequest)
             is NavigationRequest.Website -> openWebsite(context, navigationRequest.url)
-            is NavigationRequest.EmailClient -> openEmailClient(context, navigationRequest.email)
+            is NavigationRequest.Email -> openEmailClient(context, navigationRequest.email)
         }
     }
 
@@ -61,7 +62,7 @@ class Navigator @Inject constructor() {
 
     private fun copyEmailToClipboard(context: Context, email: String) {
         val clipboardManager = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-        val clipData = ClipData.newPlainText("label", email)
+        val clipData = ClipData.newPlainText(Constants.ClipDataLabel.EMAIL, email)
         clipboardManager.primaryClip = clipData
     }
 
@@ -71,7 +72,7 @@ class Navigator @Inject constructor() {
             intent.data = Uri.parse(url)
             context.startActivity(intent)
         } catch (exception: ActivityNotFoundException) {
-            Toast.makeText(context, R.string.activity_not_found, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.browser_not_found, Toast.LENGTH_SHORT).show()
         }
     }
 

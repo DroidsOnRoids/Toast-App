@@ -17,6 +17,6 @@ sealed class NavigationRequest {
     data class Map(val coordinatesDto: CoordinatesDto, val placeName: String) : NavigationRequest()
     object ToggleImmersive : NavigationRequest()
     data class Website(val url: String): NavigationRequest()
-    data class EmailClient(val email: String): NavigationRequest()
+    data class Email(val email: String): NavigationRequest()
 }
 

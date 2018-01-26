@@ -30,4 +30,8 @@ object Constants {
     object PhotoTransition {
         const val PHOTO = "photo"
     }
+
+    object ClipDataLabel {
+        const val EMAIL = "Email link"
+    }
 }
