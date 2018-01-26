@@ -12,8 +12,10 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
+import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
 import pl.droidsonroids.toast.data.dto.event.EventDto
+import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.data.wrapWithState
 import pl.droidsonroids.toast.repositories.event.EventsRepository
@@ -51,6 +53,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
                 .flatMap { (upcomingEvent, previousEventsPage) ->
                     val upcomingEventViewModel = upcomingEvent.toViewModel(
                             onLocationClick = (::onUpcomingEventLocationClick),
+                            onSeePhotosClicked = (::onSeePhotosClicked),
                             onClick = (::onUpcomingEventClick)
                     )
                     mapToSingleEventItemViewModelsPage(previousEventsPage)
@@ -70,6 +73,10 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
 
     private fun onUpcomingEventClick(eventId: Long) {
         navigationSubject.onNext(NavigationRequest.EventDetails(eventId))
+    }
+
+    private fun onSeePhotosClicked(eventId: Long, photos: List<ImageDto>) {
+        navigationSubject.onNext(NavigationRequest.Photos(photos, eventId, ParentView.HOME))
     }
 
     fun loadNextPage() {

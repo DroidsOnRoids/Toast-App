@@ -40,7 +40,6 @@
                 android:layout_marginBottom="@dimen/margin_large"
                 android:scaleType="centerCrop"
                 app:coverImage="@{upcomingEvent.coverImage}"
-                app:layout_constraintBottom_toTopOf="@+id/upcomingEventTitleText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -52,8 +51,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginStart="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_large"
                 android:text="@{upcomingEvent.title}"
-                app:layout_constraintBottom_toTopOf="@+id/upcomingEventDescriptionText"
                 app:layout_constraintEnd_toStartOf="@+id/upcomingEventForwardArrowImage"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventImage"
@@ -69,7 +68,6 @@
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginStart="@dimen/margin_large"
                 android:text="@string/android_developers_meet_up"
-                app:layout_constraintBottom_toTopOf="@+id/upcomingEventTitleDivider"
                 app:layout_constraintEnd_toStartOf="@+id/upcomingEventForwardArrowImage"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventTitleText"/>
@@ -80,27 +78,27 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_large"
                 android:src="@drawable/ic_arrow_forward"
-                app:layout_constraintBottom_toTopOf="@+id/upcomingEventTitleDivider"
+                app:layout_constraintBottom_toTopOf="@id/upcomingEventTitleDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventImage"/>
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:onClick="@{() -> upcomingEvent.onClick()}"
                 android:background="?attr/selectableItemBackground"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="@+id/upcomingEventTitleDivider"
+                android:onClick="@{() -> upcomingEvent.onClick()}"
+                app:layout_constraintBottom_toTopOf="@+id/upcomingEventTitleDivider"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <View
                 android:id="@+id/upcomingEventTitleDivider"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginBottom="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_large"
                 android:background="@color/paleGray"
-                app:layout_constraintBottom_toTopOf="@id/upcomingEventPlaceTitleText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventDescriptionText"/>
@@ -111,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="17dp"
                 android:src="@drawable/ic_location"
-                app:layout_constraintBottom_toTopOf="@+id/upcomingEventLocationDivider"
+                app:layout_constraintBottom_toTopOf="@id/upcomingEventLocationDivider"
                 app:layout_constraintEnd_toStartOf="@+id/upcomingEventPlaceTitleText"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventTitleDivider"/>
@@ -123,8 +121,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_medium"
                 android:text="@{upcomingEvent.placeName}"
-                app:layout_constraintBottom_toTopOf="@+id/upcomingEventPlaceLocationText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/upcomingEventLocationImage"
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventTitleDivider"
@@ -135,7 +133,7 @@
                 android:layout_height="0dp"
                 android:background="?attr/selectableItemBackground"
                 android:onClick="@{() -> upcomingEvent.onLocationClick()}"
-                app:layout_constraintBottom_toBottomOf="@+id/upcomingEventLocationDivider"
+                app:layout_constraintBottom_toTopOf="@+id/upcomingEventLocationDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/upcomingEventTitleDivider"/>
@@ -149,7 +147,6 @@
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginStart="@dimen/margin_medium"
                 android:text="@{upcomingEvent.placeStreet}"
-                app:layout_constraintBottom_toTopOf="@+id/upcomingEventLocationDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/upcomingEventLocationImage"
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventPlaceTitleText"
@@ -160,8 +157,8 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginBottom="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_medium"
                 android:background="@color/paleGray"
-                app:layout_constraintBottom_toTopOf="@+id/upcomingEventDateText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventPlaceLocationText"/>
@@ -172,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_large"
                 android:src="@drawable/ic_calendar"
-                app:layout_constraintBottom_toTopOf="@+id/upcomingEventDateDivider"
+                app:layout_constraintBottom_toTopOf="@id/upcomingEventDateDivider"
                 app:layout_constraintEnd_toStartOf="@+id/upcomingEventDateText"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventLocationDivider"/>
@@ -181,13 +178,13 @@
                 android:id="@+id/upcomingEventDateText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_medium"
                 android:layout_marginEnd="@dimen/margin_large"
+
                 android:layout_marginStart="10.5dp"
                 android:letterSpacing="0.07"
                 android:textColor="@color/blueGray"
                 app:eventDate="@{upcomingEvent.date}"
-                app:layout_constraintBottom_toTopOf="@+id/upcomingEventDateDivider"
+                app:layout_constraintBottom_toTopOf="@id/upcomingEventDateDivider"
                 app:layout_constraintEnd_toStartOf="@+id/upcomingEventTimeDivider"
                 app:layout_constraintStart_toEndOf="@+id/upcomingEventCalendarImage"
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventLocationDivider"
@@ -196,9 +193,8 @@
             <View
                 android:id="@+id/upcomingEventTimeDivider"
                 android:layout_width="1dp"
-                android:layout_height="0dp"
+                android:layout_height="46dp"
                 android:background="@color/paleGray"
-                app:layout_constraintBottom_toBottomOf="@+id/upcomingEventDateDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventLocationDivider"/>
@@ -209,8 +205,7 @@
                 android:layout_height="1dp"
                 android:layout_marginBottom="@dimen/margin_medium"
                 android:background="@color/paleGray"
-                app:layout_constraintBottom_toTopOf="@id/upcomingEventFacebookAttendText"
-                app:layout_constraintTop_toBottomOf="@+id/upcomingEventDateText"/>
+                app:layout_constraintTop_toBottomOf="@+id/upcomingEventTimeDivider"/>
 
             <ImageView
                 android:id="@+id/upcomingEventClockImage"
@@ -218,7 +213,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_large"
                 android:src="@drawable/ic_clock"
-                app:layout_constraintBottom_toTopOf="@+id/upcomingEventDateDivider"
+                app:layout_constraintBottom_toTopOf="@id/upcomingEventDateDivider"
                 app:layout_constraintStart_toEndOf="@+id/upcomingEventTimeDivider"
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventLocationDivider"/>
 
@@ -231,49 +226,66 @@
                 android:letterSpacing="0.07"
                 android:textColor="@color/blueGray"
                 app:eventTime="@{upcomingEvent.date}"
-                app:layout_constraintBottom_toTopOf="@+id/upcomingEventDateDivider"
+                app:layout_constraintBottom_toTopOf="@id/upcomingEventDateDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/upcomingEventClockImage"
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventLocationDivider"
                 tools:text="07:00 PM CET"/>
 
             <FrameLayout
-                android:id="@+id/facebookTouchArea"
+                android:id="@+id/attendButton"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@color/white"
+                android:layout_height="54dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/upcomingEventDateDivider"/>
+                app:layout_constraintTop_toBottomOf="@+id/upcomingEventDateDivider">
 
-            <ImageView
-                android:id="@+id/upcomingEventFacebookImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_facebook"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/upcomingEventFacebookAttendText"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/upcomingEventDateDivider"/>
+                <TextView
+                    style="@style/FacebookAttend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="54dp"
+                    android:layout_gravity="center"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:drawableStart="@drawable/ic_facebook"
+                    android:gravity="center"
+                    android:text="@string/attend"/>
+            </FrameLayout>
 
-            <TextView
-                android:id="@+id/upcomingEventFacebookAttendText"
-                style="@style/FacebookAttend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_medium"
-                android:layout_marginStart="@dimen/margin_small"
-                android:text="@string/attend"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <LinearLayout
+                android:id="@+id/eventPhotosButton"
+                android:layout_width="0dp"
+                android:layout_height="54dp"
+                android:background="@drawable/photo_button_background"
+                android:gravity="center"
+                android:onClick="@{() -> upcomingEvent.onPhotosClick()}"
+                android:orientation="horizontal"
+                android:visibility="@{upcomingEvent.photosAvailable}"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/upcomingEventFacebookImage"
-                app:layout_constraintTop_toBottomOf="@+id/upcomingEventDateDivider"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/upcomingEventDateDivider"
+                tools:visibility="gone">
 
+                <!--TODO: Change icon when resource from PO is available-->
+                <ImageView
+                    android:id="@+id/eventPhotosIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_photo_camera"
+                    tools:ignore="ContentDescription"/>
+
+                <TextView
+                    android:id="@+id/eventPhotosText"
+                    style="@style/GreenButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_small"
+                    android:text="@string/see_photos"
+                    android:textAllCaps="true"/>
+            </LinearLayout>
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>
