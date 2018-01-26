@@ -34,7 +34,7 @@ class Navigator @Inject constructor() {
         activity.startActivity(intent, options)
     }
 
-    fun showTalkDetailsWithSharedAnimation(activity: AppCompatActivity, navigationRequest: NavigationRequest.TalkDetails, sharedViews: Array<Pair<View, String>>) {
+    fun showTalkDetailsWithSharedAnimation(activity: AppCompatActivity, navigationRequest: NavigationRequest.EventTalkDetails, sharedViews: Array<Pair<View, String>>) {
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, *sharedViews).toBundle()
         val intent = TalkDetailsActivity.createIntent(activity, navigationRequest)
         activity.startActivity(intent, options)

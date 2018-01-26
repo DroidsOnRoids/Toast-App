@@ -18,9 +18,9 @@ import javax.inject.Inject
 
 class TalkDetailsActivity : BaseActivity() {
     companion object {
-        private const val TALK_DTO_KEY = "eventTalkDto"
+        private const val TALK_DTO_KEY = "speakerTalkDto"
         private const val EVENT_ID_KEY = "event_key"
-        fun createIntent(context: Context, navigationRequest: NavigationRequest.TalkDetails): Intent {
+        fun createIntent(context: Context, navigationRequest: NavigationRequest.EventTalkDetails): Intent {
             return Intent(context, TalkDetailsActivity::class.java)
                     .putExtra(TALK_DTO_KEY, navigationRequest.eventTalkDto)
                     .putExtra(EVENT_ID_KEY, navigationRequest.eventId)

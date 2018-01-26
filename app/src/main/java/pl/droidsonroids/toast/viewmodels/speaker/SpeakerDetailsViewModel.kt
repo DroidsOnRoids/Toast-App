@@ -5,19 +5,24 @@ import android.databinding.ObservableField
 import android.util.Log
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
+import pl.droidsonroids.toast.data.dto.speaker.SpeakerTalkDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
+import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
+import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import javax.inject.Inject
 
 
-class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository: SpeakersRepository) : ViewModel(), LoadingViewModel {
+class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository: SpeakersRepository) : ViewModel(), LoadingViewModel, NavigatingViewModel {
     private val Any.simpleClassName: String get() = javaClass.simpleName
     private var speakerId: Long? = null
 
+    override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
     override val loadingStatus = ObservableField(LoadingStatus.PENDING)
     val name = ObservableField("")
     val job = ObservableField("")
@@ -50,8 +55,16 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
             job.set(it.job)
             avatar.set(it.avatar)
             bio.set(it.bio)
-            talksSubject.onNext(it.talks.map { it.toViewModel {} })
+            talksSubject.onNext(it.talks.map { it.toViewModel(::onReadMoreClick, ::onEventClick) })
         }
+    }
+
+    private fun onReadMoreClick(talkDto: SpeakerTalkDto) {
+        navigationSubject.onNext(NavigationRequest.SpeakerTalkDetails(talkDto))
+    }
+
+    private fun onEventClick(eventId: Long) {
+        navigationSubject.onNext(NavigationRequest.EventDetails(eventId))
     }
 
     private fun onSpeakerLoadError(throwable: Throwable) {

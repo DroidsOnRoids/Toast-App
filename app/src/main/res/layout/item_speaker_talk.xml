@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -24,14 +25,120 @@
                 layout="@layout/layout_event_item"
                 app:eventViewModel="@{speakerTalkViewModel.eventItemViewModel}"/>
 
-            <!--TODO: Fix layout height-->
-
             <View
                 android:id="@+id/eventTitleDivider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/margin_medium"
                 android:background="@color/paleGray"/>
+
+            <TextView
+                android:id="@+id/talkTitle"
+                style="@style/LectureTitleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:layout_marginStart="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_large"
+                android:text="@{speakerTalkViewModel.title}"
+                tools:text="Continuous delivery with ease"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foreground="?attr/selectableItemBackground"
+                android:onClick="@{() -> speakerTalkViewModel.onReadMore()}">
+
+                <TextView
+                    android:id="@+id/talkDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:layout_marginEnd="@dimen/margin_large"
+                    android:layout_marginStart="@dimen/margin_large"
+                    android:lines="5"
+                    android:maxLines="5"
+                    android:text="@{speakerTalkViewModel.description}"
+                    tools:text="Description"/>
+
+                <View
+                    android:id="@+id/descriptionGradient"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/gradient_white"/>
+            </FrameLayout>
+
+            <View
+                android:id="@+id/talkDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/paleGray"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:divider="@drawable/button_divider"
+                android:orientation="horizontal"
+                android:showDividers="middle">
+
+                <LinearLayout
+                    android:id="@+id/slideshareButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:alpha="0.2"
+                    android:gravity="center"
+                    android:onClick="@{() -> speakerTalkViewModel.onReadMore()}"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/margin_medium"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:id="@+id/slideshareIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_slideshare"
+                        tools:ignore="ContentDescription"/>
+
+                    <TextView
+                        android:id="@+id/slideshareText"
+                        style="@style/FacebookAttend"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:text="@string/slideshare"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/readMoreButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:onClick="@{() -> speakerTalkViewModel.onReadMore()}"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/margin_medium"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:id="@+id/readMoreIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_read_more"
+                        tools:ignore="ContentDescription"/>
+
+                    <TextView
+                        android:id="@+id/readMoreText"
+                        style="@style/FacebookAttend"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:text="@string/read_more"/>
+                </LinearLayout>
+            </LinearLayout>
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

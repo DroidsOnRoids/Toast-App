@@ -83,7 +83,7 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
     }
 
     private fun onReadMore(eventSpeakerItemViewModel: EventSpeakerItemViewModel) {
-        navigationSubject.onNext(NavigationRequest.TalkDetails(eventSpeakerItemViewModel.toDto(), eventId))
+        navigationSubject.onNext(NavigationRequest.EventTalkDetails(eventSpeakerItemViewModel.toDto(), eventId))
         Log.d(simpleClassName, "onReadMore: ${eventSpeakerItemViewModel.id}")
     }
 

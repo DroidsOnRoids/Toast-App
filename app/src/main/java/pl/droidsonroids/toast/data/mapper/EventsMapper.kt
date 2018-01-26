@@ -56,6 +56,15 @@ fun EventDto.toViewModel(onClick: (Long) -> Unit): EventItemViewModel {
     )
 }
 
+fun EventItemViewModel.toDto(): EventDto {
+    return EventDto(
+            id,
+            title,
+            date,
+            listOfNotNull(coverImage)
+    )
+}
+
 fun EventDetailsDto.toViewModel(onClick: (Long) -> Unit): UpcomingEventViewModel {
     return UpcomingEventViewModel(
             id = id,
