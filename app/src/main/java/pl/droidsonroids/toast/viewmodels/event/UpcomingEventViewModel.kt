@@ -29,7 +29,7 @@ class UpcomingEventViewModel(
         eventClickCallback(id)
     }
 
-    fun onSeePhotosClick() {
+    fun onPhotosClick() {
         seePhotosCallback(id, photos)
     }
 
