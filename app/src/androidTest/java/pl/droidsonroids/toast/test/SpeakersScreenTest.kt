@@ -27,6 +27,23 @@ class SpeakersScreenTest {
     }
 
     @Test
+    fun isToolbarDisplayed() {
+        val toolbarTitle = getString(R.string.speakers_title)
+        goToSpeakersScreen()
+        with(SpeakersRobot()){
+            checkIfToolbarWithTitleIsDisplayed(toolbarTitle, R.id.toolbar)
+        }
+    }
+
+    @Test
+    fun isSearchIconDisplayed() {
+        goToSpeakersScreen()
+        with(SpeakersRobot()) {
+            checkIfElementWithIdIsDisplayed(R.id.searchImageButton)
+        }
+    }
+
+    @Test
     fun isSpeakerSelectedOnSpeakersScreen() {
         goToSpeakersScreen()
         with(SpeakersRobot()) {
@@ -45,14 +62,6 @@ class SpeakersScreenTest {
     }
 
     @Test
-    fun isSearchIconDisplayed() {
-        goToSpeakersScreen()
-        with(SpeakersRobot()) {
-            checkIfElementWithIdIsDisplayed(R.id.searchImageButton)
-        }
-    }
-
-    @Test
     fun isEveryElementOnSearchScreenDisplayed() {
         goToSearchScreen()
         with(SpeakersRobot()) {
@@ -64,10 +73,34 @@ class SpeakersScreenTest {
 
     @Test
     fun isSpeakersScreenDisplayedAfterClickingOnBackButton() {
+        goToSearchScreen()
         with(SpeakersRobot()) {
-            goToSearchScreen()
             performNavigateUp()
             checkIfElementWithIdIsDisplayed(R.id.searchImageButton)
+        }
+    }
+
+    @Test
+    fun isSortingBarDisplayed() {
+        goToSpeakersScreen()
+        with(SpeakersRobot()){
+            checkIfElementWithIdIsDisplayed(R.id.sortingBarLayout)
+            checkIfElementWithIdIsDisplayed(R.id.arrowDownImage)
+        }
+    }
+
+    @Test
+    fun isSortingBarExpanded(){
+        goToSpeakersScreen()
+        with(SpeakersRobot()){
+            performClickOnElementWithId(R.id.titleSortingLayout)
+            checkIfElementWithIdIsDisplayed(R.id.arrowUpImage)
+            checkIfElementWithIdIsDisplayed(R.id.alphabeticalDivider)
+            checkIfElementWithIdIsDisplayed(R.id.alphabeticalSortImage)
+            checkIfTextIsCorrect(getString(R.string.alphabetical), R.id.alphabeticalText)
+            checkIfElementWithIdIsDisplayed(R.id.dateDivider)
+            checkIfElementWithIdIsDisplayed(R.id.dateSortImage)
+            checkIfTextIsCorrect(getString(R.string.date), R.id.dateText)
         }
     }
 }

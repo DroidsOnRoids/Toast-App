@@ -30,8 +30,21 @@ class Navigator @Inject constructor() {
             is NavigationRequest.SpeakerDetails -> showSpeakerDetails(context, navigationRequest)
             is NavigationRequest.EventDetails -> showEventDetails(context, navigationRequest)
             is NavigationRequest.Photos -> showPhotos(context, navigationRequest)
+            is NavigationRequest.Map -> showMap(context, navigationRequest)
             is NavigationRequest.Website -> openWebsite(context, navigationRequest.url)
             is NavigationRequest.EmailClient -> openEmailClient(context, navigationRequest.email)
+        }
+    }
+
+    private fun showMap(context: Context, navigationRequest: NavigationRequest.Map) {
+        with(navigationRequest) {
+            val locationUri = Uri.parse("geo:0,0?q=${coordinatesDto.latitude},${coordinatesDto.longitude}($placeName)")
+            val intent = Intent(Intent.ACTION_VIEW).setData(locationUri)
+            try {
+                context.startActivity(intent)
+            } catch (exception: ActivityNotFoundException) {
+                Toast.makeText(context, R.string.no_map_app_found, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
