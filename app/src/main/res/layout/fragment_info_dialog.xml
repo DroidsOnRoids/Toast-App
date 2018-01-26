@@ -13,7 +13,8 @@
         android:layout_height="@dimen/icon_size_small"
         android:layout_marginEnd="@dimen/margin_large"
         android:layout_marginTop="@dimen/margin_large"
-        android:background="@drawable/ic_dialog_close"
+        android:src="@drawable/ic_dialog_close"
+        android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
