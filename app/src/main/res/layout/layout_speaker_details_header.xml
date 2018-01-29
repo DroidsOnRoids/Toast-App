@@ -1,7 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-</android.support.constraint.ConstraintLayout>
+    <data>
+
+        <variable
+            name="speakerDetailsViewModel"
+            type="pl.droidsonroids.toast.viewmodels.speaker.SpeakerDetailsViewModel"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/avatarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/avatarBorderLayout"
+                layout="@layout/layout_avatar_image_borders"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+
+            <ImageView
+                android:id="@+id/avatarImage"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                app:roundImage="@{speakerDetailsViewModel.avatar}"
+                tools:backgroundTint="@color/white"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/speakerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:letterSpacing="0.06"
+            android:lineSpacingExtra="6sp"
+            android:text="@{speakerDetailsViewModel.name}"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            tools:text="Paulina Szklarska"
+            />
+
+        <TextView
+            android:id="@+id/speakerJob"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:letterSpacing="0.06"
+            android:lineSpacingExtra="6sp"
+            android:text="@{speakerDetailsViewModel.job}"
+            android:textColor="@color/darkGreen"
+            android:textSize="14sp"
+            tools:text="Android Developer"/>
+    </LinearLayout>
+</layout>
