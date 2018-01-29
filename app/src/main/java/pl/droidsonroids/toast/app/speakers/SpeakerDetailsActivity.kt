@@ -4,8 +4,12 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.AppBarLayout
+import android.support.v4.content.ContextCompat
+import android.support.v4.graphics.ColorUtils
 import android.view.MenuItem
-import kotlinx.android.synthetic.main.activity_speakers_search.*
+import kotlinx.android.synthetic.main.activity_speaker_details.*
+import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.databinding.ActivitySpeakerDetailsBinding
 import pl.droidsonroids.toast.utils.Constants
@@ -53,8 +57,26 @@ class SpeakerDetailsActivity : BaseActivity() {
     }
 
     private fun setupToolbar() {
+        val contentScrimColor = ContextCompat.getColor(this, R.color.colorPrimary)
+        val statusBarScrimColor = ContextCompat.getColor(this, R.color.colorPrimaryDark)
+
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            setToolbarScrim(verticalOffset, appBarLayout, contentScrimColor, statusBarScrimColor)
+        }
+        collapsingToolbar.scrimVisibleHeightTrigger = Int.MAX_VALUE
+    }
+
+    private fun setToolbarScrim(verticalOffset: Int, appBarLayout: AppBarLayout, contentScrimColor: Int, statusBarScrimColor: Int) {
+        val offsetFraction = -verticalOffset / appBarLayout.totalScrollRange.toFloat()
+        val alphaValue = (offsetFraction * 255).toInt()
+        val contentScrimWithAlpha = ColorUtils.setAlphaComponent(contentScrimColor, alphaValue)
+        val statusBarScrimWithAlpha = ColorUtils.setAlphaComponent(statusBarScrimColor, alphaValue)
+
+        collapsingToolbar.setContentScrimColor(contentScrimWithAlpha)
+        collapsingToolbar.setStatusBarScrimColor(statusBarScrimWithAlpha)
     }
 
     private fun setupViewModel() {
