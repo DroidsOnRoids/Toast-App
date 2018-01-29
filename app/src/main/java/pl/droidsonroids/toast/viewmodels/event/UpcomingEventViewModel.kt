@@ -15,15 +15,12 @@ class UpcomingEventViewModel(
         val coverImage: ImageDto?,
         val photos: List<ImageDto>,
         val coordinates: CoordinatesDto,
-        val photosAvailable: ObservableField<Boolean> = ObservableField(false),
         private val locationClickCallback: (CoordinatesDto, String) -> Unit,
         private val seePhotosCallback: (Long, List<ImageDto>) -> Unit,
         private val eventClickCallback: (Long) -> Unit
 ) {
 
-    init {
-        photosAvailable.set(photos.isNotEmpty())
-    }
+    val photosAvailable: ObservableField<Boolean> = ObservableField(photos.isNotEmpty())
 
     fun onEventClick() {
         eventClickCallback(id)
