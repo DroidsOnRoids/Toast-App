@@ -269,7 +269,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventDateDivider"
                 tools:visibility="gone">
 
-                <!--TODO: Change icon when resource from PO is available-->
                 <ImageView
                     android:id="@+id/eventPhotosIcon"
                     android:layout_width="wrap_content"
