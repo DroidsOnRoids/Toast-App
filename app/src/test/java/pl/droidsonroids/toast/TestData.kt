@@ -73,7 +73,11 @@ val testSpeakerDetailsDto = SpeakerDetailsDto(
         name = "name",
         job = "job",
         bio = "bio",
-        avatar = ImageDto("bigAvatar", "thumbAvatar")
+        avatar = ImageDto("bigAvatar", "thumbAvatar"),
+        github = "github",
+        email = "email",
+        website = "website",
+        twitter = "twitter"
 )
 
 val testSpeakerDetails = ApiSpeakerDetails(
@@ -81,7 +85,11 @@ val testSpeakerDetails = ApiSpeakerDetails(
         name = "name",
         job = "job",
         bio = "bio",
-        avatar = ApiImage("bigAvatar", "thumbAvatar")
+        avatar = ApiImage("bigAvatar", "thumbAvatar"),
+        github = "github",
+        email = "email",
+        website = "website",
+        twitter = "twitter"
 )
 
 val upcomingEventViewModelWithPhotos = UpcomingEventViewModel(

@@ -5,13 +5,16 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.activity_speakers_search.*
+import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.databinding.ActivitySpeakerDetailsBinding
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakerDetailsViewModel
+import javax.inject.Inject
 
 class SpeakerDetailsActivity : BaseActivity() {
     companion object {
@@ -22,6 +25,11 @@ class SpeakerDetailsActivity : BaseActivity() {
                     .putExtra(SPEAKER_ID, navigationRequest.id)
         }
     }
+
+    @Inject
+    lateinit var navigator: Navigator
+
+    private var navigationDisposable = Disposables.disposed()
 
     private val speakerDetailsViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory)
@@ -59,6 +67,15 @@ class SpeakerDetailsActivity : BaseActivity() {
 
     private fun setupViewModel() {
         speakerDetailsViewModel.init(speakerId)
+        navigationDisposable = speakerDetailsViewModel.navigationSubject
+                .subscribe {
+                    navigator.dispatch(context = this, navigationRequest = it)
+                }
+    }
+
+    override fun onDestroy() {
+        navigationDisposable.dispose()
+        super.onDestroy()
     }
 
 }
