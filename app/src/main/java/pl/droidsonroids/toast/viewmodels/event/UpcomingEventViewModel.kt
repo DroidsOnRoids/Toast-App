@@ -20,7 +20,7 @@ class UpcomingEventViewModel(
         private val eventClickCallback: (Long) -> Unit
 ) {
 
-    val photosAvailable: ObservableField<Boolean> = ObservableField(photos.isNotEmpty())
+    val photosAvailable = ObservableField(photos.isNotEmpty())
 
     fun onEventClick() {
         eventClickCallback(id)

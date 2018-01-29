@@ -53,7 +53,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
                 .flatMap { (upcomingEvent, previousEventsPage) ->
                     val upcomingEventViewModel = upcomingEvent.toViewModel(
                             onLocationClick = (::onUpcomingEventLocationClick),
-                            onSeePhotosClick = (::onSeePhotosClicked),
+                            onSeePhotosClick = (::onSeePhotosClick),
                             onEventClick = (::onUpcomingEventClick)
                     )
                     mapToSingleEventItemViewModelsPage(previousEventsPage)
@@ -75,7 +75,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
         navigationSubject.onNext(NavigationRequest.EventDetails(eventId))
     }
 
-    private fun onSeePhotosClicked(eventId: Long, photos: List<ImageDto>) {
+    private fun onSeePhotosClick(eventId: Long, photos: List<ImageDto>) {
         navigationSubject.onNext(NavigationRequest.Photos(photos, eventId, ParentView.HOME))
     }
 
