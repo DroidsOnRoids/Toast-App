@@ -11,7 +11,7 @@
     <string name="for_more_information_visit_our">For more information visit our</string>
     <string name="error_internet_browser_not_found">Internet browser not found.</string>
     <string name="toast_fanpage_url" translatable="false">https://www.facebook.com/toastwroclaw/</string>
-    <string name="application_version_title">Application Version:</string>
+    <string name="application_version">Application Version: %s</string>
     <string name="attend">Attend</string>
     <string name="previous_events_label">Previous events</string>
     <string name="previous_event_cover_desc">Previous event cover</string>
@@ -50,6 +50,7 @@
     <string name="see_photos">See photos</string>
     <string name="photos_title">Photos</string>
     <string name="meetup_photo_desc">Meetup photo</string>
+    <string name="no_map_app_found">No map app found</string>
     <string name="participated_in">Participated in</string>
     <string name="slideshare">Slideshare</string>
 </resources>

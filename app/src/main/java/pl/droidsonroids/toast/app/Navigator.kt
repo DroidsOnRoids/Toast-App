@@ -1,11 +1,16 @@
 package pl.droidsonroids.toast.app
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.util.Pair
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.widget.Toast
+import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.events.TalkDetailsActivity
 import pl.droidsonroids.toast.app.photos.PhotosActivity
@@ -25,6 +30,19 @@ class Navigator @Inject constructor() {
             is NavigationRequest.SpeakerDetails -> showSpeakerDetails(context, navigationRequest)
             is NavigationRequest.EventDetails -> showEventDetails(context, navigationRequest)
             is NavigationRequest.Photos -> showPhotos(context, navigationRequest)
+            is NavigationRequest.Map -> showMap(context, navigationRequest)
+        }
+    }
+
+    private fun showMap(context: Context, navigationRequest: NavigationRequest.Map) {
+        with(navigationRequest) {
+            val locationUri = Uri.parse("geo:0,0?q=${coordinatesDto.latitude},${coordinatesDto.longitude}($placeName)")
+            val intent = Intent(Intent.ACTION_VIEW).setData(locationUri)
+            try {
+                context.startActivity(intent)
+            } catch (exception: ActivityNotFoundException) {
+                Toast.makeText(context, R.string.no_map_app_found, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

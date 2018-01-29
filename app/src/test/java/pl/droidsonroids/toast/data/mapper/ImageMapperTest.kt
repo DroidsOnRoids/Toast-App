@@ -23,9 +23,12 @@ class ImageMapperTest {
     @Test
     fun shouldMapImageDtoToSingleViewModel() {
         val photoLoadedCallback: () -> Unit = mock()
-        val singlePhotoViewModel = testImageDto.toSingleViewModel(position, photoLoadedCallback)
+        val onClick: () -> Unit = mock()
+        val singlePhotoViewModel = testImageDto.toSingleViewModel(position, photoLoadedCallback, onClick)
         assertThat(singlePhotoViewModel.image, equalTo(testImageDto))
         assertThat(singlePhotoViewModel.position, equalTo(position))
         assertThat(singlePhotoViewModel.onPhotoLoadingFinished, equalTo(photoLoadedCallback))
+        singlePhotoViewModel.onClick()
+        verify(onClick).invoke()
     }
 }

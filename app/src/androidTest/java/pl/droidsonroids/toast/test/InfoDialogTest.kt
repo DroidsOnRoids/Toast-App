@@ -9,6 +9,7 @@ import org.junit.Test
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.function.getString
+import pl.droidsonroids.toast.function.getStringWithoutFormattingArguments
 import pl.droidsonroids.toast.robot.InfoDialogRobot
 
 class InfoDialogTest {
@@ -124,7 +125,7 @@ class InfoDialogTest {
     fun isAppVersionTextDisplayed() {
         showDialog()
         with(InfoDialogRobot()) {
-            checkIfTextIsCorrect(getString(R.string.application_version_title), R.id.appVersionTitle)
+            checkIfTextStartsWith(getStringWithoutFormattingArguments(R.string.application_version), R.id.appVersionText)
         }
     }
 

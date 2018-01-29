@@ -1,7 +1,9 @@
 package pl.droidsonroids.toast.data.mapper
 
+import pl.droidsonroids.toast.data.api.event.ApiCoordinates
 import pl.droidsonroids.toast.data.api.event.ApiEvent
 import pl.droidsonroids.toast.data.api.event.ApiEventDetails
+import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
 import pl.droidsonroids.toast.data.api.event.ApiEventTalk
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
 import pl.droidsonroids.toast.data.dto.event.EventDto
@@ -14,6 +16,7 @@ fun ApiEventDetails.toDto(): EventDetailsDto {
     val coverImagesDto = coverImages.map { it.toDto() }
     val photosDto = photos.map { it.toDto() }
     val talksDto = eventTalks.map { it.toDto() }
+    val coordinatesDto = placeCoordinates.toDto()
     return EventDetailsDto(
             id = id,
             title = title,
@@ -23,7 +26,15 @@ fun ApiEventDetails.toDto(): EventDetailsDto {
             placeStreet = placeStreet,
             coverImages = coverImagesDto,
             talks = talksDto,
-            photos = photosDto
+            photos = photosDto,
+            coordinates = coordinatesDto
+    )
+}
+
+fun ApiCoordinates.toDto(): CoordinatesDto {
+    return CoordinatesDto(
+            latitude = latitude,
+            longitude = longitude
     )
 }
 
@@ -65,7 +76,7 @@ fun EventItemViewModel.toDto(): EventDto {
     )
 }
 
-fun EventDetailsDto.toViewModel(onClick: (Long) -> Unit): UpcomingEventViewModel {
+fun EventDetailsDto.toViewModel(onLocationClick: (CoordinatesDto, String) -> Unit, onClick: (Long) -> Unit): UpcomingEventViewModel {
     return UpcomingEventViewModel(
             id = id,
             title = title,
@@ -73,7 +84,9 @@ fun EventDetailsDto.toViewModel(onClick: (Long) -> Unit): UpcomingEventViewModel
             placeName = placeName,
             placeStreet = placeStreet,
             coverImage = coverImages.firstOrNull(),
-            action = onClick
+            coordinates = coordinates,
+            action = onClick,
+            locationClickCallback = onLocationClick
     )
 }
 
