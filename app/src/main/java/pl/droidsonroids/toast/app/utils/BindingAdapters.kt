@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.text.format.DateFormat
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageSwitcher
 import android.widget.ImageView
 import android.widget.TextView
@@ -20,6 +21,7 @@ import com.bumptech.glide.request.target.Target
 import com.github.florent37.glidepalette.GlidePalette
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.utils.extensions.firstWord
+import pl.droidsonroids.toast.app.utils.extensions.setImageColor
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
@@ -153,4 +155,15 @@ fun setTransitionName(view: View, transitionName: String, elementId: Long?) {
 @BindingAdapter("about")
 fun setAboutPrefix(textView: TextView, name: String) {
     textView.text = textView.context.getString(R.string.about, name.firstWord())
+}
+
+@BindingAdapter("setLinkEnabled")
+fun setLinkImageButtonEnabled(imageButton: ImageButton, link: String?) {
+    if (link.isNullOrEmpty()) {
+        imageButton.setImageColor(R.color.disabledGray)
+        imageButton.isEnabled = false
+    } else {
+        imageButton.setImageColor(R.color.colorPrimary)
+        imageButton.isEnabled = true
+    }
 }

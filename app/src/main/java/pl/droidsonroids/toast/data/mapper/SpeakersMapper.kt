@@ -21,7 +21,11 @@ fun ApiSpeakerDetails.toDto(): SpeakerDetailsDto {
             name = name,
             job = job,
             bio = bio,
-            avatar = avatar.toDto()
+            avatar = avatar.toDto(),
+            github = github,
+            website = website,
+            twitter = twitter,
+            email = email
     )
 }
 
