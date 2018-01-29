@@ -113,7 +113,7 @@ class EventsViewModelTest {
         testObserver.assertValue {
             it is NavigationRequest.Photos
                     && it.eventId == testEventDetails.id
-                    && it.photos == testEventDetails.photos
+                    && it.photos.first() == testEventDetails.photos.first().toDto()
                     && it.parentView == ParentView.HOME
         }
     }
