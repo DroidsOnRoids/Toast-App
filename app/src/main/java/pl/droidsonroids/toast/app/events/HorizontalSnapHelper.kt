@@ -6,7 +6,11 @@ import android.support.v7.widget.OrientationHelper
 import android.support.v7.widget.RecyclerView
 import android.view.View
 
-class HorizontalSnapHelper(layoutManager: RecyclerView.LayoutManager, private val offsetSize: Int = 0) : LinearSnapHelper() {
+class HorizontalSnapHelper(
+        layoutManager: RecyclerView.LayoutManager,
+        private val offsetSize: Int = 0,
+        private val snapToLast: Boolean = false
+) : LinearSnapHelper() {
     private val horizontalHelper = OrientationHelper.createHorizontalHelper(layoutManager)
 
     override fun calculateDistanceToFinalSnap(layoutManager: RecyclerView.LayoutManager, targetView: View): IntArray {
@@ -27,7 +31,7 @@ class HorizontalSnapHelper(layoutManager: RecyclerView.LayoutManager, private va
             val firstVisibleItemPosition = findFirstVisibleItemPosition()
             val noVisibleItems = firstVisibleItemPosition == RecyclerView.NO_POSITION
             val isEndOfList = findLastCompletelyVisibleItemPosition() == itemCount - 1
-            if (noVisibleItems || isEndOfList) {
+            if (noVisibleItems || (!snapToLast && isEndOfList)) {
                 return null
             }
             val firstVisibleView = findViewByPosition(firstVisibleItemPosition)

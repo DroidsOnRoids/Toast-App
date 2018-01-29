@@ -202,8 +202,8 @@
                     android:layout_height="wrap_content"
                     android:clipToPadding="false"
                     android:paddingBottom="@dimen/margin_small"
-                    android:paddingStart="@dimen/margin_small"
-                    android:paddingEnd="@dimen/margin_small"
+                    android:paddingEnd="@dimen/margin_medium"
+                    android:paddingStart="@dimen/margin_medium"
                     android:paddingTop="@dimen/margin_small"/>
             </LinearLayout>
 

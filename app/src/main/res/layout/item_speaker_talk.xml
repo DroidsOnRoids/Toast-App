@@ -14,6 +14,8 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_tiny"
+        android:layout_marginStart="@dimen/margin_tiny"
         app:cardCornerRadius="3dp">
 
         <LinearLayout
@@ -31,35 +33,43 @@
                 android:layout_height="1dp"
                 android:background="@color/paleGray"/>
 
-            <TextView
-                android:id="@+id/talkTitle"
-                style="@style/LectureTitleStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_small"
-                android:layout_marginEnd="@dimen/margin_large"
-                android:layout_marginStart="@dimen/margin_large"
-                android:layout_marginTop="@dimen/margin_large"
-                android:text="@{speakerTalkViewModel.title}"
-                tools:text="Continuous delivery with ease"/>
-
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:foreground="?attr/selectableItemBackground"
                 android:onClick="@{() -> speakerTalkViewModel.onReadMore()}">
 
-                <TextView
-                    android:id="@+id/talkDescription"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_small"
-                    android:layout_marginEnd="@dimen/margin_large"
-                    android:layout_marginStart="@dimen/margin_large"
-                    android:lines="5"
-                    android:maxLines="5"
-                    android:text="@{speakerTalkViewModel.description}"
-                    tools:text="Description"/>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/talkTitle"
+                        style="@style/LectureTitleStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_small"
+                        android:layout_marginEnd="@dimen/margin_large"
+                        android:layout_marginStart="@dimen/margin_large"
+                        android:layout_marginTop="@dimen/margin_large"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@{speakerTalkViewModel.title}"
+                        tools:text="Continuous delivery with ease"/>
+
+                    <TextView
+                        android:id="@+id/talkDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_small"
+                        android:layout_marginEnd="@dimen/margin_large"
+                        android:layout_marginStart="@dimen/margin_large"
+                        android:lines="5"
+                        android:maxLines="5"
+                        android:text="@{speakerTalkViewModel.description}"
+                        tools:text="Description"/>
+                </LinearLayout>
 
                 <View
                     android:id="@+id/descriptionGradient"

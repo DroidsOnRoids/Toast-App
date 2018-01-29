@@ -10,7 +10,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_speaker_details.*
-import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.events.HorizontalSnapHelper
@@ -71,8 +70,7 @@ class SpeakerDetailsActivity : BaseActivity() {
             val talksAdapter = SpeakerTalksAdapter()
             adapter = talksAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            addItemDecoration(SpeakerTalkItemDecoration(context))
-            HorizontalSnapHelper(layoutManager, resources.getDimensionPixelSize(R.dimen.margin_small)).attachToRecyclerView(this)
+            HorizontalSnapHelper(layoutManager, snapToLast = true).attachToRecyclerView(this)
 
             subscribeToTalksChanges(talksAdapter)
         }
