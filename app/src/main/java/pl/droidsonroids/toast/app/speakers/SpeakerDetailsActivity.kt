@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.activity_speakers_search.*
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
@@ -29,7 +29,7 @@ class SpeakerDetailsActivity : BaseActivity() {
     @Inject
     lateinit var navigator: Navigator
 
-    private var navigationDisposable: Disposable? = null
+    private var navigationDisposable = Disposables.disposed()
 
     private val speakerDetailsViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory)
@@ -74,7 +74,7 @@ class SpeakerDetailsActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
-        navigationDisposable?.dispose()
+        navigationDisposable.dispose()
         super.onDestroy()
     }
 

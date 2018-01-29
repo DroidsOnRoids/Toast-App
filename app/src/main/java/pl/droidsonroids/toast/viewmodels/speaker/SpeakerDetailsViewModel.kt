@@ -88,10 +88,10 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
 
     private fun loadMockLinks() {
         if (name.get() == "Test Testowski") {
-            github.set("https://github.com/panwrona")
+            github.set("https://github.com/DroidsOnRoids")
             website.set("https://www.thedroidsonroids.com/")
             twitter.set("https://twitter.com/droidsonroids")
-            email.set("mariusz.brona@gmail.com")
+            email.set("hello@thedroidsonroids.com")
         }
     }
 

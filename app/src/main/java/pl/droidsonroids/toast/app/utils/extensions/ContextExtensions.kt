@@ -9,6 +9,5 @@ import android.content.Context
 
 fun Context.copyTextToClipboard(email: String, label: String) {
     val clipboardManager = this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-    val clipData = ClipData.newPlainText(label, email)
-    clipboardManager.primaryClip = clipData
+    clipboardManager.primaryClip = ClipData.newPlainText(label, email)
 }
