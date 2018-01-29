@@ -1,6 +1,7 @@
 package pl.droidsonroids.toast.viewmodels.event
 
-import org.junit.Before
+import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
@@ -12,42 +13,47 @@ class UpcomingEventViewModelTest {
     private lateinit var upcomingEventViewModel: UpcomingEventViewModel
     private var isCallbackCaused = false
 
-    @Before
-    fun setUp() {
-        upcomingEventViewModel = UpcomingEventViewModel(
-                testEventDetails.id,
-                testEventDetails.title,
-                testEventDetails.date,
-                testEventDetails.placeName,
-                testEventDetails.placeStreet,
-                testImageDto,
-                listOf(testImageDto),
-                testEventDetails.placeCoordinates.toDto(),
-                ::testLocationClickCallback,
-                ::seePhotosClickCallback,
-                ::eventClickCallback
-        )
-        isCallbackCaused = false
-    }
-
     @Test
     fun shouldCauseLocationClickCallback() {
-        upcomingEventViewModel.onLocationClick()
-        assert(isCallbackCaused)
-    }
+        setTestUpcomingEventViewModel()
+        isCallbackCaused = false
 
+        upcomingEventViewModel.onLocationClick()
+        assertThat(isCallbackCaused, equalTo(true))
+    }
 
     @Test
     fun shouldCauseSeePhotosClickCallback() {
+        setTestUpcomingEventViewModel()
+        isCallbackCaused = false
+
         upcomingEventViewModel.onPhotosClick()
-        assert(isCallbackCaused)
+        assertThat(isCallbackCaused, equalTo(true))
     }
 
 
     @Test
     fun shouldCauseEventClickCallback() {
+        setTestUpcomingEventViewModel()
+        isCallbackCaused = false
+
         upcomingEventViewModel.onEventClick()
-        assert(isCallbackCaused)
+        assertThat(isCallbackCaused, equalTo(true))
+    }
+
+    @Test
+    fun shouldMakePhotosAvailable() {
+        setTestUpcomingEventViewModel()
+
+        assertThat(upcomingEventViewModel.photosAvailable.get(), equalTo(true))
+    }
+
+
+    @Test
+    fun shouldMakePhotosUnavailable() {
+        setTestEmptyPhotosUpcomingEventViewModel()
+
+        assertThat(upcomingEventViewModel.photosAvailable.get(), equalTo(false))
     }
 
 
@@ -61,5 +67,37 @@ class UpcomingEventViewModelTest {
 
     private fun eventClickCallback(eventId: Long) {
         isCallbackCaused = true
+    }
+
+    private fun setTestUpcomingEventViewModel() {
+        upcomingEventViewModel = UpcomingEventViewModel(
+                id = testEventDetails.id,
+                title = testEventDetails.title,
+                date = testEventDetails.date,
+                placeName = testEventDetails.placeName,
+                placeStreet = testEventDetails.placeStreet,
+                coverImage = testImageDto,
+                photos = listOf(testImageDto),
+                coordinates = testEventDetails.placeCoordinates.toDto(),
+                locationClickCallback = ::testLocationClickCallback,
+                seePhotosCallback = ::seePhotosClickCallback,
+                eventClickCallback = ::eventClickCallback
+        )
+    }
+
+    private fun setTestEmptyPhotosUpcomingEventViewModel() {
+        upcomingEventViewModel = UpcomingEventViewModel(
+                id = testEventDetails.id,
+                title = testEventDetails.title,
+                date = testEventDetails.date,
+                placeName = testEventDetails.placeName,
+                placeStreet = testEventDetails.placeStreet,
+                coverImage = testImageDto,
+                photos = listOf(),
+                coordinates = testEventDetails.placeCoordinates.toDto(),
+                locationClickCallback = ::testLocationClickCallback,
+                seePhotosCallback = ::seePhotosClickCallback,
+                eventClickCallback = ::eventClickCallback
+        )
     }
 }
