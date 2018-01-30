@@ -9,9 +9,13 @@ import org.junit.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
+import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
+import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.testSpeakerDetailsDto
 import pl.droidsonroids.toast.utils.LoadingStatus
+import pl.droidsonroids.toast.utils.NavigationRequest
+import java.io.IOException
 
 class SpeakerDetailsViewModelTest : RxTestBase() {
     private val speakerId = 0L
@@ -23,8 +27,7 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
 
     @Test
     fun shouldLoadSpeakerDetails() {
-        whenever(speakersRepository.getSpeaker(speakerId)).thenReturn(testSpeakerDetailsDto.toSingle())
-        speakerDetailsViewModel.init(speakerId)
+        mockSpeakerWith(testSpeakerDetailsDto.toSingle())
 
         assertSpeakerDetails()
         assertThat(speakerDetailsViewModel.loadingStatus.get(), equalTo(LoadingStatus.SUCCESS))
@@ -32,8 +35,7 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
 
     @Test
     fun shouldFailLoadSpeakerDetails() {
-        whenever(speakersRepository.getSpeaker(speakerId)).thenReturn(Single.error(Exception()))
-        speakerDetailsViewModel.init(speakerId)
+        mockSpeakerWith(Single.error(IOException()))
 
         assertThat(speakerDetailsViewModel.loadingStatus.get(), equalTo(LoadingStatus.ERROR))
     }
@@ -50,6 +52,39 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
 
         assertSpeakerDetails()
         assertThat(speakerDetailsViewModel.loadingStatus.get(), equalTo(LoadingStatus.SUCCESS))
+    }
+
+    @Test
+    fun shouldRequestNavigationToSpeakerTalkDetails() {
+        mockSpeakerWith(testSpeakerDetailsDto.toSingle())
+        val testObserver = speakerDetailsViewModel.navigationSubject.test()
+
+        val speakerTalkViewModel = speakerDetailsViewModel.talksSubject.value.first()
+        speakerTalkViewModel.onReadMore()
+
+        testObserver.assertValue {
+            it is NavigationRequest.SpeakerTalkDetails
+                    && it.speakerTalkDto == speakerTalkViewModel.toDto()
+        }
+    }
+
+    @Test
+    fun shouldRequestNavigationToEventDetails() {
+        mockSpeakerWith(testSpeakerDetailsDto.toSingle())
+        val testObserver = speakerDetailsViewModel.navigationSubject.test()
+
+        val eventItemViewModel = speakerDetailsViewModel.talksSubject.value.first().eventItemViewModel
+        eventItemViewModel.onClick()
+
+        testObserver.assertValue {
+            it is NavigationRequest.EventDetails
+                    && it.id == eventItemViewModel.id
+        }
+    }
+
+    private fun mockSpeakerWith(value: Single<SpeakerDetailsDto>) {
+        whenever(speakersRepository.getSpeaker(speakerId)).thenReturn(value)
+        speakerDetailsViewModel.init(speakerId)
     }
 
     private fun assertSpeakerDetails() {

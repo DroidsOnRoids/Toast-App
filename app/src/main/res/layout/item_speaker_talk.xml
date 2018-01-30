@@ -93,7 +93,7 @@
                 android:orientation="horizontal"
                 android:showDividers="middle">
 
-                <LinearLayout
+                <FrameLayout
                     android:id="@+id/slideshareButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -101,27 +101,21 @@
                     android:alpha="0.2"
                     android:gravity="center"
                     android:onClick="@{() -> speakerTalkViewModel.onReadMore()}"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/margin_medium"
-                    tools:ignore="UseCompoundDrawables">
-
-                    <ImageView
-                        android:id="@+id/slideshareIcon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_slideshare"
-                        tools:ignore="ContentDescription"/>
+                    android:padding="@dimen/margin_medium">
 
                     <TextView
                         android:id="@+id/slideshareText"
                         style="@style/FacebookAttend"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_small"
+                        android:layout_gravity="center"
+                        android:drawablePadding="@dimen/margin_small"
+                        android:drawableStart="@drawable/ic_slideshare"
+                        android:gravity="center_vertical"
                         android:text="@string/slideshare"/>
-                </LinearLayout>
+                </FrameLayout>
 
-                <LinearLayout
+                <FrameLayout
                     android:id="@+id/readMoreButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -129,25 +123,19 @@
                     android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"
                     android:onClick="@{() -> speakerTalkViewModel.onReadMore()}"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/margin_medium"
-                    tools:ignore="UseCompoundDrawables">
-
-                    <ImageView
-                        android:id="@+id/readMoreIcon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_read_more"
-                        tools:ignore="ContentDescription"/>
+                    android:padding="@dimen/margin_medium">
 
                     <TextView
                         android:id="@+id/readMoreText"
                         style="@style/FacebookAttend"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_small"
+                        android:layout_gravity="center"
+                        android:drawablePadding="@dimen/margin_small"
+                        android:drawableStart="@drawable/ic_read_more"
+                        android:gravity="center_vertical"
                         android:text="@string/read_more"/>
-                </LinearLayout>
+                </FrameLayout>
             </LinearLayout>
 
         </LinearLayout>
