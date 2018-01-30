@@ -8,7 +8,6 @@ import org.junit.Assert.assertThat
 import org.junit.Test
 import pl.droidsonroids.toast.data.api.ApiImage
 import pl.droidsonroids.toast.data.api.speaker.ApiSpeaker
-import pl.droidsonroids.toast.data.api.speaker.ApiSpeakerDetails
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerTalkDto
@@ -34,25 +33,6 @@ class SpeakersMapperTest {
 
     @Test
     fun shouldMapApiSpeakerDetailsToDto() {
-        val id = 1L
-        val name = "name"
-        val job = "job"
-        val bio = "bio"
-        val github = "github"
-        val email = "email"
-        val website = "website"
-        val twitter = "twitter"
-        val avatar = ApiImage("bigImageUrl", "thumbImageUrl")
-        val apiSpeaker = ApiSpeakerDetails(
-                id = id,
-                name = name,
-                job = job,
-                avatar = avatar,
-                bio = bio,
-                github = github,
-                website = website,
-                twitter = twitter,
-                email = email)
         val speakerDto = testApiSpeakerDetails.toDto()
 
         with(testApiSpeakerDetails) {
@@ -61,6 +41,7 @@ class SpeakersMapperTest {
             assertThat(speakerDto.job, equalTo(job))
             assertThat(speakerDto.bio, equalTo(bio))
             assertThat(speakerDto.avatar, equalTo(avatar.toDto()))
+            assertThat(speakerDto.talks, equalTo(talks.map { it.toDto() }))
         }
     }
 
