@@ -4,98 +4,103 @@ import android.content.Context
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CoordinatorLayout
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
-import android.widget.ImageView
 import pl.droidsonroids.toast.R
 
 
-class SpeakerHeaderBehavior : CoordinatorLayout.Behavior<ImageView> {
-    private var startXPositionImage: Int = 0
-    private var startYPositionImage: Int = 0
-    private var startHeight: Int = 0
-    private var startToolbarHeight: Int = 0
+class SpeakerHeaderBehavior(context: Context, attrs: AttributeSet?) : CoordinatorLayout.Behavior<View>() {
+    private var startXPositionImage = 0
+    private var startYPositionImage = 0
+    private var startHeight = 0
+    private var startWidth = 0
+    private var startToolbarHeight = 0
 
     private var initialised = false
 
-    private var amountOfToolbarToMove: Float = 0.toFloat()
-    private var amountOfImageToReduce: Float = 0.toFloat()
-    private var amountToMoveXPosition: Float = 0.toFloat()
-    private var amountToMoveYPosition: Float = 0.toFloat()
+    private var amountOfToolbarToMove = 0f
+    private var amountOfImageToReduceHeight = 0f
+    private var amountOfImageToReduceWidth = 0f
+    private var amountToMoveXPosition = 0f
+    private var amountToMoveYPosition = 0f
 
-    // user configured params
-    private var finalToolbarHeight: Float = 0.toFloat()
-    private var finalXPosition: Float = 0.toFloat()
-    private var finalYPosition: Float = 0.toFloat()
-    private var finalHeight: Float = 0.toFloat()
+    private var finalToolbarHeight = 0f
+    private var finalXPosition = 0f
+    private var finalYPosition = 0f
+    private var finalHeight = 0f
+    private var finalWidth = 0f
 
-    constructor(
-            context: Context,
-            attrs: AttributeSet?) {
-
-        if (attrs != null) {
-            val a = context.obtainStyledAttributes(attrs, R.styleable.SpeakerHeaderBehavior)
-            finalXPosition = a.getDimension(R.styleable.SpeakerHeaderBehavior_finalXPosition, 0f)
-            finalYPosition = a.getDimension(R.styleable.SpeakerHeaderBehavior_finalYPosition, 0f)
-            finalHeight = a.getDimension(R.styleable.SpeakerHeaderBehavior_finalHeight, 0f)
-            finalToolbarHeight = a.getDimension(R.styleable.SpeakerHeaderBehavior_finalToolbarHeight, 0f)
-            a.recycle()
-        }
+    init {
+        val a = context.obtainStyledAttributes(attrs, R.styleable.SpeakerHeaderBehavior)
+        finalXPosition = a.getDimension(R.styleable.SpeakerHeaderBehavior_finalXPosition, 0f)
+        finalYPosition = a.getDimension(R.styleable.SpeakerHeaderBehavior_finalYPosition, 0f)
+        finalHeight = a.getDimension(R.styleable.SpeakerHeaderBehavior_finalHeight, 0f)
+        finalWidth = a.getDimension(R.styleable.SpeakerHeaderBehavior_finalWidth, 0f)
+        finalToolbarHeight = a.getDimension(R.styleable.SpeakerHeaderBehavior_finalToolbarHeight, 0f)
+        a.recycle()
     }
 
-    override fun layoutDependsOn(
-            parent: CoordinatorLayout,
-            child: ImageView,
-            dependency: View): Boolean {
 
-        return dependency is AppBarLayout // change if you want another sibling to depend on
-    }
+    override fun layoutDependsOn(parent: CoordinatorLayout, child: View, dependency: View) =
+            dependency is AppBarLayout
 
-    override fun onDependentViewChanged(
-            parent: CoordinatorLayout,
-            child: ImageView,
-            dependency: View): Boolean {
-
-        // make child (avatar) change in relation to dependency (toolbar) in both size and position, init with properties from layout
+    override fun onDependentViewChanged(parent: CoordinatorLayout, child: View, dependency: View): Boolean {
         initProperties(child, dependency)
 
-        // calculate progress of movement of dependency
-        var currentToolbarHeight = startToolbarHeight + dependency.y // current expanded height of toolbar
-        // don't go below configured min height for calculations (it does go passed the toolbar)
-        currentToolbarHeight = if (currentToolbarHeight < finalToolbarHeight) finalToolbarHeight else currentToolbarHeight
-        val amountAlreadyMoved = startToolbarHeight - currentToolbarHeight
-        val progress = 100 * amountAlreadyMoved / amountOfToolbarToMove // how much % of expand we reached
+        val progress = calculateMovementProgress(dependency)
 
-        // update image size
-        val heightToSubtract = progress * amountOfImageToReduce / 100
-        val lp = child.getLayoutParams() as CoordinatorLayout.LayoutParams
-        lp.width = (startHeight - heightToSubtract).toInt()
-        lp.height = (startHeight - heightToSubtract).toInt()
-        child.setLayoutParams(lp)
-
-        // update image position
-        val distanceXToSubtract = progress * amountToMoveXPosition / 100
-        val distanceYToSubtract = progress * amountToMoveYPosition / 100
-        val newXPosition = startXPositionImage - distanceXToSubtract
-        //newXPosition = newXPosition < endXPosition ? endXPosition : newXPosition; // don't go passed end position
-        child.setX(newXPosition)
-        child.setY(startYPositionImage - distanceYToSubtract)
+        updateViewSize(progress, child)
+        updateImagePosition(progress, child)
 
         return true
     }
 
-    private fun initProperties(
-            child: ImageView,
-            dependency: View) {
+    private fun setVisibility(progress: Float) {
+        Log.d("SpeakerHeaderBehavior", "PROGRESS: " + progress)
+    }
+
+    private fun calculateMovementProgress(dependency: View): Float {
+        var currentToolbarHeight = startToolbarHeight + dependency.y
+
+        currentToolbarHeight = if (currentToolbarHeight < finalToolbarHeight) {
+            finalToolbarHeight
+        } else {
+            currentToolbarHeight
+        }
+
+        val amountAlreadyMoved = startToolbarHeight - currentToolbarHeight
+        return 100 * amountAlreadyMoved / amountOfToolbarToMove
+    }
+
+    private fun updateImagePosition(progress: Float, child: View) {
+        val distanceXToSubtract = progress * amountToMoveXPosition / 100
+        val distanceYToSubtract = progress * amountToMoveYPosition / 100
+        val newXPosition = startXPositionImage - distanceXToSubtract
+        child.x = newXPosition
+        child.y = startYPositionImage - distanceYToSubtract
+    }
+
+    private fun updateViewSize(progress: Float, child: View) {
+        val heightToSubtract = progress * amountOfImageToReduceHeight / 100
+        val widthToSubtract = progress * amountOfImageToReduceWidth / 100
+        val layoutParams = child.layoutParams
+        layoutParams.width = (startWidth - widthToSubtract).toInt()
+        layoutParams.height = (startHeight - heightToSubtract).toInt()
+        child.layoutParams = layoutParams
+    }
+
+    private fun initProperties(child: View, dependency: View) {
 
         if (!initialised) {
-            // form initial layout
-            startHeight = child.getHeight()
-            startXPositionImage = child.getX().toInt()
-            startYPositionImage = child.getY().toInt()
+            startHeight = child.height
+            startWidth = child.width
+            startXPositionImage = child.x.toInt()
+            startYPositionImage = child.y.toInt()
             startToolbarHeight = dependency.height
-            // some calculated fields
+
             amountOfToolbarToMove = startToolbarHeight - finalToolbarHeight
-            amountOfImageToReduce = startHeight - finalHeight
+            amountOfImageToReduceHeight = startHeight - finalHeight
+            amountOfImageToReduceWidth = startWidth - finalWidth
             amountToMoveXPosition = startXPositionImage - finalXPosition
             amountToMoveYPosition = startYPositionImage - finalYPosition
             initialised = true

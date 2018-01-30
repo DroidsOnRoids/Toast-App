@@ -4,7 +4,9 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.AppBarLayout
 import android.view.MenuItem
+import android.view.View
 import kotlinx.android.synthetic.main.activity_speaker_details.*
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.databinding.ActivitySpeakerDetailsBinding
@@ -12,8 +14,10 @@ import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakerDetailsViewModel
+import kotlin.math.abs
 
-class SpeakerDetailsActivity : BaseActivity() {
+class SpeakerDetailsActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
+
     companion object {
         private const val SPEAKER_ID: String = "speaker_id"
 
@@ -48,6 +52,14 @@ class SpeakerDetailsActivity : BaseActivity() {
         }
     }
 
+    override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
+        if (abs(verticalOffset) == abs(appBar.height - toolbar.height)) {
+            toolbarAvatarImage.visibility = View.VISIBLE
+        } else {
+            toolbarAvatarImage.visibility = View.INVISIBLE
+        }
+    }
+
     private fun setupViewModel(speakerDetailsBinding: ActivitySpeakerDetailsBinding) {
         speakerDetailsBinding.speakerDetailsViewModel = speakerDetailsViewModel
     }
@@ -55,6 +67,7 @@ class SpeakerDetailsActivity : BaseActivity() {
     private fun setupToolbar() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        appBar.addOnOffsetChangedListener(this)
     }
 
     private fun setupViewModel() {

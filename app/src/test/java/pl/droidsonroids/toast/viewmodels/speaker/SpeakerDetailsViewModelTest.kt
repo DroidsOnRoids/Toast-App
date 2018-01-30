@@ -53,6 +53,7 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
     }
 
     private fun assertSpeakerDetails() {
+
         assertThat(speakerDetailsViewModel.name.get(), equalTo(testSpeakerDetailsDto.name))
         assertThat(speakerDetailsViewModel.job.get(), equalTo(testSpeakerDetailsDto.job))
         assertThat(speakerDetailsViewModel.bio.get(), equalTo(testSpeakerDetailsDto.bio))
