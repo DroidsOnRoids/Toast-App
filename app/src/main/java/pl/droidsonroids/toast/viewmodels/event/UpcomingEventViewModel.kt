@@ -1,5 +1,6 @@
 package pl.droidsonroids.toast.viewmodels.event
 
+import android.databinding.ObservableField
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
 import java.util.*
@@ -12,12 +13,21 @@ class UpcomingEventViewModel(
         val placeName: String,
         val placeStreet: String,
         val coverImage: ImageDto?,
+        val photos: List<ImageDto>,
         val coordinates: CoordinatesDto,
         private val locationClickCallback: (CoordinatesDto, String) -> Unit,
-        private val action: (Long) -> Unit
+        private val seePhotosCallback: (Long, List<ImageDto>) -> Unit,
+        private val eventClickCallback: (Long) -> Unit
 ) {
-    fun onClick() {
-        action(id)
+
+    val photosAvailable = ObservableField(photos.isNotEmpty())
+
+    fun onEventClick() {
+        eventClickCallback(id)
+    }
+
+    fun onPhotosClick() {
+        seePhotosCallback(id, photos)
     }
 
     fun onLocationClick() {
