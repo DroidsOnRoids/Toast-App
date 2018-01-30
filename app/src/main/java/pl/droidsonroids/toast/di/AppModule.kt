@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import com.facebook.login.LoginManager
 import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
@@ -36,6 +37,10 @@ class AppModule {
     @Provides
     fun provideSharedPreference(context: Context): SharedPreferences =
             PreferenceManager.getDefaultSharedPreferences(context)
+
+    @Singleton
+    @Provides
+    fun provideLoginManager() = LoginManager.getInstance()
 
     @Singleton
     @Provides

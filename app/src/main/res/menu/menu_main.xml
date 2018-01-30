@@ -6,5 +6,13 @@
         android:id="@+id/menuItemAbout"
         android:icon="@drawable/ic_menu_about"
         android:title="@string/about"
+        android:orderInCategory="0"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/menuItemAccount"
+        android:icon="@drawable/ic_account"
+        android:title="@string/facebook_account"
+        android:orderInCategory="1"
         app:showAsAction="ifRoom"/>
 </menu>

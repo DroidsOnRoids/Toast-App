@@ -53,4 +53,7 @@
     <string name="no_map_app_found">No map app found</string>
     <string name="browser_not_found">Internet browser not found</string>
     <string name="email_is_copied_to_clipboard">Email is copied to clipboard</string>
+    <string name="facebook_app_id">1977143782606467</string>
+    <string name="fb_login_protocol_scheme">fb1977143782606467</string>
+    <string name="facebook_account">Facebook account</string>
 </resources>

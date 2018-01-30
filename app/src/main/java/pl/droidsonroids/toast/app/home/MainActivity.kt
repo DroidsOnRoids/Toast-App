@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.facebook.login.LoginManager
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonroids.toast.R
@@ -34,6 +35,9 @@ class MainActivity : BaseActivity() {
     }
 
     @Inject
+    lateinit var loginManager: LoginManager
+
+    @Inject
     lateinit var navigator: Navigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,8 +59,13 @@ class MainActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem) =
             when (item.itemId) {
                 R.id.menuItemAbout -> consume { homeFragmentTransaction.showInfoDialog() }
+                R.id.menuItemAccount -> consume { toggleFacebookLogin() }
                 else -> super.onOptionsItemSelected(item)
             }
+
+    private fun toggleFacebookLogin() {
+        //no-op
+    }
 
     fun animateSearchButton(offset: Float) {
         searchImageButton
