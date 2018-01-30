@@ -95,6 +95,10 @@ val testSpeakerDetailsDto = SpeakerDetailsDto(
         job = "job",
         bio = "bio",
         avatar = ImageDto("bigAvatar", "thumbAvatar"),
+        github = "github",
+        email = "email",
+        website = "website",
+        twitter = "twitter",
         talks = listOf(testSpeakerTalkDto)
 )
 
@@ -104,5 +108,9 @@ val testApiSpeakerDetails = ApiSpeakerDetails(
         job = "job",
         bio = "bio",
         avatar = ApiImage("bigAvatar", "thumbAvatar"),
+        github = "github",
+        email = "email",
+        website = "website",
+        twitter = "twitter",
         talks = listOf(testApiSpeakerTalk)
 )

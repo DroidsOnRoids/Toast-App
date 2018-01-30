@@ -28,6 +28,11 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
     val job = ObservableField("")
     val bio = ObservableField("")
     val avatar = ObservableField<ImageDto?>()
+    val github = ObservableField<String?>(null)
+    val website = ObservableField<String?>(null)
+    val twitter = ObservableField<String?>(null)
+    val email = ObservableField<String?>(null)
+
     val talksSubject: BehaviorSubject<List<SpeakerTalkViewModel>> = BehaviorSubject.create()
 
     fun init(id: Long) {
@@ -35,6 +40,26 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
             speakerId = id
             loadSpeaker()
         }
+    }
+
+    fun onGithubClick() {
+        openWebsite(github.get())
+    }
+
+    fun onWebsiteClick() {
+        openWebsite(website.get())
+    }
+
+    fun onTwitterClick() {
+        openWebsite(twitter.get())
+    }
+
+    fun onEmailClick() {
+        email.get()?.let { navigationSubject.onNext(NavigationRequest.Email(email = it)) }
+    }
+
+    private fun openWebsite(url: String?) {
+        url?.let { navigationSubject.onNext(NavigationRequest.Website(url = it)) }
     }
 
     private fun loadSpeaker() {
@@ -55,7 +80,22 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
             job.set(it.job)
             avatar.set(it.avatar)
             bio.set(it.bio)
+            github.set(it.github)
+            website.set(it.website)
+            twitter.set(it.twitter)
+            email.set(it.email)
             talksSubject.onNext(it.talks.map { it.toViewModel(::onReadMoreClick, ::onEventClick) })
+        }
+
+        loadMockLinks()
+    }
+
+    private fun loadMockLinks() {
+        if (name.get() == "Test Testowski") {
+            github.set("https://github.com/DroidsOnRoids")
+            website.set("https://www.thedroidsonroids.com/")
+            twitter.set("https://twitter.com/droidsonroids")
+            email.set("hello@thedroidsonroids.com")
         }
     }
 

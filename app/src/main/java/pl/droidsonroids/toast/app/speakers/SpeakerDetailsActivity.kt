@@ -11,6 +11,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_speaker_details.*
 import pl.droidsonroids.toast.app.Navigator
+import io.reactivex.disposables.Disposables
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.events.HorizontalSnapHelper
 import pl.droidsonroids.toast.databinding.ActivitySpeakerDetailsBinding
@@ -94,4 +95,3 @@ class SpeakerDetailsActivity : BaseActivity() {
         super.onDestroy()
     }
 }
-
