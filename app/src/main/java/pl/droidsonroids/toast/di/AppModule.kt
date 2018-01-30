@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import com.facebook.login.LoginManager
 import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
@@ -27,7 +26,7 @@ import javax.inject.Singleton
 private const val ACCEPT = "Accept"
 private const val APPLICATION_JSON = "application/json"
 
-@Module(includes = [ViewModelModule::class])
+@Module(includes = [ViewModelModule::class, FacebookModule::class])
 class AppModule {
     @Singleton
     @Provides
@@ -37,10 +36,6 @@ class AppModule {
     @Provides
     fun provideSharedPreference(context: Context): SharedPreferences =
             PreferenceManager.getDefaultSharedPreferences(context)
-
-    @Singleton
-    @Provides
-    fun provideLoginManager() = LoginManager.getInstance()
 
     @Singleton
     @Provides

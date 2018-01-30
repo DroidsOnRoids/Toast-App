@@ -10,6 +10,7 @@ import android.support.v4.util.Pair
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
+import com.facebook.login.LoginManager
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.events.TalkDetailsActivity
@@ -24,19 +25,30 @@ import pl.droidsonroids.toast.utils.NavigationRequest
 import javax.inject.Inject
 import javax.inject.Singleton
 
+private val FACEBOOK_PERMISSIONS = listOf("rsvp_event")
 
 @Singleton
-class Navigator @Inject constructor() {
+class Navigator @Inject constructor(private val loginManager: LoginManager) {
 
-    fun dispatch(context: Context, navigationRequest: NavigationRequest) {
+    fun dispatch(activity: Activity, navigationRequest: NavigationRequest) {
         when (navigationRequest) {
-            is NavigationRequest.SpeakerDetails -> showSpeakerDetails(context, navigationRequest)
-            is NavigationRequest.EventDetails -> showEventDetails(context, navigationRequest)
-            is NavigationRequest.Photos -> showPhotos(context, navigationRequest)
-            is NavigationRequest.Map -> showMap(context, navigationRequest)
-            is NavigationRequest.Website -> openWebsite(context, navigationRequest.url)
-            is NavigationRequest.Email -> openEmailClient(context, navigationRequest.email)
+            is NavigationRequest.SpeakerDetails -> showSpeakerDetails(activity, navigationRequest)
+            is NavigationRequest.EventDetails -> showEventDetails(activity, navigationRequest)
+            is NavigationRequest.Photos -> showPhotos(activity, navigationRequest)
+            is NavigationRequest.Map -> showMap(activity, navigationRequest)
+            is NavigationRequest.Website -> openWebsite(activity, navigationRequest.url)
+            is NavigationRequest.Email -> openEmailClient(activity, navigationRequest.email)
+            NavigationRequest.LogIn -> logIn(activity)
+            NavigationRequest.LogOut -> logOut()
         }
+    }
+
+    private fun logIn(activity: Activity) {
+        loginManager.logInWithPublishPermissions(activity, FACEBOOK_PERMISSIONS)
+    }
+
+    private fun logOut() {
+        loginManager.logOut()
     }
 
     private fun showMap(context: Context, navigationRequest: NavigationRequest.Map) {
