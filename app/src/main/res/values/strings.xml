@@ -56,6 +56,6 @@
     <string name="email_is_copied_to_clipboard">Email is copied to clipboard</string>
     <string name="facebook_app_id">1977143782606467</string>
     <string name="fb_login_protocol_scheme">fb1977143782606467</string>
-    <string name="facebook_log_in">Log in</string>
-    <string name="facebook_log_out">Log out</string>
+    <string name="log_in">Log in</string>
+    <string name="log_out">Log out</string>
 </resources>

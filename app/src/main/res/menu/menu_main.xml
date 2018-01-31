@@ -13,13 +13,13 @@
         android:id="@+id/menuItemLogin"
         android:icon="@drawable/ic_login"
         android:orderInCategory="1"
-        android:title="@string/facebook_log_in"
+        android:title="@string/log_in"
         app:showAsAction="never"/>
 
     <item
         android:id="@+id/menuItemLogout"
         android:icon="@drawable/ic_logout"
         android:orderInCategory="1"
-        android:title="@string/facebook_log_out"
+        android:title="@string/log_out"
         app:showAsAction="never"/>
 </menu>

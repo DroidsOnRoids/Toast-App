@@ -4,10 +4,12 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.CoordinatorLayout
+import android.support.design.widget.Snackbar
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_main.*
@@ -55,7 +57,18 @@ class MainActivity : BaseActivity() {
     }
 
     private fun showFacebookError() {
-        Toast.makeText(this, R.string.oops_no_internet_connection, Toast.LENGTH_SHORT).show()
+        Snackbar.make(mainCoordinatorLayout, R.string.oops_no_internet_connection, Snackbar.LENGTH_LONG)
+                .setNavigationViewAnchor()
+                .setAction(R.string.retry) { mainViewModel.onLogInClick() }
+                .show()
+    }
+
+    private fun Snackbar.setNavigationViewAnchor() = apply {
+        (view.layoutParams as CoordinatorLayout.LayoutParams).let {
+            it.anchorId = R.id.homeNavigationView
+            it.anchorGravity = Gravity.TOP
+            it.gravity = Gravity.TOP
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
