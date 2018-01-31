@@ -52,12 +52,28 @@
                         android:fontFamily="@font/roboto_medium"
                         android:letterSpacing="0.06"
                         android:lineSpacingExtra="6sp"
+                        android:paddingEnd="16dp"
                         android:paddingStart="16dp"
                         android:text="@{speakerDetailsViewModel.name}"
                         android:textColor="@color/white"
                         android:textSize="18sp"
                         tools:text="Paulina Szklarska"/>
                 </android.support.v7.widget.Toolbar>
+
+                <TextView
+                    android:id="@+id/speakerJob"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:fontFamily="@font/roboto_medium"
+                    android:letterSpacing="0.06"
+                    android:lineSpacingExtra="6sp"
+                    android:paddingBottom="@dimen/margin_large"
+                    android:text="@{speakerDetailsViewModel.job}"
+                    android:textColor="@color/darkGreen"
+                    android:textSize="14sp"
+                    app:layout_collapseMode="parallax"
+                    tools:text="Android Developer"/>
 
             </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -202,25 +218,10 @@
             app:finalHeight="@dimen/final_view_height"
             app:finalToolbarHeight="?attr/actionBarSize"
             app:finalWidth="250dp"
-            app:finalXPosition="100dp"
+            app:finalXPosition="120dp"
             app:finalYPosition="@dimen/margin_large"
+            app:layout_behavior="pl.droidsonroids.toast.app.speakers.SpeakerHeaderBehavior"
             tools:text="Paulina Szklarska"/>
-
-        <TextView
-            android:id="@+id/speakerJob"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:fontFamily="@font/roboto_medium"
-            android:letterSpacing="0.06"
-            android:lineSpacingExtra="6sp"
-            android:paddingBottom="@dimen/margin_large"
-            android:text="@{speakerDetailsViewModel.job}"
-            android:textColor="@color/darkGreen"
-            android:textSize="14sp"
-            app:layout_anchor="@id/appBar"
-            app:layout_anchorGravity="bottom|center_horizontal"
-            tools:text="Android Developer"/>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

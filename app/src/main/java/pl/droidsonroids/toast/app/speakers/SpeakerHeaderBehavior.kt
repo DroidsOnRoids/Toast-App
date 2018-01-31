@@ -4,12 +4,11 @@ import android.content.Context
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CoordinatorLayout
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import pl.droidsonroids.toast.R
 
 
-class SpeakerHeaderBehavior(context: Context, attrs: AttributeSet?) : CoordinatorLayout.Behavior<View>() {
+class SpeakerHeaderBehavior(context: Context, attrs: AttributeSet? = null) : CoordinatorLayout.Behavior<View>() {
     private var startXPositionImage = 0
     private var startYPositionImage = 0
     private var startHeight = 0
@@ -53,10 +52,6 @@ class SpeakerHeaderBehavior(context: Context, attrs: AttributeSet?) : Coordinato
         updateImagePosition(progress, child)
 
         return true
-    }
-
-    private fun setVisibility(progress: Float) {
-        Log.d("SpeakerHeaderBehavior", "PROGRESS: " + progress)
     }
 
     private fun calculateMovementProgress(dependency: View): Float {
