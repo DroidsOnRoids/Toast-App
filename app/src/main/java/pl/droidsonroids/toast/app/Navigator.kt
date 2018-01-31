@@ -17,10 +17,13 @@ import pl.droidsonroids.toast.app.photos.PhotosActivity
 import pl.droidsonroids.toast.app.photos.PhotosViewerActivity
 import pl.droidsonroids.toast.app.speakers.SpeakerDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
+import pl.droidsonroids.toast.app.utils.extensions.copyTextToClipboard
 import pl.droidsonroids.toast.app.utils.extensions.disableActivityTransitionAnimations
+import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
 import javax.inject.Inject
 import javax.inject.Singleton
+
 
 @Singleton
 class Navigator @Inject constructor() {
@@ -31,6 +34,8 @@ class Navigator @Inject constructor() {
             is NavigationRequest.EventDetails -> showEventDetails(context, navigationRequest)
             is NavigationRequest.Photos -> showPhotos(context, navigationRequest)
             is NavigationRequest.Map -> showMap(context, navigationRequest)
+            is NavigationRequest.Website -> openWebsite(context, navigationRequest.url)
+            is NavigationRequest.Email -> openEmailClient(context, navigationRequest.email)
         }
     }
 
@@ -43,6 +48,26 @@ class Navigator @Inject constructor() {
             } catch (exception: ActivityNotFoundException) {
                 Toast.makeText(context, R.string.no_map_app_found, Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun openEmailClient(context: Context, email: String) {
+        try {
+            val intent = Intent(Intent.ACTION_SENDTO)
+            intent.data = Uri.parse("mailto:$email")
+            context.startActivity(intent)
+        } catch (exception: ActivityNotFoundException) {
+            context.copyTextToClipboard(Constants.ClipDataLabel.EMAIL, email)
+            Toast.makeText(context, R.string.email_is_copied_to_clipboard, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun openWebsite(context: Context, url: String) {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            context.startActivity(intent)
+        } catch (exception: ActivityNotFoundException) {
+            Toast.makeText(context, R.string.browser_not_found, Toast.LENGTH_SHORT).show()
         }
     }
 

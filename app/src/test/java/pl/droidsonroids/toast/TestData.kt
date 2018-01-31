@@ -13,6 +13,7 @@ import pl.droidsonroids.toast.data.dto.event.SplitEvents
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.utils.Constants
+import pl.droidsonroids.toast.viewmodels.event.UpcomingEventViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -72,7 +73,11 @@ val testSpeakerDetailsDto = SpeakerDetailsDto(
         name = "name",
         job = "job",
         bio = "bio",
-        avatar = ImageDto("bigAvatar", "thumbAvatar")
+        avatar = ImageDto("bigAvatar", "thumbAvatar"),
+        github = "github",
+        email = "email",
+        website = "website",
+        twitter = "twitter"
 )
 
 val testSpeakerDetails = ApiSpeakerDetails(
@@ -80,5 +85,37 @@ val testSpeakerDetails = ApiSpeakerDetails(
         name = "name",
         job = "job",
         bio = "bio",
-        avatar = ApiImage("bigAvatar", "thumbAvatar")
+        avatar = ApiImage("bigAvatar", "thumbAvatar"),
+        github = "github",
+        email = "email",
+        website = "website",
+        twitter = "twitter"
+)
+
+val upcomingEventViewModelWithPhotos = UpcomingEventViewModel(
+        id = testEventDetails.id,
+        title = testEventDetails.title,
+        date = testEventDetails.date,
+        placeName = testEventDetails.placeName,
+        placeStreet = testEventDetails.placeStreet,
+        coverImage = testImageDto,
+        photos = listOf(testImageDto),
+        coordinates = testEventDetails.placeCoordinates.toDto(),
+        locationClickCallback = { _, _ -> },
+        seePhotosCallback = { _, _ -> },
+        eventClickCallback = { _ -> }
+)
+
+val upcomingEventViewModelWithoutPhotos = UpcomingEventViewModel(
+        id = testEventDetails.id,
+        title = testEventDetails.title,
+        date = testEventDetails.date,
+        placeName = testEventDetails.placeName,
+        placeStreet = testEventDetails.placeStreet,
+        coverImage = testImageDto,
+        photos = listOf(),
+        coordinates = testEventDetails.placeCoordinates.toDto(),
+        locationClickCallback = { _, _ -> },
+        seePhotosCallback = { _, _ -> },
+        eventClickCallback = { _ -> }
 )

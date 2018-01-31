@@ -11,6 +11,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import pl.droidsonroids.toast.data.State
+import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.testEventDetails
@@ -93,11 +94,27 @@ class EventsViewModelTest {
         eventsViewModel = EventsViewModel(eventsRepository)
         val testObserver = eventsViewModel.navigationSubject.test()
 
-        eventsViewModel.upcomingEvent.get().onClick()
+        eventsViewModel.upcomingEvent.get().onEventClick()
 
         testObserver.assertValue {
             it is NavigationRequest.EventDetails
                     && it.id == testEventDetails.id
+        }
+    }
+
+    @Test
+    fun shouldRequestNavigationToPhotos() {
+        whenever(eventsRepository.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
+        eventsViewModel = EventsViewModel(eventsRepository)
+        val testObserver = eventsViewModel.navigationSubject.test()
+
+        eventsViewModel.upcomingEvent.get().onPhotosClick()
+
+        testObserver.assertValue {
+            it is NavigationRequest.Photos
+                    && it.eventId == testEventDetails.id
+                    && it.photos.first() == testEventDetails.photos.first().toDto()
+                    && it.parentView == ParentView.HOME
         }
     }
 

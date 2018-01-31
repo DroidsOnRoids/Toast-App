@@ -12,6 +12,7 @@ import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.testSpeakerDetailsDto
 import pl.droidsonroids.toast.utils.LoadingStatus
+import pl.droidsonroids.toast.utils.NavigationRequest
 
 class SpeakerDetailsViewModelTest : RxTestBase() {
     private val speakerId = 0L
@@ -52,11 +53,66 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
         assertThat(speakerDetailsViewModel.loadingStatus.get(), equalTo(LoadingStatus.SUCCESS))
     }
 
+    @Test
+    fun shouldOpenGithubPageWhenLinkIsClicked() {
+        speakerDetailsViewModel.github.set(testSpeakerDetailsDto.github)
+        val testObserver = speakerDetailsViewModel.navigationSubject.test()
+
+        speakerDetailsViewModel.onGithubClick()
+
+        testObserver
+                .assertNoErrors()
+                .assertValue { (it as NavigationRequest.Website).url == testSpeakerDetailsDto.github }
+    }
+
+
+    @Test
+    fun shouldOpenWebsitePageWhenLinkIsClicked() {
+        speakerDetailsViewModel.website.set(testSpeakerDetailsDto.website)
+        val testObserver = speakerDetailsViewModel.navigationSubject.test()
+
+        speakerDetailsViewModel.onWebsiteClick()
+
+        testObserver
+                .assertNoErrors()
+                .assertValue { (it as NavigationRequest.Website).url == testSpeakerDetailsDto.website }
+    }
+
+
+    @Test
+    fun shouldOpenTwitterPageWhenLinkIsClicked() {
+        speakerDetailsViewModel.twitter.set(testSpeakerDetailsDto.twitter)
+        val testObserver = speakerDetailsViewModel.navigationSubject.test()
+
+        speakerDetailsViewModel.onTwitterClick()
+
+        testObserver
+                .assertNoErrors()
+                .assertValue { (it as NavigationRequest.Website).url == testSpeakerDetailsDto.twitter }
+    }
+
+
+    @Test
+    fun shouldOpenEmailPageWhenLinkIsClicked() {
+        speakerDetailsViewModel.email.set(testSpeakerDetailsDto.email)
+        val testObserver = speakerDetailsViewModel.navigationSubject.test()
+
+        speakerDetailsViewModel.onEmailClick()
+
+        testObserver
+                .assertNoErrors()
+                .assertValue { (it as NavigationRequest.Email).email == testSpeakerDetailsDto.email }
+    }
+
     private fun assertSpeakerDetails() {
 
         assertThat(speakerDetailsViewModel.name.get(), equalTo(testSpeakerDetailsDto.name))
         assertThat(speakerDetailsViewModel.job.get(), equalTo(testSpeakerDetailsDto.job))
         assertThat(speakerDetailsViewModel.bio.get(), equalTo(testSpeakerDetailsDto.bio))
         assertThat(speakerDetailsViewModel.avatar.get(), equalTo(testSpeakerDetailsDto.avatar))
+        assertThat(speakerDetailsViewModel.github.get(), equalTo(testSpeakerDetailsDto.github))
+        assertThat(speakerDetailsViewModel.website.get(), equalTo(testSpeakerDetailsDto.website))
+        assertThat(speakerDetailsViewModel.twitter.get(), equalTo(testSpeakerDetailsDto.twitter))
+        assertThat(speakerDetailsViewModel.email.get(), equalTo(testSpeakerDetailsDto.email))
     }
 }

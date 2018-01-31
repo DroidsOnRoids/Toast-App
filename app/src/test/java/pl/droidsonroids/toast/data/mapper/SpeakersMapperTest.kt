@@ -33,8 +33,21 @@ class SpeakersMapperTest {
         val name = "name"
         val job = "job"
         val bio = "bio"
+        val github = "github"
+        val email = "email"
+        val website = "website"
+        val twitter = "twitter"
         val avatar = ApiImage("bigImageUrl", "thumbImageUrl")
-        val apiSpeaker = ApiSpeakerDetails(id, name, job, avatar, bio)
+        val apiSpeaker = ApiSpeakerDetails(
+                id = id,
+                name = name,
+                job = job,
+                avatar = avatar,
+                bio = bio,
+                github = github,
+                website = website,
+                twitter = twitter,
+                email = email)
         val speakerDto = apiSpeaker.toDto()
 
         assertThat(speakerDto.id, equalTo(id))

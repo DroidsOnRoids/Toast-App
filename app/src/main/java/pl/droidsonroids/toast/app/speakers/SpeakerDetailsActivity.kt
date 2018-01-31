@@ -8,6 +8,8 @@ import android.support.design.widget.AppBarLayout
 import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.activity_speaker_details.*
+import io.reactivex.disposables.Disposables
+import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.databinding.ActivitySpeakerDetailsBinding
 import pl.droidsonroids.toast.utils.Constants
@@ -15,6 +17,7 @@ import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakerDetailsViewModel
 import kotlin.math.abs
+import javax.inject.Inject
 
 class SpeakerDetailsActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
 
@@ -26,6 +29,11 @@ class SpeakerDetailsActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListe
                     .putExtra(SPEAKER_ID, navigationRequest.id)
         }
     }
+
+    @Inject
+    lateinit var navigator: Navigator
+
+    private var navigationDisposable = Disposables.disposed()
 
     private val speakerDetailsViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory)
@@ -72,6 +80,15 @@ class SpeakerDetailsActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListe
 
     private fun setupViewModel() {
         speakerDetailsViewModel.init(speakerId)
+        navigationDisposable = speakerDetailsViewModel.navigationSubject
+                .subscribe {
+                    navigator.dispatch(context = this, navigationRequest = it)
+                }
+    }
+
+    override fun onDestroy() {
+        navigationDisposable.dispose()
+        super.onDestroy()
     }
 
 }
