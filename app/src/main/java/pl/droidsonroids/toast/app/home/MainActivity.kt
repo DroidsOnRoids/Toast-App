@@ -51,18 +51,7 @@ class MainActivity : BaseActivity() {
         setupToolbar(savedInstanceState)
         setupNavigationView()
         initHomeFragmentTransaction(showEventsFragment = savedInstanceState == null)
-        setupFacebookCallback()
         setupViewModel(mainBinding)
-    }
-
-    private fun setupFacebookCallback() {
-        compositeDisposable += mainViewModel.loginStateSubject
-                .subscribe {
-                    if (it == LoginState.ERROR) {
-                        showFacebookError()
-                    }
-                    invalidateOptionsMenu()
-                }
     }
 
     private fun showFacebookError() {
@@ -116,6 +105,13 @@ class MainActivity : BaseActivity() {
         mainBinding.mainViewModel = mainViewModel
         compositeDisposable += mainViewModel.navigationSubject
                 .subscribe(::handleNavigationRequest)
+        compositeDisposable += mainViewModel.loginStateSubject
+                .subscribe {
+                    if (it == LoginState.ERROR) {
+                        showFacebookError()
+                    }
+                    invalidateOptionsMenu()
+                }
     }
 
     private fun handleNavigationRequest(navigationRequest: NavigationRequest) {
