@@ -4,6 +4,7 @@ import pl.droidsonroids.toast.data.api.event.ApiCoordinates
 import pl.droidsonroids.toast.data.api.event.ApiEvent
 import pl.droidsonroids.toast.data.api.event.ApiEventDetails
 import pl.droidsonroids.toast.data.api.event.ApiTalk
+import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
 import pl.droidsonroids.toast.data.dto.event.EventDto
@@ -67,7 +68,10 @@ fun EventDto.toViewModel(onClick: (Long) -> Unit): EventItemViewModel {
     )
 }
 
-fun EventDetailsDto.toViewModel(onLocationClick: (CoordinatesDto, String) -> Unit, onClick: (Long) -> Unit): UpcomingEventViewModel {
+fun EventDetailsDto.toViewModel(
+        onLocationClick: (CoordinatesDto, String) -> Unit,
+        onSeePhotosClick: (Long, List<ImageDto>) -> Unit,
+        onEventClick: (Long) -> Unit): UpcomingEventViewModel {
     return UpcomingEventViewModel(
             id = id,
             title = title,
@@ -75,9 +79,11 @@ fun EventDetailsDto.toViewModel(onLocationClick: (CoordinatesDto, String) -> Uni
             placeName = placeName,
             placeStreet = placeStreet,
             coverImage = coverImages.firstOrNull(),
+            photos = photos,
             coordinates = coordinates,
-            action = onClick,
-            locationClickCallback = onLocationClick
+            eventClickCallback = onEventClick,
+            locationClickCallback = onLocationClick,
+            seePhotosCallback = onSeePhotosClick
     )
 }
 

@@ -192,7 +192,6 @@
             android:orientation="horizontal"
             android:visibility="@{eventDetailsViewModel.photosAvailable}">
 
-            <!--TODO: Change icon when resource from PO is available-->
             <ImageView
                 android:id="@+id/eventPhotosIcon"
                 android:layout_width="wrap_content"
