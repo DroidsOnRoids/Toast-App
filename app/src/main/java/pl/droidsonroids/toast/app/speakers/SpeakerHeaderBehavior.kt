@@ -5,8 +5,8 @@ import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CoordinatorLayout
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.DecelerateInterpolator
 import pl.droidsonroids.toast.R
-import pl.droidsonroids.toast.app.utils.extensions.countPercent
 import pl.droidsonroids.toast.app.utils.extensions.isNotEmpty
 
 
@@ -67,15 +67,20 @@ class SpeakerHeaderBehavior(private val context: Context, private val attrs: Att
     }
 
     private fun updateImagePosition(progress: Float, child: View) {
-        val distanceXToSubtract = distanceX.countPercent(progress)
-        val distanceYToSubtract = distanceY.countPercent(progress)
+        val distanceXToSubtract =
+                if (child.id == R.id.speakerName) {
+                    progress / 100 * distanceX
+                } else {
+                    DecelerateInterpolator(2f).getInterpolation(progress / 100) * distanceX
+                }
+        val distanceYToSubtract = progress / 100 * distanceY
         val newXPosition = startXPositionImage - distanceXToSubtract
         child.x = newXPosition
         child.y = startYPositionImage - distanceYToSubtract
     }
 
     private fun updateViewSize(progressPercent: Float, child: View) {
-        val heightToSubtract = progressPercent * heightChildToReduce / 100
+        val heightToSubtract = progressPercent / 100 * heightChildToReduce
         val widthToSubtract = progressPercent * widthChildToReduce / 100
         val layoutParams = child.layoutParams
         layoutParams.width = (startWidth - widthToSubtract).toInt()

@@ -68,6 +68,14 @@ class SpeakerDetailsActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListe
             toolbarAvatarImage.visibility = View.INVISIBLE
             toolbarSpeakerName.visibility = View.INVISIBLE
         }
+
+        if (verticalOffset == 0) {
+            avatarBorderSmall.visibility = View.VISIBLE
+            avatarBorderBig.visibility = View.VISIBLE
+        } else {
+            avatarBorderSmall.visibility = View.INVISIBLE
+            avatarBorderBig.visibility = View.INVISIBLE
+        }
     }
 
     private fun setupViewModel(speakerDetailsBinding: ActivitySpeakerDetailsBinding) {
