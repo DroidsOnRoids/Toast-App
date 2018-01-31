@@ -11,7 +11,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_speaker_details.*
 import pl.droidsonroids.toast.app.Navigator
-import io.reactivex.disposables.Disposables
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.events.HorizontalSnapHelper
 import pl.droidsonroids.toast.databinding.ActivitySpeakerDetailsBinding
@@ -63,7 +62,7 @@ class SpeakerDetailsActivity : BaseActivity() {
         speakerDetailsViewModel.init(speakerId)
         speakerDetailsBinding.speakerDetailsViewModel = speakerDetailsViewModel
         compositeDisposable += speakerDetailsViewModel.navigationSubject
-                .subscribe { navigator.dispatch(this, it) }
+                .subscribe { navigator.dispatch(context = this, navigationRequest = it) }
     }
 
     private fun setupRecyclerView() {

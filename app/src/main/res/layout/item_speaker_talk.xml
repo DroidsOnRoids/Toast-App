@@ -21,17 +21,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:divider="@drawable/vertical_divider"
+            android:showDividers="middle"
             android:orientation="vertical">
 
             <include
                 layout="@layout/layout_event_item"
                 app:eventViewModel="@{speakerTalkViewModel.eventItemViewModel}"/>
-
-            <View
-                android:id="@+id/eventTitleDivider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/paleGray"/>
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -79,17 +75,11 @@
                     android:background="@drawable/gradient_white"/>
             </FrameLayout>
 
-            <View
-                android:id="@+id/talkDivider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/paleGray"/>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
-                android:divider="@drawable/button_divider"
+                android:divider="@drawable/horizontal_divider"
                 android:orientation="horizontal"
                 android:showDividers="middle">
 
