@@ -40,7 +40,7 @@ class SpeakersFragment : BaseFragment() {
         speakersViewModel = ViewModelProviders.of(this, viewModelFactory)[SpeakersViewModel::class.java]
         navigationDisposable = speakersViewModel.navigationSubject
                 .subscribe { request ->
-                    context?.let { navigator.dispatch(it, request) }
+                    activity?.let { navigator.dispatch(it, request) }
                 }
     }
 

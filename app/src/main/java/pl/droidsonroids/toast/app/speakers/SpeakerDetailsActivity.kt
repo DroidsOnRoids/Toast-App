@@ -88,7 +88,7 @@ class SpeakerDetailsActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListe
         speakerDetailsViewModel.init(speakerId)
         navigationDisposable = speakerDetailsViewModel.navigationSubject
                 .subscribe {
-                    navigator.dispatch(context = this, navigationRequest = it)
+                    navigator.dispatch(activity = this, navigationRequest = it)
                 }
     }
 

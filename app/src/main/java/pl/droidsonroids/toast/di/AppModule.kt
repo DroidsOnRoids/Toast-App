@@ -26,7 +26,7 @@ import javax.inject.Singleton
 private const val ACCEPT = "Accept"
 private const val APPLICATION_JSON = "application/json"
 
-@Module(includes = [ViewModelModule::class])
+@Module(includes = [ViewModelModule::class, FacebookModule::class])
 class AppModule {
     @Singleton
     @Provides
