@@ -40,8 +40,8 @@
 
                     <ImageView
                         android:id="@+id/toolbarAvatarImage"
-                        android:layout_width="@dimen/final_view_height"
-                        android:layout_height="@dimen/final_view_height"
+                        android:layout_width="@dimen/small_avatar_size"
+                        android:layout_height="@dimen/small_avatar_size"
                         app:roundImage="@{speakerDetailsViewModel.avatar}"
                         tools:backgroundTint="@color/white"/>
 
@@ -166,9 +166,9 @@
             android:layout_marginTop="45dp"
             android:background="@drawable/shape_circle"
             android:backgroundTint="@color/avatarBorderBigGreen"
-            app:finalHeight="@dimen/final_view_height"
+            app:finalHeight="@dimen/small_avatar_size"
             app:finalToolbarHeight="?attr/actionBarSize"
-            app:finalWidth="@dimen/final_view_height"
+            app:finalWidth="@dimen/small_avatar_size"
             app:finalXPosition="@dimen/margin_extra"
             app:finalYPosition="@dimen/margin_medium"
             app:layout_behavior="pl.droidsonroids.toast.app.speakers.SpeakerHeaderBehavior"/>
@@ -181,9 +181,9 @@
             android:layout_marginTop="53dp"
             android:background="@drawable/shape_circle"
             android:backgroundTint="@color/avatarBorderSmallGreen"
-            app:finalHeight="@dimen/final_view_height"
+            app:finalHeight="@dimen/small_avatar_size"
             app:finalToolbarHeight="?attr/actionBarSize"
-            app:finalWidth="@dimen/final_view_height"
+            app:finalWidth="@dimen/small_avatar_size"
             app:finalXPosition="@dimen/margin_extra"
             app:finalYPosition="@dimen/margin_medium"
             app:layout_behavior="pl.droidsonroids.toast.app.speakers.SpeakerHeaderBehavior"/>
@@ -194,9 +194,9 @@
             android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="57dp"
-            app:finalHeight="@dimen/final_view_height"
+            app:finalHeight="@dimen/small_avatar_size"
             app:finalToolbarHeight="?attr/actionBarSize"
-            app:finalWidth="@dimen/final_view_height"
+            app:finalWidth="@dimen/small_avatar_size"
             app:finalXPosition="@dimen/margin_extra"
             app:finalYPosition="@dimen/margin_medium"
             app:layout_behavior="pl.droidsonroids.toast.app.speakers.SpeakerHeaderBehavior"
@@ -215,9 +215,9 @@
             android:text="@{speakerDetailsViewModel.name}"
             android:textColor="@color/white"
             android:textSize="18sp"
-            app:finalHeight="@dimen/final_view_height"
+            app:finalHeight="@dimen/small_avatar_size"
             app:finalToolbarHeight="?attr/actionBarSize"
-            app:finalWidth="250dp"
+            app:finalWidth="300dp"
             app:finalXPosition="120dp"
             app:finalYPosition="@dimen/margin_large"
             app:layout_behavior="pl.droidsonroids.toast.app.speakers.SpeakerHeaderBehavior"

@@ -16,7 +16,6 @@
     <dimen name="sorting_images_size">14dp</dimen>
     <dimen name="bottom_bar_height">56dp</dimen>
 
-    <dimen name="final_view_height">32dp</dimen>
-    <dimen name="image_border_final_width">16dp</dimen>
+    <dimen name="small_avatar_size">32dp</dimen>
     <dimen name="expanded_toolbar_height">213dp</dimen>
 </resources>
