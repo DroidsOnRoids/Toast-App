@@ -1,5 +1,6 @@
 package pl.droidsonroids.toast.app.contact
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -30,7 +31,9 @@ class ContactFragment : BaseFragment() {
 
     private lateinit var contactViewModel: ContactViewModel
 
-    private val forcedContext: Context get() = context ?: throw IllegalStateException("Tried to access forced context when not available")
+    private val forcedActivity: Activity
+        get() = activity
+                ?: throw IllegalStateException("Tried to access forced context when not available")
 
     private var navigationDisposable: Disposable = Disposables.disposed()
 
@@ -48,7 +51,7 @@ class ContactFragment : BaseFragment() {
         if (navigationRequest is NavigationRequest.MessageSent) {
             showMessageSentDialog()
         } else {
-            navigator.dispatch(forcedContext, navigationRequest)
+            navigator.dispatch(forcedActivity, navigationRequest)
         }
     }
 

@@ -4,16 +4,23 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.CoordinatorLayout
+import android.support.design.widget.Snackbar
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
+import pl.droidsonroids.toast.data.enums.LoginState
 import pl.droidsonroids.toast.databinding.ActivityMainBinding
+import pl.droidsonroids.toast.di.LoginCallbackManager
 import pl.droidsonroids.toast.utils.Constants.SearchMenuItem.ANIM_DURATION_MILLIS
+import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.MainViewModel
 import javax.inject.Inject
@@ -28,10 +35,13 @@ class MainActivity : BaseActivity() {
     }
 
     private lateinit var homeFragmentTransaction: HomeFragmentsTransaction
-    private var navigationDisposable: Disposable? = null
+    private var compositeDisposable = CompositeDisposable()
     private val mainViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory)[MainViewModel::class.java]
     }
+
+    @Inject
+    lateinit var loginCallbackManager: LoginCallbackManager
 
     @Inject
     lateinit var navigator: Navigator
@@ -43,18 +53,36 @@ class MainActivity : BaseActivity() {
         setupToolbar(savedInstanceState)
         setupNavigationView()
         initHomeFragmentTransaction(showEventsFragment = savedInstanceState == null)
-
         setupViewModel(mainBinding)
+    }
+
+    private fun showFacebookError() {
+        Snackbar.make(mainCoordinatorLayout, R.string.oops_no_internet_connection, Snackbar.LENGTH_LONG)
+                .setNavigationViewAnchor()
+                .setAction(R.string.retry) { mainViewModel.onLogInClick() }
+                .show()
+    }
+
+    private fun Snackbar.setNavigationViewAnchor() = apply {
+        (view.layoutParams as CoordinatorLayout.LayoutParams).let {
+            it.anchorId = R.id.homeNavigationView
+            it.anchorGravity = Gravity.TOP
+            it.gravity = Gravity.TOP
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+        menu.findItem(R.id.menuItemLogin).isVisible = !mainViewModel.isLoggedIn
+        menu.findItem(R.id.menuItemLogout).isVisible = mainViewModel.isLoggedIn
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
             when (item.itemId) {
                 R.id.menuItemAbout -> consume { homeFragmentTransaction.showInfoDialog() }
+                R.id.menuItemLogin -> consume { mainViewModel.onLogInClick() }
+                R.id.menuItemLogout -> consume { mainViewModel.onLogOutClick() }
                 else -> super.onOptionsItemSelected(item)
             }
 
@@ -88,12 +116,22 @@ class MainActivity : BaseActivity() {
 
     private fun setupViewModel(mainBinding: ActivityMainBinding) {
         mainBinding.mainViewModel = mainViewModel
-        navigationDisposable = mainViewModel.navigationSubject
+        compositeDisposable += mainViewModel.navigationSubject
+                .subscribe(::handleNavigationRequest)
+        compositeDisposable += mainViewModel.loginStateSubject
                 .subscribe {
-                    navigator.showSearchSpeakersWithRevealAnimation(
-                            activity = this,
-                            centerCoordinates = getViewCenterCoordinates(searchImageButton))
+                    if (it == LoginState.ERROR) {
+                        showFacebookError()
+                    }
+                    invalidateOptionsMenu()
                 }
+    }
+
+    private fun handleNavigationRequest(navigationRequest: NavigationRequest) {
+        when (navigationRequest) {
+            NavigationRequest.SpeakersSearch -> navigator.showSearchSpeakersWithRevealAnimation(this, getViewCenterCoordinates(searchImageButton))
+            else -> navigator.dispatch(this, navigationRequest)
+        }
     }
 
     private fun setHomeNavigationItemSelectedListener() {
@@ -137,8 +175,13 @@ class MainActivity : BaseActivity() {
         outState.putString(CURRENT_TITLE, homeTitle.text.toString())
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        loginCallbackManager.onActivityResult(requestCode, resultCode, data)
+    }
+
     override fun onDestroy() {
-        navigationDisposable?.dispose()
+        compositeDisposable.dispose()
         super.onDestroy()
     }
 
