@@ -71,7 +71,9 @@ fun EventDto.toViewModel(onClick: (Long) -> Unit): EventItemViewModel {
 fun EventDetailsDto.toViewModel(
         onLocationClick: (CoordinatesDto, String) -> Unit,
         onSeePhotosClick: (Long, List<ImageDto>) -> Unit,
-        onEventClick: (Long) -> Unit): UpcomingEventViewModel {
+        onEventClick: (Long) -> Unit,
+        onAttendClick: () -> Unit
+): UpcomingEventViewModel {
     return UpcomingEventViewModel(
             id = id,
             title = title,
@@ -83,7 +85,8 @@ fun EventDetailsDto.toViewModel(
             coordinates = coordinates,
             eventClickCallback = onEventClick,
             locationClickCallback = onLocationClick,
-            seePhotosCallback = onSeePhotosClick
+            seePhotosCallback = onSeePhotosClick,
+            attendCallback = onAttendClick
     )
 }
 

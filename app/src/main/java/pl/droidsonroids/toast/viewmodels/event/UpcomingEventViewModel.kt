@@ -17,7 +17,8 @@ class UpcomingEventViewModel(
         val coordinates: CoordinatesDto,
         private val locationClickCallback: (CoordinatesDto, String) -> Unit,
         private val seePhotosCallback: (Long, List<ImageDto>) -> Unit,
-        private val eventClickCallback: (Long) -> Unit
+        private val eventClickCallback: (Long) -> Unit,
+        private val attendCallback: () -> Unit
 ) {
 
     val photosAvailable = ObservableField(photos.isNotEmpty())
@@ -32,5 +33,9 @@ class UpcomingEventViewModel(
 
     fun onLocationClick() {
         locationClickCallback(coordinates, placeName)
+    }
+
+    fun onAttendClick() {
+        attendCallback()
     }
 }

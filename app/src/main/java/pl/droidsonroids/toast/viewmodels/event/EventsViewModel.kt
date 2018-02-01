@@ -10,6 +10,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import pl.droidsonroids.toast.app.login.LoginStateWatcher
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.dto.ImageDto
@@ -26,7 +27,10 @@ import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import javax.inject.Inject
 
-class EventsViewModel @Inject constructor(private val eventsRepository: EventsRepository) : ViewModel(), LoadingViewModel, NavigatingViewModel {
+class EventsViewModel @Inject constructor(
+        private val eventsRepository: EventsRepository,
+        loginStateWatcher: LoginStateWatcher
+) : ViewModel(), LoadingViewModel, NavigatingViewModel, LoginStateWatcher by loginStateWatcher {
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
 
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField()
@@ -54,7 +58,8 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
                     val upcomingEventViewModel = upcomingEvent.toViewModel(
                             onLocationClick = (::onUpcomingEventLocationClick),
                             onSeePhotosClick = (::onSeePhotosClick),
-                            onEventClick = (::onUpcomingEventClick)
+                            onEventClick = (::onUpcomingEventClick),
+                            onAttendClick = (::onAttendClick)
                     )
                     mapToSingleEventItemViewModelsPage(previousEventsPage)
                             .map { upcomingEventViewModel to it }
@@ -77,6 +82,14 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
 
     private fun onSeePhotosClick(eventId: Long, photos: List<ImageDto>) {
         navigationSubject.onNext(NavigationRequest.Photos(photos, eventId, ParentView.HOME))
+    }
+
+    private fun onAttendClick() {
+        if (!isLoggedIn) {
+            navigationSubject.onNext(NavigationRequest.LogIn)
+        } else {
+            //no-op
+        }
     }
 
     fun loadNextPage() {

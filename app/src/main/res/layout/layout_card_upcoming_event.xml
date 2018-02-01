@@ -238,6 +238,7 @@
                 android:layout_height="54dp"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="@{() -> upcomingEvent.onAttendClick()}"
                 android:foreground="?attr/selectableItemBackground"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -250,6 +251,7 @@
                     android:layout_height="54dp"
                     android:layout_gravity="center"
                     android:drawablePadding="@dimen/margin_small"
+                    android:textColor="@color/facebook"
                     android:drawableStart="@drawable/ic_facebook"
                     android:gravity="center"
                     android:text="@string/attend"/>
