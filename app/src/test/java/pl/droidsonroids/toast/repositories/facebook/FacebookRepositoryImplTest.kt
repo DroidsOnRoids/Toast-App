@@ -8,8 +8,8 @@ import org.junit.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
-import pl.droidsonroids.toast.app.facebook.UserInfo
 import pl.droidsonroids.toast.app.facebook.UserManager
+import pl.droidsonroids.toast.data.UserInfo
 import pl.droidsonroids.toast.data.api.facebook.ApiUserAttend
 import pl.droidsonroids.toast.data.api.facebook.FacebookAttendResponse
 import pl.droidsonroids.toast.data.enums.AttendStatus

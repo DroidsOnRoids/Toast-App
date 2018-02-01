@@ -1,10 +1,7 @@
 package pl.droidsonroids.toast.app.facebook
 
+import pl.droidsonroids.toast.data.UserInfo
+
 interface UserManager {
     fun getUserInfo(): UserInfo?
 }
-
-data class UserInfo(
-        val token: String,
-        val userId: String
-)
