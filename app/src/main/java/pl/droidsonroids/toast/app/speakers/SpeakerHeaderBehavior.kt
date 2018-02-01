@@ -7,116 +7,113 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
+import android.view.animation.OvershootInterpolator
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.utils.extensions.isNotEmpty
 
 
 class SpeakerHeaderBehavior(private val context: Context, private val attrs: AttributeSet? = null) : CoordinatorLayout.Behavior<View>() {
-    private var startXPositionImage = 0
-    private var startYPositionImage = 0
-    private var startHeight = 0
-    private var startWidth = 0
-    private var startToolbarHeight = 0
-
-    private var initialised = false
-
-    private var reduceToolbarHeight = 0f
-    private var heightChildToReduce = 0f
-    private var widthChildToReduce = 0f
-    private var distanceX = 0f
-    private var distanceY = 0f
+    private var childStartCenterXPosition = 0
+    private var childStartCenterYPosition = 0
+    private var childStartHeight = 0
+    private var childStartWidth = 0
+    private var childStartToolbarHeight = 0
 
     private var finalToolbarHeight = 0f
-    private var finalXPosition = 0f
-    private var finalYPosition = 0f
-    private var finalHeight = 0f
-    private var finalWidth = 0f
+    private var childFinalCenterXPosition = 0f
+    private var childFinalCenterYPosition = 0f
+    private var childFinalHeight = 0f
+    private var childFinalWidth = 0f
+
+    private var toolbarHeightToReduce = 0f
+    private var childHeightToReduce = 0f
+    private var childWidthToReduce = 0f
+    private var childTotalDistanceX = 0f
+    private var childTotalDistanceY = 0f
+
+    private var initialised = false
 
     init {
         initAttributes()
     }
 
-
     override fun layoutDependsOn(parent: CoordinatorLayout, child: View, dependency: View) =
             dependency is AppBarLayout
 
     override fun onDependentViewChanged(parent: CoordinatorLayout, child: View, dependency: View): Boolean {
-        return if (child.isNotEmpty()) {
+        if (child.isNotEmpty()) {
             initProperties(child, dependency)
+            val toolbarClosingOffset = calculateToolbarClosingOffset(dependency)
 
-            val toolbarClosingProgress = calculateToolbarClosingProgressPercent(dependency)
-
-            updateViewSize(toolbarClosingProgress, child)
-            updateImagePosition(toolbarClosingProgress, child)
-            true
-        } else {
-            false
+            updateViewSize(toolbarClosingOffset, child)
+            updateViewPosition(toolbarClosingOffset, child)
         }
+        return true
     }
 
-    private fun calculateToolbarClosingProgressPercent(dependency: View): Float {
-        var currentToolbarHeight = startToolbarHeight + dependency.y
+    private fun calculateToolbarClosingOffset(dependency: View): Float {
+        val currentToolbarHeight = childStartToolbarHeight + dependency.y
+        val amountAlreadyMoved = childStartToolbarHeight - currentToolbarHeight
+        return amountAlreadyMoved / toolbarHeightToReduce
+    }
 
-        currentToolbarHeight = if (currentToolbarHeight < finalToolbarHeight) {
-            finalToolbarHeight
-        } else {
-            currentToolbarHeight
+    private fun updateViewPosition(toolbarClosingOffset: Float, child: View) {
+        val (distanceXToSubtract, distanceYToSubtract) = getDistanceToSubtract(child, toolbarClosingOffset)
+        child.x = childStartCenterXPosition - distanceXToSubtract - child.width / 2
+        child.y = childStartCenterYPosition - distanceYToSubtract - child.height / 2
+    }
+
+    private fun getDistanceToSubtract(child: View, toolbarClosingOffset: Float): Pair<Float, Float> {
+        val distanceXToSubtract: Float
+        val distanceYToSubtract: Float
+
+        when (child.id) {
+            R.id.speakerName -> {
+                distanceXToSubtract = OvershootInterpolator(0f).getInterpolation(toolbarClosingOffset) * childTotalDistanceX
+                distanceYToSubtract = AccelerateInterpolator(0.8f).getInterpolation(toolbarClosingOffset) * childTotalDistanceY
+            }
+            else -> {
+                distanceXToSubtract = AccelerateInterpolator(0.5f).getInterpolation(toolbarClosingOffset) * childTotalDistanceX
+                distanceYToSubtract = DecelerateInterpolator(2f).getInterpolation(toolbarClosingOffset) * childTotalDistanceY
+            }
         }
 
-        val amountAlreadyMoved = startToolbarHeight - currentToolbarHeight
-        return 100 * amountAlreadyMoved / reduceToolbarHeight
+        return Pair(distanceXToSubtract, distanceYToSubtract)
     }
 
-    private fun updateImagePosition(progress: Float, child: View) {
-        val distanceXToSubtract =
-                if (child.id == R.id.speakerName) {
-                    AccelerateInterpolator(12f).getInterpolation(progress / 100) * distanceX
-                } else {
-                    AccelerateInterpolator(0.5f).getInterpolation(progress / 100) * distanceX
-                }
-        val distanceYToSubtract =
-                if (child.id == R.id.speakerName) {
-                    AccelerateInterpolator(0.8f).getInterpolation(progress / 100) * distanceY
-                } else {
-                    DecelerateInterpolator(2f).getInterpolation(progress / 100) * distanceY
-                }
-        val newXPosition = startXPositionImage - distanceXToSubtract
-        child.x = newXPosition
-        child.y = startYPositionImage - distanceYToSubtract
-    }
-
-    private fun updateViewSize(progressPercent: Float, child: View) {
-        val heightToSubtract = progressPercent / 100 * heightChildToReduce
-        val widthToSubtract = progressPercent * widthChildToReduce / 100
+    private fun updateViewSize(toolbarClosingOffset: Float, child: View) {
+        val heightToSubtract = toolbarClosingOffset * childHeightToReduce
+        val widthToSubtract = toolbarClosingOffset * childWidthToReduce
         val layoutParams = child.layoutParams
-        layoutParams.width = (startWidth - widthToSubtract).toInt()
-        layoutParams.height = (startHeight - heightToSubtract).toInt()
+        layoutParams.width = (childStartWidth - widthToSubtract).toInt()
+        layoutParams.height = (childStartHeight - heightToSubtract).toInt()
         child.layoutParams = layoutParams
     }
 
     private fun initAttributes() {
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.SpeakerHeaderBehavior)
-        finalXPosition = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalXPosition, 0f)
-        finalYPosition = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalYPosition, 0f)
-        finalHeight = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalHeight, 0f)
-        finalWidth = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalWidth, 0f)
         finalToolbarHeight = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalToolbarHeight, 0f)
+        childFinalHeight = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalHeight, 0f)
+        childFinalWidth = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalWidth, 0f)
+        childFinalCenterXPosition = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalXPosition, 0f) + childFinalWidth / 2
+        childFinalCenterYPosition = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalYPosition, 0f) + childFinalHeight / 2
         attributes.recycle()
     }
 
     private fun initProperties(child: View, dependency: View) {
         if (!initialised) {
-            startHeight = child.height
-            startWidth = child.width
-            startXPositionImage = child.x.toInt()
-            startYPositionImage = child.y.toInt()
-            startToolbarHeight = dependency.height
+            childStartHeight = child.height
+            childStartWidth = child.width
+            childStartCenterXPosition = child.x.toInt() + child.width / 2
+            childStartCenterYPosition = child.y.toInt() + child.height / 2
+            childStartToolbarHeight = dependency.height
 
-            reduceToolbarHeight = startToolbarHeight - finalToolbarHeight
-            heightChildToReduce = startHeight - finalHeight
-            widthChildToReduce = startWidth - finalWidth
-            distanceX = startXPositionImage - finalXPosition
-            distanceY = startYPositionImage - finalYPosition
+            toolbarHeightToReduce = childStartToolbarHeight - finalToolbarHeight
+            childHeightToReduce = childStartHeight - childFinalHeight
+            childWidthToReduce = childStartWidth - childFinalWidth
+            childTotalDistanceX = childStartCenterXPosition - childFinalCenterXPosition
+            childTotalDistanceY = childStartCenterYPosition - childFinalCenterYPosition
+
             initialised = true
         }
     }

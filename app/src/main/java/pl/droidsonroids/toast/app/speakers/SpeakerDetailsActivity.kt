@@ -61,20 +61,16 @@ class SpeakerDetailsActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListe
     }
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
+        setToolbarContentVisibility(verticalOffset)
+    }
+
+    private fun setToolbarContentVisibility(verticalOffset: Int) {
         if (abs(verticalOffset) == abs(appBar.height - toolbar.height)) {
             toolbarAvatarImage.visibility = View.VISIBLE
             toolbarSpeakerName.visibility = View.VISIBLE
         } else {
             toolbarAvatarImage.visibility = View.INVISIBLE
             toolbarSpeakerName.visibility = View.INVISIBLE
-        }
-
-        if (verticalOffset == 0) {
-            avatarBorderSmall.visibility = View.VISIBLE
-            avatarBorderBig.visibility = View.VISIBLE
-        } else {
-            avatarBorderSmall.visibility = View.INVISIBLE
-            avatarBorderBig.visibility = View.INVISIBLE
         }
     }
 
