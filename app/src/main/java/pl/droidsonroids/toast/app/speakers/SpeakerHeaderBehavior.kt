@@ -70,7 +70,7 @@ class SpeakerHeaderBehavior(private val context: Context, private val attrs: Att
         when (child.id) {
             R.id.speakerName -> {
                 distanceXToSubtract = OvershootInterpolator(0f).getInterpolation(toolbarClosingOffset) * childTotalDistanceX
-                distanceYToSubtract = AccelerateInterpolator(0.8f).getInterpolation(toolbarClosingOffset) * childTotalDistanceY
+                distanceYToSubtract = toolbarClosingOffset * childTotalDistanceY
             }
             else -> {
                 distanceXToSubtract = AccelerateInterpolator(0.5f).getInterpolation(toolbarClosingOffset) * childTotalDistanceX
