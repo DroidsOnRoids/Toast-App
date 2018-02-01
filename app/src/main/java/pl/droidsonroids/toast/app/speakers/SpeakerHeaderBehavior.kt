@@ -59,8 +59,8 @@ class SpeakerHeaderBehavior(private val context: Context, private val attrs: Att
 
     private fun updateViewPosition(toolbarClosingOffset: Float, child: View) {
         val (distanceXToSubtract, distanceYToSubtract) = getDistanceToSubtract(child, toolbarClosingOffset)
-        child.x = childStartCenterXPosition - distanceXToSubtract - child.width / 2
-        child.y = childStartCenterYPosition - distanceYToSubtract - child.height / 2
+        child.x = childStartCenterXPosition - distanceXToSubtract
+        child.y = childStartCenterYPosition - distanceYToSubtract
     }
 
     private fun getDistanceToSubtract(child: View, toolbarClosingOffset: Float): Pair<Float, Float> {
@@ -69,15 +69,14 @@ class SpeakerHeaderBehavior(private val context: Context, private val attrs: Att
 
         when (child.id) {
             R.id.speakerName -> {
-                distanceXToSubtract = OvershootInterpolator(0f).getInterpolation(toolbarClosingOffset) * childTotalDistanceX
-                distanceYToSubtract = toolbarClosingOffset * childTotalDistanceY
+                distanceXToSubtract = OvershootInterpolator(0f).getInterpolation(toolbarClosingOffset) * childTotalDistanceX + child.width / 2
+                distanceYToSubtract = toolbarClosingOffset * childTotalDistanceY + child.height / 2
             }
             else -> {
-                distanceXToSubtract = AccelerateInterpolator(0.5f).getInterpolation(toolbarClosingOffset) * childTotalDistanceX
-                distanceYToSubtract = DecelerateInterpolator(2f).getInterpolation(toolbarClosingOffset) * childTotalDistanceY
+                distanceXToSubtract = AccelerateInterpolator(0.5f).getInterpolation(toolbarClosingOffset) * childTotalDistanceX + child.width / 2
+                distanceYToSubtract = DecelerateInterpolator(2f).getInterpolation(toolbarClosingOffset) * childTotalDistanceY + child.height / 2
             }
         }
-
         return Pair(distanceXToSubtract, distanceYToSubtract)
     }
 
