@@ -6,20 +6,24 @@ import android.util.Log
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
+import io.reactivex.functions.BiFunction
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import pl.droidsonroids.toast.app.login.LoginStateWatcher
+import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
+import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
 import pl.droidsonroids.toast.data.dto.event.EventDto
+import pl.droidsonroids.toast.data.enums.AttendStatus
 import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.data.wrapWithState
 import pl.droidsonroids.toast.repositories.event.EventsRepository
+import pl.droidsonroids.toast.repositories.facebook.FacebookRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.toPage
@@ -28,8 +32,9 @@ import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import javax.inject.Inject
 
 class EventsViewModel @Inject constructor(
+        loginStateWatcher: LoginStateWatcher,
         private val eventsRepository: EventsRepository,
-        loginStateWatcher: LoginStateWatcher
+        private val facebookRepository: FacebookRepository
 ) : ViewModel(), LoadingViewModel, NavigatingViewModel, LoginStateWatcher by loginStateWatcher {
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
 
@@ -55,21 +60,29 @@ class EventsViewModel @Inject constructor(
         loadingStatus.set(LoadingStatus.PENDING)
         eventsDisposable = eventsRepository.getEvents()
                 .flatMap { (upcomingEvent, previousEventsPage) ->
-                    val upcomingEventViewModel = upcomingEvent.toViewModel(
-                            onLocationClick = (::onUpcomingEventLocationClick),
-                            onSeePhotosClick = (::onSeePhotosClick),
-                            onEventClick = (::onUpcomingEventClick),
-                            onAttendClick = (::onAttendClick)
-                    )
-                    mapToSingleEventItemViewModelsPage(previousEventsPage)
-                            .map { upcomingEventViewModel to it }
-                            .toMaybe()
+                    Single.zip(
+                            mapToSingleEventItemViewModelsPage(previousEventsPage),
+                            facebookRepository.getEventAttendState(upcomingEvent.facebookId),
+                            BiFunction<Page<State.Item<EventItemViewModel>>, AttendStatus, Pair<UpcomingEventViewModel, Page<State.Item<EventItemViewModel>>>> { previousEvents, attendStatus ->
+                                createUpcomingEventViewModel(upcomingEvent, attendStatus) to previousEvents
+                            }
+                    ).toMaybe()
                 }
                 .subscribeBy(
                         onSuccess = (::onEventsLoaded),
                         onError = (::onEventsLoadError),
                         onComplete = (::onEmptyResponse)
                 )
+    }
+
+    private fun createUpcomingEventViewModel(upcomingEvent: EventDetailsDto, attendStatus: AttendStatus): UpcomingEventViewModel {
+        return upcomingEvent.toViewModel(
+                onLocationClick = (::onUpcomingEventLocationClick),
+                onSeePhotosClick = (::onSeePhotosClick),
+                onEventClick = (::onUpcomingEventClick),
+                onAttendClick = (::onAttendClick),
+                attendStatus = attendStatus
+        )
     }
 
     private fun onUpcomingEventLocationClick(coordinates: CoordinatesDto, placeName: String) {

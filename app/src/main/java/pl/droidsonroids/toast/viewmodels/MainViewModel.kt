@@ -2,7 +2,7 @@ package pl.droidsonroids.toast.viewmodels
 
 import android.arch.lifecycle.ViewModel
 import io.reactivex.subjects.PublishSubject
-import pl.droidsonroids.toast.app.login.LoginStateWatcher
+import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
 import pl.droidsonroids.toast.utils.NavigationRequest
 import javax.inject.Inject
 

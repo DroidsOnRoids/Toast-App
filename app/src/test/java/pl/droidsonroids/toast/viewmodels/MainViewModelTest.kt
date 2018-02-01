@@ -4,7 +4,7 @@ import org.junit.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
-import pl.droidsonroids.toast.app.login.LoginStateWatcher
+import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
 import pl.droidsonroids.toast.utils.NavigationRequest
 
 class MainViewModelTest : RxTestBase() {

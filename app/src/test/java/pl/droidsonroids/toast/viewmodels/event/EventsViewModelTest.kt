@@ -1,8 +1,9 @@
 package pl.droidsonroids.toast.viewmodels.event
 
+import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Maybe
-import io.reactivex.internal.operators.maybe.MaybeJust
+import io.reactivex.Single
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
@@ -10,16 +11,20 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-import pl.droidsonroids.toast.app.login.LoginStateWatcher
+import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
 import pl.droidsonroids.toast.data.State
+import pl.droidsonroids.toast.data.dto.event.SplitEvents
+import pl.droidsonroids.toast.data.enums.AttendStatus
 import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.event.EventsRepository
+import pl.droidsonroids.toast.repositories.facebook.FacebookRepository
 import pl.droidsonroids.toast.testEventDetails
 import pl.droidsonroids.toast.testPreviousEvents
 import pl.droidsonroids.toast.testSplitEvents
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import java.io.IOException
 
 @RunWith(MockitoJUnitRunner::class)
 class EventsViewModelTest {
@@ -27,14 +32,15 @@ class EventsViewModelTest {
     lateinit var eventsRepository: EventsRepository
     @Mock
     lateinit var loginStateWatcher: LoginStateWatcher
+    @Mock
+    lateinit var facebookRepository: FacebookRepository
 
     lateinit var eventsViewModel: EventsViewModel
 
 
     @Test
     fun shouldReturnFeaturedEvent() {
-        whenever(eventsRepository.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
-        eventsViewModel = EventsViewModel(eventsRepository, loginStateWatcher)
+        setUpWith(Maybe.just(testSplitEvents))
         val upcomingEventViewModel = eventsViewModel.upcomingEvent.get()
 
         assertThat(upcomingEventViewModel, notNullValue())
@@ -44,8 +50,7 @@ class EventsViewModelTest {
 
     @Test
     fun shouldReturnSingletonPreviousEventsList() {
-        whenever(eventsRepository.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
-        val eventsViewModel = EventsViewModel(eventsRepository, loginStateWatcher)
+        setUpWith(Maybe.just(testSplitEvents))
 
         val previousEvents = eventsViewModel.previousEventsSubject.value
 
@@ -58,8 +63,7 @@ class EventsViewModelTest {
 
     @Test
     fun shouldReturnSuccessLoadingStatus() {
-        whenever(eventsRepository.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
-        eventsViewModel = EventsViewModel(eventsRepository, loginStateWatcher)
+        setUpWith(Maybe.just(testSplitEvents))
         val eventsLoadingStatus = eventsViewModel.loadingStatus
 
         assertThat(eventsLoadingStatus.get(), equalTo(LoadingStatus.SUCCESS))
@@ -67,18 +71,15 @@ class EventsViewModelTest {
 
     @Test
     fun shouldReturnErrorLoadingStatus() {
-        whenever(eventsRepository.getEvents()).thenReturn(Maybe.error(Throwable()))
-        eventsViewModel = EventsViewModel(eventsRepository, loginStateWatcher)
+        setUpWith(Maybe.error(IOException()))
         val eventsLoadingStatus = eventsViewModel.loadingStatus
 
         assertThat(eventsLoadingStatus.get(), equalTo(LoadingStatus.ERROR))
     }
 
-
     @Test
     fun shouldRequestNavigationToPreviousEventDetails() {
-        whenever(eventsRepository.getEvents()).thenReturn(Maybe.just(testSplitEvents))
-        eventsViewModel = EventsViewModel(eventsRepository, loginStateWatcher)
+        setUpWith(Maybe.just(testSplitEvents))
         val previousEventsState = eventsViewModel.previousEventsSubject.value.firstOrNull() as? State.Item
         val testApiEvent = testPreviousEvents.first()
         val testObserver = eventsViewModel.navigationSubject.test()
@@ -94,8 +95,7 @@ class EventsViewModelTest {
 
     @Test
     fun shouldRequestNavigationToFeaturedEventDetails() {
-        whenever(eventsRepository.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
-        eventsViewModel = EventsViewModel(eventsRepository, loginStateWatcher)
+        setUpWith(Maybe.just(testSplitEvents))
         val testObserver = eventsViewModel.navigationSubject.test()
 
         eventsViewModel.upcomingEvent.get().onEventClick()
@@ -106,10 +106,10 @@ class EventsViewModelTest {
         }
     }
 
+
     @Test
     fun shouldRequestNavigationToPhotos() {
-        whenever(eventsRepository.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
-        eventsViewModel = EventsViewModel(eventsRepository, loginStateWatcher)
+        setUpWith(Maybe.just(testSplitEvents))
         val testObserver = eventsViewModel.navigationSubject.test()
 
         eventsViewModel.upcomingEvent.get().onPhotosClick()
@@ -124,8 +124,7 @@ class EventsViewModelTest {
 
     @Test
     fun shouldRequestNavigationToFeaturedEventLocation() {
-        whenever(eventsRepository.getEvents()).thenReturn(MaybeJust.just(testSplitEvents))
-        eventsViewModel = EventsViewModel(eventsRepository, loginStateWatcher)
+        setUpWith(Maybe.just(testSplitEvents))
         val testObserver = eventsViewModel.navigationSubject.test()
 
         eventsViewModel.upcomingEvent.get().onLocationClick()
@@ -135,6 +134,12 @@ class EventsViewModelTest {
                     && it.coordinatesDto == testEventDetails.placeCoordinates.toDto()
                     && it.placeName == testEventDetails.placeName
         }
+    }
+
+    private fun setUpWith(maybe: Maybe<SplitEvents>) {
+        whenever(eventsRepository.getEvents()).thenReturn(maybe)
+        whenever(facebookRepository.getEventAttendState(any())).thenReturn(Single.just(AttendStatus.DECLINED))
+        eventsViewModel = EventsViewModel(loginStateWatcher, eventsRepository, facebookRepository)
     }
 
 }

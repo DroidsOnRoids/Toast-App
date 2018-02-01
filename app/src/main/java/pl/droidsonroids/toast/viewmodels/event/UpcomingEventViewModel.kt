@@ -3,10 +3,11 @@ package pl.droidsonroids.toast.viewmodels.event
 import android.databinding.ObservableField
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
+import pl.droidsonroids.toast.data.enums.AttendStatus
 import java.util.*
 
 
-class UpcomingEventViewModel(
+data class UpcomingEventViewModel(
         val id: Long,
         val title: String,
         val date: Date,
@@ -18,7 +19,8 @@ class UpcomingEventViewModel(
         private val locationClickCallback: (CoordinatesDto, String) -> Unit,
         private val seePhotosCallback: (Long, List<ImageDto>) -> Unit,
         private val eventClickCallback: (Long) -> Unit,
-        private val attendCallback: () -> Unit
+        private val attendCallback: () -> Unit,
+        val attendStatus: AttendStatus
 ) {
 
     val photosAvailable = ObservableField(photos.isNotEmpty())

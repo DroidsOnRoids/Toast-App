@@ -1,4 +1,4 @@
-package pl.droidsonroids.toast.app.login
+package pl.droidsonroids.toast.app.facebook
 
 import com.facebook.AccessToken
 import com.facebook.AccessTokenTracker
