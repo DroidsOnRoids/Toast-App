@@ -58,4 +58,6 @@
     <string name="fb_login_protocol_scheme">fb1977143782606467</string>
     <string name="log_in">Log in</string>
     <string name="log_out">Log out</string>
+    <string name="attending">Attending</string>
+    <string name="interested_in">Interested in</string>
 </resources>

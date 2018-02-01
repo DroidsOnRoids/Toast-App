@@ -23,6 +23,7 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.utils.extensions.firstWord
 import pl.droidsonroids.toast.app.utils.extensions.setImageColor
 import pl.droidsonroids.toast.data.dto.ImageDto
+import pl.droidsonroids.toast.data.enums.AttendStatus
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
 import java.text.SimpleDateFormat
@@ -165,5 +166,29 @@ fun setLinkImageButtonEnabled(imageButton: ImageButton, link: String?) {
     } else {
         imageButton.setImageColor(R.color.colorPrimary)
         imageButton.isEnabled = true
+    }
+}
+
+@BindingAdapter("android:background")
+fun setColor(view: View, attendStatus: AttendStatus?) {
+    val color = when (attendStatus) {
+        AttendStatus.ATTENDING -> R.color.colorPrimary
+        AttendStatus.UNSURE -> R.color.interested
+        AttendStatus.DECLINED, null -> R.color.facebook
+    }
+    with(view) {
+        setBackgroundResource(color)
+    }
+}
+
+@BindingAdapter("android:text")
+fun setTextColor(textView: TextView, attendStatus: AttendStatus?) {
+    val text = when (attendStatus) {
+        AttendStatus.ATTENDING -> R.string.attending
+        AttendStatus.UNSURE -> R.string.interested_in
+        AttendStatus.DECLINED, null -> R.string.attend
+    }
+    with(textView) {
+        setText(text)
     }
 }

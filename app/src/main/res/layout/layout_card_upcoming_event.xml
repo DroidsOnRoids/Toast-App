@@ -241,6 +241,7 @@
                 android:onClick="@{() -> upcomingEvent.onAttendClick()}"
                 android:foreground="?attr/selectableItemBackground"
                 android:orientation="horizontal"
+                android:background="@{upcomingEvent.attendStatus}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/upcomingEventDateDivider">
@@ -251,10 +252,10 @@
                     android:layout_height="54dp"
                     android:layout_gravity="center"
                     android:drawablePadding="@dimen/margin_small"
-                    android:textColor="@color/facebook"
+                    android:text="@{upcomingEvent.attendStatus}"
+                    android:textColor="@color/white"
                     android:drawableStart="@drawable/ic_facebook"
-                    android:gravity="center"
-                    android:text="@string/attend"/>
+                    android:gravity="center"/>
             </FrameLayout>
 
             <LinearLayout
