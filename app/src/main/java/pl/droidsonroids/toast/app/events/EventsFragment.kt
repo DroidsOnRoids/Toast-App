@@ -50,7 +50,7 @@ class EventsFragment : BaseFragment() {
         eventsViewModel = ViewModelProviders.of(this, viewModelFactory)[EventsViewModel::class.java]
         navigationDisposable = eventsViewModel.navigationSubject
                 .subscribe { request ->
-                    context?.let { navigator.dispatch(it, request) }
+                    activity?.let { navigator.dispatch(it, request) }
                 }
     }
 
