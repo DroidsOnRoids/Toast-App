@@ -20,5 +20,7 @@ sealed class NavigationRequest {
     object ToggleImmersive : NavigationRequest()
     data class Website(val url: String): NavigationRequest()
     data class Email(val email: String): NavigationRequest()
+    object LogIn : NavigationRequest()
+    object LogOut : NavigationRequest()
 }
 

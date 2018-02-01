@@ -4,7 +4,22 @@
 
     <item
         android:id="@+id/menuItemAbout"
-        android:icon="@drawable/ic_menu_about"
-        android:title="@string/about"
-        app:showAsAction="ifRoom"/>
+        android:icon="@drawable/ic_about"
+        android:orderInCategory="0"
+        android:title="@string/about_app"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menuItemLogin"
+        android:icon="@drawable/ic_login"
+        android:orderInCategory="1"
+        android:title="@string/log_in"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menuItemLogout"
+        android:icon="@drawable/ic_logout"
+        android:orderInCategory="1"
+        android:title="@string/log_out"
+        app:showAsAction="never"/>
 </menu>
