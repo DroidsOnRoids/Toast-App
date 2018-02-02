@@ -22,5 +22,7 @@ data class ApiSpeakerDetails(
         @SerializedName("twitter_url")
         val twitter: String,
         @SerializedName("avatar")
-        val avatar: ApiImage
+        val avatar: ApiImage,
+        @SerializedName("talks")
+        val talks: List<ApiSpeakerTalk>
 )

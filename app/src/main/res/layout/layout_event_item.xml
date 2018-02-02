@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="eventViewModel"
+            type="pl.droidsonroids.toast.viewmodels.event.EventItemViewModel"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/previousEventCardContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground"
+        android:onClick="@{() -> eventViewModel.onClick()}"
+        tools:showIn="@layout/item_speaker_talk">
+
+        <ImageView
+            android:id="@+id/eventCoverImage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/previous_event_cover_desc"
+            android:scaleType="centerCrop"
+            app:coverImage="@{eventViewModel.coverImage}"
+            app:layout_constraintBottom_toTopOf="@+id/eventName"
+            app:layout_constraintDimensionRatio="h,3:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginBottom="@dimen/margin_large"
+            app:layout_constraintVertical_chainStyle="packed"/>
+
+        <TextView
+            android:id="@+id/eventName"
+            style="@style/EventHeaderStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_large"
+            android:text="@{eventViewModel.title}"
+            app:layout_constraintBottom_toTopOf="@+id/eventDate"
+            app:layout_constraintEnd_toStartOf="@+id/eventArrowImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/eventCoverImage"
+            tools:text="TOAST #8"/>
+
+        <TextView
+            android:id="@+id/eventDate"
+            style="@style/EventSubHeaderStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_large"
+            android:layout_marginStart="@dimen/margin_large"
+            app:eventDate="@{eventViewModel.date}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/eventArrowImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/eventName"
+            tools:text="02.02.2017"/>
+
+        <ImageView
+            android:id="@+id/eventArrowImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:contentDescription="@string/previous_event_arrow_desc"
+            android:src="@drawable/ic_arrow_forward"
+            app:layout_constraintBottom_toBottomOf="@id/eventDate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/eventName"/>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>
+    

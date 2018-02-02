@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="54dp"
         android:background="@color/paleGrayBackground"
-        android:divider="@drawable/divider_bio_links"
+        android:divider="@drawable/horizontal_divider"
         android:orientation="horizontal"
         android:showDividers="middle">
 

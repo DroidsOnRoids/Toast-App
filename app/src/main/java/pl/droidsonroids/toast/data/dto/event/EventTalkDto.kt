@@ -3,14 +3,13 @@ package pl.droidsonroids.toast.data.dto.event
 import android.annotation.SuppressLint
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
-import pl.droidsonroids.toast.data.dto.ImageDto
-import java.util.*
+import pl.droidsonroids.toast.data.dto.speaker.SpeakerDto
 
 @SuppressLint("ParcelCreator")
 @Parcelize
-data class EventDto(
+data class EventTalkDto(
         val id: Long,
         val title: String,
-        val date: Date,
-        val coverImages: List<ImageDto>
+        val description: String,
+        val speaker: SpeakerDto
 ) : Parcelable
