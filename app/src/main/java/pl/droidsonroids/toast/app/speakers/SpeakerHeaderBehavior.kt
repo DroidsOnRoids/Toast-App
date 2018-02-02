@@ -4,7 +4,6 @@ import android.content.Context
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CoordinatorLayout
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -14,23 +13,25 @@ import kotlin.math.abs
 
 private const val ACCELERATE_INTERPOLATOR_FACTOR = 0.5f
 private const val DECELERATE_INTERPOLATOR_FACTOR = 2f
+private const val UNKNOWN_VALUE = -1f
+private const val LOG_TAG = "SPEAKER_BEHAVIOR"
 
 class SpeakerHeaderBehavior(private val context: Context, private val attrs: AttributeSet? = null) : CoordinatorLayout.Behavior<View>() {
-    private var childStartCenterXPosition = 0
-    private var childStartCenterYPosition = 0
-    private var childStartHeight = 0
-    private var childStartWidth = 0
-    private var childStartAppBarHeight = 0
+    private var childStartCenterXPosition = 0f
+    private var childStartCenterYPosition = 0f
+    private var childStartHeight = 0f
+    private var childStartWidth = 0f
+    private var appBarStartHeight = 0f
 
     private var finalToolbarHeight = 0f
-    private var childFinalCenterXPosition = 0f
-    private var childFinalCenterYPosition = 0f
+    private var childFinalXPosition = 0f
+    private var childFinalYPosition = 0f
     private var childFinalHeight = 0f
     private var childFinalWidth = 0f
 
     private var appBarHeightToReduce = 0f
-    private var childHeightToReduce = 0f
-    private var childWidthToReduce = 0f
+    private var childHeightToReduce = UNKNOWN_VALUE
+    private var childWidthToReduce = UNKNOWN_VALUE
     private var childTotalDistanceX = 0f
     private var childTotalDistanceY = 0f
 
@@ -51,7 +52,7 @@ class SpeakerHeaderBehavior(private val context: Context, private val attrs: Att
             child.post {
                 initProperties(child, dependency)
                 val appBarClosingOffset = calculateToolbarClosingOffset(dependency as AppBarLayout)
-                Log.wtf("SPEAKER_BEHAVIOR", "Offset: $appBarClosingOffset")
+
                 updateViewSize(appBarClosingOffset, child)
                 updateViewPosition(appBarClosingOffset, child)
                 child.requestLayout()
@@ -73,7 +74,7 @@ class SpeakerHeaderBehavior(private val context: Context, private val attrs: Att
     private fun getDistanceToSubtract(child: View, appBarClosingOffset: Float): Pair<Float, Float> =
             when (child.id) {
                 R.id.speakerName -> {
-                    val distanceXToSubtract = decelerateInterpolator.getInterpolation(appBarClosingOffset) * childTotalDistanceX + child.width / 2
+                    val distanceXToSubtract = accelerateInterpolator.getInterpolation(appBarClosingOffset) * childTotalDistanceX + child.width / 2
                     val distanceYToSubtract = appBarClosingOffset * childTotalDistanceY + child.height / 2
                     Pair(distanceXToSubtract, distanceYToSubtract)
                 }
@@ -87,34 +88,41 @@ class SpeakerHeaderBehavior(private val context: Context, private val attrs: Att
     private fun updateViewSize(appBarClosingOffset: Float, child: View) {
         val heightToSubtract = appBarClosingOffset * childHeightToReduce
         val widthToSubtract = appBarClosingOffset * childWidthToReduce
-        val layoutParams = child.layoutParams
-        layoutParams.width = (childStartWidth - widthToSubtract).toInt()
-        layoutParams.height = (childStartHeight - heightToSubtract).toInt()
+
+        val offsetHeight = abs(heightToSubtract / childStartHeight - 1)
+        val offsetWidth = abs(widthToSubtract / childStartWidth - 1)
+
+        child.scaleX = offsetWidth
+        child.scaleY = offsetHeight
     }
 
     private fun initAttributes() {
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.SpeakerHeaderBehavior)
         finalToolbarHeight = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalToolbarHeight, 0f)
-        childFinalHeight = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalHeight, 0f)
-        childFinalWidth = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalWidth, 0f)
-        childFinalCenterXPosition = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalXPosition, 0f) + childFinalWidth / 2
-        childFinalCenterYPosition = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalYPosition, 0f) + childFinalHeight / 2
+        childFinalHeight = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalHeight, -1f)
+        childFinalWidth = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalWidth, -1f)
+        childFinalXPosition = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalXPosition, 0f)
+        childFinalYPosition = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalYPosition, 0f)
         attributes.recycle()
     }
 
     private fun initProperties(child: View, dependency: View) {
         if (!initialised) {
-            childStartHeight = child.height
-            childStartWidth = child.width
-            childStartCenterXPosition = child.x.toInt() + child.width / 2
-            childStartCenterYPosition = child.y.toInt() + child.height / 2
-            childStartAppBarHeight = dependency.height
+            childStartHeight = child.height.toFloat()
+            childStartWidth = child.width.toFloat()
+            childStartCenterXPosition = (child.x.toInt() + child.width / 2).toFloat()
+            childStartCenterYPosition = (child.y.toInt() + child.height / 2).toFloat()
+            appBarStartHeight = dependency.height.toFloat()
 
-            appBarHeightToReduce = childStartAppBarHeight - finalToolbarHeight
+            if (childFinalWidth == UNKNOWN_VALUE) childFinalWidth = childStartWidth
+            if (childFinalHeight == UNKNOWN_VALUE) childFinalHeight = childStartHeight
+
+            appBarHeightToReduce = appBarStartHeight - finalToolbarHeight
             childHeightToReduce = childStartHeight - childFinalHeight
             childWidthToReduce = childStartWidth - childFinalWidth
-            childTotalDistanceX = childStartCenterXPosition - childFinalCenterXPosition
-            childTotalDistanceY = childStartCenterYPosition - childFinalCenterYPosition
+            childTotalDistanceX = childStartCenterXPosition - childFinalXPosition - childFinalWidth / 2
+            childTotalDistanceY = childStartCenterYPosition - childFinalYPosition - childFinalHeight / 2
+
 
             initialised = true
         }

@@ -36,29 +36,7 @@
                     android:layout_height="?attr/actionBarSize"
                     app:contentInsetStart="0dp"
                     app:layout_collapseMode="pin"
-                    app:popupTheme="@style/AppTheme.PopupOverlay">
-
-                    <ImageView
-                        android:id="@+id/toolbarAvatarImage"
-                        android:layout_width="@dimen/small_avatar_size"
-                        android:layout_height="@dimen/small_avatar_size"
-                        app:roundImage="@{speakerDetailsViewModel.avatar}"
-                        tools:backgroundTint="@color/white"/>
-
-                    <TextView
-                        android:id="@+id/toolbarSpeakerName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_medium"
-                        android:letterSpacing="0.06"
-                        android:lineSpacingExtra="6sp"
-                        android:paddingEnd="16dp"
-                        android:paddingStart="16dp"
-                        android:text="@{speakerDetailsViewModel.name}"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        tools:text="Paulina Szklarska"/>
-                </android.support.v7.widget.Toolbar>
+                    app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
                 <TextView
                     android:id="@+id/speakerJob"
@@ -181,35 +159,35 @@
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
 
-        <View
-            android:id="@+id/avatarBorderBig"
-            android:layout_width="104dp"
-            android:layout_height="104dp"
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="45dp"
-            android:background="@drawable/shape_circle"
-            android:backgroundTint="@color/avatarBorderBigGreen"
+            android:elevation="@dimen/margin_large"
             app:finalHeight="@dimen/small_avatar_size"
             app:finalToolbarHeight="?attr/actionBarSize"
             app:finalWidth="@dimen/small_avatar_size"
             app:finalXPosition="@dimen/margin_extra"
             app:finalYPosition="@dimen/margin_medium"
-            app:layout_behavior="pl.droidsonroids.toast.app.speakers.SpeakerHeaderBehavior"/>
+            app:layout_behavior="pl.droidsonroids.toast.app.speakers.SpeakerHeaderBehavior">
 
-        <View
-            android:id="@+id/avatarBorderSmall"
-            android:layout_width="88dp"
-            android:layout_height="88dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="53dp"
-            android:background="@drawable/shape_circle"
-            android:backgroundTint="@color/avatarBorderSmallGreen"
-            app:finalHeight="@dimen/small_avatar_size"
-            app:finalToolbarHeight="?attr/actionBarSize"
-            app:finalWidth="@dimen/small_avatar_size"
-            app:finalXPosition="@dimen/margin_extra"
-            app:finalYPosition="@dimen/margin_medium"
-            app:layout_behavior="pl.droidsonroids.toast.app.speakers.SpeakerHeaderBehavior"/>
+            <View
+                android:id="@+id/avatarBorderBig"
+                android:layout_width="104dp"
+                android:layout_height="104dp"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_circle"
+                android:backgroundTint="@color/avatarBorderBigGreen"/>
+
+            <View
+                android:id="@+id/avatarBorderSmall"
+                android:layout_width="88dp"
+                android:layout_height="88dp"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_circle"
+                android:backgroundTint="@color/avatarBorderSmallGreen"/>
+        </FrameLayout>
 
         <ImageView
             android:id="@+id/avatarImage"
@@ -217,6 +195,7 @@
             android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="57dp"
+            android:elevation="@dimen/margin_large"
             app:finalHeight="@dimen/small_avatar_size"
             app:finalToolbarHeight="?attr/actionBarSize"
             app:finalWidth="@dimen/small_avatar_size"
@@ -232,15 +211,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="153dp"
+            android:elevation="@dimen/margin_large"
             android:fontFamily="@font/roboto_medium"
             android:letterSpacing="0.06"
             android:lineSpacingExtra="6sp"
             android:text="@{speakerDetailsViewModel.name}"
             android:textColor="@color/white"
             android:textSize="18sp"
-            app:finalHeight="@dimen/small_avatar_size"
             app:finalToolbarHeight="?attr/actionBarSize"
-            app:finalWidth="300dp"
             app:finalXPosition="120dp"
             app:finalYPosition="@dimen/margin_large"
             app:layout_behavior="pl.droidsonroids.toast.app.speakers.SpeakerHeaderBehavior"

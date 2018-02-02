@@ -4,10 +4,8 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.AppBarLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
-import android.view.View
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
@@ -21,9 +19,8 @@ import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakerDetailsViewModel
 import javax.inject.Inject
-import kotlin.math.abs
 
-class SpeakerDetailsActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
+class SpeakerDetailsActivity : BaseActivity() {
 
     companion object {
         private const val SPEAKER_ID: String = "speaker_id"
@@ -64,22 +61,6 @@ class SpeakerDetailsActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListe
         }
     }
 
-    override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
-        setToolbarContentVisibility(verticalOffset)
-    }
-
-    private fun setToolbarContentVisibility(verticalOffset: Int) {
-        val isToolbarCollapsed = abs(verticalOffset) == abs(appBar.height - toolbar.height)
-
-        if (isToolbarCollapsed) {
-            toolbarAvatarImage.visibility = View.VISIBLE
-            toolbarSpeakerName.visibility = View.VISIBLE
-        } else {
-            toolbarAvatarImage.visibility = View.INVISIBLE
-            toolbarSpeakerName.visibility = View.INVISIBLE
-        }
-    }
-
     private fun setupViewModel(speakerDetailsBinding: ActivitySpeakerDetailsBinding) {
         speakerDetailsViewModel.init(speakerId)
         speakerDetailsBinding.speakerDetailsViewModel = speakerDetailsViewModel
@@ -90,7 +71,6 @@ class SpeakerDetailsActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListe
     private fun setupToolbar() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        appBar.addOnOffsetChangedListener(this)
     }
 
     private fun setupRecyclerView() {
