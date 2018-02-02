@@ -10,16 +10,16 @@ import io.reactivex.disposables.Disposables
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.data.dto.event.EventTalkDto
-import pl.droidsonroids.toast.databinding.ActivityTalkDetailsBinding
+import pl.droidsonroids.toast.databinding.ActivityEventTalkDetailsBinding
 import pl.droidsonroids.toast.utils.NavigationRequest
-import pl.droidsonroids.toast.viewmodels.event.TalkDetailsViewModel
+import pl.droidsonroids.toast.viewmodels.event.EventTalkDetailsViewModel
 import javax.inject.Inject
 
-class TalkDetailsActivity : BaseActivity() {
+class EventTalkDetailsActivity : BaseActivity() {
     companion object {
         private const val TALK_DTO_KEY = "speakerTalkDto"
         fun createIntent(context: Context, navigationRequest: NavigationRequest.EventTalkDetails): Intent {
-            return Intent(context, TalkDetailsActivity::class.java)
+            return Intent(context, EventTalkDetailsActivity::class.java)
                     .putExtra(TALK_DTO_KEY, navigationRequest.eventTalkDto)
         }
     }
@@ -31,8 +31,8 @@ class TalkDetailsActivity : BaseActivity() {
         intent.getParcelableExtra<EventTalkDto>(TALK_DTO_KEY)
     }
 
-    private val talkDetailsViewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory).get(talkDto.id.toString(), TalkDetailsViewModel::class.java)
+    private val eventTalkDetailsViewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory).get(talkDto.id.toString(), EventTalkDetailsViewModel::class.java)
     }
 
     private var navigationDisposable: Disposable = Disposables.disposed()
@@ -40,15 +40,15 @@ class TalkDetailsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportPostponeEnterTransition()
-        val binding = ActivityTalkDetailsBinding.inflate(layoutInflater)
+        val binding = ActivityEventTalkDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupViewModel(binding)
         setupBinding(binding)
     }
 
-    private fun setupBinding(binding: ActivityTalkDetailsBinding) {
-        binding.addOnRebindCallback(object : OnRebindCallback<ActivityTalkDetailsBinding>() {
-            override fun onBound(binding: ActivityTalkDetailsBinding?) {
+    private fun setupBinding(binding: ActivityEventTalkDetailsBinding) {
+        binding.addOnRebindCallback(object : OnRebindCallback<ActivityEventTalkDetailsBinding>() {
+            override fun onBound(binding: ActivityEventTalkDetailsBinding?) {
                 supportStartPostponedEnterTransition()
                 binding?.removeOnRebindCallback(this)
             }
@@ -56,11 +56,11 @@ class TalkDetailsActivity : BaseActivity() {
         binding.executePendingBindings()
     }
 
-    private fun setupViewModel(binding: ActivityTalkDetailsBinding) {
-        talkDetailsViewModel.init(talkDto)
-        navigationDisposable = talkDetailsViewModel.navigationSubject
+    private fun setupViewModel(binding: ActivityEventTalkDetailsBinding) {
+        eventTalkDetailsViewModel.init(talkDto)
+        navigationDisposable = eventTalkDetailsViewModel.navigationSubject
                 .subscribe(::handleNavigationRequest)
-        binding.talkDetailsViewModel = talkDetailsViewModel
+        binding.eventTalkDetailsViewModel = eventTalkDetailsViewModel
     }
 
     private fun handleNavigationRequest(it: NavigationRequest) {

@@ -95,7 +95,7 @@ class EventDetailsActivity : BaseActivity() {
 
     private fun handleNavigationRequest(it: NavigationRequest) {
         if (it is NavigationRequest.EventTalkDetails) {
-            navigator.showTalkDetailsWithSharedAnimation(this, it, getSharedViews(it.eventTalkDto))
+            navigator.showEventTalkDetailsWithSharedAnimation(this, it, getSharedViews(it.eventTalkDto))
         } else {
             navigator.dispatch(this, it)
         }

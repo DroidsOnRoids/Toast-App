@@ -4,15 +4,19 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.util.Pair
 import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
+import android.view.View
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_speaker_details.*
+import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.events.HorizontalSnapHelper
+import pl.droidsonroids.toast.data.dto.speaker.SpeakerTalkDto
 import pl.droidsonroids.toast.databinding.ActivitySpeakerDetailsBinding
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
@@ -62,7 +66,7 @@ class SpeakerDetailsActivity : BaseActivity() {
         speakerDetailsViewModel.init(speakerId)
         speakerDetailsBinding.speakerDetailsViewModel = speakerDetailsViewModel
         compositeDisposable += speakerDetailsViewModel.navigationSubject
-                .subscribe { navigator.dispatch(activity = this, navigationRequest = it) }
+                .subscribe { ::handleNavigationRequest }
     }
 
     private fun setupRecyclerView() {
@@ -87,6 +91,23 @@ class SpeakerDetailsActivity : BaseActivity() {
             android.R.id.home -> consume { finish() }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun handleNavigationRequest(it: NavigationRequest) {
+        if (it is NavigationRequest.SpeakerTalkDetails) {
+            navigator.showSpeakerTalkDetailsWithSharedAnimation(this, it, getSharedViews(it.speakerTalkDto))
+        } else {
+            navigator.dispatch(this, it)
+        }
+    }
+
+    private fun getSharedViews(speakerTalkDto: SpeakerTalkDto): Array<Pair<View, String>> {
+        return talksRecyclerView.findViewHolderForItemId(speakerTalkDto.id)
+                ?.itemView
+                ?.run {
+                    val talkCard = findViewById<View>(R.id.talkCard)
+                    arrayOf(Pair(talkCard, talkCard.transitionName))
+                } ?: emptyArray()
     }
 
     override fun onDestroy() {

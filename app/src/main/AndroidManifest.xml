@@ -45,7 +45,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".app.events.TalkDetailsActivity"
+            android:name=".app.events.EventTalkDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar.Dialog.TranslucentStatusBar"/>
+        <activity
+            android:name=".app.events.SpeakerTalkDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar.Dialog.TranslucentStatusBar"/>
         <activity
             android:name=".app.photos.PhotosActivity"

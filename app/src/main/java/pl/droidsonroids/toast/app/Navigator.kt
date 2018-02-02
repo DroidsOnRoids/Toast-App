@@ -13,10 +13,11 @@ import android.widget.Toast
 import com.facebook.login.LoginManager
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
-import pl.droidsonroids.toast.app.events.TalkDetailsActivity
+import pl.droidsonroids.toast.app.events.EventTalkDetailsActivity
 import pl.droidsonroids.toast.app.photos.PhotosActivity
 import pl.droidsonroids.toast.app.photos.PhotosViewerActivity
 import pl.droidsonroids.toast.app.speakers.SpeakerDetailsActivity
+import pl.droidsonroids.toast.app.speakers.SpeakerTalkDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
 import pl.droidsonroids.toast.app.utils.extensions.copyTextToClipboard
 import pl.droidsonroids.toast.app.utils.extensions.disableActivityTransitionAnimations
@@ -89,9 +90,15 @@ class Navigator @Inject constructor(private val loginManager: LoginManager) {
         activity.startActivity(intent, options)
     }
 
-    fun showTalkDetailsWithSharedAnimation(activity: AppCompatActivity, navigationRequest: NavigationRequest.EventTalkDetails, sharedViews: Array<Pair<View, String>>) {
+    fun showEventTalkDetailsWithSharedAnimation(activity: AppCompatActivity, navigationRequest: NavigationRequest.EventTalkDetails, sharedViews: Array<Pair<View, String>>) {
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, *sharedViews).toBundle()
-        val intent = TalkDetailsActivity.createIntent(activity, navigationRequest)
+        val intent = EventTalkDetailsActivity.createIntent(activity, navigationRequest)
+        activity.startActivity(intent, options)
+    }
+
+    fun showSpeakerTalkDetailsWithSharedAnimation(activity: AppCompatActivity, navigationRequest: NavigationRequest.SpeakerTalkDetails, sharedViews: Array<Pair<View, String>>) {
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, *sharedViews).toBundle()
+        val intent = SpeakerTalkDetailsActivity.createIntent(activity, navigationRequest)
         activity.startActivity(intent, options)
     }
 
