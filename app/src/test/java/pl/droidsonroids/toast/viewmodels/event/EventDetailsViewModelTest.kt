@@ -15,7 +15,7 @@ import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.event.EventsRepository
-import pl.droidsonroids.toast.testApiTalk
+import pl.droidsonroids.toast.testApiEventTalk
 import pl.droidsonroids.toast.testEventDetails
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
@@ -102,7 +102,7 @@ class EventDetailsViewModelTest : RxTestBase() {
     }
 
     private fun assertEventSpeakers() {
-        with(testApiTalk) {
+        with(testApiEventTalk) {
             eventDetailsViewModel.eventSpeakersSubject
                     .flatMap { it.toObservable() }
                     .test()

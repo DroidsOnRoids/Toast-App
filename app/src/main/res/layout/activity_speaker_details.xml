@@ -2,7 +2,8 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".app.speakers.SpeakerDetailsActivity">
 
     <data>
 
@@ -11,180 +12,219 @@
             type="pl.droidsonroids.toast.viewmodels.speaker.SpeakerDetailsViewModel"/>
     </data>
 
-    <ScrollView
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/paleGrayBackground">
+        android:layout_height="match_parent">
 
-        <android.support.constraint.ConstraintLayout
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".app.speakers.SpeakerDetailsActivity">
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@color/colorPrimary"
-                app:layout_constraintBottom_toBottomOf="@+id/headerDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@color/white"
-                app:layout_constraintBottom_toTopOf="@+id/bioDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/headerDivider"
-                />
+            android:theme="@style/AppTheme.AppBarOverlay">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:layout_constraintBottom_toTopOf="@+id/avatarLayout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed"
                 app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
-            <FrameLayout
-                android:id="@+id/avatarLayout"
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/speakerName"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar">
+                android:layout_height="wrap_content">
 
-                <include
-                    android:id="@+id/avatarBorderLayout"
-                    layout="@layout/layout_avatar_image_borders"
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@color/colorPrimary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <FrameLayout
+                    android:id="@+id/avatarLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@+id/speakerName"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <include
+                        android:id="@+id/avatarBorderLayout"
+                        layout="@layout/layout_avatar_image_borders"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"/>
+
+                    <ImageView
+                        android:id="@+id/avatarImage"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center"
+                        app:roundImage="@{speakerDetailsViewModel.avatar}"
+                        tools:backgroundTint="@color/white"/>
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/speakerName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"/>
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center"
+                    android:letterSpacing="0.06"
+                    android:lineSpacingExtra="6sp"
+                    android:text="@{speakerDetailsViewModel.name}"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toTopOf="@+id/speakerJob"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/avatarLayout"
+                    tools:text="Paulina Szklarska"
+                    />
 
-                <ImageView
-                    android:id="@+id/avatarImage"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                <TextView
+                    android:id="@+id/speakerJob"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center"
+                    android:letterSpacing="0.06"
+                    android:lineSpacingExtra="6sp"
+                    android:text="@{speakerDetailsViewModel.job}"
+                    android:textColor="@color/darkGreen"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/speakerName"
+                    tools:text="Android Developer"/>
+
+            </android.support.constraint.ConstraintLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@color/white"
+                        app:layout_constraintBottom_toTopOf="@+id/bioDivider"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/headerDivider"/>
+
+                    <include
+                        android:id="@+id/linksBarLayout"
+                        layout="@layout/layout_links_bar"
+                        android:layout_width="0dp"
+                        android:layout_height="54dp"
+                        app:layout_constraintBottom_toTopOf="@+id/headerDivider"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_chainStyle="packed"
+                        app:speakerDetailsViewModel="@{speakerDetailsViewModel}"/>
+
+                    <View
+                        android:id="@+id/headerDivider"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/paleGray"
+                        app:layout_constraintBottom_toTopOf="@+id/aboutBio"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linksBarLayout"
+                        app:layout_constraintVertical_chainStyle="packed"/>
+
+                    <TextView
+                        android:id="@+id/aboutBio"
+                        style="@style/LectureTitleStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/margin_large"
+                        android:layout_marginStart="@dimen/margin_large"
+                        android:layout_marginTop="@dimen/margin_large"
+                        app:about="@{speakerDetailsViewModel.name}"
+                        app:layout_constraintBottom_toTopOf="@+id/bio"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/headerDivider"
+                        tools:text="@string/about"/>
+
+                    <TextView
+                        android:id="@+id/bio"
+                        style="@style/SpeakerDescription"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_large"
+                        android:layout_marginEnd="@dimen/margin_large"
+                        android:layout_marginStart="@dimen/margin_large"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:text="@{speakerDetailsViewModel.bio}"
+                        app:layout_constraintBottom_toTopOf="@+id/bioDivider"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/aboutBio"/>
+
+                    <View
+                        android:id="@+id/bioDivider"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/paleGray"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/bio"/>
+
+                </android.support.constraint.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/talksListHeaderText"
+                    style="@style/LectureTitleStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    app:roundImage="@{speakerDetailsViewModel.avatar}"
-                    tools:backgroundTint="@color/white"/>
-            </FrameLayout>
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:layout_marginEnd="@dimen/margin_large"
+                    android:layout_marginStart="@dimen/margin_large"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:text="@string/participated_in"
+                    android:textAllCaps="true"/>
 
-            <TextView
-                android:id="@+id/speakerName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_large"
-                android:fontFamily="@font/roboto_medium"
-                android:gravity="center"
-                android:letterSpacing="0.06"
-                android:lineSpacingExtra="6sp"
-                android:text="@{speakerDetailsViewModel.name}"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@+id/speakerJob"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/avatarLayout"
-                tools:text="Paulina Szklarska"
-                />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/talksRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:paddingBottom="@dimen/margin_small"
+                    android:paddingEnd="@dimen/margin_medium"
+                    android:paddingStart="@dimen/margin_medium"
+                    android:paddingTop="@dimen/margin_small"/>
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/speakerJob"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_large"
-                android:layout_marginTop="@dimen/margin_small"
-                android:fontFamily="@font/roboto_medium"
-                android:gravity="center"
-                android:letterSpacing="0.06"
-                android:lineSpacingExtra="6sp"
-                android:text="@{speakerDetailsViewModel.job}"
-                android:textColor="@color/darkGreen"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toTopOf="@+id/linksBarLayout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/speakerName"
-                tools:text="Android Developer"/>
+        </android.support.v4.widget.NestedScrollView>
 
-            <include
-                android:id="@+id/linksBarLayout"
-                layout="@layout/layout_links_bar"
-                android:layout_width="0dp"
-                android:layout_height="54dp"
-                app:layout_constraintBottom_toTopOf="@+id/headerDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/speakerJob"
-                app:speakerDetailsViewModel="@{speakerDetailsViewModel}"
-                />
+        <include
+            android:id="@+id/loadingLayout"
+            layout="@layout/layout_loading"
+            app:loadingViewModel="@{speakerDetailsViewModel}"
+            tools:visibility="gone"/>
+    </android.support.design.widget.CoordinatorLayout>
 
-            <View
-                android:id="@+id/headerDivider"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:background="@color/paleGray"
-                app:layout_constraintBottom_toTopOf="@+id/aboutBio"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linksBarLayout"/>
-
-            <TextView
-                android:id="@+id/aboutBio"
-                style="@style/LectureTitleStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_large"
-                android:layout_marginStart="@dimen/margin_large"
-                android:layout_marginTop="@dimen/margin_large"
-                app:about="@{speakerDetailsViewModel.name}"
-                app:layout_constraintBottom_toTopOf="@+id/bio"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/headerDivider"
-                tools:text="@string/about"
-                />
-
-            <TextView
-                android:id="@+id/bio"
-                style="@style/SpeakerDescription"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_large"
-                android:layout_marginEnd="@dimen/margin_large"
-                android:layout_marginStart="@dimen/margin_large"
-                android:layout_marginTop="@dimen/margin_medium"
-                android:text="@{speakerDetailsViewModel.bio}"
-                app:layout_constraintBottom_toTopOf="@+id/bioDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/aboutBio"/>
-
-            <View
-                android:id="@+id/bioDivider"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:background="@color/paleGray"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bio"/>
-
-            <include
-                android:id="@+id/loadingLayout"
-                layout="@layout/layout_loading"
-                app:loadingViewModel="@{speakerDetailsViewModel}"
-                tools:visibility="gone"/>
-
-        </android.support.constraint.ConstraintLayout>
-    </ScrollView>
 </layout>
