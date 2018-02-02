@@ -165,7 +165,7 @@ fun setLinkImageButtonEnabledWithColor(imageButton: ImageButton, link: String?) 
         imageButton.id == R.id.githubImage -> imageButton.setImageColor(R.color.black)
         imageButton.id == R.id.emailImage -> imageButton.setImageColor(R.color.redGmail)
         imageButton.id == R.id.twitterImage -> imageButton.setImageColor(R.color.blueTwitter)
-        else -> imageButton.setImageColor(R.color.darkOrange)
+        else -> imageButton.setImageColor(R.color.colorPrimary)
     }
 }
 
