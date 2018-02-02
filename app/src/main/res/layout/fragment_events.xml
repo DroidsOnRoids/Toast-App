@@ -2,7 +2,8 @@
 
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -33,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.constraint.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:descendantFocusability="blocksDescendants"
@@ -42,6 +43,11 @@
                 <include
                     android:id="@+id/upcomingEventCard"
                     layout="@layout/layout_card_upcoming_event"
+                    app:upcomingEvent="@{eventsViewModel.upcomingEvent}"/>
+
+                <include
+                    android:id="@+id/upcomingEventActions"
+                    layout="@layout/layout_upcoming_event_actions"
                     app:upcomingEvent="@{eventsViewModel.upcomingEvent}"/>
 
                 <TextView
@@ -59,7 +65,7 @@
 
                 <FrameLayout
                     android:id="@+id/previousEventsListContainer"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -86,14 +92,15 @@
                         android:visibility="@{eventsViewModel.isPreviousEventsEmpty}"/>
                 </FrameLayout>
 
-            </android.support.constraint.ConstraintLayout>
+            </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
 
         <include
             android:id="@+id/loadingLayout"
             layout="@layout/layout_loading"
-            app:loadingViewModel="@{eventsViewModel}"/>
+            app:loadingViewModel="@{eventsViewModel}"
+            tools:visibility="gone"/>
 
     </FrameLayout>
 </layout>

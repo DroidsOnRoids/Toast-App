@@ -169,20 +169,8 @@ fun setLinkImageButtonEnabled(imageButton: ImageButton, link: String?) {
     }
 }
 
-@BindingAdapter("android:background")
-fun setColor(view: View, attendStatus: AttendStatus?) {
-    val color = when (attendStatus) {
-        AttendStatus.ATTENDING -> R.color.colorPrimary
-        AttendStatus.UNSURE -> R.color.interested
-        AttendStatus.DECLINED, null -> R.color.facebook
-    }
-    with(view) {
-        setBackgroundResource(color)
-    }
-}
-
 @BindingAdapter("android:text")
-fun setTextColor(textView: TextView, attendStatus: AttendStatus?) {
+fun setAttendText(textView: TextView, attendStatus: AttendStatus?) {
     val text = when (attendStatus) {
         AttendStatus.ATTENDING -> R.string.attending
         AttendStatus.UNSURE -> R.string.interested_in

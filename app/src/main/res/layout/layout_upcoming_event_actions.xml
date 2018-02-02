@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="upcomingEvent"
+            type="pl.droidsonroids.toast.viewmodels.event.UpcomingEventViewModel"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/margin_small"
+        android:paddingStart="@dimen/margin_tiny"
+        android:paddingEnd="@dimen/margin_tiny"
+        android:orientation="horizontal"
+        android:clipToPadding="false">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/attendButton"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="@dimen/margin_tiny"
+            android:layout_marginStart="@dimen/margin_tiny"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:onClick="@{() -> upcomingEvent.onAttendClick()}"
+            app:cardBackgroundColor="@color/facebook"
+            app:cardCornerRadius="3dp">
+
+            <TextView
+                style="@style/GreenButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="54dp"
+                android:layout_gravity="center"
+                android:drawablePadding="@dimen/margin_small"
+                android:drawableStart="@drawable/ic_facebook"
+                android:gravity="center"
+                android:text="@{upcomingEvent.attendStatus, default=ATTEND}"
+                android:textAllCaps="true"/>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/eventPhotosButton"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="@dimen/margin_tiny"
+            android:layout_marginStart="@dimen/margin_tiny"
+            android:layout_weight="1"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:onClick="@{() -> upcomingEvent.onPhotosClick()}"
+            android:orientation="horizontal"
+            android:visibility="@{upcomingEvent.photosAvailable}"
+            app:cardBackgroundColor="@color/colorPrimary"
+            app:cardCornerRadius="3dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/upcomingEventDateDivider">
+
+            <TextView
+                android:id="@+id/eventPhotosText"
+                style="@style/GreenButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="54dp"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/margin_small"
+                android:drawablePadding="@dimen/margin_small"
+                android:drawableStart="@drawable/ic_photo_camera"
+                android:gravity="center"
+                android:text="@string/see_photos"
+                android:textAllCaps="true"/>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</layout>
