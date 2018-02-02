@@ -45,20 +45,20 @@ fun ApiSpeakerTalk.toDto(): SpeakerTalkDto {
 
 fun SpeakerTalkDto.toViewModel(onReadMoreClick: (SpeakerTalkDto) -> Unit, onEventClick: (Long) -> Unit): SpeakerTalkViewModel {
     return SpeakerTalkViewModel(
-            id,
-            title,
-            description,
-            event.toViewModel(onEventClick),
-            onReadMoreClick
+            id = id,
+            title = title,
+            description = description,
+            eventItemViewModel = event.toViewModel(onEventClick),
+            action = onReadMoreClick
     )
 }
 
 fun SpeakerTalkViewModel.toDto(): SpeakerTalkDto {
     return SpeakerTalkDto(
-            id,
-            title,
-            description,
-            eventItemViewModel.toDto()
+            id = id,
+            title = title,
+            description = description,
+            event = eventItemViewModel.toDto()
     )
 }
 
