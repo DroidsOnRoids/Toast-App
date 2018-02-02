@@ -89,95 +89,96 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                tools:context=".app.speakers.SpeakerDetailsActivity">
 
-                <include
-                    android:id="@+id/linksBarLayout"
-                    layout="@layout/layout_links_bar"
-                    android:layout_width="0dp"
-                    android:layout_height="54dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:speakerDetailsViewModel="@{speakerDetailsViewModel}"
-                    />
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    tools:context=".app.speakers.SpeakerDetailsActivity">
 
-                <View
-                    android:id="@+id/headerDivider"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:background="@color/paleGray"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linksBarLayout"/>
+                    <include
+                        android:id="@+id/linksBarLayout"
+                        layout="@layout/layout_links_bar"
+                        android:layout_width="0dp"
+                        android:layout_height="54dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:speakerDetailsViewModel="@{speakerDetailsViewModel}"
+                        />
+
+                    <View
+                        android:id="@+id/headerDivider"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/paleGray"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linksBarLayout"/>
+
+                    <TextView
+                        android:id="@+id/aboutBio"
+                        style="@style/LectureTitleStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="@dimen/margin_large"
+                        android:paddingStart="@dimen/margin_large"
+                        android:paddingTop="@dimen/margin_large"
+                        app:about="@{speakerDetailsViewModel.name}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/headerDivider"
+                        tools:text="@string/about"
+                        />
+
+                    <TextView
+                        android:id="@+id/bio"
+                        style="@style/SpeakerDescription"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/margin_large"
+                        android:paddingEnd="@dimen/margin_large"
+                        android:paddingStart="@dimen/margin_large"
+                        android:paddingTop="@dimen/margin_medium"
+                        android:text="@{speakerDetailsViewModel.bio}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/aboutBio"/>
+
+                    <View
+                        android:id="@+id/bioDivider"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/paleGray"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/bio"/>
+
+                </android.support.constraint.ConstraintLayout>
 
                 <TextView
-                    android:id="@+id/aboutBio"
+                    android:id="@+id/talksListHeaderText"
                     style="@style/LectureTitleStyle"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingEnd="@dimen/margin_large"
-                    android:paddingStart="@dimen/margin_large"
-                    android:paddingTop="@dimen/margin_large"
-                    app:about="@{speakerDetailsViewModel.name}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/headerDivider"
-                    tools:text="@string/about"
-                    />
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:layout_marginEnd="@dimen/margin_large"
+                    android:layout_marginStart="@dimen/margin_large"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:text="@string/participated_in"
+                    android:textAllCaps="true"/>
 
-                <TextView
-                    android:id="@+id/bio"
-                    style="@style/SpeakerDescription"
-                    android:layout_width="0dp"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/talksRecyclerView"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/margin_large"
-                    android:paddingEnd="@dimen/margin_large"
-                    android:paddingStart="@dimen/margin_large"
-                    android:paddingTop="@dimen/margin_medium"
-                    android:text="@{speakerDetailsViewModel.bio}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/aboutBio"/>
-
-                <View
-                    android:id="@+id/bioDivider"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:background="@color/paleGray"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/bio"/>
-
-            </android.support.constraint.ConstraintLayout>
-
-            <TextView
-            android:id="@+id/talksListHeaderText"
-            style="@style/LectureTitleStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_large"
-            android:layout_marginStart="@dimen/margin_large"
-            android:layout_marginTop="@dimen/margin_large"
-            android:text="@string/participated_in"
-            android:textAllCaps="true"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/talksRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:paddingBottom="@dimen/margin_small"
-                android:paddingEnd="@dimen/margin_medium"
-                android:paddingStart="@dimen/margin_medium"
-                android:paddingTop="@dimen/margin_small"/>
-        </LinearLayout>
+                    android:clipToPadding="false"
+                    android:paddingBottom="@dimen/margin_small"
+                    android:paddingEnd="@dimen/margin_medium"
+                    android:paddingStart="@dimen/margin_medium"
+                    android:paddingTop="@dimen/margin_small"/>
+            </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
 
         <View
@@ -245,11 +246,11 @@
             app:layout_behavior="pl.droidsonroids.toast.app.speakers.SpeakerHeaderBehavior"
             tools:text="Paulina Szklarska"/>
 
-                <include
-                    android:id="@+id/loadingLayout"
-                    layout="@layout/layout_loading"
-                    app:loadingViewModel="@{speakerDetailsViewModel}"
-                    tools:visibility="gone"/>
+        <include
+            android:id="@+id/loadingLayout"
+            layout="@layout/layout_loading"
+            app:loadingViewModel="@{speakerDetailsViewModel}"
+            tools:visibility="gone"/>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

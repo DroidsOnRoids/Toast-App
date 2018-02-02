@@ -8,8 +8,6 @@ import android.support.design.widget.AppBarLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
 import android.view.View
-import io.reactivex.disposables.Disposables
-import kotlinx.android.synthetic.main.activity_speaker_details.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
@@ -71,7 +69,9 @@ class SpeakerDetailsActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListe
     }
 
     private fun setToolbarContentVisibility(verticalOffset: Int) {
-        if (abs(verticalOffset) == abs(appBar.height - toolbar.height)) {
+        val isToolbarCollapsed = abs(verticalOffset) == abs(appBar.height - toolbar.height)
+
+        if (isToolbarCollapsed) {
             toolbarAvatarImage.visibility = View.VISIBLE
             toolbarSpeakerName.visibility = View.VISIBLE
         } else {
