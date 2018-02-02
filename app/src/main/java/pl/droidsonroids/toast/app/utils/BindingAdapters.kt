@@ -6,6 +6,8 @@ package pl.droidsonroids.toast.app.utils
 import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.support.v4.content.ContextCompat
+import android.support.v7.widget.CardView
 import android.text.format.DateFormat
 import android.view.View
 import android.widget.ImageButton
@@ -169,14 +171,20 @@ fun setLinkImageButtonEnabled(imageButton: ImageButton, link: String?) {
     }
 }
 
-@BindingAdapter("android:text")
-fun setAttendText(textView: TextView, attendStatus: AttendStatus?) {
+@BindingAdapter("isPastEvent", "android:text")
+fun setAttendText(textView: TextView, isPastEvent: Boolean, attendStatus: AttendStatus?) {
     val text = when (attendStatus) {
-        AttendStatus.ATTENDING -> R.string.attending
+        AttendStatus.ATTENDING -> if (isPastEvent) R.string.attended else R.string.attending
         AttendStatus.UNSURE -> R.string.interested_in
         AttendStatus.DECLINED, null -> R.string.attend
     }
-    with(textView) {
-        setText(text)
+    textView.setText(text)
+}
+
+@BindingAdapter("android:foreground")
+fun setForeground(cardView: CardView, isEnabled: Boolean) {
+    val color = if (isEnabled) R.color.whiteAlpha60 else R.drawable.black_ripple
+    with(cardView) {
+        foreground = ContextCompat.getDrawable(context, color)
     }
 }

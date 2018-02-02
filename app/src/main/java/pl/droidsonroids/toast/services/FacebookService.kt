@@ -9,8 +9,8 @@ import retrofit2.http.Query
 
 interface FacebookService {
     @GET("{eventId}/attending?field=rsvp_status")
-    fun getEventAttendingState(@Header("Authorization") token: String, @Path("eventId") eventId: String, @Query("userId") userId: String): Single<FacebookAttendResponse>
+    fun getEventAttendingState(@Header("Authorization") token: String, @Path("eventId") eventId: String, @Query("user") userId: String): Single<FacebookAttendResponse>
 
     @GET("{eventId}/interested?field=rsvp_status")
-    fun getEventInterestedState(@Header("Authorization") token: String, @Path("eventId") eventId: String, @Query("userId") userId: String): Single<FacebookAttendResponse>
+    fun getEventInterestedState(@Header("Authorization") token: String, @Path("eventId") eventId: String, @Query("user") userId: String): Single<FacebookAttendResponse>
 }

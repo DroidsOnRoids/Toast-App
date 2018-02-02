@@ -13,11 +13,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/margin_small"
-        android:paddingStart="@dimen/margin_tiny"
-        android:paddingEnd="@dimen/margin_tiny"
+        android:clipToPadding="false"
         android:orientation="horizontal"
-        android:clipToPadding="false">
+        android:paddingBottom="@dimen/margin_small"
+        android:paddingEnd="@dimen/margin_tiny"
+        android:paddingStart="@dimen/margin_tiny">
 
         <android.support.v7.widget.CardView
             android:id="@+id/attendButton"
@@ -28,7 +28,7 @@
             android:layout_weight="1"
             android:clickable="true"
             android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"
+            android:foreground="@{upcomingEvent.isPastEvent}"
             android:onClick="@{() -> upcomingEvent.onAttendClick()}"
             app:cardBackgroundColor="@color/facebook"
             app:cardCornerRadius="3dp">
@@ -41,8 +41,10 @@
                 android:drawablePadding="@dimen/margin_small"
                 android:drawableStart="@drawable/ic_facebook"
                 android:gravity="center"
+                android:maxLines="1"
                 android:text="@{upcomingEvent.attendStatus, default=ATTEND}"
-                android:textAllCaps="true"/>
+                android:textAllCaps="true"
+                app:isPastEvent="@{upcomingEvent.isPastEvent}"/>
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
@@ -52,8 +54,9 @@
             android:layout_marginEnd="@dimen/margin_tiny"
             android:layout_marginStart="@dimen/margin_tiny"
             android:layout_weight="1"
-            android:foreground="?attr/selectableItemBackground"
+            android:foreground="@drawable/black_ripple"
             android:gravity="center"
+            android:maxLines="1"
             android:onClick="@{() -> upcomingEvent.onPhotosClick()}"
             android:orientation="horizontal"
             android:visibility="@{upcomingEvent.photosAvailable}"

@@ -60,4 +60,5 @@
     <string name="log_out">Log out</string>
     <string name="attending">Attending</string>
     <string name="interested_in">Interested in</string>
+    <string name="attended">Attended</string>
 </resources>

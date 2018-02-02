@@ -24,6 +24,8 @@ data class UpcomingEventViewModel(
 ) {
 
     val photosAvailable = ObservableField(photos.isNotEmpty())
+    // TODO: 02/02/2018 Change to full day diff
+    val isPastEvent get() = date < Date()
 
     fun onEventClick() {
         eventClickCallback(id)

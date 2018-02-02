@@ -63,7 +63,7 @@ class EventsViewModel @Inject constructor(
                     Single.zip(
                             mapToSingleEventItemViewModelsPage(previousEventsPage),
                             facebookRepository.getEventAttendState(upcomingEvent.facebookId),
-                            BiFunction<Page<State.Item<EventItemViewModel>>, AttendStatus, Pair<UpcomingEventViewModel, Page<State.Item<EventItemViewModel>>>> { previousEvents, attendStatus ->
+                            ZipBiFunction { previousEvents, attendStatus ->
                                 createUpcomingEventViewModel(upcomingEvent, attendStatus) to previousEvents
                             }
                     ).toMaybe()
@@ -197,4 +197,6 @@ class EventsViewModel @Inject constructor(
     }
 
 }
+
+typealias ZipBiFunction = BiFunction<Page<State.Item<EventItemViewModel>>, AttendStatus, Pair<UpcomingEventViewModel, Page<State.Item<EventItemViewModel>>>>
 
