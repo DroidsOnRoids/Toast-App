@@ -33,6 +33,11 @@ abstract class BaseRobot {
                 .check(matches(isDisplayed()))
         return this
     }
+    fun checkIfElementWithTextIsDisplayed(text: String): BaseRobot {
+        onView(withText(text))
+                .check(matches(isDisplayed()))
+        return this
+    }
 
     fun checkIfElementWithIdIsDisplayedInDialog(id: Int): BaseRobot {
         onView(withId(id))
@@ -46,6 +51,13 @@ abstract class BaseRobot {
                 .check(matches(isEnabled()))
         return this
     }
+
+    fun checkIfElementWithTextIsClickable(text: String): BaseRobot {
+        onView(withText(text))
+                .check(matches(isEnabled()))
+        return this
+    }
+
 
     fun checkIfTextIsCorrect(text: String, id: Int): BaseRobot {
         onView(withId(id))
@@ -73,6 +85,12 @@ abstract class BaseRobot {
 
     fun performClickOnElementWithId(id: Int): BaseRobot {
         onView(withId(id))
+                .perform(click())
+        return this
+    }
+
+    fun performClickOnElementWithText(string: String): BaseRobot {
+        onView(withText(string))
                 .perform(click())
         return this
     }
