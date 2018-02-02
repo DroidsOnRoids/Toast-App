@@ -29,7 +29,7 @@
             android:padding="@dimen/margin_large"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_github"
-            app:setLinkEnabled="@{speakerDetailsViewModel.github}"
+            app:linkEnabled="@{speakerDetailsViewModel.github}"
             />
 
         <ImageButton
@@ -43,7 +43,7 @@
             android:padding="@dimen/margin_large"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_www"
-            app:setLinkEnabled="@{speakerDetailsViewModel.website}"/>
+            app:linkEnabled="@{speakerDetailsViewModel.website}"/>
 
         <ImageButton
             android:id="@+id/twitterImage"
@@ -56,7 +56,7 @@
             android:padding="@dimen/margin_large"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_twitter"
-            app:setLinkEnabled="@{speakerDetailsViewModel.twitter}"/>
+            app:linkEnabled="@{speakerDetailsViewModel.twitter}"/>
 
         <ImageButton
             android:id="@+id/emailImage"
@@ -69,7 +69,8 @@
             android:padding="@dimen/margin_large"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_email"
-            app:setLinkEnabled="@{speakerDetailsViewModel.email}"/>
+            app:linkEnabled="@{speakerDetailsViewModel.email}"
+            />
 
     </LinearLayout>
 </layout>

@@ -157,13 +157,15 @@ fun setAboutPrefix(textView: TextView, name: String) {
     textView.text = textView.context.getString(R.string.about, name.firstWord())
 }
 
-@BindingAdapter("setLinkEnabled")
-fun setLinkImageButtonEnabled(imageButton: ImageButton, link: String?) {
-    if (link.isNullOrEmpty()) {
-        imageButton.setImageColor(R.color.disabledGray)
-        imageButton.isEnabled = false
-    } else {
-        imageButton.setImageColor(R.color.colorPrimary)
-        imageButton.isEnabled = true
+@BindingAdapter(value = ["linkEnabled"], requireAll = false)
+fun setLinkImageButtonEnabledWithColor(imageButton: ImageButton, link: String?) {
+    imageButton.isEnabled = !link.isNullOrEmpty()
+    when {
+        imageButton.isEnabled.not() -> imageButton.setImageColor(R.color.disabledGray)
+        imageButton.id == R.id.githubImage -> imageButton.setImageColor(R.color.black)
+        imageButton.id == R.id.emailImage -> imageButton.setImageColor(R.color.redGmail)
+        imageButton.id == R.id.twitterImage -> imageButton.setImageColor(R.color.blueTwitter)
+        else -> imageButton.setImageColor(R.color.darkOrange)
     }
 }
+

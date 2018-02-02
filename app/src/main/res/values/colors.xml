@@ -24,5 +24,8 @@
     <color name="transparent">#00000000</color>
     <color name="transparentWhite">#00FFFFFF</color>
     <color name="lightGreen">#BCEEDB</color>
-    <color name="photoButton">#0cc783</color>
+    <color name="photoButton">#0CC783</color>
+    <color name="blueTwitter">#1DA1F2</color>
+    <color name="darkOrange">#D58936</color>
+    <color name="redGmail">#C71610</color>
 </resources>
