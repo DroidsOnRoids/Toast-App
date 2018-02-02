@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_event_details.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
-import pl.droidsonroids.toast.data.dto.event.TalkDto
+import pl.droidsonroids.toast.data.dto.event.EventTalkDto
 import pl.droidsonroids.toast.databinding.ActivityEventDetailsBinding
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.event.EventDetailsViewModel
@@ -94,14 +94,14 @@ class EventDetailsActivity : BaseActivity() {
     }
 
     private fun handleNavigationRequest(it: NavigationRequest) {
-        if (it is NavigationRequest.TalkDetails) {
-            navigator.showTalkDetailsWithSharedAnimation(this, it, getSharedViews(it.talkDto))
+        if (it is NavigationRequest.EventTalkDetails) {
+            navigator.showTalkDetailsWithSharedAnimation(this, it, getSharedViews(it.eventTalkDto))
         } else {
             navigator.dispatch(this, it)
         }
     }
 
-    private fun getSharedViews(it: TalkDto): Array<Pair<View, String>> {
+    private fun getSharedViews(it: EventTalkDto): Array<Pair<View, String>> {
         return eventSpeakersRecyclerView.findViewHolderForItemId(it.id)
                 ?.itemView
                 ?.run {

@@ -17,5 +17,6 @@ data class SpeakerDetailsDto(
         val github: String?,
         val email: String?,
         val website: String?,
-        val twitter: String?
+        val twitter: String?,
+        val talks: List<SpeakerTalkDto>
 ) : Parcelable

@@ -5,12 +5,18 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
+import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
 import android.view.View
 import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.activity_speaker_details.*
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.synthetic.main.activity_speaker_details.*
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
+import pl.droidsonroids.toast.app.events.HorizontalSnapHelper
 import pl.droidsonroids.toast.databinding.ActivitySpeakerDetailsBinding
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
@@ -33,8 +39,6 @@ class SpeakerDetailsActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListe
     @Inject
     lateinit var navigator: Navigator
 
-    private var navigationDisposable = Disposables.disposed()
-
     private val speakerDetailsViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory)
                 .get(speakerId.toString(), SpeakerDetailsViewModel::class.java)
@@ -44,13 +48,15 @@ class SpeakerDetailsActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListe
         intent.getLongExtra(SPEAKER_ID, Constants.NO_ID)
     }
 
+    private val compositeDisposable = CompositeDisposable()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val speakerDetailsBinding = ActivitySpeakerDetailsBinding.inflate(layoutInflater)
         setContentView(speakerDetailsBinding.root)
         setupViewModel(speakerDetailsBinding)
         setupToolbar()
-        setupViewModel()
+        setupRecyclerView()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -75,7 +81,10 @@ class SpeakerDetailsActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListe
     }
 
     private fun setupViewModel(speakerDetailsBinding: ActivitySpeakerDetailsBinding) {
+        speakerDetailsViewModel.init(speakerId)
         speakerDetailsBinding.speakerDetailsViewModel = speakerDetailsViewModel
+        compositeDisposable += speakerDetailsViewModel.navigationSubject
+                .subscribe { navigator.dispatch(activity = this, navigationRequest = it) }
     }
 
     private fun setupToolbar() {
@@ -84,17 +93,25 @@ class SpeakerDetailsActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListe
         appBar.addOnOffsetChangedListener(this)
     }
 
-    private fun setupViewModel() {
-        speakerDetailsViewModel.init(speakerId)
-        navigationDisposable = speakerDetailsViewModel.navigationSubject
-                .subscribe {
-                    navigator.dispatch(activity = this, navigationRequest = it)
-                }
+    private fun setupRecyclerView() {
+        with(talksRecyclerView) {
+            val talksAdapter = SpeakerTalksAdapter()
+            adapter = talksAdapter
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            HorizontalSnapHelper(layoutManager, snapToLast = true).attachToRecyclerView(this)
+
+            subscribeToTalksChanges(talksAdapter)
+        }
+    }
+
+    private fun subscribeToTalksChanges(talksAdapter: SpeakerTalksAdapter) {
+        compositeDisposable += speakerDetailsViewModel.talksSubject
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { talksAdapter.setData(it) }
     }
 
     override fun onDestroy() {
-        navigationDisposable.dispose()
+        compositeDisposable.dispose()
         super.onDestroy()
     }
-
 }

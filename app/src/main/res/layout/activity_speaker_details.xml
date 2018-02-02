@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".app.speakers.SpeakerDetailsActivity">
 
     <data>
 
@@ -11,10 +13,8 @@
     </data>
 
     <android.support.design.widget.CoordinatorLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".app.speakers.SpeakerDetailsActivity">
+        android:layout_height="match_parent">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appBar"
@@ -85,6 +85,10 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -149,13 +153,31 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/bio"/>
 
-                <include
-                    android:id="@+id/loadingLayout"
-                    layout="@layout/layout_loading"
-                    app:loadingViewModel="@{speakerDetailsViewModel}"
-                    tools:visibility="gone"/>
-
             </android.support.constraint.ConstraintLayout>
+
+            <TextView
+            android:id="@+id/talksListHeaderText"
+            style="@style/LectureTitleStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginStart="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_large"
+            android:text="@string/participated_in"
+            android:textAllCaps="true"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/talksRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingBottom="@dimen/margin_small"
+                android:paddingEnd="@dimen/margin_medium"
+                android:paddingStart="@dimen/margin_medium"
+                android:paddingTop="@dimen/margin_small"/>
+        </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
 
         <View
@@ -222,6 +244,12 @@
             app:finalYPosition="@dimen/margin_large"
             app:layout_behavior="pl.droidsonroids.toast.app.speakers.SpeakerHeaderBehavior"
             tools:text="Paulina Szklarska"/>
+
+                <include
+                    android:id="@+id/loadingLayout"
+                    layout="@layout/layout_loading"
+                    app:loadingViewModel="@{speakerDetailsViewModel}"
+                    tools:visibility="gone"/>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>
