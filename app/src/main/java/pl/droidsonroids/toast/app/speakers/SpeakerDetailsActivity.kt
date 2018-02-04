@@ -66,7 +66,9 @@ class SpeakerDetailsActivity : BaseActivity() {
         speakerDetailsViewModel.init(speakerId)
         speakerDetailsBinding.speakerDetailsViewModel = speakerDetailsViewModel
         compositeDisposable += speakerDetailsViewModel.navigationSubject
-                .subscribe { ::handleNavigationRequest }
+                .subscribe {
+                    handleNavigationRequest(it)
+                }
     }
 
     private fun setupRecyclerView() {

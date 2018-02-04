@@ -48,7 +48,7 @@
             android:name=".app.events.EventTalkDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar.Dialog.TranslucentStatusBar"/>
         <activity
-            android:name=".app.events.SpeakerTalkDetailsActivity"
+            android:name=".app.speakers.SpeakerTalkDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar.Dialog.TranslucentStatusBar"/>
         <activity
             android:name=".app.photos.PhotosActivity"
