@@ -13,7 +13,7 @@ class UpcomingEventViewModelTest {
     fun shouldMakePhotosAvailable() {
         upcomingEventViewModel = upcomingEventViewModelWithPhotos
 
-        assertThat(upcomingEventViewModelWithPhotos.photosAvailable.get(), equalTo(true))
+        assertThat(upcomingEventViewModelWithPhotos.photosAvailable, equalTo(true))
     }
 
 
@@ -21,6 +21,6 @@ class UpcomingEventViewModelTest {
     fun shouldMakePhotosUnavailable() {
         upcomingEventViewModel = upcomingEventViewModelWithoutPhotos
 
-        assertThat(upcomingEventViewModel.photosAvailable.get(), equalTo(false))
+        assertThat(upcomingEventViewModel.photosAvailable, equalTo(false))
     }
 }

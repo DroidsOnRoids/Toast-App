@@ -12,6 +12,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
@@ -65,13 +66,16 @@ class EventsViewModel @Inject constructor(
         }
     }
 
-    private fun invalidateAttendState() {
+    fun invalidateAttendState() {
         facebookId?.let {
             facebookAttendStateDisposable.dispose()
             facebookAttendStateDisposable = facebookRepository.getEventAttendState(it)
                     .subscribeBy(
                             onSuccess = { status -> attendStatus.set(status) },
-                            onError = { Log.e(simpleClassName, "Something went wrong with refreshing attend state", it) }
+                            onError = {
+                                navigationSubject.onNext(NavigationRequest.SnackBar(R.string.facebook_update_attend_error))
+                                Log.e(simpleClassName, "Something went wrong with refreshing attend state", it)
+                            }
                     )
         }
     }
@@ -138,7 +142,10 @@ class EventsViewModel @Inject constructor(
             facebookAttendRequestDisposable = facebookRepository.setEventAttending(it)
                     .subscribeBy(
                             onComplete = { attendStatus.set(AttendStatus.ATTENDING) },
-                            onError = { Log.e(simpleClassName, "Something went wrong with attending to event", it) }
+                            onError = {
+                                navigationSubject.onNext(NavigationRequest.SnackBar(R.string.oops_no_internet_connection))
+                                Log.e(simpleClassName, "Something went wrong with attending to event", it)
+                            }
                     )
         }
     }
