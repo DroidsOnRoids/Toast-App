@@ -95,11 +95,11 @@ class SpeakerDetailsActivity : BaseActivity() {
         }
     }
 
-    private fun handleNavigationRequest(it: NavigationRequest) {
-        if (it is NavigationRequest.SpeakerTalkDetails) {
-            navigator.showSpeakerTalkDetailsWithSharedAnimation(this, it, getSharedViews(it.speakerTalkDto))
+    private fun handleNavigationRequest(request: NavigationRequest) {
+        if (request is NavigationRequest.SpeakerTalkDetails) {
+            navigator.showSpeakerTalkDetailsWithSharedAnimation(this, request, getSharedViews(request.speakerTalkDto))
         } else {
-            navigator.dispatch(this, it)
+            navigator.dispatch(this, request)
         }
     }
 

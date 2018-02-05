@@ -7,7 +7,7 @@
     <data>
 
         <variable
-            name="eventSpeakersItemViewModel"
+            name="eventSpeakerItemViewModel"
             type="pl.droidsonroids.toast.viewmodels.event.EventSpeakerItemViewModel"/>
 
         <import type="pl.droidsonroids.toast.utils.Constants.TalkTransition"/>
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_small"
         app:cardCornerRadius="3dp"
-        app:elementId="@{eventSpeakersItemViewModel.id}"
+        app:elementId="@{eventSpeakerItemViewModel.id}"
         app:transitionName="@{TalkTransition.CARD}">
 
         <LinearLayout
@@ -30,13 +30,13 @@
             <include
                 android:id="@+id/speaker"
                 layout="@layout/item_speaker"
-                app:itemViewModel="@{eventSpeakersItemViewModel.speakerItemViewModel}"/>
+                app:itemViewModel="@{eventSpeakerItemViewModel.speakerItemViewModel}"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:foreground="?attr/selectableItemBackground"
-                android:onClick="@{() -> eventSpeakersItemViewModel.onReadMore()}"
+                android:onClick="@{() -> eventSpeakerItemViewModel.onReadMore()}"
                 android:orientation="vertical">
 
                 <View
@@ -54,7 +54,7 @@
                     android:layout_marginEnd="@dimen/margin_large"
                     android:layout_marginStart="@dimen/margin_large"
                     android:layout_marginTop="@dimen/margin_large"
-                    android:text="@{eventSpeakersItemViewModel.title}"
+                    android:text="@{eventSpeakerItemViewModel.title}"
                     tools:text="Continuous delivery with ease"/>
 
                 <FrameLayout
@@ -69,7 +69,7 @@
                         android:layout_marginEnd="@dimen/margin_large"
                         android:layout_marginStart="@dimen/margin_large"
                         android:maxLines="5"
-                        android:text="@{eventSpeakersItemViewModel.description}"
+                        android:text="@{eventSpeakerItemViewModel.description}"
                         tools:text="Description"/>
 
                     <View

@@ -23,12 +23,12 @@ class SpeakerTalkDetailsViewModel @Inject constructor() : ViewModel(), Navigatin
             id.set(it.id)
             title.set(it.title)
             description.set(it.description)
-            eventItemViewModel.set(it.event.toViewModel(::onSpeakerClick))
+            eventItemViewModel.set(it.event.toViewModel(::onEventClick))
         }
     }
 
-    private fun onSpeakerClick(speakerId: Long) {
-        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId))
+    private fun onEventClick(eventId: Long) {
+        navigationSubject.onNext(NavigationRequest.EventDetails(eventId))
     }
 
     fun onReadLess() {

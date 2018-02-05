@@ -20,10 +20,12 @@
         android:fitsSystemWindows="true">
 
         <android.support.v7.widget.CardView
+            android:id="@+id/speakerTalkCard"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/margin_small"
             app:cardCornerRadius="3dp"
+            app:elementId="@{speakerTalkDetailsViewModel.id}"
             app:transitionName="@{TalkTransition.CARD}">
 
             <LinearLayout
@@ -106,16 +108,17 @@
                     </FrameLayout>
 
                     <FrameLayout
-                        android:id="@+id/readMoreButton"
+                        android:id="@+id/readLessButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:foreground="?attr/selectableItemBackground"
                         android:gravity="center"
-                        android:padding="@dimen/margin_medium">
+                        android:padding="@dimen/margin_medium"
+                        android:onClick="@{() -> speakerTalkDetailsViewModel.onReadLess()}">
 
                         <TextView
-                            android:id="@+id/readMoreText"
+                            android:id="@+id/readLessText"
                             style="@style/FacebookAttend"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -123,7 +126,7 @@
                             android:drawablePadding="@dimen/margin_small"
                             android:drawableStart="@drawable/ic_read_more"
                             android:gravity="center_vertical"
-                            android:text="@string/read_more"/>
+                            android:text="@string/read_less"/>
                     </FrameLayout>
                 </LinearLayout>
 
