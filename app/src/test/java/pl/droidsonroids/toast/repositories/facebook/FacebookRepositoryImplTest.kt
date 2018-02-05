@@ -2,6 +2,7 @@ package pl.droidsonroids.toast.repositories.facebook
 
 import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.whenever
+import io.reactivex.Completable
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
@@ -14,6 +15,7 @@ import pl.droidsonroids.toast.data.api.facebook.ApiUserAttend
 import pl.droidsonroids.toast.data.api.facebook.FacebookAttendResponse
 import pl.droidsonroids.toast.data.enums.AttendStatus
 import pl.droidsonroids.toast.services.FacebookService
+import pl.droidsonroids.toast.utils.UserNotLoggedInException
 
 class FacebookRepositoryImplTest : RxTestBase() {
     @Mock
@@ -25,7 +27,6 @@ class FacebookRepositoryImplTest : RxTestBase() {
 
     private val userId = "userId"
     private val token = "token"
-    private val bearer = "Bearer $token"
     private val eventId = "1"
 
     @Before
@@ -69,9 +70,26 @@ class FacebookRepositoryImplTest : RxTestBase() {
                 .assertValue { it == AttendStatus.DECLINED }
     }
 
+    @Test
+    fun shouldPostAttendingStateToEventSuccessfully() {
+        whenever(facebookService.postEventAttending(token, eventId)).thenReturn(Completable.complete())
+        facebookRepositoryImpl.setEventAttending(eventId)
+                .test()
+                .assertComplete()
+    }
+
+    @Test
+    fun shouldThrowErrorWhenPostAttendingStateToEvent() {
+        whenever(userManager.getUserInfo()).thenReturn(null)
+
+        facebookRepositoryImpl.setEventAttending(eventId)
+                .test()
+                .assertError(UserNotLoggedInException::class.java)
+    }
+
     private fun mockServiceResponses(attendingStatus: AttendStatus? = null, interestedStatus: AttendStatus? = null) {
-        whenever(facebookService.getEventAttendingState(eq(bearer), eq(eventId), eq(userId))).thenReturn(Single.just(createAttendResponse(attendingStatus)))
-        whenever(facebookService.getEventInterestedState(eq(bearer), eq(eventId), eq(userId))).thenReturn(Single.just(createAttendResponse(interestedStatus)))
+        whenever(facebookService.getEventAttendingState(eq(token), eq(eventId), eq(userId))).thenReturn(Single.just(createAttendResponse(attendingStatus)))
+        whenever(facebookService.getEventInterestedState(eq(token), eq(eventId), eq(userId))).thenReturn(Single.just(createAttendResponse(interestedStatus)))
     }
 
     private fun createAttendResponse(attendStatus: AttendStatus?) = FacebookAttendResponse(

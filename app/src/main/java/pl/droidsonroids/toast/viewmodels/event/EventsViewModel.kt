@@ -72,12 +72,14 @@ class EventsViewModel @Inject constructor(
             facebookAttendStateDisposable = facebookRepository.getEventAttendState(it)
                     .subscribeBy(
                             onSuccess = { status -> attendStatus.set(status) },
-                            onError = {
-                                navigationSubject.onNext(NavigationRequest.SnackBar(R.string.facebook_update_attend_error))
-                                Log.e(simpleClassName, "Something went wrong with refreshing attend state", it)
-                            }
+                            onError = (::onInvalidateAttendStateError)
                     )
         }
+    }
+
+    private fun onInvalidateAttendStateError(throwable: Throwable) {
+        navigationSubject.onNext(NavigationRequest.SnackBar(R.string.facebook_update_attend_error))
+        Log.e(simpleClassName, "Something went wrong with refreshing attend state", throwable)
     }
 
     override fun retryLoading() {
@@ -128,10 +130,8 @@ class EventsViewModel @Inject constructor(
         when {
             !hasPermissions -> navigationSubject.onNext(NavigationRequest.LogIn)
             attendStatus == AttendStatus.DECLINED -> attendOnEvent()
-            else -> {
-                facebookId?.let {
-                    navigationSubject.onNext(NavigationRequest.Website("https://www.facebook.com/events/$it"))
-                }
+            else -> facebookId?.let {
+                navigationSubject.onNext(NavigationRequest.Website("https://www.facebook.com/events/$it"))
             }
         }
     }
@@ -142,12 +142,14 @@ class EventsViewModel @Inject constructor(
             facebookAttendRequestDisposable = facebookRepository.setEventAttending(it)
                     .subscribeBy(
                             onComplete = { attendStatus.set(AttendStatus.ATTENDING) },
-                            onError = {
-                                navigationSubject.onNext(NavigationRequest.SnackBar(R.string.oops_no_internet_connection))
-                                Log.e(simpleClassName, "Something went wrong with attending to event", it)
-                            }
+                            onError = (::onSetAttendingError)
                     )
         }
+    }
+
+    private fun onSetAttendingError(throwable: Throwable) {
+        navigationSubject.onNext(NavigationRequest.SnackBar(R.string.oops_no_internet_connection))
+        Log.e(simpleClassName, "Something went wrong with attending to event", throwable)
     }
 
     fun loadNextPage() {

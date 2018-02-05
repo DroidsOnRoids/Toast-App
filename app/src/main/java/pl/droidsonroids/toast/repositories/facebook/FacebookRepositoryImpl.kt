@@ -7,6 +7,7 @@ import pl.droidsonroids.toast.app.facebook.UserManager
 import pl.droidsonroids.toast.data.api.facebook.FacebookAttendResponse
 import pl.droidsonroids.toast.data.enums.AttendStatus
 import pl.droidsonroids.toast.services.FacebookService
+import pl.droidsonroids.toast.utils.UserNotLoggedInException
 import javax.inject.Inject
 
 class FacebookRepositoryImpl @Inject constructor(private val facebookService: FacebookService, private val userManager: UserManager) : FacebookRepository {
@@ -34,5 +35,3 @@ class FacebookRepositoryImpl @Inject constructor(private val facebookService: Fa
         } ?: Completable.error(UserNotLoggedInException())
     }
 }
-
-class UserNotLoggedInException : Throwable()
