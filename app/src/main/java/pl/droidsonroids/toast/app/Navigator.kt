@@ -23,6 +23,7 @@ import pl.droidsonroids.toast.app.utils.extensions.copyTextToClipboard
 import pl.droidsonroids.toast.app.utils.extensions.disableActivityTransitionAnimations
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
+import java.lang.IllegalArgumentException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -95,7 +96,7 @@ class Navigator @Inject constructor(private val loginManager: LoginManager) {
         val intent = when (navigationRequest) {
             is NavigationRequest.EventTalkDetails -> EventTalkDetailsActivity.createIntent(activity, navigationRequest)
             is NavigationRequest.SpeakerTalkDetails -> SpeakerTalkDetailsActivity.createIntent(activity, navigationRequest)
-            else -> throw Exception()
+            else -> throw IllegalArgumentException("The $navigationRequest doesn't supported.")
         }
         activity.startActivity(intent, options)
     }
