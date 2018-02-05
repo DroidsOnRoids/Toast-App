@@ -140,6 +140,7 @@ class EventsViewModel @Inject constructor(
         facebookId?.let {
             facebookAttendRequestDisposable.dispose()
             facebookAttendRequestDisposable = facebookRepository.setEventAttending(it)
+                    .doOnComplete { facebookAttendStateDisposable.dispose() }
                     .subscribeBy(
                             onComplete = { attendStatus.set(AttendStatus.ATTENDING) },
                             onError = (::onSetAttendingError)
