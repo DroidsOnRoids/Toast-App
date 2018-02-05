@@ -77,6 +77,7 @@ class SpeakerDetailsActivity : BaseActivity() {
             adapter = talksAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             HorizontalSnapHelper(layoutManager, snapToLast = true).attachToRecyclerView(this)
+            isNestedScrollingEnabled = false
 
             subscribeToTalksChanges(talksAdapter)
         }
