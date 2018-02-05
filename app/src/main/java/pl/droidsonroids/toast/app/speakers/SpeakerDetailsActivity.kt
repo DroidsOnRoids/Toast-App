@@ -21,6 +21,7 @@ import pl.droidsonroids.toast.viewmodels.speaker.SpeakerDetailsViewModel
 import javax.inject.Inject
 
 class SpeakerDetailsActivity : BaseActivity() {
+
     companion object {
         private const val SPEAKER_ID: String = "speaker_id"
 
@@ -48,14 +49,16 @@ class SpeakerDetailsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         val speakerDetailsBinding = ActivitySpeakerDetailsBinding.inflate(layoutInflater)
         setContentView(speakerDetailsBinding.root)
-        setupToolbar()
         setupViewModel(speakerDetailsBinding)
+        setupToolbar()
         setupRecyclerView()
     }
 
-    private fun setupToolbar() {
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> consume { finish() }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun setupViewModel(speakerDetailsBinding: ActivitySpeakerDetailsBinding) {
@@ -63,6 +66,11 @@ class SpeakerDetailsActivity : BaseActivity() {
         speakerDetailsBinding.speakerDetailsViewModel = speakerDetailsViewModel
         compositeDisposable += speakerDetailsViewModel.navigationSubject
                 .subscribe { navigator.dispatch(activity = this, navigationRequest = it) }
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun setupRecyclerView() {
@@ -80,13 +88,6 @@ class SpeakerDetailsActivity : BaseActivity() {
         compositeDisposable += speakerDetailsViewModel.talksSubject
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { talksAdapter.setData(it) }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> consume { finish() }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     override fun onDestroy() {
