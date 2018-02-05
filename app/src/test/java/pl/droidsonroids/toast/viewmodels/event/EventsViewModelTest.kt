@@ -4,6 +4,7 @@ import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Maybe
 import io.reactivex.Single
+import io.reactivex.subjects.BehaviorSubject
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
@@ -137,6 +138,7 @@ class EventsViewModelTest {
     }
 
     private fun setUpWith(maybe: Maybe<SplitEvents>) {
+        whenever(loginStateWatcher.loginStateSubject).thenReturn(BehaviorSubject.create())
         whenever(eventsRepository.getEvents()).thenReturn(maybe)
         whenever(facebookRepository.getEventAttendState(any())).thenReturn(Single.just(AttendStatus.DECLINED))
         eventsViewModel = EventsViewModel(loginStateWatcher, eventsRepository, facebookRepository)

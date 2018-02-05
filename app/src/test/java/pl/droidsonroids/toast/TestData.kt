@@ -11,7 +11,6 @@ import pl.droidsonroids.toast.data.api.speaker.ApiSpeakerDetails
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.SplitEvents
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
-import pl.droidsonroids.toast.data.enums.AttendStatus
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.viewmodels.event.UpcomingEventViewModel
@@ -105,8 +104,20 @@ val upcomingEventViewModelWithPhotos = UpcomingEventViewModel(
         locationClickCallback = { _, _ -> },
         seePhotosCallback = { _, _ -> },
         eventClickCallback = { _ -> },
-        attendCallback = {},
-        attendStatus = AttendStatus.DECLINED
+        attendCallback = {}
 )
 
-val upcomingEventViewModelWithoutPhotos = upcomingEventViewModelWithPhotos.copy(photos = emptyList())
+val upcomingEventViewModelWithoutPhotos = UpcomingEventViewModel(
+        id = testEventDetails.id,
+        title = testEventDetails.title,
+        date = testEventDetails.date,
+        placeName = testEventDetails.placeName,
+        placeStreet = testEventDetails.placeStreet,
+        coverImage = testImageDto,
+        photos = listOf(),
+        coordinates = testEventDetails.placeCoordinates.toDto(),
+        locationClickCallback = { _, _ -> },
+        seePhotosCallback = { _, _ -> },
+        eventClickCallback = { _ -> },
+        attendCallback = {}
+)

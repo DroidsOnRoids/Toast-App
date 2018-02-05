@@ -8,6 +8,10 @@
         <variable
             name="upcomingEvent"
             type="pl.droidsonroids.toast.viewmodels.event.UpcomingEventViewModel"/>
+
+        <variable
+            name="attendStatus"
+            type="pl.droidsonroids.toast.data.enums.AttendStatus"/>
     </data>
 
     <LinearLayout
@@ -42,7 +46,7 @@
                 android:drawableStart="@drawable/ic_facebook"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="@{upcomingEvent.attendStatus, default=ATTEND}"
+                android:text="@{attendStatus, default=ATTEND}"
                 android:textAllCaps="true"
                 app:isPastEvent="@{upcomingEvent.isPastEvent}"/>
         </android.support.v7.widget.CardView>

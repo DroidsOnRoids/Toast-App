@@ -4,9 +4,10 @@ import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import android.util.Log
 import io.reactivex.Single
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
-import io.reactivex.functions.BiFunction
+import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.subjects.BehaviorSubject
@@ -16,7 +17,6 @@ import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
-import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
 import pl.droidsonroids.toast.data.dto.event.EventDto
 import pl.droidsonroids.toast.data.enums.AttendStatus
 import pl.droidsonroids.toast.data.enums.ParentView
@@ -42,14 +42,34 @@ class EventsViewModel @Inject constructor(
     val isPreviousEventsEmpty = ObservableField<Boolean>(true)
     val upcomingEvent = ObservableField<UpcomingEventViewModel>()
     val previousEventsSubject: BehaviorSubject<List<State<EventItemViewModel>>> = BehaviorSubject.create()
+    val attendStatus: ObservableField<AttendStatus> = ObservableField(AttendStatus.DECLINED)
 
     private var isPreviousEventsLoading: Boolean = false
     private var nextPageNumber: Int? = null
-    private var eventsDisposable: Disposable = Disposables.disposed()
+    private var compositeDisposable = CompositeDisposable()
     private val Any.simpleClassName: String get() = javaClass.simpleName
+
+    private var facebookId: String? = null
+
+    private var facebookDisposable: Disposable = Disposables.disposed()
 
     init {
         loadEvents()
+        subscribeToLoginChange()
+    }
+
+    private fun subscribeToLoginChange() {
+        compositeDisposable += loginStateSubject.subscribe {
+            invalidateAttendState()
+        }
+    }
+
+    private fun invalidateAttendState() {
+        facebookId?.let {
+            facebookDisposable.dispose()
+            facebookDisposable = facebookRepository.getEventAttendState(it)
+                    .subscribe { status -> attendStatus.set(status) }
+        }
     }
 
     override fun retryLoading() {
@@ -58,15 +78,18 @@ class EventsViewModel @Inject constructor(
 
     private fun loadEvents() {
         loadingStatus.set(LoadingStatus.PENDING)
-        eventsDisposable = eventsRepository.getEvents()
+        compositeDisposable += eventsRepository.getEvents()
                 .flatMap { (upcomingEvent, previousEventsPage) ->
-                    Single.zip(
-                            mapToSingleEventItemViewModelsPage(previousEventsPage),
-                            facebookRepository.getEventAttendState(upcomingEvent.facebookId),
-                            ZipBiFunction { previousEvents, attendStatus ->
-                                createUpcomingEventViewModel(upcomingEvent, attendStatus) to previousEvents
-                            }
-                    ).toMaybe()
+                    updateFacebookAttend(upcomingEvent.facebookId)
+                    val upcomingEventViewModel = upcomingEvent.toViewModel(
+                            onLocationClick = (::onUpcomingEventLocationClick),
+                            onEventClick = (::onUpcomingEventClick),
+                            onSeePhotosClick = (::onSeePhotosClick),
+                            onAttendClick = (::onAttendClick)
+                    )
+                    mapToSingleEventItemViewModelsPage(previousEventsPage)
+                            .map { upcomingEventViewModel to it }
+                            .toMaybe()
                 }
                 .subscribeBy(
                         onSuccess = (::onEventsLoaded),
@@ -75,14 +98,9 @@ class EventsViewModel @Inject constructor(
                 )
     }
 
-    private fun createUpcomingEventViewModel(upcomingEvent: EventDetailsDto, attendStatus: AttendStatus): UpcomingEventViewModel {
-        return upcomingEvent.toViewModel(
-                onLocationClick = (::onUpcomingEventLocationClick),
-                onSeePhotosClick = (::onSeePhotosClick),
-                onEventClick = (::onUpcomingEventClick),
-                onAttendClick = (::onAttendClick),
-                attendStatus = attendStatus
-        )
+    private fun updateFacebookAttend(facebookId: String) {
+        this.facebookId = facebookId
+        invalidateAttendState()
     }
 
     private fun onUpcomingEventLocationClick(coordinates: CoordinatesDto, placeName: String) {
@@ -98,7 +116,7 @@ class EventsViewModel @Inject constructor(
     }
 
     private fun onAttendClick() {
-        if (!isLoggedIn) {
+        if (!hasPermissions) {
             navigationSubject.onNext(NavigationRequest.LogIn)
         } else {
             //no-op
@@ -155,7 +173,7 @@ class EventsViewModel @Inject constructor(
 
     private fun loadNextPage(pageNumber: Int) {
         isPreviousEventsLoading = true
-        eventsDisposable = eventsRepository.getEventsPage(pageNumber)
+        compositeDisposable += eventsRepository.getEventsPage(pageNumber)
                 .flatMap(::mapToSingleEventItemViewModelsPage)
                 .doAfterSuccess { isPreviousEventsLoading = false }
                 .subscribeBy(
@@ -193,10 +211,8 @@ class EventsViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        eventsDisposable.dispose()
+        facebookDisposable.dispose()
+        compositeDisposable.dispose()
     }
 
 }
-
-typealias ZipBiFunction = BiFunction<Page<State.Item<EventItemViewModel>>, AttendStatus, Pair<UpcomingEventViewModel, Page<State.Item<EventItemViewModel>>>>
-

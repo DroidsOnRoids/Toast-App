@@ -9,6 +9,7 @@ import com.facebook.login.LoginResult
 import io.reactivex.subjects.BehaviorSubject
 import pl.droidsonroids.toast.data.enums.LoginState
 import pl.droidsonroids.toast.di.LoginCallbackManager
+import pl.droidsonroids.toast.utils.Constants
 import javax.inject.Inject
 
 
@@ -16,6 +17,9 @@ class FacebookLoginStateWatcher @Inject constructor(loginManager: LoginManager, 
     override val loginStateSubject: BehaviorSubject<LoginState> = BehaviorSubject.createDefault(AccessToken.getCurrentAccessToken().loginState)
 
     override val isLoggedIn: Boolean get() = loginStateSubject.value == LoginState.LOGGED_IN
+
+    override val hasPermissions: Boolean
+        get() = AccessToken.getCurrentAccessToken().hasPermissions
 
     private val tokenTracker = object : AccessTokenTracker() {
         override fun onCurrentAccessTokenChanged(oldAccessToken: AccessToken?, currentAccessToken: AccessToken?) {
@@ -38,5 +42,9 @@ class FacebookLoginStateWatcher @Inject constructor(loginManager: LoginManager, 
 
     private val AccessToken?.loginState
         get() = if (this != null) LoginState.LOGGED_IN else LoginState.LOGGED_OUT
+
+    private val AccessToken?.hasPermissions
+        get() = this?.permissions?.containsAll(Constants.Facebook.PERMISSIONS)
+                ?: false
 }
 

@@ -6,4 +6,5 @@ import pl.droidsonroids.toast.data.enums.LoginState
 interface LoginStateWatcher {
     val loginStateSubject: BehaviorSubject<LoginState>
     val isLoggedIn: Boolean
+    val hasPermissions: Boolean
 }

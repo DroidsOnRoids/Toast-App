@@ -9,7 +9,6 @@ import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
 import pl.droidsonroids.toast.data.dto.event.EventDto
 import pl.droidsonroids.toast.data.dto.event.TalkDto
-import pl.droidsonroids.toast.data.enums.AttendStatus
 import pl.droidsonroids.toast.viewmodels.event.EventItemViewModel
 import pl.droidsonroids.toast.viewmodels.event.EventSpeakerItemViewModel
 import pl.droidsonroids.toast.viewmodels.event.UpcomingEventViewModel
@@ -73,8 +72,7 @@ fun EventDetailsDto.toViewModel(
         onLocationClick: (CoordinatesDto, String) -> Unit,
         onSeePhotosClick: (Long, List<ImageDto>) -> Unit,
         onEventClick: (Long) -> Unit,
-        onAttendClick: () -> Unit,
-        attendStatus: AttendStatus
+        onAttendClick: () -> Unit
 ): UpcomingEventViewModel {
     return UpcomingEventViewModel(
             id = id,
@@ -88,8 +86,7 @@ fun EventDetailsDto.toViewModel(
             eventClickCallback = onEventClick,
             locationClickCallback = onLocationClick,
             seePhotosCallback = onSeePhotosClick,
-            attendCallback = onAttendClick,
-            attendStatus = attendStatus
+            attendCallback = onAttendClick
     )
 }
 

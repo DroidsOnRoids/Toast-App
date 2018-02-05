@@ -34,4 +34,8 @@ object Constants {
     object ClipDataLabel {
         const val EMAIL = "Email address"
     }
+
+    object Facebook {
+        val PERMISSIONS = listOf("rsvp_event")
+    }
 }

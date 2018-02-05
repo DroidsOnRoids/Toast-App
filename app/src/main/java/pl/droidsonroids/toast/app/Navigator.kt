@@ -25,8 +25,6 @@ import pl.droidsonroids.toast.utils.NavigationRequest
 import javax.inject.Inject
 import javax.inject.Singleton
 
-private val FACEBOOK_PERMISSIONS = listOf("rsvp_event")
-
 @Singleton
 class Navigator @Inject constructor(private val loginManager: LoginManager) {
 
@@ -44,7 +42,7 @@ class Navigator @Inject constructor(private val loginManager: LoginManager) {
     }
 
     private fun logIn(activity: Activity) {
-        loginManager.logInWithPublishPermissions(activity, FACEBOOK_PERMISSIONS)
+        loginManager.logInWithPublishPermissions(activity, Constants.Facebook.PERMISSIONS)
     }
 
     private fun logOut() {
