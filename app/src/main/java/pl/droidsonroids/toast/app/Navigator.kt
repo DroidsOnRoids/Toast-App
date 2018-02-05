@@ -90,15 +90,12 @@ class Navigator @Inject constructor(private val loginManager: LoginManager) {
         activity.startActivity(intent, options)
     }
 
-    fun showEventTalkDetailsWithSharedAnimation(activity: AppCompatActivity, navigationRequest: NavigationRequest.EventTalkDetails, sharedViews: Array<Pair<View, String>>) {
+    fun showActivityWithSharedAnimation(activity: AppCompatActivity, navigationRequest: NavigationRequest, sharedViews: Array<Pair<View, String>>) {
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, *sharedViews).toBundle()
-        val intent = EventTalkDetailsActivity.createIntent(activity, navigationRequest)
-        activity.startActivity(intent, options)
-    }
-
-    fun showSpeakerTalkDetailsWithSharedAnimation(activity: AppCompatActivity, navigationRequest: NavigationRequest.SpeakerTalkDetails, sharedViews: Array<Pair<View, String>>) {
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, *sharedViews).toBundle()
-        val intent = SpeakerTalkDetailsActivity.createIntent(activity, navigationRequest)
+        val intent = when (navigationRequest) {
+            is NavigationRequest.EventTalkDetails -> EventTalkDetailsActivity.createIntent(activity, navigationRequest)
+            else -> SpeakerTalkDetailsActivity.createIntent(activity, navigationRequest as NavigationRequest.SpeakerTalkDetails)
+        }
         activity.startActivity(intent, options)
     }
 

@@ -97,7 +97,7 @@ class SpeakerDetailsActivity : BaseActivity() {
 
     private fun handleNavigationRequest(request: NavigationRequest) {
         if (request is NavigationRequest.SpeakerTalkDetails) {
-            navigator.showSpeakerTalkDetailsWithSharedAnimation(this, request, getSharedViews(request.speakerTalkDto))
+            navigator.showActivityWithSharedAnimation(this, request, getSharedViews(request.speakerTalkDto))
         } else {
             navigator.dispatch(this, request)
         }
