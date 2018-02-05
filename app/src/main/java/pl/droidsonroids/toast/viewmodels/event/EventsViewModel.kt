@@ -51,7 +51,8 @@ class EventsViewModel @Inject constructor(
 
     private var facebookId: String? = null
 
-    private var facebookDisposable: Disposable = Disposables.disposed()
+    private var facebookAttendStateDisposable: Disposable = Disposables.disposed()
+    private var facebookAttendRequestDisposable: Disposable = Disposables.disposed()
 
     init {
         loadEvents()
@@ -66,9 +67,12 @@ class EventsViewModel @Inject constructor(
 
     private fun invalidateAttendState() {
         facebookId?.let {
-            facebookDisposable.dispose()
-            facebookDisposable = facebookRepository.getEventAttendState(it)
-                    .subscribe { status -> attendStatus.set(status) }
+            facebookAttendStateDisposable.dispose()
+            facebookAttendStateDisposable = facebookRepository.getEventAttendState(it)
+                    .subscribeBy(
+                            onSuccess = { status -> attendStatus.set(status) },
+                            onError = { Log.e(simpleClassName, "Something went wrong with refreshing attend state", it) }
+                    )
         }
     }
 
@@ -116,10 +120,26 @@ class EventsViewModel @Inject constructor(
     }
 
     private fun onAttendClick() {
-        if (!hasPermissions) {
-            navigationSubject.onNext(NavigationRequest.LogIn)
-        } else {
-            //no-op
+        val attendStatus = this.attendStatus.get()
+        when {
+            !hasPermissions -> navigationSubject.onNext(NavigationRequest.LogIn)
+            attendStatus == AttendStatus.DECLINED -> attendOnEvent()
+            else -> {
+                facebookId?.let {
+                    navigationSubject.onNext(NavigationRequest.Website("https://www.facebook.com/events/$it"))
+                }
+            }
+        }
+    }
+
+    private fun attendOnEvent() {
+        facebookId?.let {
+            facebookAttendRequestDisposable.dispose()
+            facebookAttendRequestDisposable = facebookRepository.setEventAttending(it)
+                    .subscribeBy(
+                            onComplete = { attendStatus.set(AttendStatus.ATTENDING) },
+                            onError = { Log.e(simpleClassName, "Something went wrong with attending to event", it) }
+                    )
         }
     }
 
@@ -211,7 +231,8 @@ class EventsViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        facebookDisposable.dispose()
+        facebookAttendRequestDisposable.dispose()
+        facebookAttendStateDisposable.dispose()
         compositeDisposable.dispose()
     }
 

@@ -6,7 +6,7 @@ import pl.droidsonroids.toast.data.UserInfo
 class FacebookUserManager : UserManager {
     override fun getUserInfo(): UserInfo? {
         return AccessToken.getCurrentAccessToken()?.run {
-            UserInfo(token, userId)
+            UserInfo("Bearer $token", userId)
         }
     }
 }
