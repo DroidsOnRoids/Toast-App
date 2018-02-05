@@ -7,7 +7,7 @@ import pl.droidsonroids.toast.databinding.ItemSpeakerTalkBinding
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakerTalkViewModel
 
 class SpeakerTalksAdapter : RecyclerView.Adapter<SpeakerTalkViewHolder>() {
-    private var speakerTalkViewModels: List<SpeakerTalkViewModel> = listOf()
+    private var speakerTalkViewModels: List<SpeakerTalkViewModel> = emptyList()
 
     init {
         setHasStableIds(true)
@@ -19,9 +19,7 @@ class SpeakerTalksAdapter : RecyclerView.Adapter<SpeakerTalkViewHolder>() {
         return SpeakerTalkViewHolder(binding)
     }
 
-    override fun getItemId(position: Int): Long {
-        return speakerTalkViewModels[position].id
-    }
+    override fun getItemId(position: Int) = speakerTalkViewModels[position].id
 
     override fun getItemCount() = speakerTalkViewModels.size
 

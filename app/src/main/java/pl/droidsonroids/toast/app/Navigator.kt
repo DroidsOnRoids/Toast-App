@@ -94,7 +94,8 @@ class Navigator @Inject constructor(private val loginManager: LoginManager) {
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, *sharedViews).toBundle()
         val intent = when (navigationRequest) {
             is NavigationRequest.EventTalkDetails -> EventTalkDetailsActivity.createIntent(activity, navigationRequest)
-            else -> SpeakerTalkDetailsActivity.createIntent(activity, navigationRequest as NavigationRequest.SpeakerTalkDetails)
+            is NavigationRequest.SpeakerTalkDetails -> SpeakerTalkDetailsActivity.createIntent(activity, navigationRequest)
+            else -> throw Exception()
         }
         activity.startActivity(intent, options)
     }

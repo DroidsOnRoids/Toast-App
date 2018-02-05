@@ -66,9 +66,15 @@ class SpeakerDetailsActivity : BaseActivity() {
         speakerDetailsViewModel.init(speakerId)
         speakerDetailsBinding.speakerDetailsViewModel = speakerDetailsViewModel
         compositeDisposable += speakerDetailsViewModel.navigationSubject
-                .subscribe {
-                    handleNavigationRequest(it)
-                }
+                .subscribe(::handleNavigationRequest)
+    }
+
+    private fun handleNavigationRequest(request: NavigationRequest) {
+        if (request is NavigationRequest.SpeakerTalkDetails) {
+            navigator.showActivityWithSharedAnimation(this, request, getSharedViews(request.speakerTalkDto))
+        } else {
+            navigator.dispatch(this, request)
+        }
     }
 
     private fun setupRecyclerView() {
@@ -77,8 +83,6 @@ class SpeakerDetailsActivity : BaseActivity() {
             adapter = talksAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             HorizontalSnapHelper(layoutManager, snapToLast = true).attachToRecyclerView(this)
-            isNestedScrollingEnabled = false
-
             subscribeToTalksChanges(talksAdapter)
         }
     }
@@ -93,14 +97,6 @@ class SpeakerDetailsActivity : BaseActivity() {
         return when (item.itemId) {
             android.R.id.home -> consume { finish() }
             else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun handleNavigationRequest(request: NavigationRequest) {
-        if (request is NavigationRequest.SpeakerTalkDetails) {
-            navigator.showActivityWithSharedAnimation(this, request, getSharedViews(request.speakerTalkDto))
-        } else {
-            navigator.dispatch(this, request)
         }
     }
 
