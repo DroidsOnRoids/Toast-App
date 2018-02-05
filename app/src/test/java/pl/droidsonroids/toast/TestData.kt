@@ -5,12 +5,15 @@ import pl.droidsonroids.toast.data.api.ApiImage
 import pl.droidsonroids.toast.data.api.event.ApiCoordinates
 import pl.droidsonroids.toast.data.api.event.ApiEvent
 import pl.droidsonroids.toast.data.api.event.ApiEventDetails
-import pl.droidsonroids.toast.data.api.event.ApiTalk
+import pl.droidsonroids.toast.data.api.event.ApiEventTalk
 import pl.droidsonroids.toast.data.api.speaker.ApiSpeaker
 import pl.droidsonroids.toast.data.api.speaker.ApiSpeakerDetails
+import pl.droidsonroids.toast.data.api.speaker.ApiSpeakerTalk
 import pl.droidsonroids.toast.data.dto.ImageDto
+import pl.droidsonroids.toast.data.dto.event.EventDto
 import pl.droidsonroids.toast.data.dto.event.SplitEvents
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
+import pl.droidsonroids.toast.data.dto.speaker.SpeakerTalkDto
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.viewmodels.event.UpcomingEventViewModel
@@ -19,14 +22,13 @@ import java.util.*
 
 val testDate: Date = SimpleDateFormat(Constants.Date.PATTERN).parse("1.12.2017")
 
-val testPreviousEvents = listOf(
-        ApiEvent(
-                id = 0,
-                title = "titleFirst",
-                date = testDate,
-                coverImages = listOf(ApiImage("bigImageFirst", "thumbImageFirst"))
-        )
+val testApiEvent = ApiEvent(
+        id = 0,
+        title = "titleFirst",
+        date = testDate,
+        coverImages = listOf(ApiImage("bigImageFirst", "thumbImageFirst"))
 )
+val testPreviousEvents = listOf(testApiEvent)
 
 val testPreviousEventsPage = Page(items = testPreviousEvents.map { it.toDto() }, pageNumber = 1, allPagesCount = 1)
 
@@ -37,7 +39,7 @@ val testSpeaker = ApiSpeaker(
         avatar = ApiImage("bigImageFirst", "thumbImageFirst")
 )
 
-val testApiTalk = ApiTalk(
+val testApiEventTalk = ApiEventTalk(
         id = 0,
         title = "title",
         description = "description",
@@ -54,7 +56,7 @@ val testEventDetails = ApiEventDetails(
         placeCoordinates = ApiCoordinates(51.1098206, 17.0251941),
         coverImages = listOf(ApiImage("bigCoverImageFirst", "thumbCoverImageFirst")),
         photos = listOf(ApiImage("bigImageFirst", "thumbImageFirst")),
-        talks = listOf(testApiTalk)
+        eventTalks = listOf(testApiEventTalk)
 )
 
 val testSplitEvents = SplitEvents(upcomingEvent = testEventDetails.toDto(), previousEvents = testPreviousEventsPage)
@@ -68,6 +70,26 @@ val testImageDto = ImageDto(
         "thumbSizeUrl"
 )
 
+val testEventDto = EventDto(
+        id = 0,
+        title = "titleFirst",
+        date = testDate,
+        coverImages = listOf(ImageDto("bigImageFirst", "thumbImageFirst")))
+
+val testSpeakerTalkDto = SpeakerTalkDto(
+        id = 1,
+        title = "title",
+        description = "description",
+        event = testEventDto
+)
+
+val testApiSpeakerTalk = ApiSpeakerTalk(
+        id = 1,
+        title = "title",
+        description = "description",
+        event = testApiEvent
+)
+
 val testSpeakerDetailsDto = SpeakerDetailsDto(
         id = 0,
         name = "name",
@@ -77,10 +99,11 @@ val testSpeakerDetailsDto = SpeakerDetailsDto(
         github = "github",
         email = "email",
         website = "website",
-        twitter = "twitter"
+        twitter = "twitter",
+        talks = listOf(testSpeakerTalkDto)
 )
 
-val testSpeakerDetails = ApiSpeakerDetails(
+val testApiSpeakerDetails = ApiSpeakerDetails(
         id = 0,
         name = "name",
         job = "job",
@@ -89,7 +112,8 @@ val testSpeakerDetails = ApiSpeakerDetails(
         github = "github",
         email = "email",
         website = "website",
-        twitter = "twitter"
+        twitter = "twitter",
+        talks = listOf(testApiSpeakerTalk)
 )
 
 val upcomingEventViewModelWithPhotos = UpcomingEventViewModel(

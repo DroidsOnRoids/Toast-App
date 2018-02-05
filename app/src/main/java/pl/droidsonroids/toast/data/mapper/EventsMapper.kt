@@ -3,12 +3,12 @@ package pl.droidsonroids.toast.data.mapper
 import pl.droidsonroids.toast.data.api.event.ApiCoordinates
 import pl.droidsonroids.toast.data.api.event.ApiEvent
 import pl.droidsonroids.toast.data.api.event.ApiEventDetails
-import pl.droidsonroids.toast.data.api.event.ApiTalk
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
+import pl.droidsonroids.toast.data.api.event.ApiEventTalk
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
 import pl.droidsonroids.toast.data.dto.event.EventDto
-import pl.droidsonroids.toast.data.dto.event.TalkDto
+import pl.droidsonroids.toast.data.dto.event.EventTalkDto
 import pl.droidsonroids.toast.viewmodels.event.EventItemViewModel
 import pl.droidsonroids.toast.viewmodels.event.EventSpeakerItemViewModel
 import pl.droidsonroids.toast.viewmodels.event.UpcomingEventViewModel
@@ -16,7 +16,7 @@ import pl.droidsonroids.toast.viewmodels.event.UpcomingEventViewModel
 fun ApiEventDetails.toDto(): EventDetailsDto {
     val coverImagesDto = coverImages.map { it.toDto() }
     val photosDto = photos.map { it.toDto() }
-    val talksDto = talks.map { it.toDto() }
+    val talksDto = eventTalks.map { it.toDto() }
     val coordinatesDto = placeCoordinates.toDto()
     return EventDetailsDto(
             id = id,
@@ -39,8 +39,8 @@ fun ApiCoordinates.toDto(): CoordinatesDto {
     )
 }
 
-fun ApiTalk.toDto(): TalkDto {
-    return TalkDto(
+fun ApiEventTalk.toDto(): EventTalkDto {
+    return EventTalkDto(
             id = id,
             title = title,
             description = description,
@@ -68,6 +68,15 @@ fun EventDto.toViewModel(onClick: (Long) -> Unit): EventItemViewModel {
     )
 }
 
+fun EventItemViewModel.toDto(): EventDto {
+    return EventDto(
+            id,
+            title,
+            date,
+            listOfNotNull(coverImage)
+    )
+}
+
 fun EventDetailsDto.toViewModel(
         onLocationClick: (CoordinatesDto, String) -> Unit,
         onSeePhotosClick: (Long, List<ImageDto>) -> Unit,
@@ -90,7 +99,7 @@ fun EventDetailsDto.toViewModel(
     )
 }
 
-fun TalkDto.toViewModel(onReadMore: (EventSpeakerItemViewModel) -> Unit, onSpeakerClick: (Long) -> Unit): EventSpeakerItemViewModel {
+fun EventTalkDto.toViewModel(onReadMore: (EventSpeakerItemViewModel) -> Unit, onSpeakerClick: (Long) -> Unit): EventSpeakerItemViewModel {
     return EventSpeakerItemViewModel(
             id = id,
             title = title,
@@ -100,8 +109,8 @@ fun TalkDto.toViewModel(onReadMore: (EventSpeakerItemViewModel) -> Unit, onSpeak
     )
 }
 
-fun EventSpeakerItemViewModel.toDto(): TalkDto {
-    return TalkDto(
+fun EventSpeakerItemViewModel.toDto(): EventTalkDto {
+    return EventTalkDto(
             id = id,
             title = title,
             description = description,

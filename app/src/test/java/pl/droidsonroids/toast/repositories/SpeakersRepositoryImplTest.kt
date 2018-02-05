@@ -8,6 +8,7 @@ import org.mockito.Mock
 import pl.droidsonroids.toast.*
 import pl.droidsonroids.toast.data.api.speaker.SpeakerDetailsResponse
 import pl.droidsonroids.toast.data.api.speaker.SpeakersResponse
+import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepositoryImpl
 import pl.droidsonroids.toast.services.SpeakerService
 
@@ -36,7 +37,7 @@ class SpeakersRepositoryImplTest : RxTestBase() {
 
     @Test
     fun shouldReturnSpeakerDetails() {
-        val speakersResponse = SpeakerDetailsResponse(testSpeakerDetails)
+        val speakersResponse = SpeakerDetailsResponse(testApiSpeakerDetails)
         whenever(speakerService.getSpeaker(speakerId)).thenReturn(Single.just(speakersResponse))
         speakerRepository.getSpeaker(speakerId)
                 .test()
@@ -50,6 +51,7 @@ class SpeakersRepositoryImplTest : RxTestBase() {
                 .assertValue { it.website == testSpeakerDetailsDto.website }
                 .assertValue { it.twitter == testSpeakerDetailsDto.twitter }
                 .assertValue { it.email == testSpeakerDetailsDto.email }
+                .assertValue { it.talks == listOf(testApiSpeakerTalk.toDto()) }
     }
 }
 
