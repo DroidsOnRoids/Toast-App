@@ -31,7 +31,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:divider="@drawable/horizontal_divider"
+                android:divider="@drawable/vertical_divider"
                 android:orientation="vertical"
                 android:showDividers="middle">
 
@@ -82,7 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:baselineAligned="false"
-                    android:divider="@drawable/vertical_divider"
+                    android:divider="@drawable/horizontal_divider"
                     android:orientation="horizontal"
                     android:showDividers="middle">
 
@@ -114,8 +114,8 @@
                         android:layout_weight="1"
                         android:foreground="?attr/selectableItemBackground"
                         android:gravity="center"
-                        android:padding="@dimen/margin_medium"
-                        android:onClick="@{() -> speakerTalkDetailsViewModel.onReadLess()}">
+                        android:onClick="@{() -> speakerTalkDetailsViewModel.onReadLess()}"
+                        android:padding="@dimen/margin_medium">
 
                         <TextView
                             android:id="@+id/readLessText"
