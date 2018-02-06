@@ -9,11 +9,17 @@ import pl.droidsonroids.toast.viewmodels.speaker.SpeakerTalkViewModel
 class SpeakerTalksAdapter : RecyclerView.Adapter<SpeakerTalkViewHolder>() {
     private var speakerTalkViewModels: List<SpeakerTalkViewModel> = emptyList()
 
+    init {
+        setHasStableIds(true)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SpeakerTalkViewHolder {
-        val binding = ItemSpeakerTalkBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = ItemSpeakerTalkBinding.inflate(inflater, parent, false)
         return SpeakerTalkViewHolder(binding)
     }
 
+    override fun getItemId(position: Int) = speakerTalkViewModels[position].id
 
     override fun getItemCount() = speakerTalkViewModels.size
 
