@@ -30,7 +30,6 @@ class FacebookAttendViewModel @Inject constructor(
     var date: Date? = null
     private var loginStateDisposable: Disposable = Disposables.disposed()
 
-    //    Use only for tests
     @VisibleForTesting
     constructor(
             loginStateWatcher: LoginStateWatcher,
