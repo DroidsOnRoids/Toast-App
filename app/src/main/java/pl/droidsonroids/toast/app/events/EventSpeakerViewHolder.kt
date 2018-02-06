@@ -6,6 +6,6 @@ import pl.droidsonroids.toast.viewmodels.event.EventSpeakerItemViewModel
 
 class EventSpeakerViewHolder(private val binding: ItemEventSpeakerBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(eventSpeakerItemViewModel: EventSpeakerItemViewModel) {
-        binding.eventSpeakersItemViewModel = eventSpeakerItemViewModel
+        binding.eventSpeakerItemViewModel = eventSpeakerItemViewModel
     }
 }

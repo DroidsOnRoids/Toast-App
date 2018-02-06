@@ -7,8 +7,8 @@
     <data>
 
         <variable
-            name="talkDetailsViewModel"
-            type="pl.droidsonroids.toast.viewmodels.event.TalkDetailsViewModel"/>
+            name="eventTalkDetailsViewModel"
+            type="pl.droidsonroids.toast.viewmodels.event.EventTalkDetailsViewModel"/>
 
         <import type="pl.droidsonroids.toast.utils.Constants.TalkTransition"/>
     </data>
@@ -24,7 +24,7 @@
             android:layout_height="match_parent"
             android:layout_margin="@dimen/margin_small"
             app:cardCornerRadius="3dp"
-            app:elementId="@{talkDetailsViewModel.id}"
+            app:elementId="@{eventTalkDetailsViewModel.id}"
             app:transitionName="@{TalkTransition.CARD}">
 
             <LinearLayout
@@ -35,7 +35,7 @@
                 <include
                     android:id="@+id/speaker"
                     layout="@layout/item_speaker"
-                    app:itemViewModel="@{talkDetailsViewModel.speakerItemViewModel}"/>
+                    app:itemViewModel="@{eventTalkDetailsViewModel.speakerItemViewModel}"/>
 
                 <View
                     android:id="@+id/speakerDivider"
@@ -62,7 +62,7 @@
                             android:layout_marginEnd="@dimen/margin_large"
                             android:layout_marginStart="@dimen/margin_large"
                             android:layout_marginTop="@dimen/margin_large"
-                            android:text="@{talkDetailsViewModel.title}"
+                            android:text="@{eventTalkDetailsViewModel.title}"
                             tools:text="Continuous delivery with ease"/>
 
                         <TextView
@@ -72,7 +72,7 @@
                             android:layout_marginBottom="@dimen/margin_small"
                             android:layout_marginEnd="@dimen/margin_large"
                             android:layout_marginStart="@dimen/margin_large"
-                            android:text="@{talkDetailsViewModel.description}"
+                            android:text="@{eventTalkDetailsViewModel.description}"
                             tools:text="Description"/>
 
                     </LinearLayout>
@@ -88,7 +88,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
-                    android:onClick="@{() -> talkDetailsViewModel.onReadLess()}"
+                    android:onClick="@{() -> eventTalkDetailsViewModel.onReadLess()}"
                     android:paddingBottom="@dimen/margin_medium"
                     android:paddingTop="@dimen/margin_medium">
 

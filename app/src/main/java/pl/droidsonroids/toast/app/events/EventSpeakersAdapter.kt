@@ -8,7 +8,7 @@ import pl.droidsonroids.toast.databinding.ItemEventSpeakerBinding
 import pl.droidsonroids.toast.viewmodels.event.EventSpeakerItemViewModel
 
 class EventSpeakersAdapter : RecyclerView.Adapter<EventSpeakerViewHolder>() {
-    private var eventSpeakerViewModels: List<EventSpeakerItemViewModel> = listOf()
+    private var eventSpeakerItemViewModels: List<EventSpeakerItemViewModel> = listOf()
 
     init {
         setHasStableIds(true)
@@ -21,19 +21,19 @@ class EventSpeakersAdapter : RecyclerView.Adapter<EventSpeakerViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: EventSpeakerViewHolder, position: Int) {
-        holder.bind(eventSpeakerViewModels[position])
+        holder.bind(eventSpeakerItemViewModels[position])
     }
 
     override fun getItemId(position: Int): Long {
-        return eventSpeakerViewModels[position].id
+        return eventSpeakerItemViewModels[position].id
     }
 
-    override fun getItemCount() = eventSpeakerViewModels.size
+    override fun getItemCount() = eventSpeakerItemViewModels.size
 
-    fun setData(newEventSpeakerViewModels: List<EventSpeakerItemViewModel>) {
-        val diffCallback = EventSpeakerItemDiffCallback(eventSpeakerViewModels, newEventSpeakerViewModels)
+    fun setData(newEventSpeakerItemViewModels: List<EventSpeakerItemViewModel>) {
+        val diffCallback = EventSpeakerItemDiffCallback(eventSpeakerItemViewModels, newEventSpeakerItemViewModels)
         val diff = DiffUtil.calculateDiff(diffCallback)
-        eventSpeakerViewModels = newEventSpeakerViewModels
+        eventSpeakerItemViewModels = newEventSpeakerItemViewModels
         diff.dispatchUpdatesTo(this)
     }
 
