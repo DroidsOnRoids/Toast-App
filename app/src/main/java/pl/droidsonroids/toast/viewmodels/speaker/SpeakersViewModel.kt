@@ -4,6 +4,7 @@ import android.databinding.Observable
 import android.databinding.ObservableField
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
+import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.utils.Constants.Sorting.ALPHABETICAL
@@ -21,9 +22,14 @@ class SpeakersViewModel @Inject constructor(private val speakersRepository: Spea
         loadFirstPage()
         sortingType.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(p0: Observable?, p1: Int) {
+                clearSpeakersList()
                 loadFirstPage()
             }
         })
+    }
+
+    private fun clearSpeakersList() {
+        onNewSpeakersPageLoaded(Page(emptyList(), 0, 0))
     }
 
     fun toggleSortingDetailsVisibility() {
