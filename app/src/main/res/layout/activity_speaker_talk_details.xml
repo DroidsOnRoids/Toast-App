@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="speakerTalkDetailsViewModel"
+            type="pl.droidsonroids.toast.viewmodels.speaker.SpeakerTalkDetailsViewModel"/>
+
+        <import type="pl.droidsonroids.toast.utils.Constants.TalkTransition"/>
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/blackAlpha40"
+        android:fitsSystemWindows="true">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/speakerTalkCard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_small"
+            app:cardCornerRadius="3dp"
+            app:elementId="@{speakerTalkDetailsViewModel.id}"
+            app:transitionName="@{TalkTransition.CARD}">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@drawable/vertical_divider"
+                android:orientation="vertical"
+                android:showDividers="middle">
+
+                <include
+                    layout="@layout/layout_event_item"
+                    app:eventViewModel="@{speakerTalkDetailsViewModel.eventItemViewModel}"/>
+
+                <android.support.v4.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/talkTitle"
+                            style="@style/LectureTitleStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/margin_small"
+                            android:layout_marginEnd="@dimen/margin_large"
+                            android:layout_marginStart="@dimen/margin_large"
+                            android:layout_marginTop="@dimen/margin_large"
+                            android:ellipsize="end"
+                            android:text="@{speakerTalkDetailsViewModel.title}"
+                            tools:text="Continuous delivery with ease"/>
+
+                        <TextView
+                            android:id="@+id/talkDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/margin_small"
+                            android:layout_marginEnd="@dimen/margin_large"
+                            android:layout_marginStart="@dimen/margin_large"
+                            android:text="@{speakerTalkDetailsViewModel.description}"
+                            tools:text="Description"/>
+                    </LinearLayout>
+                </android.support.v4.widget.NestedScrollView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:divider="@drawable/horizontal_divider"
+                    android:orientation="horizontal"
+                    android:showDividers="middle">
+
+                    <FrameLayout
+                        android:id="@+id/slideshareButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:alpha="0.2"
+                        android:gravity="center"
+                        android:padding="@dimen/margin_medium">
+
+                        <TextView
+                            android:id="@+id/slideshareText"
+                            style="@style/FacebookAttend"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:drawablePadding="@dimen/margin_small"
+                            android:drawableStart="@drawable/ic_slideshare"
+                            android:gravity="center_vertical"
+                            android:text="@string/slideshare"/>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/readLessButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:onClick="@{() -> speakerTalkDetailsViewModel.onReadLess()}"
+                        android:padding="@dimen/margin_medium">
+
+                        <TextView
+                            android:id="@+id/readLessText"
+                            style="@style/FacebookAttend"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:drawablePadding="@dimen/margin_small"
+                            android:drawableStart="@drawable/ic_read_more"
+                            android:gravity="center_vertical"
+                            android:text="@string/read_less"/>
+                    </FrameLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </FrameLayout>
+</layout>

@@ -76,12 +76,12 @@ class SpeakerHeaderBehavior(private val context: Context, private val attrs: Att
                 R.id.speakerName -> {
                     val distanceXToSubtract = accelerateInterpolator.getInterpolation(appBarClosingOffset) * childTotalDistanceX + child.width / 2
                     val distanceYToSubtract = appBarClosingOffset * childTotalDistanceY + child.height / 2
-                    Pair(distanceXToSubtract, distanceYToSubtract)
+                    distanceXToSubtract to distanceYToSubtract
                 }
                 else -> {
                     val distanceXToSubtract = accelerateInterpolator.getInterpolation(appBarClosingOffset) * childTotalDistanceX + child.width / 2
                     val distanceYToSubtract = decelerateInterpolator.getInterpolation(appBarClosingOffset) * childTotalDistanceY + child.height / 2
-                    Pair(distanceXToSubtract, distanceYToSubtract)
+                    distanceXToSubtract to distanceYToSubtract
                 }
             }
 

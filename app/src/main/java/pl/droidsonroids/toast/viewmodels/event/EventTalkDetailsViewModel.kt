@@ -10,7 +10,8 @@ import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakerItemViewModel
 import javax.inject.Inject
 
-class TalkDetailsViewModel @Inject constructor() : ViewModel(), NavigatingViewModel {
+
+class EventTalkDetailsViewModel @Inject constructor() : ViewModel(), NavigatingViewModel {
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
     val id: ObservableField<Long> = ObservableField()
     val title: ObservableField<String> = ObservableField()
