@@ -69,7 +69,7 @@
                 android:layout_width="@dimen/sorting_images_size"
                 android:layout_height="@dimen/sorting_images_size"
                 android:layout_marginEnd="@dimen/margin_medium"
-                android:src="@drawable/ic_sorting_alphabetical"
+                android:src="@{sortingViewModel.sortingType}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/sortText"
                 app:layout_constraintTop_toTopOf="parent"/>

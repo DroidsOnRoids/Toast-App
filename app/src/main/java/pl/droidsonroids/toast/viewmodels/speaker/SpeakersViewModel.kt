@@ -37,10 +37,12 @@ class SpeakersViewModel @Inject constructor(private val speakersRepository: Spea
 
     fun onAlphabeticalSortingClick() {
         sortingType.set(ALPHABETICAL)
+        toggleSortingDetailsVisibility()
     }
 
     fun onDateSortingClick() {
         sortingType.set(DATE)
+        toggleSortingDetailsVisibility()
     }
 
     override fun retryLoading() {

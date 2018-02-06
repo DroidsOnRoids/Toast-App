@@ -157,6 +157,15 @@ fun setAboutPrefix(textView: TextView, name: String) {
     textView.text = textView.context.getString(R.string.about, name.firstWord())
 }
 
+@BindingAdapter("android:src")
+fun ImageView.setSortingImage(sortingType: String) {
+    if (sortingType == Constants.Sorting.ALPHABETICAL) {
+        setImageResource(R.drawable.ic_sorting_alphabetical)
+    } else {
+        setImageResource(R.drawable.ic_sorting_by_date)
+    }
+}
+
 @BindingAdapter(value = ["linkEnabled"], requireAll = false)
 fun setLinkImageButtonEnabledWithColor(imageButton: ImageButton, link: String?) {
     imageButton.isEnabled = !link.isNullOrEmpty()
