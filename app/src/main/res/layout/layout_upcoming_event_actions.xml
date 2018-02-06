@@ -10,8 +10,8 @@
             type="pl.droidsonroids.toast.viewmodels.event.UpcomingEventViewModel"/>
 
         <variable
-            name="attendStatus"
-            type="pl.droidsonroids.toast.data.enums.AttendStatus"/>
+            name="attendViewModel"
+            type="pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel"/>
     </data>
 
     <LinearLayout
@@ -32,8 +32,8 @@
             android:layout_weight="1"
             android:clickable="true"
             android:focusable="true"
-            android:foreground="@{upcomingEvent.isPastEvent}"
-            android:onClick="@{() -> upcomingEvent.onAttendClick()}"
+            android:foreground="@{attendViewModel.isPastEvent}"
+            android:onClick="@{() -> attendViewModel.onAttendClick()}"
             app:cardBackgroundColor="@color/facebook"
             app:cardCornerRadius="3dp">
 
@@ -46,9 +46,9 @@
                 android:drawableStart="@drawable/ic_facebook"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="@{attendStatus, default=ATTEND}"
+                android:text="@{attendViewModel.attendStatus, default=ATTEND}"
                 android:textAllCaps="true"
-                app:isPastEvent="@{upcomingEvent.isPastEvent}"/>
+                app:isPastEvent="@{attendViewModel.isPastEvent}"/>
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView

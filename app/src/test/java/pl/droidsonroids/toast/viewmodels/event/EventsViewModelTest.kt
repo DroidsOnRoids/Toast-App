@@ -1,10 +1,8 @@
 package pl.droidsonroids.toast.viewmodels.event
 
-import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Maybe
-import io.reactivex.Single
-import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
@@ -15,16 +13,15 @@ import org.mockito.junit.MockitoJUnitRunner
 import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.dto.event.SplitEvents
-import pl.droidsonroids.toast.data.enums.AttendStatus
 import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.event.EventsRepository
-import pl.droidsonroids.toast.repositories.facebook.FacebookRepository
 import pl.droidsonroids.toast.testEventDetails
 import pl.droidsonroids.toast.testPreviousEvents
 import pl.droidsonroids.toast.testSplitEvents
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
 import java.io.IOException
 
 @RunWith(MockitoJUnitRunner::class)
@@ -34,7 +31,7 @@ class EventsViewModelTest {
     @Mock
     lateinit var loginStateWatcher: LoginStateWatcher
     @Mock
-    lateinit var facebookRepository: FacebookRepository
+    lateinit var attendViewModel: AttendViewModel
 
     lateinit var eventsViewModel: EventsViewModel
 
@@ -138,10 +135,9 @@ class EventsViewModelTest {
     }
 
     private fun setUpWith(maybe: Maybe<SplitEvents>) {
-        whenever(loginStateWatcher.loginStateSubject).thenReturn(BehaviorSubject.create())
         whenever(eventsRepository.getEvents()).thenReturn(maybe)
-        whenever(facebookRepository.getEventAttendState(any())).thenReturn(Single.just(AttendStatus.DECLINED))
-        eventsViewModel = EventsViewModel(loginStateWatcher, eventsRepository, facebookRepository)
+        whenever(attendViewModel.navigationRequests).thenReturn(PublishSubject.create())
+        eventsViewModel = EventsViewModel(loginStateWatcher, attendViewModel, eventsRepository)
     }
 
 }

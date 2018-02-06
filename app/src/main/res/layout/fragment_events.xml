@@ -48,7 +48,7 @@
                 <include
                     android:id="@+id/upcomingEventActions"
                     layout="@layout/layout_upcoming_event_actions"
-                    app:attendStatus="@{eventsViewModel.attendStatus}"
+                    app:attendViewModel="@{eventsViewModel}"
                     app:upcomingEvent="@{eventsViewModel.upcomingEvent}"/>
 
                 <TextView
