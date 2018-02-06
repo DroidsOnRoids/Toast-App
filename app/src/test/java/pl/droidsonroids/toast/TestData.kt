@@ -127,7 +127,8 @@ val upcomingEventViewModelWithPhotos = UpcomingEventViewModel(
         coordinates = testEventDetails.placeCoordinates.toDto(),
         locationClickCallback = { _, _ -> },
         seePhotosCallback = { _, _ -> },
-        eventClickCallback = { _ -> }
+        eventClickCallback = { _ -> },
+        attendCallback = {}
 )
 
 val upcomingEventViewModelWithoutPhotos = UpcomingEventViewModel(
@@ -141,5 +142,6 @@ val upcomingEventViewModelWithoutPhotos = UpcomingEventViewModel(
         coordinates = testEventDetails.placeCoordinates.toDto(),
         locationClickCallback = { _, _ -> },
         seePhotosCallback = { _, _ -> },
-        eventClickCallback = { _ -> }
+        eventClickCallback = { _ -> },
+        attendCallback = {}
 )

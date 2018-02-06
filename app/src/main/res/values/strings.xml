@@ -60,4 +60,8 @@
     <string name="log_out">Log out</string>
     <string name="participated_in">Participated in</string>
     <string name="slideshare">Slideshare</string>
+    <string name="attending">Attending</string>
+    <string name="interested_in">Interested in</string>
+    <string name="attended">Attended</string>
+    <string name="facebook_update_attend_error">Cannot update event attend state</string>
 </resources>

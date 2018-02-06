@@ -4,21 +4,27 @@ import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import android.util.Log
 import io.reactivex.Single
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
+import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import pl.droidsonroids.toast.R
+import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
 import pl.droidsonroids.toast.data.dto.event.EventDto
+import pl.droidsonroids.toast.data.enums.AttendStatus
 import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.data.wrapWithState
 import pl.droidsonroids.toast.repositories.event.EventsRepository
+import pl.droidsonroids.toast.repositories.facebook.FacebookRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.toPage
@@ -26,21 +32,54 @@ import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import javax.inject.Inject
 
-class EventsViewModel @Inject constructor(private val eventsRepository: EventsRepository) : ViewModel(), LoadingViewModel, NavigatingViewModel {
+class EventsViewModel @Inject constructor(
+        loginStateWatcher: LoginStateWatcher,
+        private val eventsRepository: EventsRepository,
+        private val facebookRepository: FacebookRepository
+) : ViewModel(), LoadingViewModel, NavigatingViewModel, LoginStateWatcher by loginStateWatcher {
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
 
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField()
     val isPreviousEventsEmpty = ObservableField<Boolean>(true)
     val upcomingEvent = ObservableField<UpcomingEventViewModel>()
     val previousEventsSubject: BehaviorSubject<List<State<EventItemViewModel>>> = BehaviorSubject.create()
+    val attendStatus: ObservableField<AttendStatus> = ObservableField(AttendStatus.DECLINED)
 
     private var isPreviousEventsLoading: Boolean = false
     private var nextPageNumber: Int? = null
-    private var eventsDisposable: Disposable = Disposables.disposed()
+    private var compositeDisposable = CompositeDisposable()
     private val Any.simpleClassName: String get() = javaClass.simpleName
+
+    private var facebookId: String? = null
+
+    private var facebookAttendStateDisposable: Disposable = Disposables.disposed()
+    private var facebookAttendRequestDisposable: Disposable = Disposables.disposed()
 
     init {
         loadEvents()
+        subscribeToLoginChange()
+    }
+
+    private fun subscribeToLoginChange() {
+        compositeDisposable += loginStateSubject.subscribe {
+            invalidateAttendState()
+        }
+    }
+
+    fun invalidateAttendState() {
+        facebookId?.let {
+            facebookAttendStateDisposable.dispose()
+            facebookAttendStateDisposable = facebookRepository.getEventAttendState(it)
+                    .subscribeBy(
+                            onSuccess = { status -> attendStatus.set(status) },
+                            onError = (::onInvalidateAttendStateError)
+                    )
+        }
+    }
+
+    private fun onInvalidateAttendStateError(throwable: Throwable) {
+        navigationSubject.onNext(NavigationRequest.SnackBar(R.string.facebook_update_attend_error))
+        Log.e(simpleClassName, "Something went wrong with refreshing attend state", throwable)
     }
 
     override fun retryLoading() {
@@ -49,12 +88,14 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
 
     private fun loadEvents() {
         loadingStatus.set(LoadingStatus.PENDING)
-        eventsDisposable = eventsRepository.getEvents()
+        compositeDisposable += eventsRepository.getEvents()
                 .flatMap { (upcomingEvent, previousEventsPage) ->
+                    updateFacebookAttend(upcomingEvent.facebookId)
                     val upcomingEventViewModel = upcomingEvent.toViewModel(
                             onLocationClick = (::onUpcomingEventLocationClick),
+                            onEventClick = (::onUpcomingEventClick),
                             onSeePhotosClick = (::onSeePhotosClick),
-                            onEventClick = (::onUpcomingEventClick)
+                            onAttendClick = (::onAttendClick)
                     )
                     mapToSingleEventItemViewModelsPage(previousEventsPage)
                             .map { upcomingEventViewModel to it }
@@ -67,6 +108,11 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
                 )
     }
 
+    private fun updateFacebookAttend(facebookId: String) {
+        this.facebookId = facebookId
+        invalidateAttendState()
+    }
+
     private fun onUpcomingEventLocationClick(coordinates: CoordinatesDto, placeName: String) {
         navigationSubject.onNext(NavigationRequest.Map(coordinates, placeName))
     }
@@ -77,6 +123,34 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
 
     private fun onSeePhotosClick(eventId: Long, photos: List<ImageDto>) {
         navigationSubject.onNext(NavigationRequest.Photos(photos, eventId, ParentView.HOME))
+    }
+
+    private fun onAttendClick() {
+        val attendStatus = this.attendStatus.get()
+        when {
+            !hasPermissions -> navigationSubject.onNext(NavigationRequest.LogIn)
+            attendStatus == AttendStatus.DECLINED -> attendOnEvent()
+            else -> facebookId?.let {
+                navigationSubject.onNext(NavigationRequest.Website("https://www.facebook.com/events/$it"))
+            }
+        }
+    }
+
+    private fun attendOnEvent() {
+        facebookId?.let {
+            facebookAttendRequestDisposable.dispose()
+            facebookAttendRequestDisposable = facebookRepository.setEventAttending(it)
+                    .doOnComplete { facebookAttendStateDisposable.dispose() }
+                    .subscribeBy(
+                            onComplete = { attendStatus.set(AttendStatus.ATTENDING) },
+                            onError = (::onSetAttendingError)
+                    )
+        }
+    }
+
+    private fun onSetAttendingError(throwable: Throwable) {
+        navigationSubject.onNext(NavigationRequest.SnackBar(R.string.oops_no_internet_connection))
+        Log.e(simpleClassName, "Something went wrong with attending to event", throwable)
     }
 
     fun loadNextPage() {
@@ -129,7 +203,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
 
     private fun loadNextPage(pageNumber: Int) {
         isPreviousEventsLoading = true
-        eventsDisposable = eventsRepository.getEventsPage(pageNumber)
+        compositeDisposable += eventsRepository.getEventsPage(pageNumber)
                 .flatMap(::mapToSingleEventItemViewModelsPage)
                 .doAfterSuccess { isPreviousEventsLoading = false }
                 .subscribeBy(
@@ -167,8 +241,9 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
     }
 
     override fun onCleared() {
-        eventsDisposable.dispose()
+        facebookAttendRequestDisposable.dispose()
+        facebookAttendStateDisposable.dispose()
+        compositeDisposable.dispose()
     }
 
 }
-

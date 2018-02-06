@@ -6,6 +6,8 @@ package pl.droidsonroids.toast.app.utils
 import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.support.v4.content.ContextCompat
+import android.support.v7.widget.CardView
 import android.text.format.DateFormat
 import android.view.View
 import android.widget.ImageButton
@@ -23,6 +25,7 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.utils.extensions.firstWord
 import pl.droidsonroids.toast.app.utils.extensions.setImageColor
 import pl.droidsonroids.toast.data.dto.ImageDto
+import pl.droidsonroids.toast.data.enums.AttendStatus
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
 import java.text.SimpleDateFormat
@@ -169,3 +172,20 @@ fun setLinkImageButtonEnabledWithColor(imageButton: ImageButton, link: String?) 
     }
 }
 
+@BindingAdapter("isPastEvent", "android:text")
+fun setAttendText(textView: TextView, isPastEvent: Boolean, attendStatus: AttendStatus?) {
+    val text = when (attendStatus) {
+        AttendStatus.ATTENDING -> if (isPastEvent) R.string.attended else R.string.attending
+        AttendStatus.UNSURE -> R.string.interested_in
+        AttendStatus.DECLINED, null -> R.string.attend
+    }
+    textView.setText(text)
+}
+
+@BindingAdapter("android:foreground")
+fun setForeground(cardView: CardView, isEnabled: Boolean) {
+    val color = if (isEnabled) R.color.whiteAlpha60 else R.drawable.black_ripple
+    with(cardView) {
+        foreground = ContextCompat.getDrawable(context, color)
+    }
+}
