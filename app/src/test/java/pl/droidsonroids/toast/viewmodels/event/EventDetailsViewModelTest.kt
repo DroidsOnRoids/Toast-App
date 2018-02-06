@@ -1,15 +1,17 @@
 package pl.droidsonroids.toast.viewmodels.event
 
+import android.databinding.ObservableField
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.rxkotlin.toSingle
+import io.reactivex.subjects.PublishSubject
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
+import org.junit.Before
 import org.junit.Test
-import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.data.enums.ParentView
@@ -19,14 +21,23 @@ import pl.droidsonroids.toast.testApiEventTalk
 import pl.droidsonroids.toast.testEventDetails
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
 
 class EventDetailsViewModelTest : RxTestBase() {
     @Mock
     lateinit var eventsRepository: EventsRepository
-    @InjectMocks
+    @Mock
+    lateinit var attendViewModel: AttendViewModel
     lateinit var eventDetailsViewModel: EventDetailsViewModel
 
     private val eventId: Long = 1
+
+    @Before
+    fun setUp() {
+        whenever(attendViewModel.isPastEvent).thenReturn(ObservableField(false))
+        whenever(attendViewModel.navigationRequests).thenReturn(PublishSubject.create())
+        eventDetailsViewModel = EventDetailsViewModel(eventsRepository, attendViewModel)
+    }
 
     @Test
     fun shouldLoadEventDetails() {

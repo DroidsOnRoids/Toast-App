@@ -37,5 +37,6 @@ object Constants {
 
     object Facebook {
         val PERMISSIONS = listOf("rsvp_event")
+        val EVENT_URL: String = "https://www.facebook.com/events/"
     }
 }

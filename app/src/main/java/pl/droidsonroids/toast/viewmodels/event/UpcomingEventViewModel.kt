@@ -21,7 +21,6 @@ class UpcomingEventViewModel(
 ) {
 
     val photosAvailable get() = photos.isNotEmpty()
-    val isPastEvent get() = date.isYesterdayOrEarlier
 
     fun onEventClick() {
         eventClickCallback(id)
@@ -36,19 +35,6 @@ class UpcomingEventViewModel(
     }
 
     fun onAttendClick() {
-        if (!isPastEvent) {
-            attendCallback()
-        }
+        attendCallback()
     }
-
-    private val Date.isYesterdayOrEarlier
-        get() = before(
-                Calendar.getInstance().run {
-                    set(Calendar.HOUR_OF_DAY, 0)
-                    set(Calendar.MINUTE, 0)
-                    set(Calendar.SECOND, 0)
-                    set(Calendar.MILLISECOND, 0)
-                    time
-                }
-        )
 }
