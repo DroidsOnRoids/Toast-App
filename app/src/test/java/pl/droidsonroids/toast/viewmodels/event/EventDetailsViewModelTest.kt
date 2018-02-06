@@ -1,6 +1,5 @@
 package pl.droidsonroids.toast.viewmodels.event
 
-import android.databinding.ObservableField
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -34,7 +33,6 @@ class EventDetailsViewModelTest : RxTestBase() {
 
     @Before
     fun setUp() {
-        whenever(attendViewModel.isPastEvent).thenReturn(ObservableField(false))
         whenever(attendViewModel.navigationRequests).thenReturn(PublishSubject.create())
         eventDetailsViewModel = EventDetailsViewModel(eventsRepository, attendViewModel)
     }

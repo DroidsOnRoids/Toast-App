@@ -18,7 +18,6 @@ import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
-import pl.droidsonroids.toast.utils.isYesterdayOrEarlier
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
@@ -93,7 +92,6 @@ class EventDetailsViewModel @Inject constructor(
             coordinates = it.coordinates
             onTalksLoaded(it.talks)
             setEvent(it.facebookId, it.date)
-            isPastEvent.set(it.date.isYesterdayOrEarlier)
         }
     }
 
