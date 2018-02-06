@@ -35,16 +35,16 @@ import java.util.*
 private const val COLOR_TRANSPARENT = 0x00FFFFFF
 
 @BindingAdapter("eventTime")
-fun setEventTime(textView: TextView, date: Date?) {
-    val timeFormatter = DateFormat.getTimeFormat(textView.context)
-    textView.text = date?.let { timeFormatter.format(it) }
+fun TextView.setEventTime(date: Date?) {
+    val timeFormatter = DateFormat.getTimeFormat(context)
+    text = date?.let { timeFormatter.format(it) }
 }
 
 
 @BindingAdapter("eventDate")
-fun setEventDate(textView: TextView, date: Date?) {
+fun TextView.setEventDate(date: Date?) {
     val timeFormatter = SimpleDateFormat(Constants.Date.PATTERN, Locale.getDefault())
-    textView.text = date?.let { timeFormatter.format(it) }
+    text = date?.let { timeFormatter.format(it) }
 }
 
 @BindingAdapter("coverImage")
