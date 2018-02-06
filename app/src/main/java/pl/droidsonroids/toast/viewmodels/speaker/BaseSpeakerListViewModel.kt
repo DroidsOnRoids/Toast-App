@@ -44,6 +44,12 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
         loadingStatus.set(LoadingStatus.SUCCESS)
     }
 
+    protected fun onNewSpeakersPageLoaded(page: Page<State.Item<SpeakerItemViewModel>>) {
+        val speakers = page.items.appendLoadingItemIfNextPageAvailable(page)
+        speakersSubject.onNext(speakers)
+        loadingStatus.set(LoadingStatus.SUCCESS)
+    }
+
     private fun getSpeakers(page: Page<State.Item<SpeakerItemViewModel>>): List<State<SpeakerItemViewModel>> {
         val speakers = mergeWithExistingSpeakers(page.items)
         return speakers.appendLoadingItemIfNextPageAvailable(page)

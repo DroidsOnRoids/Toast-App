@@ -89,9 +89,9 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/paleGray"
-            app:layout_constraintTop_toBottomOf="@+id/sortTitleDivider"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sortTitleDivider"/>
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/sortingDetailsLayout"
@@ -164,6 +164,33 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/alphabeticalDivider"/>
+
+            <View
+                android:id="@+id/alphabeticalClickField"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="@drawable/sorting_title_layout_ripple"
+                android:onClick="@{() -> sortingViewModel.onAlphabeticalSortingClick()}"
+                app:layout_constraintBottom_toTopOf="@+id/alphabeticalDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <View
+                android:id="@+id/dateClickField"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="@drawable/sorting_title_layout_ripple"
+                android:onClick="@{() -> sortingViewModel.onDateSortingClick()}"
+                app:layout_constraintBottom_toTopOf="@+id/dateDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/alphabeticalDivider"
+                />
         </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
 </layout>

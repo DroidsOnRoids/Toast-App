@@ -34,4 +34,9 @@ object Constants {
     object ClipDataLabel {
         const val EMAIL = "Email address"
     }
+
+    object Sorting {
+        const val ALPHABETICAL = "name"
+        const val DATE = "talk_date"
+    }
 }

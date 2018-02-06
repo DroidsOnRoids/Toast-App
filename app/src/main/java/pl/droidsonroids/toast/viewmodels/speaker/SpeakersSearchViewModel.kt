@@ -45,12 +45,6 @@ class SpeakersSearchViewModel @Inject constructor(private val speakersRepository
     private fun shouldPerformSearch(query: String) =
             query.isNotEmpty() && (query != lastSearchedPhrase || loadingStatus.get() == LoadingStatus.ERROR)
 
-    private fun onNewSpeakersPageLoaded(page: Page<State.Item<SpeakerItemViewModel>>) {
-        val speakers = page.items.appendLoadingItemIfNextPageAvailable(page)
-        speakersSubject.onNext(speakers)
-        loadingStatus.set(LoadingStatus.SUCCESS)
-    }
-
     private fun disposePreviousLoad() {
         firstPageDisposable?.dispose()
         nextPageDisposable?.dispose()
