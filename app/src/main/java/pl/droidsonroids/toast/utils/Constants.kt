@@ -12,10 +12,6 @@ object Constants {
         const val FIRST = 1
     }
 
-    object Position {
-        const val FIRST = 0
-    }
-
     object Date {
         const val PATTERN = "dd.MM.yyyy"
     }
