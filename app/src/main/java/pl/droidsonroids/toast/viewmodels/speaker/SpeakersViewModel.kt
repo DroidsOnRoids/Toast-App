@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 class SpeakersViewModel @Inject constructor(private val speakersRepository: SpeakersRepository) : BaseSpeakerListViewModel() {
     val isSortingDetailsVisible: ObservableField<Boolean> = ObservableField(false)
-    private val sortingType = ObservableField(ALPHABETICAL)
+    val sortingType = ObservableField(ALPHABETICAL)
 
     private var speakersDisposable: Disposable? = null
 

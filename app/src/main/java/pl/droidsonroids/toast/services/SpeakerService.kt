@@ -11,7 +11,7 @@ import retrofit2.http.Query
 interface SpeakerService {
     @GET("speakers")
     fun getSpeakers(
-            @Query("order") sortingType: String,
+            @Query("order") sortingType: String = Constants.Sorting.ALPHABETICAL,
             @Query("per_page") pageSize: Int = Constants.Page.SIZE,
             @Query("page") pageNumber: Int = Constants.Page.FIRST): Single<SpeakersResponse>
 
