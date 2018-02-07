@@ -12,8 +12,8 @@ body: >
             "id": "9c12a8c73b5cd72f56e66ddc564eb671.jpg",
             "storage": "cache"
           },
-          "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
-          "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          "big": "http://api.letswift.pl/uploads/cache/efdebb744b2ca985de9d567eaa512c40.jpg",
+          "thumb": "http://api.letswift.pl/uploads/cache/ba0e0f28e20aa16a657ea291b2eed477.jpg"
         },
         "name": "Mateusz Budzar",
         "job": "Android Developer",
@@ -26,8 +26,8 @@ body: >
             "id": "2f4a3c1501003ffe0768aafccc7a0515.png",
             "storage": "cache"
           },
-          "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
-          "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          "big": "http://api.letswift.pl/uploads/cache/e6e1076694d49c87134b20b3d1dd0a9b.png",
+          "thumb": "http://api.letswift.pl/uploads/cache/7160cbe76f3e1d13d6eecdcb22732eb2.png"
         },
         "name": "Michał Mynarski",
         "job": "iOS Developer",
@@ -40,8 +40,8 @@ body: >
             "id": "dd5ed6e4d1e2cde07b33ce5460a417b0.jpg",
             "storage": "cache"
           },
-          "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
-          "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          "big": "http://api.letswift.pl/uploads/cache/0c3ce5559144fa7594e67649eda3d4d8.jpg",
+          "thumb": "http://api.letswift.pl/uploads/cache/98c2c5032d2e85e6bb1665857bf68a8b.jpg"
         },
         "name": "Paweł Szymankiewicz",
         "job": "UI/UX Designer",
@@ -54,8 +54,8 @@ body: >
             "id": "5143669f16eabd999d582e81bedb7762.jpg",
             "storage": "cache"
           },
-          "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
-          "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          "big": "http://api.letswift.pl/uploads/cache/8171fcb59312081d79c8b7d8b1da3207.jpg",
+          "thumb": "http://api.letswift.pl/uploads/cache/e7a2852ac1e1de5c2f3f322482b05ef0.jpg"
         },
         "name": "Michał Pyrka",
         "job": "iOS Developer",
@@ -68,8 +68,8 @@ body: >
             "id": "3322fe0cc5da21e313e6ff876a0847b0.png",
             "storage": "cache"
           },
-          "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
-          "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          "big": "http://api.letswift.pl/uploads/cache/cfd079f3f87bfa2a1af748fd315b949e.png",
+          "thumb": "http://api.letswift.pl/uploads/cache/7cf0601712bfabaabb92ce2b159e48c9.png"
         },
         "name": "Krystian Śliwa",
         "job": "iOS Developer",
@@ -82,8 +82,8 @@ body: >
             "id": "e3b3f4fcbbf18d612e3c34e1cb534411.png",
             "storage": "cache"
           },
-          "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
-          "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          "big": "http://api.letswift.pl/uploads/cache/82bc47a0971a15ce64ed654e5273eefb.png",
+          "thumb": "http://api.letswift.pl/uploads/cache/278055e5fb0c9348bee8a9a0864cf6ec.png"
         },
         "name": "Oktawian Chojnacki",
         "job": "iOS Developer",
@@ -96,8 +96,8 @@ body: >
             "id": "6455026de713d033d16286d5531102b5.jpg",
             "storage": "cache"
             },
-            "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
-            "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+            "big": "http://api.letswift.pl/uploads/cache/3bc242c979bdd5786e9096edd57ff1d5.jpg",
+            "thumb": "http://api.letswift.pl/uploads/cache/06410ba51222f47d123036f0de0e4204.jpg"
           },
           "name": "Marcel Starczyk",
           "job": "iOS Developer",
@@ -110,8 +110,8 @@ body: >
               "id": "45876e10f092e7801ec591555c02b216.png",
               "storage": "cache"
             },
-            "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
-            "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+            "big": "http://api.letswift.pl/uploads/cache/0645f5e38eba954bdcbe66f86695157a.png",
+            "thumb": "http://api.letswift.pl/uploads/cache/3a43fd1a7de7df07af384c8a87e0313c.png"
           },
           "name": "Radosław Czemerys",
           "job": "React-Native Developer",
@@ -124,8 +124,8 @@ body: >
               "id": "766f34132c8689a7275e693234a3424e.jpg",
               "storage": "cache"
             },
-            "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
-            "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+            "big": "http://api.letswift.pl/uploads/cache/a3080b9eeca9361f957050e61472b006.jpg",
+            "thumb": "http://api.letswift.pl/uploads/cache/72b36e6c08d6b825f71f30103a5c0bcf.jpg"
           },
           "name": "Paweł Dudek",
           "job": "iOS Developer",
@@ -138,8 +138,8 @@ body: >
               "id": "4b6a6292ab7601951ac19b97a8f4045c.png",
               "storage": "cache"
             },
-            "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
-            "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+            "big": "http://api.letswift.pl/uploads/cache/5fbf73e110384174a4042a15d75a08b6.png",
+            "thumb": "http://api.letswift.pl/uploads/cache/fd5834234d907f6d37dc57f61703f6eb.png"
           },
           "name": "Bazyli Zygan",
           "job": "iOS Developer",

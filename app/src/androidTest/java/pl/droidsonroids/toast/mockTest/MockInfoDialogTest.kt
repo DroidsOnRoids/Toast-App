@@ -1,4 +1,4 @@
-package pl.droidsonroids.toast.test
+package pl.droidsonroids.toast.mockTest
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso
@@ -37,8 +37,13 @@ class MockInfoDialogTest {
 
     private fun showDialog() {
         with(InfoDialogRobot()) {
-            performClickOnElementWithId(R.id.menuItemAbout)
+            openMenuOverflow()
+            performClickOnElementWithText(getString(R.string.about_app))
         }
+    }
+
+    private fun openMenuOverflow() {
+        Espresso.openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().targetContext)
     }
 
     private fun isDialogClosed() {
@@ -49,31 +54,30 @@ class MockInfoDialogTest {
 
     @Test
     fun isMenuOverflowDisplayed() {
+        openMenuOverflow()
         with(InfoDialogRobot()) {
-            checkIfElementWithIdIsDisplayed(R.id.menuItemAbout)
+            checkIfElementWithTextIsDisplayed(getString(R.string.about_app))
         }
     }
 
     @Test
     fun isMenuOverflowClickable() {
+        openMenuOverflow()
         with(InfoDialogRobot()) {
-            checkIfElementWithIdIsClickable(R.id.menuItemAbout)
+            checkIfElementWithTextIsClickable(getString(R.string.about_app))
         }
     }
 
     @Test
-    fun isToastLogoDisplayed() {
+    fun isEveryElementOnInfoDialogDisplayed() {
         showDialog()
         with(InfoDialogRobot()) {
             checkIfElementWithIdIsDisplayedInDialog(R.id.toastLogoImage)
-        }
-    }
-
-    @Test
-    fun isHeartImageDisplayed() {
-        showDialog()
-        with(InfoDialogRobot()) {
             checkIfElementWithIdIsDisplayedInDialog(R.id.hearthImage)
+            checkIfTextIsCorrect(getString(R.string.created_with), R.id.createdWithText)
+            checkIfTextIsCorrect(getString(R.string.by_toast_team), R.id.byToastTeamText)
+            checkIfTextIsCorrect(getString(R.string.for_more_information_visit_our), R.id.moreInfoText)
+            checkIfTextStartsWith(getStringWithoutFormattingArguments(R.string.application_version), R.id.appVersionText)
         }
     }
 
@@ -113,38 +117,6 @@ class MockInfoDialogTest {
         showDialog()
         UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).click(0, 300)
         isDialogClosed()
-    }
-
-    @Test
-    fun isCreatedWithTextDisplayed() {
-        showDialog()
-        with(InfoDialogRobot()) {
-            checkIfTextIsCorrect(getString(R.string.created_with), R.id.createdWithText)
-        }
-    }
-
-    @Test
-    fun isByToastTeamTextDisplayed() {
-        showDialog()
-        with(InfoDialogRobot()) {
-            checkIfTextIsCorrect(getString(R.string.by_toast_team), R.id.byToastTeamText)
-        }
-    }
-
-    @Test
-    fun isMoreInfoTextDisplayed() {
-        showDialog()
-        with(InfoDialogRobot()) {
-            checkIfTextIsCorrect(getString(R.string.for_more_information_visit_our), R.id.moreInfoText)
-        }
-    }
-
-    @Test
-    fun isAppVersionTextDisplayed() {
-        showDialog()
-        with(InfoDialogRobot()) {
-            checkIfTextStartsWith(getStringWithoutFormattingArguments(R.string.application_version), R.id.appVersionText)
-        }
     }
 
     @Test

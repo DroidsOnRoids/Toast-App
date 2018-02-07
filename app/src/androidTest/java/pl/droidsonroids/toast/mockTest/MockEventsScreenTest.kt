@@ -1,4 +1,4 @@
-package pl.droidsonroids.toast.test
+package pl.droidsonroids.toast.mockTest
 
 import android.support.test.rule.ActivityTestRule
 import okhttp3.mockwebserver.MockWebServer

@@ -16,8 +16,8 @@ body: >
               "id": "c30349502da0f74f9666490bc26cb09e.png",
               "storage": "cache"
             },
-          "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
-          "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+            "big": "http://api.letswift.pl/uploads/cache/e771c6b4a779586a1fc1f6aed13d1174.png",
+            "thumb": "http://api.letswift.pl/uploads/cache/82d45e6ad88a4215b2ebb80d814562d4.png"
           }
         ],
         "photos": [
@@ -41,8 +41,8 @@ body: >
               "job": "iOS Developer",
               "bio": "Z wykształcenia matematyk, z powołania programista. Po krótkim bankowym epizodzie z VBA, rozpoczął nowy etap ze Swiftem w roli głównej, który trwa do dzisiaj. Na nasz meetup przychodzi regularnie, by – jak mówi – zbierać książki",
               "avatar": {
-          "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
-          "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                "big": "http://api.letswift.pl/uploads/cache/990c232e56cd7eefcc54ac4cfc76c6fa.png",
+                "thumb": "http://api.letswift.pl/uploads/cache/f7ed9cfccee992327eea3b8b6c6388ce.png"
               }
             }
           },
@@ -59,8 +59,8 @@ body: >
               "job": "iOS Developer",
               "bio": "Programowanie to jego pasja, więc, jak sam mówi, nigdy nie musiał pracować ;) Po zakończeniu studiów informatycznych dostał do ręki pierwsze \"jabłko\" i po paru pierwszych kęsach, uzależnił się od platformy stworzonej przez jedną z najsłynniejszych firm z Cupertino.",
               "avatar": {
-          "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
-          "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                "big": "http://api.letswift.pl/uploads/cache/813cf2dba59a29bf88308ecc21ee960f.jpg",
+                "thumb": "http://api.letswift.pl/uploads/cache/0df4ac1833f5d6124eaf37f5a0e8bd93.jpg"
               }
             }
           },
@@ -77,8 +77,8 @@ body: >
               "job": "iOS Developer",
               "bio": "Mateusz jest Tech Leadem w Codete, gdzie ma styczność z wieloma różnorodnymi projektami i technologiami. Jego doświadczenie zawodowe rozciąga się od prostych MVP, do dużych platform social mediowych t.j. Jodel, a jego praca nie zawsze kończy się w Xcode.\n\nBardzo zorientowany na szczegóły, walczący o czysty, łatwy do utrzymania i piękny kod, zarówno w aplikacjach komercyjnych, jak i w projektach Open Source.\n\nOstatnio zauroczony programowaniem funkcyjnym, Swiftem, warzeniem piwa i podnoszeniem ciężarów na siłowni.",
               "avatar": {
-          "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
-          "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                "big": "http://api.letswift.pl/uploads/cache/d8226c196996ce3f3c32f182b07ae5b0.jpg",
+                "thumb": "http://api.letswift.pl/uploads/cache/8e4d581fb1a5d75c4ec5b952ed2a5f0e.jpg"
               }
             }
           }

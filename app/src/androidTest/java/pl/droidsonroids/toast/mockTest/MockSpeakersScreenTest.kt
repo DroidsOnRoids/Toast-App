@@ -1,4 +1,4 @@
-package pl.droidsonroids.toast.test
+package pl.droidsonroids.toast.mockTest
 
 import android.support.test.rule.ActivityTestRule
 import okhttp3.mockwebserver.MockWebServer
@@ -41,11 +41,6 @@ class MockSpeakersScreenTest {
         with(SpeakersRobot()) {
             performClickOnElementWithId(R.id.searchImageButton)
         }
-    }
-
-    @Test
-    fun blblalbalb() {
-        Thread.sleep(1000000000)
     }
 
     @Test

@@ -81,7 +81,7 @@ android {
             applicationIdSuffix ".letswift"
             versionNameSuffix "-letswift"
             buildConfigField 'String', 'BASE_API_URL', '"http://localhost:12345"'
-            buildConfigField 'String', 'BASE_IMAGES_URL', '"https://www.thedroidsonroids.com"'
+            buildConfigField 'String', 'BASE_IMAGES_URL', '"https://api.letswift.pl"'
         }
         // TODO add flavor for toast api when available
     }
