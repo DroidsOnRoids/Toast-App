@@ -4,23 +4,18 @@
 
 
 ### Setup
-First thing to do is to change your BASE_API_URL. Easiest way to do that is to create new buildType or productFlavor that contains changed API URL to localhost.
+First thing to do is to change your BASE_API_URL. Easiest way to do that is to create new build type or product flavor that contains changed API URL to localhost.
 
 ```java
 productFlavors {
         letswift {
-            applicationIdSuffix ".letswift"
-            versionNameSuffix "-letswift"
             buildConfigField 'String', 'BASE_API_URL', '"https://api.letswift.pl/api/v1/"'
             buildConfigField 'String', 'BASE_IMAGES_URL', '"https://api.letswift.pl"'
         }
         mockUiTest {
-            applicationIdSuffix ".letswift"
-            versionNameSuffix "-letswift"
             buildConfigField 'String', 'BASE_API_URL', '"http://localhost:12345"'
             buildConfigField 'String', 'BASE_IMAGES_URL', '"https://api.letswift.pl"'
         }
-        // TODO add flavor for toast api when available
     }
 ```
 
@@ -61,14 +56,14 @@ Last step is to implement it into your test class.
 ```java
 @JvmField
     @Rule
-    val activityRule = ActivityTestRule(MainActivity::class.java, true, false) //launchActivity should be set on false because you want to execute your mockWebServer code before activity started.
+    val activityRule = ActivityTestRule(MainActivity::class.java, true, false) //launchActivity should be set to false because you want to execute your mockWebServer code before activity started
 
     val mockWebServer = MockWebServer()
 
     private fun pathCondition() {
             val dispatcher = FixtureDispatcher()
-            val condition = PathQueryConditionFactory("pathPrefix") // pathPrefix is optional you can put empty string here if your paths does not have common part.
-            dispatcher.putResponse(condition.withPathInfix("pathInfix"), "yaml_file_response")
+            val condition = PathQueryConditionFactory("/api/v1/") //pathPrefix is optional you can put empty string here if your paths does not have common part
+            dispatcher.putResponse(condition.withPathInfix("path"), "yaml_file_response") //URL with whole path will look like this http://localhost:12345/api/v1/path
             dispatcher.putResponse(condition.withPathInfix("events"), "events_200")
             dispatcher.putResponse(condition.withPathInfix("/events/17"), "event17_200")
             mockWebServer.setDispatcher(dispatcher)
@@ -78,12 +73,12 @@ Last step is to implement it into your test class.
     fun setup(){
         pathCondition() //Set your dispatcher before server is started
         mockWebServer.start(12345) //Start mockWebServer using port you set in API URL
-        activityRule.launchActivity(null) //Launch activity
+        activityRule.launchActivity(null)
     }
 
     @After
     fun tearDown() {
-        mockWebServer.shutdown() //Shutdown server after tests
+        mockWebServer.shutdown()
     }
 ```
 
