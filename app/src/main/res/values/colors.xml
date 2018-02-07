@@ -28,4 +28,6 @@
     <color name="blueTwitter">#1DA1F2</color>
     <color name="darkBlue">#0d3f8e</color>
     <color name="redGmail">#C71610</color>
+    <color name="facebook">#3b5998</color>
+    <color name="whiteAlpha60">#99FFFFFF</color>
 </resources>

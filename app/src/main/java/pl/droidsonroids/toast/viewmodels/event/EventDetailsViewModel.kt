@@ -3,6 +3,7 @@ package pl.droidsonroids.toast.viewmodels.event
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import android.util.Log
+import io.reactivex.disposables.Disposables
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
@@ -19,15 +20,19 @@ import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
+import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
 import java.util.*
 import javax.inject.Inject
 
 private const val DEFAULT_GRADIENT_COLOR = 0xA0000000.toInt()
 private const val GRADIENT_COLOR_MASK = 0xE0FFFFFF.toInt()
 
-class EventDetailsViewModel @Inject constructor(private val eventsRepository: EventsRepository) : ViewModel(), LoadingViewModel, NavigatingViewModel {
+class EventDetailsViewModel @Inject constructor(
+        private val eventsRepository: EventsRepository,
+        attendViewModel: AttendViewModel
+) : ViewModel(), LoadingViewModel, NavigatingViewModel, AttendViewModel by attendViewModel {
     private val Any.simpleClassName: String get() = javaClass.simpleName
-    override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
+    override val navigationSubject: PublishSubject<NavigationRequest> = navigationRequests
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.PENDING)
     private var eventId = Constants.NO_ID
     val title = ObservableField("")
@@ -45,6 +50,9 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
     val eventSpeakersSubject: BehaviorSubject<List<EventSpeakerItemViewModel>> = BehaviorSubject.create()
 
     var photos: List<ImageDto> = emptyList()
+
+    private var eventsDisposable = Disposables.disposed()
+
     fun onPhotosClick() {
         navigationSubject.onNext(NavigationRequest.Photos(photos, eventId, ParentView.EVENT_DETAILS))
     }
@@ -64,7 +72,7 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
 
     private fun loadEvent() {
         loadingStatus.set(LoadingStatus.PENDING)
-        eventsRepository.getEvent(eventId)
+        eventsDisposable = eventsRepository.getEvent(eventId)
                 .subscribeBy(
                         onSuccess = (::onEventLoaded),
                         onError = (::onEventLoadError)
@@ -83,6 +91,7 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
             photos = it.photos
             coordinates = it.coordinates
             onTalksLoaded(it.talks)
+            setEvent(it.facebookId, it.date)
         }
     }
 
@@ -107,5 +116,10 @@ class EventDetailsViewModel @Inject constructor(private val eventsRepository: Ev
 
     override fun retryLoading() {
         loadEvent()
+    }
+
+    override fun onCleared() {
+        dispose()
+        eventsDisposable.dispose()
     }
 }

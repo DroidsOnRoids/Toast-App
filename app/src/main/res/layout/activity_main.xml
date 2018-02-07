@@ -74,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@color/colorAccent"
+            android:background="@color/white"
             app:itemIconTint="@color/home_navigation_items_color_selector"
             app:itemTextColor="@color/home_navigation_items_color_selector"
             app:menu="@menu/home_navigation_items"/>

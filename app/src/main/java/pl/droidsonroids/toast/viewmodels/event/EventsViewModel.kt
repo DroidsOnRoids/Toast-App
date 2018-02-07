@@ -4,12 +4,13 @@ import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import android.util.Log
 import io.reactivex.Single
-import io.reactivex.disposables.Disposable
-import io.reactivex.disposables.Disposables
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.dto.ImageDto
@@ -24,10 +25,15 @@ import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.toPage
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
+import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
 import javax.inject.Inject
 
-class EventsViewModel @Inject constructor(private val eventsRepository: EventsRepository) : ViewModel(), LoadingViewModel, NavigatingViewModel {
-    override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
+class EventsViewModel @Inject constructor(
+        loginStateWatcher: LoginStateWatcher,
+        attendViewModel: AttendViewModel,
+        private val eventsRepository: EventsRepository
+) : ViewModel(), LoadingViewModel, NavigatingViewModel, LoginStateWatcher by loginStateWatcher, AttendViewModel by attendViewModel {
+    override val navigationSubject: PublishSubject<NavigationRequest> = navigationRequests
 
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField()
     val isPreviousEventsEmpty = ObservableField<Boolean>(true)
@@ -36,8 +42,9 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
 
     private var isPreviousEventsLoading: Boolean = false
     private var nextPageNumber: Int? = null
-    private var eventsDisposable: Disposable = Disposables.disposed()
+    private var compositeDisposable = CompositeDisposable()
     private val Any.simpleClassName: String get() = javaClass.simpleName
+
 
     init {
         loadEvents()
@@ -49,12 +56,14 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
 
     private fun loadEvents() {
         loadingStatus.set(LoadingStatus.PENDING)
-        eventsDisposable = eventsRepository.getEvents()
+        compositeDisposable += eventsRepository.getEvents()
                 .flatMap { (upcomingEvent, previousEventsPage) ->
+                    setEvent(upcomingEvent.facebookId, upcomingEvent.date)
                     val upcomingEventViewModel = upcomingEvent.toViewModel(
                             onLocationClick = (::onUpcomingEventLocationClick),
+                            onEventClick = (::onUpcomingEventClick),
                             onSeePhotosClick = (::onSeePhotosClick),
-                            onEventClick = (::onUpcomingEventClick)
+                            onAttendClick = (::onAttendClick)
                     )
                     mapToSingleEventItemViewModelsPage(previousEventsPage)
                             .map { upcomingEventViewModel to it }
@@ -129,7 +138,7 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
 
     private fun loadNextPage(pageNumber: Int) {
         isPreviousEventsLoading = true
-        eventsDisposable = eventsRepository.getEventsPage(pageNumber)
+        compositeDisposable += eventsRepository.getEventsPage(pageNumber)
                 .flatMap(::mapToSingleEventItemViewModelsPage)
                 .doAfterSuccess { isPreviousEventsLoading = false }
                 .subscribeBy(
@@ -167,7 +176,8 @@ class EventsViewModel @Inject constructor(private val eventsRepository: EventsRe
     }
 
     override fun onCleared() {
-        eventsDisposable.dispose()
+        dispose()
+        compositeDisposable.dispose()
     }
 
 }

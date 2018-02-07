@@ -1,5 +1,6 @@
 package pl.droidsonroids.toast.utils
 
+import android.support.annotation.StringRes
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
 import pl.droidsonroids.toast.data.dto.event.EventTalkDto
@@ -22,5 +23,6 @@ sealed class NavigationRequest {
     data class Email(val email: String): NavigationRequest()
     object LogIn : NavigationRequest()
     object LogOut : NavigationRequest()
+    data class SnackBar(@StringRes val stringRes: Int) : NavigationRequest()
 }
 

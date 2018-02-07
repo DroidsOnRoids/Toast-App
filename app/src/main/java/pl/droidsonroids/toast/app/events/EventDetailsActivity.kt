@@ -21,6 +21,7 @@ import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.data.dto.event.EventTalkDto
 import pl.droidsonroids.toast.databinding.ActivityEventDetailsBinding
+import pl.droidsonroids.toast.di.LoginCallbackManager
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.event.EventDetailsViewModel
 import javax.inject.Inject
@@ -42,6 +43,10 @@ class EventDetailsActivity : BaseActivity() {
     }
 
     private val compositeDisposable = CompositeDisposable()
+
+
+    @Inject
+    lateinit var loginCallbackManager: LoginCallbackManager
 
     @Inject
     lateinit var navigator: Navigator
@@ -134,6 +139,16 @@ class EventDetailsActivity : BaseActivity() {
                 .subscribe {
                     eventSpeakersAdapter.setData(it)
                 }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        eventDetailsViewModel.invalidateAttendState()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        loginCallbackManager.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onDestroy() {
