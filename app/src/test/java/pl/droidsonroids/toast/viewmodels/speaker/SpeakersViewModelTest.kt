@@ -152,23 +152,23 @@ class SpeakersViewModelTest : RxTestBase() {
     }
 
     @Test
-    fun shouldLoadFirstPageAfterAlphabeticalSorting() {
-        whenever(speakersRepository.getSpeakersPage(sortingQuery = SortingType.ALPHABETICAL.toQuery())).thenReturn(Single.just(testSpeakersPage))
+    fun shouldLoadFirstPageAfterDateSorting() {
+        whenever(speakersRepository.getSpeakersPage(sortingQuery = SortingType.DATE.toQuery())).thenReturn(Single.just(testSpeakersPage))
         speakersViewModel = SpeakersViewModel(speakersRepository)
 
-        speakersViewModel.onAlphabeticalSortingClick()
+        speakersViewModel.onDateSortingClick()
 
         checkIsFirstPageLoaded()
     }
 
     @Test
-    fun shouldLoadFirstPageAfterDateSorting() {
+    fun shouldLoadFirstPageAfterAlphabeticalSorting() {
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(Exception()))
         speakersViewModel = SpeakersViewModel(speakersRepository)
 
-        whenever(speakersRepository.getSpeakersPage(pageNumber = any(), sortingQuery = eq(SortingType.DATE.toQuery()))).thenReturn(Single.just(testSpeakersPage))
+        whenever(speakersRepository.getSpeakersPage(pageNumber = any(), sortingQuery = eq(SortingType.ALPHABETICAL.toQuery()))).thenReturn(Single.just(testSpeakersPage))
 
-        speakersViewModel.onDateSortingClick()
+        speakersViewModel.onAlphabeticalSortingClick()
         checkIsFirstPageLoaded()
     }
 }
