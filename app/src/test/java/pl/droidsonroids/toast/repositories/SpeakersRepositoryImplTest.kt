@@ -13,7 +13,7 @@ import pl.droidsonroids.toast.data.api.speaker.SpeakersResponse
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepositoryImpl
 import pl.droidsonroids.toast.services.SpeakerService
-import pl.droidsonroids.toast.utils.Constants.Sorting.ALPHABETICAL
+import pl.droidsonroids.toast.utils.SortingType
 
 class SpeakersRepositoryImplTest : RxTestBase() {
     private val speakerId = 0L
@@ -31,7 +31,7 @@ class SpeakersRepositoryImplTest : RxTestBase() {
         val pageNumber = 1
         val speakersResponse = SpeakersResponse(testSpeakers, allPagesCount)
         whenever(speakerService.getSpeakers(any(), any(), eq(pageNumber))).thenReturn(Single.just(speakersResponse))
-        speakerRepository.getSpeakersPage(pageNumber, ALPHABETICAL)
+        speakerRepository.getSpeakersPage(pageNumber, SortingType.ALPHABETICAL.toQuery())
                 .test()
                 .assertComplete()
                 .assertNoErrors()

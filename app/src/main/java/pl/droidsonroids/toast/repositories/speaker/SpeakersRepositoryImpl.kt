@@ -12,8 +12,8 @@ import javax.inject.Inject
 
 class SpeakersRepositoryImpl @Inject constructor(private val speakerService: SpeakerService) : SpeakersRepository {
 
-    override fun getSpeakersPage(pageNumber: Int, sortingType: String): Single<Page<SpeakerDto>> {
-        return speakerService.getSpeakers(pageNumber = pageNumber, sortingType = sortingType)
+    override fun getSpeakersPage(pageNumber: Int, sortingQuery: String): Single<Page<SpeakerDto>> {
+        return speakerService.getSpeakers(pageNumber = pageNumber, sortingType = sortingQuery)
                 .flatMap { (apiSpeakers, allPagesCount) ->
                     apiSpeakers.toObservable()
                             .map { it.toDto() }

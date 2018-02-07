@@ -16,10 +16,9 @@ import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.testSpeaker
 import pl.droidsonroids.toast.testSpeakers
 import pl.droidsonroids.toast.testSpeakersPage
-import pl.droidsonroids.toast.utils.Constants.Sorting.ALPHABETICAL
-import pl.droidsonroids.toast.utils.Constants.Sorting.DATE
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.utils.SortingType
 
 class SpeakersViewModelTest : RxTestBase() {
 
@@ -135,10 +134,10 @@ class SpeakersViewModelTest : RxTestBase() {
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(Exception()))
         speakersViewModel = SpeakersViewModel(speakersRepository)
 
-        whenever(speakersRepository.getSpeakersPage(sortingType = ALPHABETICAL)).thenReturn(Single.just(testSpeakersPage))
+        whenever(speakersRepository.getSpeakersPage(sortingQuery = SortingType.ALPHABETICAL.toQuery())).thenReturn(Single.just(testSpeakersPage))
 
         speakersViewModel.onAlphabeticalSortingClick()
-        assertThat(speakersViewModel.sortingType.get(), equalTo(ALPHABETICAL))
+        assertThat(speakersViewModel.sortingType.get(), equalTo(SortingType.ALPHABETICAL))
     }
 
     @Test
@@ -146,15 +145,15 @@ class SpeakersViewModelTest : RxTestBase() {
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(Exception()))
         speakersViewModel = SpeakersViewModel(speakersRepository)
 
-        whenever(speakersRepository.getSpeakersPage(sortingType = DATE)).thenReturn(Single.just(testSpeakersPage))
+        whenever(speakersRepository.getSpeakersPage(sortingQuery = SortingType.DATE.toQuery())).thenReturn(Single.just(testSpeakersPage))
 
         speakersViewModel.onDateSortingClick()
-        assertThat(speakersViewModel.sortingType.get(), equalTo(DATE))
+        assertThat(speakersViewModel.sortingType.get(), equalTo(SortingType.DATE))
     }
 
     @Test
     fun shouldLoadFirstPageAfterAlphabeticalSorting() {
-        whenever(speakersRepository.getSpeakersPage(sortingType = ALPHABETICAL)).thenReturn(Single.just(testSpeakersPage))
+        whenever(speakersRepository.getSpeakersPage(sortingQuery = SortingType.ALPHABETICAL.toQuery())).thenReturn(Single.just(testSpeakersPage))
         speakersViewModel = SpeakersViewModel(speakersRepository)
 
         speakersViewModel.onAlphabeticalSortingClick()
@@ -167,7 +166,7 @@ class SpeakersViewModelTest : RxTestBase() {
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(Exception()))
         speakersViewModel = SpeakersViewModel(speakersRepository)
 
-        whenever(speakersRepository.getSpeakersPage(pageNumber = any(), sortingType = eq(DATE))).thenReturn(Single.just(testSpeakersPage))
+        whenever(speakersRepository.getSpeakersPage(pageNumber = any(), sortingQuery = eq(SortingType.DATE.toQuery()))).thenReturn(Single.just(testSpeakersPage))
 
         speakersViewModel.onDateSortingClick()
         checkIsFirstPageLoaded()

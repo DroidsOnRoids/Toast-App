@@ -25,6 +25,7 @@ import pl.droidsonroids.toast.app.utils.extensions.setImageColor
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
+import pl.droidsonroids.toast.utils.SortingType
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -158,8 +159,8 @@ fun setAboutPrefix(textView: TextView, name: String) {
 }
 
 @BindingAdapter("android:src")
-fun ImageView.setSortingImage(sortingType: String) {
-    if (sortingType == Constants.Sorting.ALPHABETICAL) {
+fun ImageView.setSortingImage(sortingType: SortingType) {
+    if (sortingType == SortingType.ALPHABETICAL) {
         setImageResource(R.drawable.ic_sorting_alphabetical)
     } else {
         setImageResource(R.drawable.ic_sorting_by_date)

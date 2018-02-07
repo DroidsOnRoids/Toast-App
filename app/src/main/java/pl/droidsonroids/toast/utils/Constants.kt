@@ -35,7 +35,7 @@ object Constants {
         const val EMAIL = "Email address"
     }
 
-    object Sorting {
+    object SortingQuery {
         const val ALPHABETICAL = "name"
         const val DATE = "talk_date"
     }
