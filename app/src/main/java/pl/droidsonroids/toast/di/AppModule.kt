@@ -97,7 +97,7 @@ class AppModule {
 
     private fun OkHttpClient.Builder.addHttpHeaders() =
             addInterceptor {
-                it.proceed(it.request().newBuilder().header("Accept-Encoding", "deflate").header(ACCEPT, APPLICATION_JSON).build())
+                it.proceed(it.request().newBuilder().header(ACCEPT, APPLICATION_JSON).build())
             }
 
     private fun OkHttpClient.Builder.addHttpLoggingInterceptorIfDebugBuildConfig(): OkHttpClient.Builder {
