@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class SpeakersViewModel @Inject constructor(private val speakersRepository: SpeakersRepository) : BaseSpeakerListViewModel() {
     val isSortingDetailsVisible: ObservableField<Boolean> = ObservableField(false)
-    val sortingType = ObservableField(SortingType.ALPHABETICAL)
+    val sortingType = ObservableField(SortingType.DATE)
 
     private var speakersDisposable: Disposable? = null
 
