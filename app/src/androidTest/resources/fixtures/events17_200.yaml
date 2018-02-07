@@ -1,0 +1,191 @@
+statusCode : 200
+headers:
+- 'Content-Type: application/json;charset=UTF-8'
+body: >
+  {
+    "events": [
+      {
+        "id": 17,
+        "title": "LET SWIFT #14",
+        "date": "2018-03-06T18:00:00+00:00",
+        "cover_images": [
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          }
+        ]
+      },
+      {
+        "id": 16,
+        "title": "LET SWIFT #13",
+        "date": "2018-01-17T18:00:00+00:00",
+        "cover_images": [
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          },
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          },
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          }
+        ]
+      },
+      {
+        "id": 15,
+        "title": "LET SWIFT #12",
+        "date": "2017-11-09T18:00:00+00:00",
+        "cover_images": [
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          },
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          },
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          }
+        ]
+      },
+      {
+        "id": 14,
+        "title": "LET SWIFT #11",
+        "date": "2017-06-22T17:00:00+00:00",
+        "cover_images": [
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          },
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          },
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          }
+        ]
+      },
+      {
+        "id": 13,
+        "title": "LET SWIFT #10",
+        "date": "2017-05-25T17:00:00+00:00",
+        "cover_images": [
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          },
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          },
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          }
+        ]
+      },
+      {
+        "id": 12,
+        "title": "LET SWIFT #9",
+        "date": "2017-03-23T18:00:00+00:00",
+        "cover_images": [
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          },
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          },
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "title": "LET SWIFT #8",
+        "date": "2017-02-16T18:00:00+00:00",
+        "cover_images": [
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          },
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          },
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "title": "LET SWIFT #7",
+        "date": "2017-01-19T18:30:00+00:00",
+        "cover_images": [
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          },
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          },
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "title": "LET SWIFT #6",
+        "date": "2016-12-15T18:00:00+00:00",
+        "cover_images": [
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          },
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          },
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "title": "LET SWIFT #5",
+        "date": "2016-11-17T18:00:00+00:00",
+        "cover_images": [
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          },
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          },
+          {
+            "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          }
+        ]
+      }
+    ],
+    "page_count": 2
+  }

@@ -1,0 +1,34 @@
+statusCode : 200
+headers:
+- 'Content-Type: application/json;charset=UTF-8'
+body: >
+  {
+    "event": {
+      "id": 17,
+      "title": "LET SWIFT #14",
+      "date": "2018-03-06T18:00:00+00:00",
+      "facebook": "561225637597581",
+      "place_name": "Barbara",
+      "place_street": "Świdnicka 8, 50-067 Wroclaw",
+      "cover_images": [
+        {
+          "ref": {
+            "id": "eafdd0c127b30e9e289f95361f2f461a.png",
+            "storage": "cache"
+          },
+          "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+          "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+        }
+      ],
+      "photos": [
+
+      ],
+      "place_coordinates": {
+        "latitude": 51.1075768,
+        "longitude": 17.0327698
+      },
+      "talks": [
+
+      ]
+    }
+  }

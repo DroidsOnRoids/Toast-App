@@ -1,16 +1,11 @@
 package pl.droidsonroids.toast.test
 
 import android.support.test.InstrumentationRegistry
-import android.support.test.InstrumentationRegistry.getInstrumentation
 import android.support.test.espresso.Espresso
-import android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
 import android.support.test.espresso.intent.rule.IntentsTestRule
 import android.support.test.uiautomator.UiDevice
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 import pl.droidsonroids.testing.mockwebserver.FixtureDispatcher
 import pl.droidsonroids.testing.mockwebserver.condition.PathQueryConditionFactory
 import pl.droidsonroids.toast.R
@@ -19,20 +14,31 @@ import pl.droidsonroids.toast.function.getString
 import pl.droidsonroids.toast.function.getStringWithoutFormattingArguments
 import pl.droidsonroids.toast.robot.InfoDialogRobot
 
-class InfoDialogTest {
+@Ignore
+class MockInfoDialogTest {
+
     @JvmField
     @Rule
-    val activityRule = IntentsTestRule(MainActivity::class.java, true, true)
+    val activityRule = IntentsTestRule(MainActivity::class.java, true, false)
+
+    val mockWebServer = MockWebServer()
+
+    @Before
+    fun setup(){
+        pathCondition()
+        mockWebServer.start(12345)
+        activityRule.launchActivity(null)
+    }
+
+    @After
+    fun tearDown() {
+        mockWebServer.shutdown()
+    }
 
     private fun showDialog() {
         with(InfoDialogRobot()) {
-            openMenuOverflow()
-            performClickOnElementWithText(getString(R.string.about_app))
+            performClickOnElementWithId(R.id.menuItemAbout)
         }
-    }
-
-    private fun openMenuOverflow() {
-        openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
     }
 
     private fun isDialogClosed() {
@@ -43,30 +49,31 @@ class InfoDialogTest {
 
     @Test
     fun isMenuOverflowDisplayed() {
-        openMenuOverflow()
         with(InfoDialogRobot()) {
-            checkIfElementWithTextIsDisplayed(getString(R.string.about_app))
+            checkIfElementWithIdIsDisplayed(R.id.menuItemAbout)
         }
     }
 
     @Test
     fun isMenuOverflowClickable() {
-        openMenuOverflow()
         with(InfoDialogRobot()) {
-            checkIfElementWithTextIsClickable(getString(R.string.about_app))
+            checkIfElementWithIdIsClickable(R.id.menuItemAbout)
         }
     }
 
     @Test
-    fun isEveryElementOnInfoDialogDisplayed() {
+    fun isToastLogoDisplayed() {
         showDialog()
         with(InfoDialogRobot()) {
             checkIfElementWithIdIsDisplayedInDialog(R.id.toastLogoImage)
+        }
+    }
+
+    @Test
+    fun isHeartImageDisplayed() {
+        showDialog()
+        with(InfoDialogRobot()) {
             checkIfElementWithIdIsDisplayedInDialog(R.id.hearthImage)
-            checkIfTextIsCorrect(getString(R.string.created_with), R.id.createdWithText)
-            checkIfTextIsCorrect(getString(R.string.by_toast_team), R.id.byToastTeamText)
-            checkIfTextIsCorrect(getString(R.string.for_more_information_visit_our), R.id.moreInfoText)
-            checkIfTextStartsWith(getStringWithoutFormattingArguments(R.string.application_version), R.id.appVersionText)
         }
     }
 
@@ -109,6 +116,38 @@ class InfoDialogTest {
     }
 
     @Test
+    fun isCreatedWithTextDisplayed() {
+        showDialog()
+        with(InfoDialogRobot()) {
+            checkIfTextIsCorrect(getString(R.string.created_with), R.id.createdWithText)
+        }
+    }
+
+    @Test
+    fun isByToastTeamTextDisplayed() {
+        showDialog()
+        with(InfoDialogRobot()) {
+            checkIfTextIsCorrect(getString(R.string.by_toast_team), R.id.byToastTeamText)
+        }
+    }
+
+    @Test
+    fun isMoreInfoTextDisplayed() {
+        showDialog()
+        with(InfoDialogRobot()) {
+            checkIfTextIsCorrect(getString(R.string.for_more_information_visit_our), R.id.moreInfoText)
+        }
+    }
+
+    @Test
+    fun isAppVersionTextDisplayed() {
+        showDialog()
+        with(InfoDialogRobot()) {
+            checkIfTextStartsWith(getStringWithoutFormattingArguments(R.string.application_version), R.id.appVersionText)
+        }
+    }
+
+    @Test
     fun isFbFanPageDeepLinkDisplayedAndActive() {
         showDialog()
         with(InfoDialogRobot()) {
@@ -116,5 +155,13 @@ class InfoDialogTest {
             performClickOnElementWithId(R.id.fanpageLinkText)
             checkIfIntentOpensFacebook()
         }
+    }
+
+    private fun pathCondition() {
+        val dispatcher = FixtureDispatcher()
+        val factory = PathQueryConditionFactory("")
+        dispatcher.putResponse(factory.withPathInfix("/events"), "events_200")
+        dispatcher.putResponse(factory.withPathInfix("/events/16"), "event16_200")
+        mockWebServer.setDispatcher(dispatcher)
     }
 }

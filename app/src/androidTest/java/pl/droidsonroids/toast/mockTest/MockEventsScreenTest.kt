@@ -2,10 +2,7 @@ package pl.droidsonroids.toast.test
 
 import android.support.test.rule.ActivityTestRule
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 import pl.droidsonroids.testing.mockwebserver.FixtureDispatcher
 import pl.droidsonroids.testing.mockwebserver.condition.PathQueryConditionFactory
 import pl.droidsonroids.toast.R
@@ -13,11 +10,25 @@ import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.function.getString
 import pl.droidsonroids.toast.robot.EventsRobot
 
-
-class EventsScreenTest {
+@Ignore
+class MockEventsScreenTest {
     @JvmField
     @Rule
-    val activityRule = ActivityTestRule(MainActivity::class.java, true, true)
+    val activityRule = ActivityTestRule(MainActivity::class.java, true, false)
+
+    val mockWebServer = MockWebServer()
+
+    @Before
+    fun setup(){
+        pathCondition()
+        mockWebServer.start(12345)
+        activityRule.launchActivity(null)
+    }
+
+    @After
+    fun tearDown() {
+        mockWebServer.shutdown()
+    }
 
     @Test
     fun isToolbarDisplayed() {
@@ -52,5 +63,13 @@ class EventsScreenTest {
             checkIfElementWithIdIsDisplayed(R.id.upcomingEventTimeDivider)
             checkIfElementWithIdIsDisplayed(R.id.upcomingEventDateDivider)
         }
+    }
+
+    private fun pathCondition() {
+        val dispatcher = FixtureDispatcher()
+        val factory = PathQueryConditionFactory("")
+        dispatcher.putResponse(factory.withPathInfix("/events"), "events_200")
+        dispatcher.putResponse(factory.withPathInfix("/events/16"), "event16_200")
+        mockWebServer.setDispatcher(dispatcher)
     }
 }

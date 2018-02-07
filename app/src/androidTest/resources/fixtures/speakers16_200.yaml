@@ -1,0 +1,178 @@
+statusCode : 200
+headers:
+- 'Content-Type: application/json; charset=UTF-8'
+body: >
+    {
+      "speaker": {
+        "id": 16,
+        "name": "Mateusz Budzar",
+        "job": "Android Developer",
+        "bio": "Android Developer od 3 lat. Pasjonat czystego kodu, koszykarz amator, uwielbia czytanie książek. Lubi myśleć o sobie, że jest kucharzem, ale niczego jeszcze nie ugotował. Od jutra zamierza zdrowo się odżywiać i zacząć treningi. Jego motto to \"Małymi krokami do przodu\".",
+        "email": null,
+        "github_url": null,
+        "website_url": null,
+        "twitter_url": null,
+        "avatar": {
+          "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+          "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+        },
+        "talks": [
+          {
+            "id": 25,
+            "title": "Profesjonalny developer. Kto to taki?",
+            "description": "Bycie programistą nie sprowadza się już jedynie do programowania. Mało tego, nie dość, że nie piszemy już tylko kodu, to bardzo często to od nas zależy powodzenie całego projektu. Jest to bardzo duża odpowiedzialność.\nCzy jest w takim razie coś, co jako programiści możemy zmienić? Czy siedząc przed naszymi laptopai, o czymś zapomnieliśmy?\nPodczas prezentacji spróbujemy odpowiedzieć sobie na te pytania oraz postaramy się zdefiniować profesjonalnego programistę.",
+            "tags": [
+
+            ],
+            "event": {
+              "id": 11,
+              "title": "LET SWIFT #8",
+              "date": "2017-02-16T18:00:00+00:00",
+              "facebook": "1225794264172303",
+              "place_name": "PROZA",
+              "place_street": "Przejście Garncarskie 2, 50-150 Wroclaw",
+              "cover_images": [
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                }
+              ],
+              "photos": [
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                },
+                {
+                  "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+                  "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+                }
+              ],
+              "place_coordinates": {
+                "latitude": 51.1100581,
+                "longitude": 17.0304249
+              }
+            }
+          }
+        ]
+      }
+    }

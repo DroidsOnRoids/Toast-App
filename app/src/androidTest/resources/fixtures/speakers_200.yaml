@@ -1,0 +1,150 @@
+statusCode : 200
+headers:
+- 'Content-Type: application/json; charset=UTF-8'
+
+body: >
+  {
+    "speakers": [
+      {
+        "id": 16,
+        "avatar": {
+          "ref": {
+            "id": "9c12a8c73b5cd72f56e66ddc564eb671.jpg",
+            "storage": "cache"
+          },
+          "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+          "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+        },
+        "name": "Mateusz Budzar",
+        "job": "Android Developer",
+        "bio": "Android Developer od 3 lat. Pasjonat czystego kodu, koszykarz amator, uwielbia czytanie książek. Lubi myśleć o sobie, że jest kucharzem, ale niczego jeszcze nie ugotował. Od jutra zamierza zdrowo się odżywiać i zacząć treningi. Jego motto to \"Małymi krokami do przodu\"."
+      },
+      {
+        "id": 7,
+        "avatar": {
+          "ref": {
+            "id": "2f4a3c1501003ffe0768aafccc7a0515.png",
+            "storage": "cache"
+          },
+          "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+          "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+        },
+        "name": "Michał Mynarski",
+        "job": "iOS Developer",
+        "bio": "Programista iOS przede wszystkim! Pracował w SMT, później w Ceneo, ale korpożycie nie było mu przeznaczone i finalnie zadomowił się w małej i młodej firmie tworzącej aplikacje mobilne dla klientów zagranicznych. Jako dziecko marzył o tworzeniu gier i to właśnie popchnęło go w stronę programowania. Lubi grzebać przy UI, docenia porządny design i jest entuzjastą technologii mobilnych. Zaliczył też dłuższy epizod z blogowaniem na temat smartfonów. Dziś pracuje dla hiszpańskiego projektu, gdzie odpowiada za rozwój i utrzymanie aplikacji iOS. "
+      },
+      {
+        "id": 15,
+        "avatar": {
+          "ref": {
+            "id": "dd5ed6e4d1e2cde07b33ce5460a417b0.jpg",
+            "storage": "cache"
+          },
+          "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+          "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+        },
+        "name": "Paweł Szymankiewicz",
+        "job": "UI/UX Designer",
+        "bio": "Pomimo swojej pikselowej obsesji, potrafi zaprojektować piękny UI, za który nie znienawidzą go developerzy. Entuzjasta designu z backgroundem w IT. Aktualnie Creative Lead w Droids On Roids. \n"
+      },
+      {
+        "id": 6,
+        "avatar": {
+          "ref": {
+            "id": "5143669f16eabd999d582e81bedb7762.jpg",
+            "storage": "cache"
+          },
+          "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+          "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+        },
+        "name": "Michał Pyrka",
+        "job": "iOS Developer",
+        "bio": "Michał Pyrka, którego posłuchamy jako pierwszego, to humanista-programista, który jest od 1 dnia ze Swiftem. Liczy na to, że za parę lat będzie to główny język wykładany w szkołach i uczelniach. Po godzinach jest sportowym świrem, który uwielbia płatać psikusy."
+      },
+      {
+        "id": 4,
+        "avatar": {
+          "ref": {
+            "id": "3322fe0cc5da21e313e6ff876a0847b0.png",
+            "storage": "cache"
+          },
+          "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+          "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+        },
+        "name": "Krystian Śliwa",
+        "job": "iOS Developer",
+        "bio": "iOS developer z prawie 4 letnim stażem. Od półtora roku piszący prawie wyłącznie w Swifcie. Lubi zamieniać dobrą kawę w kod. Swoje pasje i zainteresowania poszerza każdego dnia o nowe doświadczenia pomagając innym w rozwiązaniu prawie każdego problemu. Poza pracą chętnie uprawia sport, m.in. biega i jeździ na rowerze."
+      },
+      {
+        "id": 1,
+        "avatar": {
+          "ref": {
+            "id": "e3b3f4fcbbf18d612e3c34e1cb534411.png",
+            "storage": "cache"
+          },
+          "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+          "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+        },
+        "name": "Oktawian Chojnacki",
+        "job": "iOS Developer",
+        "bio": "iOS Deweloper w Macoscope. Kocha Swift'a tak bardzo, że śni o nim niemal każdej nocy. Za pasem ma 4 lata doświadczenia na platformie iOS. Web developer w poprzednim życiu. Ojciec wspaniałego syna. Ma zdiagnozowane uzależnienie od kawy. Jeśli nie tworzy kodu to najprawdopodobniej czyta książkę. Wielbiciel Alana Turinga, Ivana E. Sutherlanda, Doublasa Engelbarta, Alana Kaya oraz (tak, zgadliście) Steva Jobsa."
+      },
+      {
+        "id": 3,
+        "avatar": {
+          "ref": {
+            "id": "6455026de713d033d16286d5531102b5.jpg",
+            "storage": "cache"
+            },
+            "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          },
+          "name": "Marcel Starczyk",
+          "job": "iOS Developer",
+          "bio": "iOS Developer z 4 letnim doświadczeniem na plecach. W dzień developer aplikacji mobilnych, nocami zajęty Game Developmentem w SpriteKit, SceneKit, Unity3D i Unreal Engine. Z zamiłowania gracz, aktualnie nie może uwierzyć w warstwę wizualną Uncharted 4. W wolnych chwilach oddaje się treningom siłowym oraz akrobatyce."
+        },
+        {
+          "id": 13,
+          "avatar": {
+            "ref": {
+              "id": "45876e10f092e7801ec591555c02b216.png",
+              "storage": "cache"
+            },
+            "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          },
+          "name": "Radosław Czemerys",
+          "job": "React-Native Developer",
+          "bio": "Radek swoją przyszłość związał z tworzeniem aplikacji mobilnych. Po kilku epizodach z natywnymi aplikacjami oraz z Xamarinem skupił się na frameworku stworzonym przez Facebooka - react-native. Po 1.5 roku pracy, kontrybucjach Open Source, wielu odpowiedziach na Stackoverflow postanowił podzielić się swoją wiedzą z innymi. Weekendy zwykle spędza latając tanimi liniami i oglądając niezależne kino."
+        },
+        {
+          "id": 14,
+          "avatar": {
+            "ref": {
+              "id": "766f34132c8689a7275e693234a3424e.jpg",
+              "storage": "cache"
+            },
+            "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          },
+          "name": "Paweł Dudek",
+          "job": "iOS Developer",
+          "bio": "Programista iOS tworzący aplikacje od 2009 roku. Wyznawca TDD. Organizator w Mobile Warsaw. Co-founder w Mobile Academy. Uzależniony od kawy z dripa i wielbiciel craft cocktails."
+        },
+        {
+          "id": 5,
+          "avatar": {
+            "ref": {
+              "id": "4b6a6292ab7601951ac19b97a8f4045c.png",
+              "storage": "cache"
+            },
+            "big": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+            "thumb": "https://www.thedroidsonroids.com/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+          },
+          "name": "Bazyli Zygan",
+          "job": "iOS Developer",
+          "bio": "Pracuje w branży od 15 lat. Od lat 11 zajmuje się programowaniem telefonów komórkowych. Pamięta czasy, kiedy telefon nie przypominał komputera i służył jednak zazwyczaj do dzwonienia i wysyłania SMSów. Zdążył się nauczyć na czym polegają ograniczenia tego typu urządzeń, zanim Apple wydał iPhone OS w 2007 i wywrócił świat smartfonów do góry nogami. Do dziś uczy się, jak to się stało. I tak naprawdę, CO się stało."
+        }
+      ],
+      "page_count": 3
+  }
