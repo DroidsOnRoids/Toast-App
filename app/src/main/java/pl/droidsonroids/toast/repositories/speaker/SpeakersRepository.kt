@@ -8,9 +8,10 @@ import pl.droidsonroids.toast.utils.Constants
 
 interface SpeakersRepository {
 
-    fun getSpeakersPage(pageNumber: Int = Constants.Page.FIRST): Single<Page<SpeakerDto>>
+    fun getSpeakersPage(pageNumber: Int = Constants.Page.FIRST, sortingQuery: String): Single<Page<SpeakerDto>>
 
     fun searchSpeakersPage(query: String, pageNumber: Int = Constants.Page.FIRST): Single<Page<SpeakerDto>>
 
     fun getSpeaker(id: Long): Single<SpeakerDetailsDto>
+
 }

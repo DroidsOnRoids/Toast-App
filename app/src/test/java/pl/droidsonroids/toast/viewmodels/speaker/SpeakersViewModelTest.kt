@@ -1,8 +1,9 @@
 package pl.droidsonroids.toast.viewmodels.speaker
 
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Single
-import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Test
@@ -17,6 +18,7 @@ import pl.droidsonroids.toast.testSpeakers
 import pl.droidsonroids.toast.testSpeakersPage
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.utils.SortingType
 
 class SpeakersViewModelTest : RxTestBase() {
 
@@ -26,7 +28,7 @@ class SpeakersViewModelTest : RxTestBase() {
 
     @Test
     fun shouldLoadFirstPage() {
-        whenever(speakersRepository.getSpeakersPage()).thenReturn(Single.just(testSpeakersPage))
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPage))
         speakersViewModel = SpeakersViewModel(speakersRepository)
 
         checkIsFirstPageLoaded()
@@ -50,21 +52,21 @@ class SpeakersViewModelTest : RxTestBase() {
 
     @Test
     fun shouldFailLoadFirstPage() {
-        whenever(speakersRepository.getSpeakersPage()).thenReturn(Single.error(Exception()))
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(Exception()))
         speakersViewModel = SpeakersViewModel(speakersRepository)
 
         val speakerItemViewModelList: List<State<SpeakerItemViewModel>> = speakersViewModel.speakersSubject.value
 
-        assertThat(speakerItemViewModelList.isEmpty(), `is`(true))
+        assertThat(speakerItemViewModelList.isEmpty(), equalTo(true))
         assertThat(speakersViewModel.loadingStatus.get(), equalTo(LoadingStatus.ERROR))
     }
 
     @Test
     fun shouldLoadFirstPageAfterRetry() {
-        whenever(speakersRepository.getSpeakersPage()).thenReturn(Single.error(Exception()))
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(Exception()))
         speakersViewModel = SpeakersViewModel(speakersRepository)
 
-        whenever(speakersRepository.getSpeakersPage()).thenReturn(Single.just(testSpeakersPage))
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPage))
 
         speakersViewModel.retryLoading()
 
@@ -74,7 +76,7 @@ class SpeakersViewModelTest : RxTestBase() {
     @Test
     fun shouldHaveLoadingItemWhenNextPageAvailable() {
         val testSpeakersPageWithNextPageAvailable = testSpeakersPage.copy(allPagesCount = 2)
-        whenever(speakersRepository.getSpeakersPage()).thenReturn(Single.just(testSpeakersPageWithNextPageAvailable))
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPageWithNextPageAvailable))
         speakersViewModel = SpeakersViewModel(speakersRepository)
 
         val speakerItemViewModelList = speakersViewModel.speakersSubject.value
@@ -85,23 +87,23 @@ class SpeakersViewModelTest : RxTestBase() {
     @Test
     fun shouldHaveErrorItemWhenNextPageLoadFailed() {
         val testSpeakersPageWithNextPageAvailable = testSpeakersPage.copy(allPagesCount = 2)
-        whenever(speakersRepository.getSpeakersPage()).thenReturn(Single.just(testSpeakersPageWithNextPageAvailable))
-        whenever(speakersRepository.getSpeakersPage(2)).thenReturn(Single.error(Exception()))
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPageWithNextPageAvailable))
+        whenever(speakersRepository.getSpeakersPage(eq(2), any())).thenReturn(Single.error(Exception()))
         speakersViewModel = SpeakersViewModel(speakersRepository)
 
         speakersViewModel.loadNextPage()
 
         val speakerItemViewModelList = speakersViewModel.speakersSubject.value
-        assertThat(speakerItemViewModelList.last() is State.Error, `is`(true))
+        assertThat(speakerItemViewModelList.last() is State.Error, equalTo(true))
     }
 
     @Test
     fun shouldLoadNextPage() {
         val itemsCountOnAllPages = 2
         val testSpeakersPageWithNextPageAvailable = testSpeakersPage.copy(allPagesCount = 2)
-        whenever(speakersRepository.getSpeakersPage()).thenReturn(Single.just(testSpeakersPageWithNextPageAvailable))
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPageWithNextPageAvailable))
         val secondSpeakersPage = testSpeakersPage.copy(pageNumber = 2, allPagesCount = 2)
-        whenever(speakersRepository.getSpeakersPage(2)).thenReturn(Single.just(secondSpeakersPage))
+        whenever(speakersRepository.getSpeakersPage(eq(2), any())).thenReturn(Single.just(secondSpeakersPage))
         speakersViewModel = SpeakersViewModel(speakersRepository)
 
         speakersViewModel.loadNextPage()
@@ -113,7 +115,7 @@ class SpeakersViewModelTest : RxTestBase() {
 
     @Test
     fun shouldRequestNavigationToSpeakerDetails() {
-        whenever(speakersRepository.getSpeakersPage()).thenReturn(Single.just(testSpeakersPage))
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPage))
         speakersViewModel = SpeakersViewModel(speakersRepository)
         val speakerItemViewModelList = speakersViewModel.speakersSubject.value
         val speakerItemViewModel = (speakerItemViewModelList.first() as? State.Item)?.item
@@ -125,5 +127,48 @@ class SpeakersViewModelTest : RxTestBase() {
             it is NavigationRequest.SpeakerDetails
                     && it.id == testSpeaker.id
         }
+    }
+
+    @Test
+    fun shouldSortSpeakersAlphabetical() {
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(Exception()))
+        speakersViewModel = SpeakersViewModel(speakersRepository)
+
+        whenever(speakersRepository.getSpeakersPage(sortingQuery = SortingType.ALPHABETICAL.toQuery())).thenReturn(Single.just(testSpeakersPage))
+
+        speakersViewModel.onAlphabeticalSortingClick()
+        assertThat(speakersViewModel.sortingType.get(), equalTo(SortingType.ALPHABETICAL))
+    }
+
+    @Test
+    fun shouldSortSpeakersByDate() {
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(Exception()))
+        speakersViewModel = SpeakersViewModel(speakersRepository)
+
+        whenever(speakersRepository.getSpeakersPage(sortingQuery = SortingType.DATE.toQuery())).thenReturn(Single.just(testSpeakersPage))
+
+        speakersViewModel.onDateSortingClick()
+        assertThat(speakersViewModel.sortingType.get(), equalTo(SortingType.DATE))
+    }
+
+    @Test
+    fun shouldLoadFirstPageAfterAlphabeticalSorting() {
+        whenever(speakersRepository.getSpeakersPage(sortingQuery = SortingType.ALPHABETICAL.toQuery())).thenReturn(Single.just(testSpeakersPage))
+        speakersViewModel = SpeakersViewModel(speakersRepository)
+
+        speakersViewModel.onAlphabeticalSortingClick()
+
+        checkIsFirstPageLoaded()
+    }
+
+    @Test
+    fun shouldLoadFirstPageAfterDateSorting() {
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(Exception()))
+        speakersViewModel = SpeakersViewModel(speakersRepository)
+
+        whenever(speakersRepository.getSpeakersPage(pageNumber = any(), sortingQuery = eq(SortingType.DATE.toQuery()))).thenReturn(Single.just(testSpeakersPage))
+
+        speakersViewModel.onDateSortingClick()
+        checkIsFirstPageLoaded()
     }
 }
