@@ -35,6 +35,11 @@ object Constants {
         const val EMAIL = "Email address"
     }
 
+    object SortingQuery {
+        const val ALPHABETICAL = "name"
+        const val DATE = "talk_date"
+    }
+
     object Facebook {
         val PERMISSIONS = listOf("rsvp_event")
         val EVENT_URL: String = "https://www.facebook.com/events/"

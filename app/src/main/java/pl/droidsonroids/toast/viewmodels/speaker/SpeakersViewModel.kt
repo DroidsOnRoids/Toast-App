@@ -1,24 +1,47 @@
 package pl.droidsonroids.toast.viewmodels.speaker
 
+import android.databinding.Observable
 import android.databinding.ObservableField
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
+import pl.droidsonroids.toast.utils.SortingType
 import javax.inject.Inject
 
 class SpeakersViewModel @Inject constructor(private val speakersRepository: SpeakersRepository) : BaseSpeakerListViewModel() {
     val isSortingDetailsVisible: ObservableField<Boolean> = ObservableField(false)
+    val sortingType = ObservableField(SortingType.DATE)
 
     private var speakersDisposable: Disposable? = null
 
     init {
         loadFirstPage()
+        sortingType.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                clearSpeakersList()
+                loadFirstPage()
+            }
+        })
+    }
+
+    private fun clearSpeakersList() {
+        speakersSubject.onNext(emptyList())
     }
 
     fun toggleSortingDetailsVisibility() {
         isSortingDetailsVisible.set(!isSortingDetailsVisible.get())
+    }
+
+    fun onAlphabeticalSortingClick() {
+        sortingType.set(SortingType.ALPHABETICAL)
+        toggleSortingDetailsVisibility()
+    }
+
+    fun onDateSortingClick() {
+        sortingType.set(SortingType.DATE)
+        toggleSortingDetailsVisibility()
     }
 
     override fun retryLoading() {
@@ -27,10 +50,10 @@ class SpeakersViewModel @Inject constructor(private val speakersRepository: Spea
 
     private fun loadFirstPage() {
         loadingStatus.set(LoadingStatus.PENDING)
-        speakersDisposable = speakersRepository.getSpeakersPage()
+        speakersDisposable = speakersRepository.getSpeakersPage(sortingQuery = sortingType.get().toQuery())
                 .flatMap(::mapToSingleSpeakerItemViewModelsPage)
                 .subscribeBy(
-                        onSuccess = (::onSpeakersPageLoaded),
+                        onSuccess = (::onNewSpeakersPageLoaded),
                         onError = (::onFirstPageLoadError)
                 )
     }
@@ -44,7 +67,7 @@ class SpeakersViewModel @Inject constructor(private val speakersRepository: Spea
 
     private fun loadPage(pageNumber: Int) {
         isNextPageLoading = true
-        speakersDisposable = speakersRepository.getSpeakersPage(pageNumber)
+        speakersDisposable = speakersRepository.getSpeakersPage(pageNumber, sortingType.get().toQuery())
                 .flatMap(::mapToSingleSpeakerItemViewModelsPage)
                 .doAfterSuccess { isNextPageLoading = false }
                 .subscribeBy(
