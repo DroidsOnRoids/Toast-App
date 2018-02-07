@@ -6,27 +6,36 @@ import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.rxkotlin.toSingle
+import io.reactivex.subjects.PublishSubject
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
+import org.junit.Before
 import org.junit.Test
-import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.event.EventsRepository
-import pl.droidsonroids.toast.testApiTalk
+import pl.droidsonroids.toast.testApiEventTalk
 import pl.droidsonroids.toast.testEventDetails
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
 
 class EventDetailsViewModelTest : RxTestBase() {
     @Mock
     lateinit var eventsRepository: EventsRepository
-    @InjectMocks
+    @Mock
+    lateinit var attendViewModel: AttendViewModel
     lateinit var eventDetailsViewModel: EventDetailsViewModel
 
     private val eventId: Long = 1
+
+    @Before
+    fun setUp() {
+        whenever(attendViewModel.navigationRequests).thenReturn(PublishSubject.create())
+        eventDetailsViewModel = EventDetailsViewModel(eventsRepository, attendViewModel)
+    }
 
     @Test
     fun shouldLoadEventDetails() {
@@ -80,6 +89,18 @@ class EventDetailsViewModelTest : RxTestBase() {
         testObserver.assertValue(NavigationRequest.Photos(testPhotos, eventId, ParentView.EVENT_DETAILS))
     }
 
+    @Test
+    fun shouldRequestNavigationToEventLocation() {
+        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
+        eventDetailsViewModel.init(eventId)
+
+        val testObserver = eventDetailsViewModel.navigationSubject.test()
+
+        eventDetailsViewModel.onLocationClick()
+
+        testObserver.assertValue(NavigationRequest.Map(testEventDetails.placeCoordinates.toDto(), testEventDetails.placeName))
+    }
+
     private fun assertEventDetails() {
         assertThat(eventDetailsViewModel.title.get(), equalTo(testEventDetails.title))
         assertThat(eventDetailsViewModel.date.get(), equalTo(testEventDetails.date))
@@ -90,7 +111,7 @@ class EventDetailsViewModelTest : RxTestBase() {
     }
 
     private fun assertEventSpeakers() {
-        with(testApiTalk) {
+        with(testApiEventTalk) {
             eventDetailsViewModel.eventSpeakersSubject
                     .flatMap { it.toObservable() }
                     .test()

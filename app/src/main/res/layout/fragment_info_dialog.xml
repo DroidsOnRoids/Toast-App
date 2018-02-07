@@ -13,7 +13,8 @@
         android:layout_height="@dimen/icon_size_small"
         android:layout_marginEnd="@dimen/margin_large"
         android:layout_marginTop="@dimen/margin_large"
-        android:background="@drawable/ic_dialog_close"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_dialog_close"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -22,7 +23,7 @@
         android:layout_width="170dp"
         android:layout_height="170dp"
         android:layout_marginTop="@dimen/margin_large"
-        android:src="@drawable/ic_logo_toast"
+        android:background="@drawable/ic_logo_toast"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/closeImageButton"/>
@@ -91,33 +92,24 @@
         android:text="@string/toast_facebook_fanpage"
         android:textColor="@color/blueLink"
         android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/appVersionTitle"
+        app:layout_constraintBottom_toTopOf="@+id/appVersionText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/moreInfoText"/>
 
     <TextView
-        android:id="@+id/appVersionTitle"
-        android:layout_width="wrap_content"
+        android:id="@+id/appVersionText"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:layout_marginStart="@dimen/margin_large"
         android:fontFamily="@font/roboto"
-        android:text="@string/application_version_title"
+        android:gravity="center"
+        android:text="@string/application_version"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/appVersionText"
-        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fanpageLinkText"/>
 
-    <TextView
-        android:id="@+id/appVersionText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_large"
-        android:fontFamily="@font/roboto"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/appVersionTitle"
-        app:layout_constraintTop_toBottomOf="@+id/fanpageLinkText"/>
 </android.support.constraint.ConstraintLayout>

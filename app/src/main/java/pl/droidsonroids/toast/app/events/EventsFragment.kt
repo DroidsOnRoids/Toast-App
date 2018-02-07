@@ -3,6 +3,7 @@ package pl.droidsonroids.toast.app.events
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -17,7 +18,9 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseFragment
 import pl.droidsonroids.toast.app.utils.callbacks.LazyLoadingScrollListener
+import pl.droidsonroids.toast.app.utils.extensions.setNavigationViewAnchor
 import pl.droidsonroids.toast.databinding.FragmentEventsBinding
+import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.event.EventsViewModel
 import javax.inject.Inject
 
@@ -49,9 +52,17 @@ class EventsFragment : BaseFragment() {
     private fun setupViewModel() {
         eventsViewModel = ViewModelProviders.of(this, viewModelFactory)[EventsViewModel::class.java]
         navigationDisposable = eventsViewModel.navigationSubject
-                .subscribe { request ->
-                    context?.let { navigator.dispatch(it, request) }
-                }
+                .subscribe(::handleNavigationRequest)
+    }
+
+    private fun handleNavigationRequest(request: NavigationRequest) {
+        if (request is NavigationRequest.SnackBar) {
+            Snackbar.make(eventsScrollContainer, request.stringRes, Snackbar.LENGTH_SHORT)
+                    .setNavigationViewAnchor()
+                    .show()
+        } else {
+            activity?.let { navigator.dispatch(it, request) }
+        }
     }
 
 
@@ -98,6 +109,11 @@ class EventsFragment : BaseFragment() {
 
             shadowCreator.translationZ = shadow
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        eventsViewModel.invalidateAttendState()
     }
 
     override fun onDestroyView() {

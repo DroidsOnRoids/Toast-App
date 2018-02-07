@@ -19,8 +19,9 @@ import kotlinx.android.synthetic.main.activity_event_details.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
-import pl.droidsonroids.toast.data.dto.event.TalkDto
+import pl.droidsonroids.toast.data.dto.event.EventTalkDto
 import pl.droidsonroids.toast.databinding.ActivityEventDetailsBinding
+import pl.droidsonroids.toast.di.LoginCallbackManager
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.event.EventDetailsViewModel
 import javax.inject.Inject
@@ -42,6 +43,10 @@ class EventDetailsActivity : BaseActivity() {
     }
 
     private val compositeDisposable = CompositeDisposable()
+
+
+    @Inject
+    lateinit var loginCallbackManager: LoginCallbackManager
 
     @Inject
     lateinit var navigator: Navigator
@@ -94,14 +99,14 @@ class EventDetailsActivity : BaseActivity() {
     }
 
     private fun handleNavigationRequest(it: NavigationRequest) {
-        if (it is NavigationRequest.TalkDetails) {
-            navigator.showTalkDetailsWithSharedAnimation(this, it, getSharedViews(it.talkDto))
+        if (it is NavigationRequest.EventTalkDetails) {
+            navigator.showActivityWithSharedAnimation(this, it, getSharedViews(it.eventTalkDto))
         } else {
             navigator.dispatch(this, it)
         }
     }
 
-    private fun getSharedViews(it: TalkDto): Array<Pair<View, String>> {
+    private fun getSharedViews(it: EventTalkDto): Array<Pair<View, String>> {
         return eventSpeakersRecyclerView.findViewHolderForItemId(it.id)
                 ?.itemView
                 ?.run {
@@ -134,6 +139,16 @@ class EventDetailsActivity : BaseActivity() {
                 .subscribe {
                     eventSpeakersAdapter.setData(it)
                 }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        eventDetailsViewModel.invalidateAttendState()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        loginCallbackManager.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onDestroy() {

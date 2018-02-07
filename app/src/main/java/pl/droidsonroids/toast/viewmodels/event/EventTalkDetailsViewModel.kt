@@ -3,25 +3,22 @@ package pl.droidsonroids.toast.viewmodels.event
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import io.reactivex.subjects.PublishSubject
-import pl.droidsonroids.toast.data.dto.event.TalkDto
+import pl.droidsonroids.toast.data.dto.event.EventTalkDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
-import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakerItemViewModel
 import javax.inject.Inject
 
-class TalkDetailsViewModel @Inject constructor() : ViewModel(), NavigatingViewModel {
+
+class EventTalkDetailsViewModel @Inject constructor() : ViewModel(), NavigatingViewModel {
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
     val id: ObservableField<Long> = ObservableField()
     val title: ObservableField<String> = ObservableField()
     val description: ObservableField<String> = ObservableField()
     val speakerItemViewModel: ObservableField<SpeakerItemViewModel> = ObservableField()
 
-    private var eventId = Constants.NO_ID
-
-    fun init(eventId: Long, talkDto: TalkDto) {
-        this.eventId = eventId
+    fun init(talkDto: EventTalkDto) {
         talkDto.let {
             id.set(it.id)
             title.set(it.title)
@@ -31,7 +28,7 @@ class TalkDetailsViewModel @Inject constructor() : ViewModel(), NavigatingViewMo
     }
 
     private fun onSpeakerClick(speakerId: Long) {
-        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId, eventId))
+        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId))
     }
 
     fun onReadLess() {

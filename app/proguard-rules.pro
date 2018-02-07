@@ -47,3 +47,7 @@
 
 # Dagger
 -dontwarn com.google.errorprone.annotations.*
+
+-keepclassmembers class * extends java.lang.Enum {
+    <fields>;
+}

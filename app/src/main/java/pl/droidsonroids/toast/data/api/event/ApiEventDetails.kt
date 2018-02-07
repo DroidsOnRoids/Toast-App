@@ -24,5 +24,5 @@ data class ApiEventDetails(
         @SerializedName("photos")
         val photos: List<ApiImage>,
         @SerializedName("talks")
-        val talks: List<ApiTalk>
+        val eventTalks: List<ApiEventTalk>
 )

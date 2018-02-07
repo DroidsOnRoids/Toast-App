@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_info_dialog.*
 import pl.droidsonroids.toast.BuildConfig
@@ -33,6 +34,7 @@ class InfoDialogFragment : DialogFragment() {
 
     private fun setDialogBackgroundDrawable() {
         dialog.window.setBackgroundDrawableResource(R.drawable.dialog_background_round_rectangle)
+        dialog.window.requestFeature(Window.FEATURE_NO_TITLE)
     }
 
     private fun setButtonsOnClickListeners() {
@@ -66,7 +68,7 @@ class InfoDialogFragment : DialogFragment() {
     }
 
     private fun setVersionText() {
-        appVersionText.text = BuildConfig.VERSION_NAME
+        appVersionText.text = getString(R.string.application_version, BuildConfig.VERSION_NAME)
     }
 }
 

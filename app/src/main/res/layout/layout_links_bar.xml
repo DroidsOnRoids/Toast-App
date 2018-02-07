@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="speakerDetailsViewModel"
+            type="pl.droidsonroids.toast.viewmodels.speaker.SpeakerDetailsViewModel"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:background="@color/paleGrayBackground"
+        android:divider="@drawable/horizontal_divider"
+        android:orientation="horizontal"
+        android:showDividers="middle">
+
+        <ImageButton
+            android:id="@+id/githubImage"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="?attr/selectableItemBackground"
+            android:onClick="@{() -> speakerDetailsViewModel.onGithubClick()}"
+            android:padding="@dimen/margin_large"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_github"
+            app:linkEnabled="@{speakerDetailsViewModel.github}"
+            />
+
+        <ImageButton
+            android:id="@+id/websiteImage"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="?attr/selectableItemBackground"
+            android:onClick="@{() -> speakerDetailsViewModel.onWebsiteClick()}"
+            android:padding="@dimen/margin_large"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_www"
+            app:linkEnabled="@{speakerDetailsViewModel.website}"/>
+
+        <ImageButton
+            android:id="@+id/twitterImage"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="?attr/selectableItemBackground"
+            android:onClick="@{() -> speakerDetailsViewModel.onTwitterClick()}"
+            android:padding="@dimen/margin_large"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_twitter"
+            app:linkEnabled="@{speakerDetailsViewModel.twitter}"/>
+
+        <ImageButton
+            android:id="@+id/emailImage"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="?attr/selectableItemBackground"
+            android:onClick="@{() -> speakerDetailsViewModel.onEmailClick()}"
+            android:padding="@dimen/margin_large"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_email"
+            app:linkEnabled="@{speakerDetailsViewModel.email}"
+            />
+
+    </LinearLayout>
+</layout>

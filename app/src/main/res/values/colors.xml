@@ -15,6 +15,7 @@
     <color name="lightRed">#ea6d6b</color>
     <color name="paleGrayBackground">#edf1f5</color>
     <color name="paleGray">#e0e7f0</color>
+    <color name="disabledGray">#b1bac5</color>
     <color name="gray">#989ea6</color>
     <color name="blackAlpha10">#1F000000</color>
     <color name="blackAlpha20">#33000000</color>
@@ -23,5 +24,10 @@
     <color name="transparent">#00000000</color>
     <color name="transparentWhite">#00FFFFFF</color>
     <color name="lightGreen">#BCEEDB</color>
-    <color name="photoButton">#0cc783</color>
+    <color name="photoButton">#0CC783</color>
+    <color name="blueTwitter">#1DA1F2</color>
+    <color name="darkBlue">#0d3f8e</color>
+    <color name="redGmail">#C71610</color>
+    <color name="facebook">#3b5998</color>
+    <color name="whiteAlpha60">#99FFFFFF</color>
 </resources>

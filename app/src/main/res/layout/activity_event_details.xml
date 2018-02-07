@@ -79,6 +79,7 @@
             android:id="@+id/eventDetailsScrollContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="54dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
@@ -118,6 +119,37 @@
             </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@drawable/bottom_nav_bar_shadow"
+            app:layout_anchor="@+id/attendButton"/>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/attendButton"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:foreground="@{eventDetailsViewModel.isPastEvent}"
+            android:onClick="@{() -> eventDetailsViewModel.onAttendClick()}"
+            app:cardBackgroundColor="@color/facebook"
+            app:cardCornerRadius="0dp">
+
+            <TextView
+                style="@style/GreenButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:drawablePadding="@dimen/margin_small"
+                android:drawableStart="@drawable/ic_facebook"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@{eventDetailsViewModel.attendStatus, default=ATTEND}"
+                android:textAllCaps="true"
+                app:isPastEvent="@{eventDetailsViewModel.isPastEvent}"/>
+        </android.support.v7.widget.CardView>
 
         <include
             android:id="@+id/loadingLayout"

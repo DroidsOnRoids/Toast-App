@@ -105,6 +105,16 @@
                 tools:text="Przejście Garncarskie 2, Rynek Wrocław"/>
 
             <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:onClick="@{() -> eventDetailsViewModel.onLocationClick()}"
+                android:background="?attr/selectableItemBackground"
+                app:layout_constraintTop_toTopOf="@id/eventTitleDivider"
+                app:layout_constraintBottom_toBottomOf="@id/eventLocationDivider"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <View
                 android:id="@+id/eventLocationDivider"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
@@ -182,7 +192,6 @@
             android:orientation="horizontal"
             android:visibility="@{eventDetailsViewModel.photosAvailable}">
 
-            <!--TODO: Change icon when resource from PO is available-->
             <ImageView
                 android:id="@+id/eventPhotosIcon"
                 android:layout_width="wrap_content"
