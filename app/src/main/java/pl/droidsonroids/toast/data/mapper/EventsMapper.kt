@@ -3,9 +3,9 @@ package pl.droidsonroids.toast.data.mapper
 import pl.droidsonroids.toast.data.api.event.ApiCoordinates
 import pl.droidsonroids.toast.data.api.event.ApiEvent
 import pl.droidsonroids.toast.data.api.event.ApiEventDetails
+import pl.droidsonroids.toast.data.api.event.ApiEventTalk
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
-import pl.droidsonroids.toast.data.api.event.ApiEventTalk
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
 import pl.droidsonroids.toast.data.dto.event.EventDto
 import pl.droidsonroids.toast.data.dto.event.EventTalkDto
@@ -58,13 +58,14 @@ fun ApiEvent.toDto(): EventDto {
     )
 }
 
-fun EventDto.toViewModel(onClick: (Long) -> Unit): EventItemViewModel {
+fun EventDto.toViewModel(onCoverLoadingFinish: () -> Unit = {}, onClick: (Long) -> Unit): EventItemViewModel {
     return EventItemViewModel(
             id = id,
             title = title,
             date = date,
             coverImage = coverImages.firstOrNull(),
-            action = onClick
+            action = onClick,
+            onCoverLoadingFinish = onCoverLoadingFinish
     )
 }
 

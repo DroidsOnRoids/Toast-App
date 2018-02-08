@@ -50,7 +50,6 @@ class SpeakerTalkDetailsActivity : BaseActivity() {
     private fun setupBinding(binding: ActivitySpeakerTalkDetailsBinding) {
         binding.addOnRebindCallback(object : OnRebindCallback<ActivitySpeakerTalkDetailsBinding>() {
             override fun onBound(binding: ActivitySpeakerTalkDetailsBinding?) {
-                supportStartPostponedEnterTransition()
                 binding?.removeOnRebindCallback(this)
             }
         })
@@ -58,7 +57,9 @@ class SpeakerTalkDetailsActivity : BaseActivity() {
     }
 
     private fun setupViewModel(binding: ActivitySpeakerTalkDetailsBinding) {
-        speakerTalkDetailsViewModel.init(talkDto)
+        speakerTalkDetailsViewModel.init(talkDto) {
+            supportStartPostponedEnterTransition()
+        }
         navigationDisposable = speakerTalkDetailsViewModel.navigationSubject
                 .subscribe(::handleNavigationRequest)
         binding.speakerTalkDetailsViewModel = speakerTalkDetailsViewModel
