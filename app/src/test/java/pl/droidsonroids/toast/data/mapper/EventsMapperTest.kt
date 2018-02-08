@@ -35,7 +35,8 @@ class EventsMapperTest {
                 title = "title",
                 date = Date(),
                 coverImage = testImageDto,
-                action = mock()
+                action = mock(),
+                onCoverLoadingFinish = mock()
         ).run {
             val eventDto = toDto()
             assertThat(eventDto.id, equalTo(id))
