@@ -4,17 +4,15 @@
 
 
 ### Setup
-First thing to do is to change your BASE_API_URL. Easiest way to do that is to create new build type or product flavor that contains changed API URL to localhost.
+First thing to do is to change your BASE_API_URL. The asiest way to do that is to create new build type or product flavor that contains changed API URL to localhost.
 
 ```java
 productFlavors {
         letswift {
             buildConfigField 'String', 'BASE_API_URL', '"https://api.letswift.pl/api/v1/"'
-            buildConfigField 'String', 'BASE_IMAGES_URL', '"https://api.letswift.pl"'
         }
         mockUiTest {
             buildConfigField 'String', 'BASE_API_URL', '"http://localhost:12345"'
-            buildConfigField 'String', 'BASE_IMAGES_URL', '"https://api.letswift.pl"'
         }
     }
 ```
@@ -38,7 +36,7 @@ src
 │   │   │   ├── event17_200.yaml
 ```
 
-Saple response in yaml file:
+Sample response in yaml file:
 
 ```yaml
 statusCode : 200
@@ -60,18 +58,18 @@ Last step is to implement it into your test class.
 
     val mockWebServer = MockWebServer()
 
-    private fun pathCondition() {
+    private fun setPathDispatcher() {
             val dispatcher = FixtureDispatcher()
             val condition = PathQueryConditionFactory("/api/v1/") //pathPrefix is optional you can put empty string here if your paths does not have common part
             dispatcher.putResponse(condition.withPathInfix("path"), "yaml_file_response") //URL with whole path will look like this http://localhost:12345/api/v1/path
             dispatcher.putResponse(condition.withPathInfix("events"), "events_200")
             dispatcher.putResponse(condition.withPathInfix("/events/17"), "event17_200")
-            mockWebServer.setDispatcher(dispatcher)
+            mockWebServer.setPathDispatcher(dispatcher)
         }
 
     @Before
     fun setup(){
-        pathCondition() //Set your dispatcher before server is started
+        setPathDispatcher() //Set your dispatcher before server is started
         mockWebServer.start(12345) //Start mockWebServer using port you set in API URL
         activityRule.launchActivity(null)
     }
@@ -82,7 +80,7 @@ Last step is to implement it into your test class.
     }
 ```
 
-Clone project to test it in action. Remember to delete @Ignore annotations.
+Clone project to test it in action.
 
 ### Documentation
 MockWebServer path dispatcher have also ability to match your responses by pathAndQueryParameter. Check detailed documentation for more info -> [HERE](https://github.com/DroidsOnRoids/mockwebserver-path-dispatcher)
