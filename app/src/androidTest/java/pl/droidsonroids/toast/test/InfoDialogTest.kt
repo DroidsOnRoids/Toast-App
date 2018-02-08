@@ -6,13 +6,8 @@ import android.support.test.espresso.Espresso
 import android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
 import android.support.test.espresso.intent.rule.IntentsTestRule
 import android.support.test.uiautomator.UiDevice
-import okhttp3.mockwebserver.MockWebServer
-import org.junit.After
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import pl.droidsonroids.testing.mockwebserver.FixtureDispatcher
-import pl.droidsonroids.testing.mockwebserver.condition.PathQueryConditionFactory
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.function.getString

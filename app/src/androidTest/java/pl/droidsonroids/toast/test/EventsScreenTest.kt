@@ -1,13 +1,8 @@
 package pl.droidsonroids.toast.test
 
 import android.support.test.rule.ActivityTestRule
-import okhttp3.mockwebserver.MockWebServer
-import org.junit.After
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import pl.droidsonroids.testing.mockwebserver.FixtureDispatcher
-import pl.droidsonroids.testing.mockwebserver.condition.PathQueryConditionFactory
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.function.getString
