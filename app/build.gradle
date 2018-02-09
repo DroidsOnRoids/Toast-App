@@ -142,6 +142,9 @@ dependencies {
     // facebook
     implementation 'com.facebook.android:facebook-login:4.30.0'
 
+    // firebase
+    implementation 'com.google.firebase:firebase-core:11.8.0'
+
     // tests
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.12.0'
@@ -192,3 +195,5 @@ private Task createTestReportTask(String taskName, String variant) {
         executionData = fileTree(dir: "$buildDir", includes: ["jacoco/test${variant}UnitTest.exec"])
     }
 }
+
+apply plugin: 'com.google.gms.google-services'
