@@ -1,13 +1,16 @@
 package pl.droidsonroids.toast.viewmodels.facebook
 
 import android.databinding.ObservableField
+import android.os.Bundle
 import android.support.annotation.VisibleForTesting
+import com.google.firebase.analytics.FirebaseAnalytics
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
+import pl.droidsonroids.toast.app.utils.extensions.putFacebookId
 import pl.droidsonroids.toast.data.enums.AttendStatus
 import pl.droidsonroids.toast.repositories.facebook.FacebookRepository
 import pl.droidsonroids.toast.utils.Constants
@@ -19,7 +22,8 @@ import javax.inject.Inject
 
 class FacebookAttendViewModel @Inject constructor(
         loginStateWatcher: LoginStateWatcher,
-        private val facebookRepository: FacebookRepository
+        private val facebookRepository: FacebookRepository,
+        private val firebaseAnalytics: FirebaseAnalytics
 ) : AttendViewModel, LoginStateWatcher by loginStateWatcher {
     override val navigationRequests: PublishSubject<NavigationRequest> = PublishSubject.create()
     override val isPastEvent = ObservableField(false)
@@ -34,7 +38,8 @@ class FacebookAttendViewModel @Inject constructor(
     constructor(
             loginStateWatcher: LoginStateWatcher,
             facebookRepository: FacebookRepository,
-            facebookId: String?) : this(loginStateWatcher, facebookRepository) {
+            facebookId: String?,
+            firebaseAnalytics: FirebaseAnalytics) : this(loginStateWatcher, facebookRepository, firebaseAnalytics) {
         this.facebookId = facebookId
     }
 
@@ -61,7 +66,13 @@ class FacebookAttendViewModel @Inject constructor(
             facebookAttendStateDisposable.dispose()
             facebookAttendStateDisposable = facebookRepository.getEventAttendState(it)
                     .subscribeBy(
-                            onSuccess = { status -> attendStatus.set(status) },
+                            onSuccess = { status ->
+                                attendStatus.set(status)
+                                firebaseAnalytics.logEvent(
+                                                Constants.EventTracking.Events.ATTEND_SUCCESS,
+                                                facebookId?.let { Bundle().putFacebookId(it) }
+                                )
+                            },
                             onError = (::onInvalidateAttendStateError)
                     )
         }
@@ -70,6 +81,10 @@ class FacebookAttendViewModel @Inject constructor(
     override fun onAttendClick() {
         if (!isPastEvent.get()) {
             val attendStatus = this.attendStatus.get()
+            firebaseAnalytics.logEvent(
+                    Constants.EventTracking.Events.ATTEND_BUTTON,
+                    facebookId?.let { Bundle().putFacebookId(it) }
+            )
             when {
                 !hasPermissions -> navigationRequests.onNext(NavigationRequest.LogIn)
                 attendStatus == AttendStatus.DECLINED -> attendOnEvent()

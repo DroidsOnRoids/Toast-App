@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
 import com.facebook.login.LoginManager
+import com.google.firebase.analytics.FirebaseAnalytics
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.events.EventTalkDetailsActivity
@@ -28,7 +29,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class Navigator @Inject constructor(private val loginManager: LoginManager) {
+class Navigator @Inject constructor(private val loginManager: LoginManager, private val firebaseAnalytics: FirebaseAnalytics) {
 
     fun dispatch(activity: Activity, navigationRequest: NavigationRequest) {
         when (navigationRequest) {
@@ -57,6 +58,7 @@ class Navigator @Inject constructor(private val loginManager: LoginManager) {
             val intent = Intent(Intent.ACTION_VIEW).setData(locationUri)
             try {
                 context.startActivity(intent)
+                firebaseAnalytics.logEvent(Constants.EventTracking.Events.MEETUP_PLACE, null)
             } catch (exception: ActivityNotFoundException) {
                 Toast.makeText(context, R.string.no_map_app_found, Toast.LENGTH_SHORT).show()
             }

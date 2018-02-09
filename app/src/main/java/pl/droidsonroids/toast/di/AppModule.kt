@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
@@ -77,6 +78,10 @@ class AppModule {
     fun provideContactService(httpClient: OkHttpClient): ContactService =
             getRetrofitBuilder(httpClient)
                     .create(ContactService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideFirebaseAnalytics(context: Context): FirebaseAnalytics = FirebaseAnalytics.getInstance(context)
 
     private fun getRetrofitBuilder(httpClient: OkHttpClient) =
             Retrofit.Builder()
