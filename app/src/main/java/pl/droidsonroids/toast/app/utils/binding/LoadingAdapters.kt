@@ -9,14 +9,7 @@ fun View.setLoadingContainerVisibility(loadingStatus: LoadingStatus, fadingEnabl
     if (fadingEnabled) {
         fadeLoadingContainer(loadingStatus, LoadingStatus.PENDING)
     } else {
-        changeLoadingContainerVisibility(loadingStatus, LoadingStatus.PENDING)
-    }
-}
-
-fun View.changeLoadingContainerVisibility(loadingStatus: LoadingStatus, visibleStatus: LoadingStatus) {
-    visibility = when (loadingStatus) {
-        visibleStatus -> View.VISIBLE
-        else -> View.GONE
+        setVisibility(loadingStatus == LoadingStatus.PENDING)
     }
 }
 
@@ -49,6 +42,6 @@ fun View.setConnectionErrorContainerVisibility(loadingStatus: LoadingStatus, fad
     if (fadingEnabled) {
         fadeLoadingContainer(loadingStatus, LoadingStatus.ERROR)
     } else {
-        changeLoadingContainerVisibility(loadingStatus, LoadingStatus.ERROR)
+        setVisibility(loadingStatus == LoadingStatus.ERROR)
     }
 }

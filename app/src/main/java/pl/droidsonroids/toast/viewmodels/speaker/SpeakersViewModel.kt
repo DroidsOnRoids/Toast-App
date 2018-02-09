@@ -96,7 +96,8 @@ class SpeakersViewModel @Inject constructor(private val speakersRepository: Spea
     }
 
     private fun <T> Single<T>.addLoadingDelay() = flatMap {
-        Single.just(it).delay(MIN_LOADING_DELAY + lastLoadingStartTimeMillis - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+        Single.just(it)
+                .delay(MIN_LOADING_DELAY + lastLoadingStartTimeMillis - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
     }
 
 }
