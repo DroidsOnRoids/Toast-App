@@ -16,7 +16,7 @@ class SpeakerTalkDetailsViewModelTest {
 
     @Before
     fun setUp() {
-        speakerTalkDetailsViewModel.init(testSpeakerTalkDto, mock())
+        speakerTalkDetailsViewModel.init(testSpeakerTalkDto, onCoverLoadingFinished = mock())
     }
 
     @Test

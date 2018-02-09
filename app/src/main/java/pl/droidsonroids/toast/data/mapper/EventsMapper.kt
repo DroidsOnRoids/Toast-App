@@ -64,7 +64,7 @@ fun EventDto.toViewModel(onCoverLoadingFinish: () -> Unit = {}, onClick: (Long) 
             title = title,
             date = date,
             coverImage = coverImages.firstOrNull(),
-            action = onClick,
+            onEventClick = onClick,
             onCoverLoadingFinish = onCoverLoadingFinish
     )
 }

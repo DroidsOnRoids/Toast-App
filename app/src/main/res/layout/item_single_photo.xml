@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:contentDescription="@string/meetup_photo_desc"
         android:scaleType="fitCenter"
-        android:onClick="@{() -> singlePhotoViewModel.onClick()}"
+        android:onClick="@{singlePhotoViewModel.onPhotoClick}"
         app:coverImage="@{singlePhotoViewModel.image}"
         app:elementId="@{singlePhotoViewModel.position}"
         app:loadingFinishedListener="@{singlePhotoViewModel.onPhotoLoadingFinished}"

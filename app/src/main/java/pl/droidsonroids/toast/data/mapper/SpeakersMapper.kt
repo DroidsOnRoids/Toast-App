@@ -49,7 +49,7 @@ fun SpeakerTalkDto.toViewModel(onLoadingFinished: () -> Unit = {}, onReadMoreCli
             title = title,
             description = description,
             eventItemViewModel = event.toViewModel(onLoadingFinished, onEventClick),
-            action = onReadMoreClick
+            onReadMoreClick = onReadMoreClick
     )
 }
 
@@ -68,7 +68,7 @@ fun SpeakerDto.toViewModel(onClick: (Long) -> Unit): SpeakerItemViewModel {
             name = name,
             job = job,
             avatar = avatar,
-            action = onClick
+            onSpeakerClick = onClick
     )
 }
 

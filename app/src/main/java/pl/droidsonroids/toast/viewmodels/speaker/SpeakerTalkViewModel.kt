@@ -9,9 +9,9 @@ class SpeakerTalkViewModel(
         val title: String,
         val description: String,
         val eventItemViewModel: EventItemViewModel,
-        private val action: (SpeakerTalkDto) -> Unit
+        private val onReadMoreClick: (SpeakerTalkDto) -> Unit
 ) {
     fun onReadMore() {
-        action(toDto())
+        onReadMoreClick(toDto())
     }
 }

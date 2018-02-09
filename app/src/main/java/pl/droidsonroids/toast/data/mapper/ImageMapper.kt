@@ -10,7 +10,7 @@ fun ImageDto.toItemViewModel(position: Long, onClick: (Long) -> Unit): PhotoItem
     return PhotoItemViewModel(
             position = position,
             image = this,
-            action = onClick
+            onPhotoClick = onClick
     )
 }
 
@@ -19,7 +19,7 @@ fun ImageDto.toSingleViewModel(position: Long, onPhotoLoadingFinished: () -> Uni
             position = position,
             image = this,
             onPhotoLoadingFinished = onPhotoLoadingFinished,
-            action = onClick
+            onPhotoClick = onClick
     )
 }
 
