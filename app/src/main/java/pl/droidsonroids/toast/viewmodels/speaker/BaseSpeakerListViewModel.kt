@@ -45,7 +45,6 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
     }
 
     protected fun onNewSpeakersPageLoaded(page: Page<State.Item<SpeakerItemViewModel>>) {
-        Log.wtf("onNewSpeakersPageLoaded", "Appear")
         val speakers = page.items.appendLoadingItemIfNextPageAvailable(page)
         speakersSubject.onNext(speakers)
         loadingStatus.set(LoadingStatus.SUCCESS)

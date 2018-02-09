@@ -12,10 +12,12 @@ import pl.droidsonroids.toast.utils.addOnPropertyChangedCallback
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+private const val MIN_LOADING_DELAY = 500
+
 class SpeakersViewModel @Inject constructor(private val speakersRepository: SpeakersRepository) : BaseSpeakerListViewModel() {
     val isSortingDetailsVisible: ObservableField<Boolean> = ObservableField(false)
     val sortingType = ObservableField(SortingType.DATE)
-    private var lastLoadingChangeTime = System.currentTimeMillis()
+    private var lastLoadingStartTimeMillis = System.currentTimeMillis()
 
     private var speakersDisposable: Disposable? = null
 
@@ -53,7 +55,7 @@ class SpeakersViewModel @Inject constructor(private val speakersRepository: Spea
     private fun loadFirstPage() {
         isNextPageLoading = true
         loadingStatus.set(LoadingStatus.PENDING)
-        lastLoadingChangeTime = System.currentTimeMillis()
+        lastLoadingStartTimeMillis = System.currentTimeMillis()
         speakersDisposable = speakersRepository.getSpeakersPage(sortingQuery = sortingType.get().toQuery())
                 .flatMap(::mapToSingleSpeakerItemViewModelsPage)
                 .doOnSuccess { clearSpeakersList() }
@@ -93,8 +95,8 @@ class SpeakersViewModel @Inject constructor(private val speakersRepository: Spea
         speakersDisposable?.dispose()
     }
 
-    private fun <T> Single<T>.addLoadingDelay(): Single<T> {
-        return flatMap { Single.just(it).delay(500 + lastLoadingChangeTime - System.currentTimeMillis(), TimeUnit.MILLISECONDS) }
+    private fun <T> Single<T>.addLoadingDelay() = flatMap {
+        Single.just(it).delay(MIN_LOADING_DELAY + lastLoadingStartTimeMillis - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
     }
 
 }
