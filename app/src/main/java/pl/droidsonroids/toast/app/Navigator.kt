@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
 import com.facebook.login.LoginManager
-import com.google.firebase.analytics.FirebaseAnalytics
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.events.EventTalkDetailsActivity
@@ -22,6 +21,7 @@ import pl.droidsonroids.toast.app.speakers.SpeakerTalkDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
 import pl.droidsonroids.toast.app.utils.extensions.copyTextToClipboard
 import pl.droidsonroids.toast.app.utils.extensions.disableActivityTransitionAnimations
+import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsManager
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
 import java.lang.IllegalArgumentException
@@ -29,7 +29,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class Navigator @Inject constructor(private val loginManager: LoginManager, private val firebaseAnalytics: FirebaseAnalytics) {
+class Navigator @Inject constructor(private val loginManager: LoginManager, private val firebaseAnalyticsManager: FirebaseAnalyticsManager) {
 
     fun dispatch(activity: Activity, navigationRequest: NavigationRequest) {
         when (navigationRequest) {
@@ -58,7 +58,7 @@ class Navigator @Inject constructor(private val loginManager: LoginManager, priv
             val intent = Intent(Intent.ACTION_VIEW).setData(locationUri)
             try {
                 context.startActivity(intent)
-                firebaseAnalytics.logEvent(Constants.EventTracking.Events.MEETUP_PLACE, null)
+                firebaseAnalyticsManager.logMeetupPlaceEvent()
             } catch (exception: ActivityNotFoundException) {
                 Toast.makeText(context, R.string.no_map_app_found, Toast.LENGTH_SHORT).show()
             }

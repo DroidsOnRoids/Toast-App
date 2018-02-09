@@ -1,5 +1,6 @@
 package pl.droidsonroids.toast.viewmodels.facebook
 
+import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Completable
 import io.reactivex.subjects.BehaviorSubject
@@ -29,7 +30,7 @@ class FacebookAttendViewModelTest : RxTestBase() {
     @Before
     fun setUp() {
         whenever(loginStateWatcher.loginStateSubject).thenReturn(BehaviorSubject.create())
-        facebookAttendViewModel = FacebookAttendViewModel(loginStateWatcher, facebookRepository, facebookId)
+        facebookAttendViewModel = FacebookAttendViewModel(loginStateWatcher, facebookRepository, facebookId, firebaseAnalyticsManager = mock())
     }
 
     @Test

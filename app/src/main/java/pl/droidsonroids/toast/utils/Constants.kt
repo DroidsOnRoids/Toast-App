@@ -44,13 +44,4 @@ object Constants {
         val PERMISSIONS = listOf("rsvp_event")
         const val EVENT_URL: String = "https://www.facebook.com/events/"
     }
-
-    object EventTracking {
-        object Events {
-            const val MEETUP_PLACE = "events_meetup_place"
-            const val ATTEND_BUTTON = "events_attend_button"
-            const val ATTEND_SUCCESS = "events_attend_success"
-            const val SHOW_EVENT_DET = "events_show_event_det"
-        }
-    }
 }

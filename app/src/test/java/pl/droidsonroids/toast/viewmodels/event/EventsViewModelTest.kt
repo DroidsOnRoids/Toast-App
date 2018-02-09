@@ -1,5 +1,6 @@
 package pl.droidsonroids.toast.viewmodels.event
 
+import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Maybe
 import io.reactivex.subjects.PublishSubject
@@ -137,7 +138,7 @@ class EventsViewModelTest {
     private fun setUpWith(maybe: Maybe<SplitEvents>) {
         whenever(eventsRepository.getEvents()).thenReturn(maybe)
         whenever(attendViewModel.navigationRequests).thenReturn(PublishSubject.create())
-        eventsViewModel = EventsViewModel(loginStateWatcher, attendViewModel, eventsRepository)
+        eventsViewModel = EventsViewModel(loginStateWatcher, attendViewModel, eventsRepository, firebaseAnalyticsManager = mock())
     }
 
 }

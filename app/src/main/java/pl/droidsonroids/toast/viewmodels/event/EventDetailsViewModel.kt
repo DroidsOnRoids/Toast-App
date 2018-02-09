@@ -7,6 +7,7 @@ import io.reactivex.disposables.Disposables
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsManager
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
@@ -29,7 +30,8 @@ private const val GRADIENT_COLOR_MASK = 0xE0FFFFFF.toInt()
 
 class EventDetailsViewModel @Inject constructor(
         private val eventsRepository: EventsRepository,
-        attendViewModel: AttendViewModel
+        attendViewModel: AttendViewModel,
+        private val firebaseAnalyticsManager: FirebaseAnalyticsManager
 ) : ViewModel(), LoadingViewModel, NavigatingViewModel, AttendViewModel by attendViewModel {
     private val Any.simpleClassName: String get() = javaClass.simpleName
     override val navigationSubject: PublishSubject<NavigationRequest> = navigationRequests

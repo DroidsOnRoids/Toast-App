@@ -2,9 +2,7 @@ package pl.droidsonroids.toast.viewmodels.event
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
-import android.os.Bundle
 import android.util.Log
-import com.google.firebase.analytics.FirebaseAnalytics
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
@@ -13,7 +11,7 @@ import io.reactivex.rxkotlin.toObservable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
-import pl.droidsonroids.toast.app.utils.extensions.putEventId
+import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsManager
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.dto.ImageDto
@@ -23,7 +21,6 @@ import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.data.wrapWithState
 import pl.droidsonroids.toast.repositories.event.EventsRepository
-import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.toPage
@@ -36,7 +33,7 @@ class EventsViewModel @Inject constructor(
         loginStateWatcher: LoginStateWatcher,
         attendViewModel: AttendViewModel,
         private val eventsRepository: EventsRepository,
-        private val firebaseAnalytics: FirebaseAnalytics
+        private val firebaseAnalyticsManager: FirebaseAnalyticsManager
 ) : ViewModel(), LoadingViewModel, NavigatingViewModel, LoginStateWatcher by loginStateWatcher, AttendViewModel by attendViewModel {
     override val navigationSubject: PublishSubject<NavigationRequest> = navigationRequests
 
@@ -87,10 +84,7 @@ class EventsViewModel @Inject constructor(
 
     private fun onUpcomingEventClick(eventId: Long) {
         navigationSubject.onNext(NavigationRequest.EventDetails(eventId))
-        firebaseAnalytics.logEvent(
-                Constants.EventTracking.Events.SHOW_EVENT_DET,
-                Bundle().putEventId(eventId)
-        )
+        firebaseAnalyticsManager.logShowEventDetailsEvent(eventId)
     }
 
     private fun onSeePhotosClick(eventId: Long, photos: List<ImageDto>) {
