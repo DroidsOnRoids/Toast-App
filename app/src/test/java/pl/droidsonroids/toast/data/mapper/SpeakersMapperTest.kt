@@ -75,7 +75,7 @@ class SpeakersMapperTest {
     fun shouldMapSpeakerTalkDtoToViewModel() {
         val onReadMoreClick: (SpeakerTalkDto) -> Unit = mock()
         val onEventClick: (Long) -> Unit = mock()
-        val viewModel = testSpeakerTalkDto.toViewModel(onReadMoreClick = onReadMoreClick, onEventClick = onEventClick)
+        val viewModel = testSpeakerTalkDto.toViewModel(onReadMoreClick, onEventClick)
         viewModel.let {
             assertThat(it.id, equalTo(testSpeakerTalkDto.id))
             assertThat(it.title, equalTo(testSpeakerTalkDto.title))

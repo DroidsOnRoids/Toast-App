@@ -58,7 +58,7 @@ fun ApiEvent.toDto(): EventDto {
     )
 }
 
-fun EventDto.toViewModel(onCoverLoadingFinish: () -> Unit = {}, onClick: (Long) -> Unit): EventItemViewModel {
+fun EventDto.toViewModel(onClick: (Long) -> Unit, onCoverLoadingFinish: () -> Unit = {}): EventItemViewModel {
     return EventItemViewModel(
             id = id,
             title = title,

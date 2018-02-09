@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foreground="?attr/selectableItemBackground"
+        android:onClick="@{() -> eventViewModel.onClick()}"
         tools:showIn="@layout/item_speaker_talk">
 
         <ImageView

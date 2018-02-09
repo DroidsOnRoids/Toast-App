@@ -23,7 +23,7 @@ class SpeakerTalkDetailsViewModel @Inject constructor() : ViewModel(), Navigatin
             id.set(it.id)
             title.set(it.title)
             description.set(it.description)
-            eventItemViewModel.set(it.event.toViewModel(onCoverLoadingFinished, ::onEventClick))
+            eventItemViewModel.set(it.event.toViewModel(::onEventClick, onCoverLoadingFinished))
         }
     }
 

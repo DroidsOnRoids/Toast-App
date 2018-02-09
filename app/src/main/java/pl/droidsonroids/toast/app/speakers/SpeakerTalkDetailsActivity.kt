@@ -3,7 +3,6 @@ package pl.droidsonroids.toast.app.speakers
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
-import android.databinding.OnRebindCallback
 import android.os.Bundle
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
@@ -44,16 +43,6 @@ class SpeakerTalkDetailsActivity : BaseActivity() {
         val binding = ActivitySpeakerTalkDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupViewModel(binding)
-        setupBinding(binding)
-    }
-
-    private fun setupBinding(binding: ActivitySpeakerTalkDetailsBinding) {
-        binding.addOnRebindCallback(object : OnRebindCallback<ActivitySpeakerTalkDetailsBinding>() {
-            override fun onBound(binding: ActivitySpeakerTalkDetailsBinding?) {
-                binding?.removeOnRebindCallback(this)
-            }
-        })
-        binding.executePendingBindings()
     }
 
     private fun setupViewModel(binding: ActivitySpeakerTalkDetailsBinding) {
