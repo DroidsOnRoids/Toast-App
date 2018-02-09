@@ -23,6 +23,7 @@
             android:id="@+id/connectionErrorImage"
             android:layout_width="164dp"
             android:layout_height="164dp"
+            android:scaleType="fitXY"
             android:src="@drawable/ic_error_connection"
             app:layout_constraintBottom_toTopOf="@+id/noInternetConnectionText"
             app:layout_constraintEnd_toEndOf="parent"
