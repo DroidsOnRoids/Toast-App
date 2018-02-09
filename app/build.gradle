@@ -77,13 +77,17 @@ android {
             buildConfigField 'String', 'BASE_API_URL', '"https://api.letswift.pl/api/v1/"'
             buildConfigField 'String', 'BASE_IMAGES_URL', '"https://api.letswift.pl"'
         }
+        toast {
+            // TODO change api url to toast when available
+            buildConfigField 'String', 'BASE_API_URL', '"https://api.letswift.pl/api/v1/"'
+            buildConfigField 'String', 'BASE_IMAGES_URL', '"https://api.letswift.pl"'
+        }
         mockUiTest {
             applicationIdSuffix ".letswift"
             versionNameSuffix "-letswift"
             buildConfigField 'String', 'BASE_API_URL', '"http://localhost:12345"'
             buildConfigField 'String', 'BASE_IMAGES_URL', '"https://api.letswift.pl"'
         }
-        // TODO add flavor for toast api when available
     }
 
     dataBinding {
@@ -153,7 +157,7 @@ dependencies {
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$versions.espresso"
     androidTestImplementation "com.android.support.test.espresso:espresso-intents:$versions.espresso"
     androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$versions.espresso"
-    androidTestImplementation ('com.squareup.rx.idler:rx2-idler:0.9.0'){
+    androidTestImplementation('com.squareup.rx.idler:rx2-idler:0.9.0') {
         exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
     }
     androidTestImplementation "pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.0.1"
