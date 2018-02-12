@@ -4,13 +4,19 @@ import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
 import javax.inject.Inject
 
+private const val EVENT_ID_KEY = "eventId"
+private const val FACEBOOK_ID_KEY = "facebookId"
+private const val LECTURE_NAME_KEY = "lectureName"
+private const val SPEAKER_ID_KEY = "speakerName"
+private const val PHRASE_KEY = "phrase"
+private const val TOPIC_NAME_KEY = "contactType"
 
-private const val EVENT_ID_KEY = "event_id"
-private const val FACEBOOK_ID_KEY = "facebook_id"
+private const val SORTING_TYPE_KEY = "sortingType"
+private const val CONTACT_TYPE_KEY = "contactType"
 
 class FirebaseAnalyticsManager @Inject constructor(private val bundle: Bundle, private val firebaseAnalytics: FirebaseAnalytics) {
 
-    fun logFacebookAttendEvent(facebookId: String) {
+    fun logUpcomingEventFacebookAttendEvent(facebookId: String) {
         firebaseAnalytics.logEvent(EventTracking.Events.ATTEND_BUTTON, facebookId.let { putFacebookId(it) })
     }
 
@@ -22,9 +28,34 @@ class FirebaseAnalyticsManager @Inject constructor(private val bundle: Bundle, p
         firebaseAnalytics.logEvent(EventTracking.Events.SHOW_EVENT_DET, putEventId(eventId))
     }
 
-    fun logMeetupPlaceEvent() {
+    fun logUpcomingEventMeetupPlaceEvent() {
         firebaseAnalytics.logEvent(EventTracking.Events.MEETUP_PLACE, null)
     }
+
+    fun logEventDetailsFaebookAttendEvent(facebookId: String) {
+        firebaseAnalytics.logEvent(EventTracking.EventDetails.ATTEND_BUTTON, putFacebookId(facebookId))
+    }
+
+    fun logEventDetailsFaebookAttendSuccessEvent(facebookId: String) {
+        firebaseAnalytics.logEvent(EventTracking.EventDetails.ATTEND_SUCCESS, putFacebookId(facebookId))
+    }
+
+    fun logEventDetailsReadMoreEvent(lectureName: String) {
+        firebaseAnalytics.logEvent(EventTracking.EventDetails.READ_MORE, putLectureName(lectureName))
+    }
+
+    fun logEventDetailsShowSpeakerEvent(speakerId: Long) {
+        firebaseAnalytics.logEvent(EventTracking.EventDetails.SHOW_SPEAKER, putSpeakerId(speakerId))
+    }
+
+    fun logEventDetailsMeetupPlaceEvent() {
+        firebaseAnalytics.logEvent(EventTracking.EventDetails.MEETUP_PLACE, null)
+    }
+
+    fun logEventDetailsSeePhotosEvent(eventId: Long) {
+        firebaseAnalytics.logEvent(EventTracking.EventDetails.SEE_PHOTOS, putEventId(eventId))
+    }
+
 
     private fun putEventId(eventId: Long): Bundle {
         bundle.putLong(EVENT_ID_KEY, eventId)
@@ -36,6 +67,15 @@ class FirebaseAnalyticsManager @Inject constructor(private val bundle: Bundle, p
         return bundle
     }
 
+    private fun putSpeakerId(speakerId: Long): Bundle {
+        bundle.putLong(SPEAKER_ID_KEY, speakerId)
+        return bundle
+    }
+
+    private fun putLectureName(lectureName: String): Bundle {
+        bundle.putString(LECTURE_NAME_KEY, lectureName)
+        return bundle
+    }
 
     private object EventTracking {
         object Events {

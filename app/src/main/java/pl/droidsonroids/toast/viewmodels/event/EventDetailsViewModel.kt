@@ -57,11 +57,13 @@ class EventDetailsViewModel @Inject constructor(
 
     fun onPhotosClick() {
         navigationSubject.onNext(NavigationRequest.Photos(photos, eventId, ParentView.EVENT_DETAILS))
+        firebaseAnalyticsManager.logEventDetailsSeePhotosEvent(eventId)
     }
 
     fun onLocationClick() {
         coordinates?.let {
             navigationSubject.onNext(NavigationRequest.Map(it, placeName.get()))
+            firebaseAnalyticsManager.logEventDetailsMeetupPlaceEvent()
         }
     }
 
@@ -103,12 +105,15 @@ class EventDetailsViewModel @Inject constructor(
     }
 
     private fun onReadMore(eventSpeakerItemViewModel: EventSpeakerItemViewModel) {
-        navigationSubject.onNext(NavigationRequest.EventTalkDetails(eventSpeakerItemViewModel.toDto()))
+        val eventTalkDto = eventSpeakerItemViewModel.toDto()
+        navigationSubject.onNext(NavigationRequest.EventTalkDetails(eventTalkDto))
+        firebaseAnalyticsManager.logEventDetailsReadMoreEvent(eventTalkDto.title)
         Log.d(simpleClassName, "onReadMore: ${eventSpeakerItemViewModel.id}")
     }
 
     private fun onSpeakerClick(speakerId: Long) {
         navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId))
+        firebaseAnalyticsManager.logEventDetailsShowSpeakerEvent(speakerId)
     }
 
     private fun onEventLoadError(throwable: Throwable) {

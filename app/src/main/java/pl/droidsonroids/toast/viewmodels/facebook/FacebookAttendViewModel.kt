@@ -73,7 +73,6 @@ class FacebookAttendViewModel @Inject constructor(
     override fun onAttendClick() {
         if (!isPastEvent.get()) {
             val attendStatus = this.attendStatus.get()
-            facebookId?.let { firebaseAnalyticsManager.logFacebookAttendEvent(it) }
             when {
                 !hasPermissions -> navigationRequests.onNext(NavigationRequest.LogIn)
                 attendStatus == AttendStatus.DECLINED -> attendOnEvent()
@@ -88,10 +87,7 @@ class FacebookAttendViewModel @Inject constructor(
             facebookAttendRequestDisposable = facebookRepository.setEventAttending(it)
                     .doOnComplete { facebookAttendStateDisposable.dispose() }
                     .subscribeBy(
-                            onComplete = {
-                                attendStatus.set(AttendStatus.ATTENDING)
-                                facebookId?.let { firebaseAnalyticsManager.logFacebookAttendSuccessEvent(it) }
-                            },
+                            onComplete = { attendStatus.set(AttendStatus.ATTENDING) },
                             onError = (::onSetAttendingError)
                     )
         }
