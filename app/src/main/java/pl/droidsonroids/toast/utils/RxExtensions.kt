@@ -12,10 +12,8 @@ fun <T : Any> Observable<T>.toPage(pageNo: Int, pageCount: Int): Single<Page<T>>
 
 fun <T> ObservableField<T>.toObservable(): Observable<T> {
     return Observable.create {
-        addOnPropertyChangedCallback(object : android.databinding.Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: android.databinding.Observable, propertyId: Int) {
-                it.onNext(get())
-            }
-        })
+        addOnPropertyChangedCallback {
+            it.onNext(get())
+        }
     }
 }
