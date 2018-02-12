@@ -64,7 +64,7 @@ class FirebaseAnalyticsManager @Inject constructor(private val bundle: Bundle, p
     }
 
     fun logSpeakersShowSpeakerEvent(eventId: Long) {
-        firebaseAnalytics.logEvent(EventTracking.Speakers.SHOW_SEARCH, putEventId(eventId))
+        firebaseAnalytics.logEvent(EventTracking.Speakers.SHOW_SPEAKER, putEventId(eventId))
     }
 
     fun logSpeakersShowSearchEvent() {

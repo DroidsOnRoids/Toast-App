@@ -4,7 +4,6 @@ import android.databinding.Observable
 import android.databinding.ObservableField
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
-import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsManager
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
@@ -12,8 +11,7 @@ import pl.droidsonroids.toast.utils.SortingType
 import javax.inject.Inject
 
 class SpeakersViewModel @Inject constructor(
-        private val speakersRepository: SpeakersRepository,
-        private val firebaseAnalyticsManager: FirebaseAnalyticsManager
+        private val speakersRepository: SpeakersRepository
 ) : BaseSpeakerListViewModel() {
     val isSortingDetailsVisible: ObservableField<Boolean> = ObservableField(false)
     val sortingType = ObservableField(SortingType.DATE)
