@@ -23,6 +23,7 @@
         app:originalImage="@{singlePhotoViewModel.image}"
         app:elementId="@{singlePhotoViewModel.position}"
         app:loadingFinishedListener="@{singlePhotoViewModel.onPhotoLoadingFinished}"
+        app:fromCache="@{singlePhotoViewModel.loadFromCache}"
         app:transitionName="@{PhotoTransition.PHOTO}"/>
 </layout>
 

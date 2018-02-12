@@ -93,6 +93,7 @@ class PhotosViewerActivity : BaseActivity() {
     private fun resumeSharedTransition() {
         supportStartPostponedEnterTransition()
         isTransitionPostponed = false
+        photosViewerViewModel.onTransitionEnd()
     }
 
     private fun handleNavigationRequest(navigationRequest: NavigationRequest) {

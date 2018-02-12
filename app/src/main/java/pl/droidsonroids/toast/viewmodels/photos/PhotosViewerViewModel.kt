@@ -1,6 +1,7 @@
 package pl.droidsonroids.toast.viewmodels.photos
 
 import android.arch.lifecycle.ViewModel
+import android.databinding.ObservableField
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.mapper.toSingleViewModel
@@ -13,6 +14,7 @@ class PhotosViewerViewModel @Inject constructor() : ViewModel(), NavigatingViewM
     var singlePhotoViewModels: List<SinglePhotoViewModel> = emptyList()
         private set
     val photoLoadingFinishedSubject: PublishSubject<Long> = PublishSubject.create()
+    private val loadFromCache = ObservableField(true)
 
     fun init(photos: List<ImageDto>) {
         if (singlePhotoViewModels.isEmpty()) {
@@ -21,9 +23,16 @@ class PhotosViewerViewModel @Inject constructor() : ViewModel(), NavigatingViewM
     }
 
     private fun imageDtoToViewModel(index: Int, image: ImageDto): SinglePhotoViewModel {
-        return image.toSingleViewModel(index.toLong(), {
-            onPhotoLoadingFinished(index.toLong())
-        }, ::onClick)
+        return image.toSingleViewModel(
+                index.toLong(),
+                loadFromCache,
+                { onPhotoLoadingFinished(index.toLong()) },
+                ::onClick
+        )
+    }
+
+    fun onTransitionEnd() {
+        loadFromCache.set(false)
     }
 
     private fun onPhotoLoadingFinished(index: Long) {

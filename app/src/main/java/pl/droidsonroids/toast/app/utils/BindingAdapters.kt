@@ -89,8 +89,8 @@ fun setOriginalImage(imageView: ImageView, imageDto: ImageDto?) {
 }
 
 @SuppressLint("CheckResult")
-@BindingAdapter("originalImage", "loadingFinishedListener")
-fun setCoverImageWithLoadedListener(imageView: ImageView, imageDto: ImageDto?, onLoadingFinished: () -> Unit) {
+@BindingAdapter("originalImage", "loadingFinishedListener", "fromCache")
+fun loadOriginalPhoto(imageView: ImageView, imageDto: ImageDto?, onLoadingFinished: () -> Unit, loadFromCache: Boolean) {
     val listener = object : RequestListener<Drawable> {
         override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
             onLoadingFinished()
@@ -103,7 +103,7 @@ fun setCoverImageWithLoadedListener(imageView: ImageView, imageDto: ImageDto?, o
         }
     }
     loadWithListener(imageView, imageDto, listener) {
-        apply(RequestOptions().override(Target.SIZE_ORIGINAL))
+        apply(RequestOptions().override(Target.SIZE_ORIGINAL).onlyRetrieveFromCache(loadFromCache))
     }
 }
 
