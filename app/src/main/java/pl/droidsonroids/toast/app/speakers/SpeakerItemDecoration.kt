@@ -18,8 +18,8 @@ class SpeakerItemDecoration(context: Context) : RecyclerView.ItemDecoration() {
 
     override fun onDrawOver(canvas: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         if (parent.itemAnimator?.isRunning != true) {
-            val left = parent.paddingStart
-            val right = parent.width - parent.paddingEnd
+            val left = parent.paddingLeft
+            val right = parent.width - parent.paddingRight
             val childCount = parent.childCount
             (0 until childCount - 1)
                     .map { parent.getChildAt(it) }
