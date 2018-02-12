@@ -3,6 +3,7 @@
 package pl.droidsonroids.toast.app.utils
 
 
+import android.annotation.SuppressLint
 import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
@@ -15,6 +16,7 @@ import android.widget.ImageSwitcher
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
@@ -73,7 +75,21 @@ fun setRoundImage(imageView: ImageView, imageDto: ImageDto?) {
             .into(imageView)
 }
 
-@BindingAdapter("coverImage", "loadingFinishedListener")
+
+@BindingAdapter("originalImage")
+fun setOriginalImage(imageView: ImageView, imageDto: ImageDto?) {
+    val thumbnailLoader = Glide.with(imageView).load(imageDto?.thumbSizeUrl)
+    val requestOptions = RequestOptions.placeholderOf(R.drawable.ic_placeholder_toast)
+            .override(Target.SIZE_ORIGINAL)
+    Glide.with(imageView)
+            .load(imageDto?.originalSizeUrl)
+            .thumbnail(thumbnailLoader)
+            .apply(requestOptions)
+            .into(imageView)
+}
+
+@SuppressLint("CheckResult")
+@BindingAdapter("originalImage", "loadingFinishedListener")
 fun setCoverImageWithLoadedListener(imageView: ImageView, imageDto: ImageDto?, onLoadingFinished: () -> Unit) {
     val listener = object : RequestListener<Drawable> {
         override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
@@ -86,7 +102,9 @@ fun setCoverImageWithLoadedListener(imageView: ImageView, imageDto: ImageDto?, o
             return false
         }
     }
-    loadWithListener(imageView, imageDto, listener)
+    loadWithListener(imageView, imageDto, listener) {
+        apply(RequestOptions().override(Target.SIZE_ORIGINAL))
+    }
 }
 
 @BindingAdapter("coverImage", "coverImageColorListener")
@@ -95,13 +113,14 @@ fun setCoverImageWithPaletteListener(imageView: ImageView, imageDto: ImageDto?, 
     loadWithListener(imageView, imageDto, listener)
 }
 
-private fun loadWithListener(imageView: ImageView, imageDto: ImageDto?, listener: RequestListener<Drawable>) {
+private fun loadWithListener(imageView: ImageView, imageDto: ImageDto?, listener: RequestListener<Drawable>, apply: RequestBuilder<Drawable>.() -> RequestBuilder<Drawable> = { this }) {
     val thumbnailLoader = Glide.with(imageView)
             .load(imageDto?.thumbSizeUrl)
     Glide.with(imageView)
             .load(imageDto?.originalSizeUrl)
             .thumbnail(thumbnailLoader)
             .listener(listener)
+            .apply()
             .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_toast))
             .into(imageView)
 }

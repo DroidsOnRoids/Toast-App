@@ -8,6 +8,8 @@ import android.support.v4.util.Pair
 import android.support.v7.widget.GridLayoutManager
 import android.view.MenuItem
 import android.view.View
+import com.bumptech.glide.Glide
+import com.bumptech.glide.MemoryCategory
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_photos.*
@@ -60,6 +62,7 @@ class PhotosActivity : BaseActivity() {
         setupToolbar()
         setupViewModel()
         setupRecyclerView()
+        Glide.get(this).setMemoryCategory(MemoryCategory.HIGH)
     }
 
     private fun setupWindow() {
@@ -109,6 +112,11 @@ class PhotosActivity : BaseActivity() {
                 .subscribe { photosAdapter.setData(it) }
     }
 
+    override fun onResume() {
+        super.onResume()
+        photosViewModel.sharedTransitionInProgress = false
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> handleUpAction()
@@ -128,6 +136,7 @@ class PhotosActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
+        Glide.get(this).setMemoryCategory(MemoryCategory.NORMAL)
         compositeDisposable.dispose()
         super.onDestroy()
     }
