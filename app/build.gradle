@@ -196,4 +196,6 @@ private Task createTestReportTask(String taskName, String variant) {
     }
 }
 
-apply plugin: 'com.google.gms.google-services'
+if (file("google-services.json").isFile()) {
+    apply plugin: 'com.google.gms.google-services'
+}
