@@ -9,7 +9,7 @@ fun View.setLoadingContainerVisibility(loadingStatus: LoadingStatus, fadingEnabl
     if (fadingEnabled) {
         fadeLoadingContainer(loadingStatus, LoadingStatus.PENDING)
     } else {
-        setVisibility(loadingStatus == LoadingStatus.PENDING)
+        setVisible(loadingStatus == LoadingStatus.PENDING)
     }
 }
 
@@ -42,6 +42,6 @@ fun View.setConnectionErrorContainerVisibility(loadingStatus: LoadingStatus, fad
     if (fadingEnabled) {
         fadeLoadingContainer(loadingStatus, LoadingStatus.ERROR)
     } else {
-        setVisibility(loadingStatus == LoadingStatus.ERROR)
+        setVisible(loadingStatus == LoadingStatus.ERROR)
     }
 }

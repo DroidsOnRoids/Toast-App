@@ -15,7 +15,7 @@ import pl.droidsonroids.toast.app.utils.extensions.setImageColor
 import pl.droidsonroids.toast.data.enums.AttendStatus
 
 @BindingAdapter("android:visibility")
-fun View.setVisibility(isVisible: Boolean) {
+fun View.setVisible(isVisible: Boolean) {
     visibility = if (isVisible) View.VISIBLE else View.GONE
 }
 
