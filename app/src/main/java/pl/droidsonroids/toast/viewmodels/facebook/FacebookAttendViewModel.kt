@@ -13,6 +13,7 @@ import pl.droidsonroids.toast.data.enums.AttendStatus
 import pl.droidsonroids.toast.repositories.facebook.FacebookRepository
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.utils.SourceAttending
 import pl.droidsonroids.toast.utils.isYesterdayOrEarlier
 import java.util.*
 import javax.inject.Inject
@@ -31,6 +32,7 @@ class FacebookAttendViewModel @Inject constructor(
     private var facebookId: String? = null
     var date: Date? = null
     private var loginStateDisposable: Disposable = Disposables.disposed()
+    private lateinit var sourceAttending: SourceAttending
 
     @VisibleForTesting
     constructor(
@@ -46,9 +48,10 @@ class FacebookAttendViewModel @Inject constructor(
     }
 
 
-    override fun setEvent(id: String, date: Date) {
+    override fun setEvent(id: String, date: Date, sourceAttending: SourceAttending) {
         this.facebookId = id
         this.date = date
+        this.sourceAttending = sourceAttending
         invalidateAttendState()
     }
 
@@ -79,6 +82,7 @@ class FacebookAttendViewModel @Inject constructor(
                 else -> openFacebookEventPage()
             }
         }
+        logFacebookAttendEvent()
     }
 
     private fun attendOnEvent() {
@@ -87,7 +91,10 @@ class FacebookAttendViewModel @Inject constructor(
             facebookAttendRequestDisposable = facebookRepository.setEventAttending(it)
                     .doOnComplete { facebookAttendStateDisposable.dispose() }
                     .subscribeBy(
-                            onComplete = { attendStatus.set(AttendStatus.ATTENDING) },
+                            onComplete = {
+                                attendStatus.set(AttendStatus.ATTENDING)
+                                logFacebookAttendSuccessEvent()
+                            },
                             onError = (::onSetAttendingError)
                     )
         }
@@ -105,6 +112,26 @@ class FacebookAttendViewModel @Inject constructor(
 
     private fun onSetAttendingError(throwable: Throwable) {
         navigationRequests.onNext(NavigationRequest.SnackBar(R.string.oops_no_internet_connection))
+    }
+
+    private fun logFacebookAttendEvent() {
+        facebookId?.let {
+            if (sourceAttending == SourceAttending.UPCOMING_EVENT) {
+                firebaseAnalyticsManager.logUpcomingEventFacebookAttendEvent(it)
+            } else {
+                firebaseAnalyticsManager.logEventDetailsFacebookAttendEvent(it)
+            }
+        }
+    }
+
+    private fun logFacebookAttendSuccessEvent() {
+        facebookId?.let {
+            if (sourceAttending == SourceAttending.UPCOMING_EVENT) {
+                firebaseAnalyticsManager.logUpcomingFacebookAttendSuccessEvent(it)
+            } else {
+                firebaseAnalyticsManager.logEventDetailsFacebookAttendSuccessEvent(it)
+            }
+        }
     }
 
     override fun dispose() {

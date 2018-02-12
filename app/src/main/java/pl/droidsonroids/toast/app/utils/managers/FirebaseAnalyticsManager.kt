@@ -20,7 +20,7 @@ class FirebaseAnalyticsManager @Inject constructor(private val bundle: Bundle, p
         firebaseAnalytics.logEvent(EventTracking.Events.ATTEND_BUTTON, facebookId.let { putFacebookId(it) })
     }
 
-    fun logFacebookAttendSuccessEvent(facebookId: String) {
+    fun logUpcomingFacebookAttendSuccessEvent(facebookId: String) {
         firebaseAnalytics.logEvent(EventTracking.Events.ATTEND_SUCCESS, putFacebookId(facebookId))
     }
 
@@ -32,11 +32,11 @@ class FirebaseAnalyticsManager @Inject constructor(private val bundle: Bundle, p
         firebaseAnalytics.logEvent(EventTracking.Events.MEETUP_PLACE, null)
     }
 
-    fun logEventDetailsFaebookAttendEvent(facebookId: String) {
+    fun logEventDetailsFacebookAttendEvent(facebookId: String) {
         firebaseAnalytics.logEvent(EventTracking.EventDetails.ATTEND_BUTTON, putFacebookId(facebookId))
     }
 
-    fun logEventDetailsFaebookAttendSuccessEvent(facebookId: String) {
+    fun logEventDetailsFacebookAttendSuccessEvent(facebookId: String) {
         firebaseAnalytics.logEvent(EventTracking.EventDetails.ATTEND_SUCCESS, putFacebookId(facebookId))
     }
 
@@ -92,6 +92,13 @@ class FirebaseAnalyticsManager @Inject constructor(private val bundle: Bundle, p
             const val SHOW_SPEAKER = "event_det_show_speaker"
             const val MEETUP_PLACE = "event_det_meetup_place"
             const val SEE_PHOTOS = "event_det_see_photos"
+        }
+
+        object Speakers {
+            const val SORT_OPTION = "speakers_sort_option"
+            const val SHOW_SPEAKER = "speakers_show_speaker"
+            const val SHOW_SEARCH = "speakers_show_search"
+
         }
     }
 

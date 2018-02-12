@@ -19,6 +19,7 @@ import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.utils.SourceAttending
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
@@ -95,7 +96,7 @@ class EventDetailsViewModel @Inject constructor(
             photos = it.photos
             coordinates = it.coordinates
             onTalksLoaded(it.talks)
-            setEvent(it.facebookId, it.date)
+            setEvent(it.facebookId, it.date, SourceAttending.EVENT_DETAILS)
         }
     }
 

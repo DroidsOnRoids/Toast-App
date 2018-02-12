@@ -23,6 +23,7 @@ import pl.droidsonroids.toast.data.wrapWithState
 import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.utils.SourceAttending
 import pl.droidsonroids.toast.utils.toPage
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
@@ -60,7 +61,7 @@ class EventsViewModel @Inject constructor(
         loadingStatus.set(LoadingStatus.PENDING)
         compositeDisposable += eventsRepository.getEvents()
                 .flatMap { (upcomingEvent, previousEventsPage) ->
-                    setEvent(upcomingEvent.facebookId, upcomingEvent.date)
+                    setEvent(upcomingEvent.facebookId, upcomingEvent.date, SourceAttending.UPCOMING_EVENT)
                     val upcomingEventViewModel = upcomingEvent.toViewModel(
                             onLocationClick = (::onUpcomingEventLocationClick),
                             onEventClick = (::onUpcomingEventClick),
