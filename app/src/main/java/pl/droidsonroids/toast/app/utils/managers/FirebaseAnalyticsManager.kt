@@ -2,6 +2,7 @@ package pl.droidsonroids.toast.app.utils.managers
 
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
+import pl.droidsonroids.toast.utils.SortingType
 import javax.inject.Inject
 
 private const val EVENT_ID_KEY = "eventId"
@@ -12,6 +13,8 @@ private const val PHRASE_KEY = "phrase"
 private const val TOPIC_NAME_KEY = "contactType"
 
 private const val SORTING_TYPE_KEY = "sortingType"
+private const val DATE_SORTING = "date"
+private const val ALPHABETICAL_SORTING = "alphabet"
 private const val CONTACT_TYPE_KEY = "contactType"
 
 class FirebaseAnalyticsManager @Inject constructor(private val bundle: Bundle, private val firebaseAnalytics: FirebaseAnalytics) {
@@ -56,6 +59,18 @@ class FirebaseAnalyticsManager @Inject constructor(private val bundle: Bundle, p
         firebaseAnalytics.logEvent(EventTracking.EventDetails.SEE_PHOTOS, putEventId(eventId))
     }
 
+    fun logSpeakersSortOptionEvent(sortingType: SortingType) {
+        firebaseAnalytics.logEvent(EventTracking.Speakers.SORT_OPTION, putSortingType(sortingType))
+    }
+
+    fun logSpeakersShowSpeakerEvent(eventId: Long) {
+        firebaseAnalytics.logEvent(EventTracking.Speakers.SHOW_SEARCH, putEventId(eventId))
+    }
+
+    fun logSpeakersShowSearchEvent() {
+        firebaseAnalytics.logEvent(EventTracking.Speakers.SHOW_SEARCH, null)
+    }
+
 
     private fun putEventId(eventId: Long): Bundle {
         bundle.putLong(EVENT_ID_KEY, eventId)
@@ -74,6 +89,24 @@ class FirebaseAnalyticsManager @Inject constructor(private val bundle: Bundle, p
 
     private fun putLectureName(lectureName: String): Bundle {
         bundle.putString(LECTURE_NAME_KEY, lectureName)
+        return bundle
+    }
+
+    private fun putSortingType(sortingType: SortingType): Bundle {
+        bundle.putString(SORTING_TYPE_KEY, when (sortingType) {
+            SortingType.ALPHABETICAL -> ALPHABETICAL_SORTING
+            SortingType.DATE -> DATE_SORTING
+        })
+        return bundle
+    }
+
+    private fun putTopicName(topicName: String): Bundle {
+        bundle.putString(TOPIC_NAME_KEY, topicName)
+        return bundle
+    }
+
+    private fun putPhrase(phrase: String): Bundle {
+        bundle.putString(PHRASE_KEY, phrase)
         return bundle
     }
 
@@ -98,7 +131,24 @@ class FirebaseAnalyticsManager @Inject constructor(private val bundle: Bundle, p
             const val SORT_OPTION = "speakers_sort_option"
             const val SHOW_SPEAKER = "speakers_show_speaker"
             const val SHOW_SEARCH = "speakers_show_search"
+        }
 
+        object Search {
+            const val PHRASE = "search_phrase"
+            const val TAGS = "search_tags"
+            const val SHOW_SPEAKER = "search_show_speaker"
+        }
+
+        object SpeakerDetails {
+            const val CONTACTS = "speaker_det_contact"
+            const val READ_MORE = "speaker_det_read_more"
+            const val SLIDES = "speaker_det_slides"
+            const val SHOW_EVENT_DET = "speaker_det_event_det"
+        }
+
+        object Contact {
+            const val CHOOSE_TOPIC = "contact_choose_topic"
+            const val SEND_MESSAGE = "contact_send_message"
         }
     }
 

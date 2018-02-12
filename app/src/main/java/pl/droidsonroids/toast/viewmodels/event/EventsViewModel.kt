@@ -81,6 +81,7 @@ class EventsViewModel @Inject constructor(
 
     private fun onUpcomingEventLocationClick(coordinates: CoordinatesDto, placeName: String) {
         navigationSubject.onNext(NavigationRequest.Map(coordinates, placeName))
+        firebaseAnalyticsManager.logUpcomingEventMeetupPlaceEvent()
     }
 
     private fun onUpcomingEventClick(eventId: Long) {

@@ -58,7 +58,6 @@ class Navigator @Inject constructor(private val loginManager: LoginManager, priv
             val intent = Intent(Intent.ACTION_VIEW).setData(locationUri)
             try {
                 context.startActivity(intent)
-                firebaseAnalyticsManager.logUpcomingEventMeetupPlaceEvent()
             } catch (exception: ActivityNotFoundException) {
                 Toast.makeText(context, R.string.no_map_app_found, Toast.LENGTH_SHORT).show()
             }
@@ -109,6 +108,7 @@ class Navigator @Inject constructor(private val loginManager: LoginManager, priv
 
         activity.startActivity(intent)
         activity.disableActivityTransitionAnimations()
+        firebaseAnalyticsManager.logSpeakersShowSearchEvent()
     }
 
     private fun showEventDetails(context: Context, navigationRequest: NavigationRequest.EventDetails) {
