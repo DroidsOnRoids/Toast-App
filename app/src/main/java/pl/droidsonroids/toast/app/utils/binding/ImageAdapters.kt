@@ -1,20 +1,11 @@
-@file:JvmName("BindingAdapters")
-
-package pl.droidsonroids.toast.app.utils
-
+package pl.droidsonroids.toast.app.utils.binding
 
 import android.annotation.SuppressLint
 import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.CardView
-import android.text.format.DateFormat
-import android.view.View
-import android.widget.ImageButton
 import android.widget.ImageSwitcher
 import android.widget.ImageView
-import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.DataSource
@@ -24,31 +15,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.github.florent37.glidepalette.GlidePalette
 import pl.droidsonroids.toast.R
-import pl.droidsonroids.toast.app.utils.extensions.firstWord
-import pl.droidsonroids.toast.app.utils.extensions.setImageColor
 import pl.droidsonroids.toast.data.dto.ImageDto
-import pl.droidsonroids.toast.data.enums.AttendStatus
-import pl.droidsonroids.toast.utils.Constants
-import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.SortingType
-import java.text.SimpleDateFormat
-import java.util.*
-
 
 private const val COLOR_TRANSPARENT = 0x00FFFFFF
-
-@BindingAdapter("eventTime")
-fun TextView.setEventTime(date: Date?) {
-    val timeFormatter = DateFormat.getTimeFormat(context)
-    text = date?.let { timeFormatter.format(it) }
-}
-
-
-@BindingAdapter("eventDate")
-fun TextView.setEventDate(date: Date?) {
-    val timeFormatter = SimpleDateFormat(Constants.Date.PATTERN, Locale.getDefault())
-    text = date?.let { timeFormatter.format(it) }
-}
 
 @BindingAdapter("coverImage")
 fun setCoverImage(imageView: ImageView, imageDto: ImageDto?) {
@@ -133,53 +103,6 @@ private fun createGlidePaletteListener(imageDto: ImageDto?, onColorLoaded: (Int)
             }
 }
 
-@BindingAdapter("gradientColor")
-fun setGradientColor(imageSwitcher: ImageSwitcher, color: Int?) {
-    color?.let {
-        imageSwitcher.setImageDrawable(GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(color, COLOR_TRANSPARENT)))
-    }
-}
-
-@BindingAdapter("loadingContainerVisibility")
-fun setLoadingContainerVisibility(loadingContainer: View, loadingStatus: LoadingStatus) {
-    loadingContainer.visibility = when (loadingStatus) {
-        LoadingStatus.PENDING -> View.VISIBLE
-        else -> View.GONE
-    }
-}
-
-
-@BindingAdapter("loadingIndicatorVisibility")
-fun setLoadingIndicatorVisibility(loadingContainer: View, loadingStatus: LoadingStatus) {
-    loadingContainer.visibility = when (loadingStatus) {
-        LoadingStatus.PENDING -> View.VISIBLE
-        else -> View.INVISIBLE
-    }
-}
-
-@BindingAdapter("connectionErrorContainerVisibility")
-fun setConnectionErrorContainerVisibility(errorConnectionContainer: View, loadingStatus: LoadingStatus) {
-    errorConnectionContainer.visibility = when (loadingStatus) {
-        LoadingStatus.ERROR -> View.VISIBLE
-        else -> View.GONE
-    }
-}
-
-@BindingAdapter("android:visibility")
-fun setVisibility(view: View, isVisible: Boolean) {
-    view.visibility = if (isVisible) View.VISIBLE else View.GONE
-}
-
-@BindingAdapter("transitionName", "elementId")
-fun setTransitionName(view: View, transitionName: String, elementId: Long?) {
-    view.transitionName = "$transitionName$elementId"
-}
-
-@BindingAdapter("about")
-fun setAboutPrefix(textView: TextView, name: String) {
-    textView.text = textView.context.getString(R.string.about, name.firstWord())
-}
-
 @BindingAdapter("android:src")
 fun ImageView.setSortingImage(sortingType: SortingType) {
     if (sortingType == SortingType.ALPHABETICAL) {
@@ -189,32 +112,9 @@ fun ImageView.setSortingImage(sortingType: SortingType) {
     }
 }
 
-@BindingAdapter(value = ["linkEnabled"], requireAll = false)
-fun setLinkImageButtonEnabledWithColor(imageButton: ImageButton, link: String?) {
-    imageButton.isEnabled = !link.isNullOrEmpty()
-    when {
-        imageButton.isEnabled.not() -> imageButton.setImageColor(R.color.disabledGray)
-        imageButton.id == R.id.githubImage -> imageButton.setImageColor(R.color.black)
-        imageButton.id == R.id.emailImage -> imageButton.setImageColor(R.color.redGmail)
-        imageButton.id == R.id.twitterImage -> imageButton.setImageColor(R.color.blueTwitter)
-        else -> imageButton.setImageColor(R.color.darkBlue)
-    }
-}
-
-@BindingAdapter("isPastEvent", "android:text")
-fun setAttendText(textView: TextView, isPastEvent: Boolean, attendStatus: AttendStatus?) {
-    val text = when (attendStatus) {
-        AttendStatus.ATTENDING -> if (isPastEvent) R.string.attended else R.string.attending
-        AttendStatus.UNSURE -> R.string.interested_in
-        AttendStatus.DECLINED, null -> R.string.attend
-    }
-    textView.setText(text)
-}
-
-@BindingAdapter("android:foreground")
-fun setForeground(cardView: CardView, isEnabled: Boolean) {
-    val color = if (isEnabled) R.color.whiteAlpha60 else R.drawable.black_ripple
-    with(cardView) {
-        foreground = ContextCompat.getDrawable(context, color)
+@BindingAdapter("gradientColor")
+fun setGradientColor(imageSwitcher: ImageSwitcher, color: Int?) {
+    color?.let {
+        imageSwitcher.setImageDrawable(GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(color, COLOR_TRANSPARENT)))
     }
 }
