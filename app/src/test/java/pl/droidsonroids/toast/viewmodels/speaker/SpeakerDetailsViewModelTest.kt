@@ -9,6 +9,7 @@ import org.junit.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
+import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsEventTracker
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
@@ -22,6 +23,8 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
 
     @Mock
     lateinit var speakersRepository: SpeakersRepository
+    @Mock
+    lateinit var firebaseAnalyticsEventTracker: FirebaseAnalyticsEventTracker
     @InjectMocks
     lateinit var speakerDetailsViewModel: SpeakerDetailsViewModel
 

@@ -11,7 +11,7 @@ import io.reactivex.rxkotlin.toObservable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
-import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsManager
+import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsEventTracker
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.dto.ImageDto
@@ -34,7 +34,7 @@ class EventsViewModel @Inject constructor(
         loginStateWatcher: LoginStateWatcher,
         attendViewModel: AttendViewModel,
         private val eventsRepository: EventsRepository,
-        private val firebaseAnalyticsManager: FirebaseAnalyticsManager
+        private val firebaseAnalyticsEventTracker: FirebaseAnalyticsEventTracker
 ) : ViewModel(), LoadingViewModel, NavigatingViewModel, LoginStateWatcher by loginStateWatcher, AttendViewModel by attendViewModel {
     override val navigationSubject: PublishSubject<NavigationRequest> = navigationRequests
 
@@ -81,12 +81,12 @@ class EventsViewModel @Inject constructor(
 
     private fun onUpcomingEventLocationClick(coordinates: CoordinatesDto, placeName: String) {
         navigationSubject.onNext(NavigationRequest.Map(coordinates, placeName))
-        firebaseAnalyticsManager.logUpcomingEventMeetupPlaceEvent()
+        firebaseAnalyticsEventTracker.logUpcomingEventMeetupPlaceEvent()
     }
 
     private fun onUpcomingEventClick(eventId: Long) {
         navigationSubject.onNext(NavigationRequest.EventDetails(eventId))
-        firebaseAnalyticsManager.logShowEventDetailsEvent(eventId)
+        firebaseAnalyticsEventTracker.logShowEventDetailsEvent(eventId)
     }
 
     private fun onSeePhotosClick(eventId: Long, photos: List<ImageDto>) {

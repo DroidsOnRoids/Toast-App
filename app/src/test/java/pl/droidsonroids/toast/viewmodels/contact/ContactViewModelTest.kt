@@ -12,7 +12,7 @@ import org.junit.Test
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.app.utils.ContactFormValidator
-import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsManager
+import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsEventTracker
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
 import pl.droidsonroids.toast.data.enums.MessageType
 import pl.droidsonroids.toast.repositories.contact.ContactRepository
@@ -26,7 +26,7 @@ class ContactViewModelTest : RxTestBase() {
     @Mock
     lateinit var contactFormValidator: ContactFormValidator
     @Mock
-    lateinit var firebaseAnalyticsManager: FirebaseAnalyticsManager
+    lateinit var firebaseAnalyticsEventTracker: FirebaseAnalyticsEventTracker
 
     lateinit var contactViewModel: ContactViewModel
 
@@ -44,7 +44,7 @@ class ContactViewModelTest : RxTestBase() {
     @Before
     fun setUp() {
         whenever(contactRepository.readMessage()).thenReturn(Single.just(messageDto))
-        contactViewModel = ContactViewModel(contactFormValidator, contactRepository, firebaseAnalyticsManager)
+        contactViewModel = ContactViewModel(contactFormValidator, contactRepository, firebaseAnalyticsEventTracker)
     }
 
     @Test

@@ -5,7 +5,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import pl.droidsonroids.toast.utils.SortingType
 import javax.inject.Inject
 
-class FirebaseAnalyticsManager @Inject constructor(private val bundle: Bundle, private val firebaseAnalytics: FirebaseAnalytics) {
+class FirebaseAnalyticsEventTracker @Inject constructor(private val bundle: Bundle, private val firebaseAnalytics: FirebaseAnalytics) {
 
     fun logUpcomingEventFacebookAttendEvent(facebookId: String) {
         firebaseAnalytics.logEvent(EventTracking.Events.ATTEND_BUTTON, facebookId.let { putFacebookId(it) })

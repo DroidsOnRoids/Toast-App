@@ -9,6 +9,7 @@ import org.junit.Assert.assertThat
 import org.junit.Test
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
+import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsEventTracker
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.api.speaker.ApiSpeaker
 import pl.droidsonroids.toast.data.mapper.toDto
@@ -24,12 +25,15 @@ class SpeakersViewModelTest : RxTestBase() {
 
     @Mock
     lateinit var speakersRepository: SpeakersRepository
+    @Mock
+    lateinit var firebaseAnalyticsEventTracker: FirebaseAnalyticsEventTracker
+
     lateinit var speakersViewModel: SpeakersViewModel
 
     @Test
     fun shouldLoadFirstPage() {
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPage))
-        speakersViewModel = SpeakersViewModel(speakersRepository)
+        speakersViewModel = SpeakersViewModel(speakersRepository, firebaseAnalyticsEventTracker)
 
         checkIsFirstPageLoaded()
     }
@@ -53,7 +57,7 @@ class SpeakersViewModelTest : RxTestBase() {
     @Test
     fun shouldFailLoadFirstPage() {
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(Exception()))
-        speakersViewModel = SpeakersViewModel(speakersRepository)
+        speakersViewModel = SpeakersViewModel(speakersRepository, firebaseAnalyticsEventTracker)
 
         val speakerItemViewModelList: List<State<SpeakerItemViewModel>> = speakersViewModel.speakersSubject.value
 
@@ -64,7 +68,7 @@ class SpeakersViewModelTest : RxTestBase() {
     @Test
     fun shouldLoadFirstPageAfterRetry() {
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(Exception()))
-        speakersViewModel = SpeakersViewModel(speakersRepository)
+        speakersViewModel = SpeakersViewModel(speakersRepository, firebaseAnalyticsEventTracker)
 
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPage))
 
@@ -77,7 +81,7 @@ class SpeakersViewModelTest : RxTestBase() {
     fun shouldHaveLoadingItemWhenNextPageAvailable() {
         val testSpeakersPageWithNextPageAvailable = testSpeakersPage.copy(allPagesCount = 2)
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPageWithNextPageAvailable))
-        speakersViewModel = SpeakersViewModel(speakersRepository)
+        speakersViewModel = SpeakersViewModel(speakersRepository, firebaseAnalyticsEventTracker)
 
         val speakerItemViewModelList = speakersViewModel.speakersSubject.value
         checkIsFirstPageLoaded()
@@ -89,7 +93,7 @@ class SpeakersViewModelTest : RxTestBase() {
         val testSpeakersPageWithNextPageAvailable = testSpeakersPage.copy(allPagesCount = 2)
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPageWithNextPageAvailable))
         whenever(speakersRepository.getSpeakersPage(eq(2), any())).thenReturn(Single.error(Exception()))
-        speakersViewModel = SpeakersViewModel(speakersRepository)
+        speakersViewModel = SpeakersViewModel(speakersRepository, firebaseAnalyticsEventTracker)
 
         speakersViewModel.loadNextPage()
 
@@ -104,7 +108,7 @@ class SpeakersViewModelTest : RxTestBase() {
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPageWithNextPageAvailable))
         val secondSpeakersPage = testSpeakersPage.copy(pageNumber = 2, allPagesCount = 2)
         whenever(speakersRepository.getSpeakersPage(eq(2), any())).thenReturn(Single.just(secondSpeakersPage))
-        speakersViewModel = SpeakersViewModel(speakersRepository)
+        speakersViewModel = SpeakersViewModel(speakersRepository, firebaseAnalyticsEventTracker)
 
         speakersViewModel.loadNextPage()
 
@@ -116,7 +120,7 @@ class SpeakersViewModelTest : RxTestBase() {
     @Test
     fun shouldRequestNavigationToSpeakerDetails() {
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPage))
-        speakersViewModel = SpeakersViewModel(speakersRepository)
+        speakersViewModel = SpeakersViewModel(speakersRepository, firebaseAnalyticsEventTracker)
         val speakerItemViewModelList = speakersViewModel.speakersSubject.value
         val speakerItemViewModel = (speakerItemViewModelList.first() as? State.Item)?.item
         val testObserver = speakersViewModel.navigationSubject.test()
@@ -132,7 +136,7 @@ class SpeakersViewModelTest : RxTestBase() {
     @Test
     fun shouldSortSpeakersAlphabetical() {
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(Exception()))
-        speakersViewModel = SpeakersViewModel(speakersRepository)
+        speakersViewModel = SpeakersViewModel(speakersRepository, firebaseAnalyticsEventTracker)
 
         whenever(speakersRepository.getSpeakersPage(sortingQuery = SortingType.ALPHABETICAL.toQuery())).thenReturn(Single.just(testSpeakersPage))
 
@@ -143,7 +147,7 @@ class SpeakersViewModelTest : RxTestBase() {
     @Test
     fun shouldSortSpeakersByDate() {
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(Exception()))
-        speakersViewModel = SpeakersViewModel(speakersRepository)
+        speakersViewModel = SpeakersViewModel(speakersRepository, firebaseAnalyticsEventTracker)
 
         whenever(speakersRepository.getSpeakersPage(sortingQuery = SortingType.DATE.toQuery())).thenReturn(Single.just(testSpeakersPage))
 
@@ -154,7 +158,7 @@ class SpeakersViewModelTest : RxTestBase() {
     @Test
     fun shouldLoadFirstPageAfterDateSorting() {
         whenever(speakersRepository.getSpeakersPage(sortingQuery = SortingType.DATE.toQuery())).thenReturn(Single.just(testSpeakersPage))
-        speakersViewModel = SpeakersViewModel(speakersRepository)
+        speakersViewModel = SpeakersViewModel(speakersRepository, firebaseAnalyticsEventTracker)
 
         speakersViewModel.onDateSortingClick()
 
@@ -164,7 +168,7 @@ class SpeakersViewModelTest : RxTestBase() {
     @Test
     fun shouldLoadFirstPageAfterAlphabeticalSorting() {
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(Exception()))
-        speakersViewModel = SpeakersViewModel(speakersRepository)
+        speakersViewModel = SpeakersViewModel(speakersRepository, firebaseAnalyticsEventTracker)
 
         whenever(speakersRepository.getSpeakersPage(pageNumber = any(), sortingQuery = eq(SortingType.ALPHABETICAL.toQuery()))).thenReturn(Single.just(testSpeakersPage))
 

@@ -138,7 +138,7 @@ class EventsViewModelTest {
     private fun setUpWith(maybe: Maybe<SplitEvents>) {
         whenever(eventsRepository.getEvents()).thenReturn(maybe)
         whenever(attendViewModel.navigationRequests).thenReturn(PublishSubject.create())
-        eventsViewModel = EventsViewModel(loginStateWatcher, attendViewModel, eventsRepository, firebaseAnalyticsManager = mock())
+        eventsViewModel = EventsViewModel(loginStateWatcher, attendViewModel, eventsRepository, firebaseAnalyticsEventTracker = mock())
     }
 
 }

@@ -7,7 +7,6 @@ import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsManager
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDto
@@ -18,7 +17,6 @@ import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.toPage
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
-import javax.inject.Inject
 
 abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, NavigatingViewModel {
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.SUCCESS)
@@ -27,9 +25,6 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
     protected var isNextPageLoading: Boolean = false
     protected var nextPageNumber: Int? = null
     private val Any.simpleClassName: String get() = javaClass.simpleName
-
-    @Inject
-    lateinit var firebaseAnalyticsManager: FirebaseAnalyticsManager
 
     protected fun mapToSingleSpeakerItemViewModelsPage(page: Page<SpeakerDto>): Single<Page<State.Item<SpeakerItemViewModel>>> {
         val (items, pageNumber, allPagesCount) = page

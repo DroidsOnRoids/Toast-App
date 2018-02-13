@@ -5,6 +5,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
+import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsEventTracker
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
@@ -13,7 +14,10 @@ import pl.droidsonroids.toast.utils.toObservable
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class SpeakersSearchViewModel @Inject constructor(private val speakersRepository: SpeakersRepository) : BaseSpeakerListViewModel() {
+class SpeakersSearchViewModel @Inject constructor(
+        private val speakersRepository: SpeakersRepository,
+        private val firebaseAnalyticsEventTracker: FirebaseAnalyticsEventTracker
+) : BaseSpeakerListViewModel() {
     val searchPhrase: ObservableField<String> = ObservableField("")
     private val searchObservable: Observable<String> = searchPhrase.toObservable()
     private var lastSearchedPhrase: String = ""
@@ -37,13 +41,13 @@ class SpeakersSearchViewModel @Inject constructor(private val speakersRepository
                 .switchMapSingle(::searchSpeakers)
                 .doOnError {
                     onFirstPageLoadError(it)
-                    firebaseAnalyticsManager.logSearchPhraseEvent(lastSearchedPhrase)
+                    firebaseAnalyticsEventTracker.logSearchPhraseEvent(lastSearchedPhrase)
                 }
                 .retry()
                 .subscribeBy(
                         onNext = {
                             onNewSpeakersPageLoaded(it)
-                            firebaseAnalyticsManager.logSearchPhraseEvent(lastSearchedPhrase)
+                            firebaseAnalyticsEventTracker.logSearchPhraseEvent(lastSearchedPhrase)
                         })
 
 
@@ -86,11 +90,11 @@ class SpeakersSearchViewModel @Inject constructor(private val speakersRepository
                 .subscribeBy(
                         onSuccess = {
                             onNewSpeakersPageLoaded(it)
-                            firebaseAnalyticsManager.logSearchPhraseEvent(query)
+                            firebaseAnalyticsEventTracker.logSearchPhraseEvent(query)
                         },
                         onError = {
                             onFirstPageLoadError(it)
-                            firebaseAnalyticsManager.logSearchPhraseEvent(query)
+                            firebaseAnalyticsEventTracker.logSearchPhraseEvent(query)
                         }
                 )
     }
@@ -122,7 +126,7 @@ class SpeakersSearchViewModel @Inject constructor(private val speakersRepository
     }
 
     override fun onSpeakerNavigationRequestSend(speakerName: String) {
-        firebaseAnalyticsManager.logSearchShowSpeakerEvent(speakerName)
+        firebaseAnalyticsEventTracker.logSearchShowSpeakerEvent(speakerName)
     }
 
     override fun onCleared() {

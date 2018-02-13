@@ -4,6 +4,7 @@ import android.databinding.Observable
 import android.databinding.ObservableField
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
+import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsEventTracker
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
@@ -11,7 +12,8 @@ import pl.droidsonroids.toast.utils.SortingType
 import javax.inject.Inject
 
 class SpeakersViewModel @Inject constructor(
-        private val speakersRepository: SpeakersRepository
+        private val speakersRepository: SpeakersRepository,
+        private val firebaseAnalyticsEventTracker: FirebaseAnalyticsEventTracker
 ) : BaseSpeakerListViewModel() {
     val isSortingDetailsVisible: ObservableField<Boolean> = ObservableField(false)
     val sortingType = ObservableField(SortingType.DATE)
@@ -39,13 +41,13 @@ class SpeakersViewModel @Inject constructor(
     fun onAlphabeticalSortingClick() {
         sortingType.set(SortingType.ALPHABETICAL)
         toggleSortingDetailsVisibility()
-        firebaseAnalyticsManager.logSpeakersSortOptionEvent(sortingType.get())
+        firebaseAnalyticsEventTracker.logSpeakersSortOptionEvent(sortingType.get())
     }
 
     fun onDateSortingClick() {
         sortingType.set(SortingType.DATE)
         toggleSortingDetailsVisibility()
-        firebaseAnalyticsManager.logSpeakersSortOptionEvent(sortingType.get())
+        firebaseAnalyticsEventTracker.logSpeakersSortOptionEvent(sortingType.get())
     }
 
     override fun retryLoading() {
@@ -87,7 +89,7 @@ class SpeakersViewModel @Inject constructor(
     }
 
     override fun onSpeakerNavigationRequestSend(speakerName: String) {
-        firebaseAnalyticsManager.logSpeakersShowSpeakerEvent(speakerName)
+        firebaseAnalyticsEventTracker.logSpeakersShowSpeakerEvent(speakerName)
     }
 
     override fun onCleared() {

@@ -6,7 +6,7 @@ import android.util.Log
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsManager
+import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsEventTracker
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerTalkDto
@@ -20,7 +20,7 @@ import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import javax.inject.Inject
 
 
-class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository: SpeakersRepository, private val firebaseAnalyticsManager: FirebaseAnalyticsManager) : ViewModel(), LoadingViewModel, NavigatingViewModel {
+class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository: SpeakersRepository, private val firebaseAnalyticsEventTracker: FirebaseAnalyticsEventTracker) : ViewModel(), LoadingViewModel, NavigatingViewModel {
     private val Any.simpleClassName: String get() = javaClass.simpleName
     private var speakerId: Long? = null
 
@@ -46,22 +46,22 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
 
     fun onGithubClick() {
         openWebsite(github.get())
-        firebaseAnalyticsManager.logEventDetailsTapContactEvent(Constants.ContactLink.GITHUB)
+        firebaseAnalyticsEventTracker.logEventDetailsTapContactEvent(Constants.ContactLink.GITHUB)
     }
 
     fun onWebsiteClick() {
         openWebsite(website.get())
-        firebaseAnalyticsManager.logEventDetailsTapContactEvent(Constants.ContactLink.WEBPAGE)
+        firebaseAnalyticsEventTracker.logEventDetailsTapContactEvent(Constants.ContactLink.WEBPAGE)
     }
 
     fun onTwitterClick() {
         openWebsite(twitter.get())
-        firebaseAnalyticsManager.logEventDetailsTapContactEvent(Constants.ContactLink.TWITTER)
+        firebaseAnalyticsEventTracker.logEventDetailsTapContactEvent(Constants.ContactLink.TWITTER)
     }
 
     fun onEmailClick() {
         email.get()?.let { navigationSubject.onNext(NavigationRequest.Email(email = it)) }
-        firebaseAnalyticsManager.logEventDetailsTapContactEvent(Constants.ContactLink.EMAIL)
+        firebaseAnalyticsEventTracker.logEventDetailsTapContactEvent(Constants.ContactLink.EMAIL)
     }
 
     private fun openWebsite(url: String?) {
@@ -96,12 +96,12 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
 
     private fun onReadMoreClick(talkDto: SpeakerTalkDto) {
         navigationSubject.onNext(NavigationRequest.SpeakerTalkDetails(talkDto))
-        firebaseAnalyticsManager.logSpeakerDetailsReadMoreEvent(talkDto.title)
+        firebaseAnalyticsEventTracker.logSpeakerDetailsReadMoreEvent(talkDto.title)
     }
 
     private fun onEventClick(eventId: Long) {
         navigationSubject.onNext(NavigationRequest.EventDetails(eventId))
-        firebaseAnalyticsManager.logSpeakerDetailsEventTapEvent(eventId)
+        firebaseAnalyticsEventTracker.logSpeakerDetailsEventTapEvent(eventId)
     }
 
     private fun onSpeakerLoadError(throwable: Throwable) {
