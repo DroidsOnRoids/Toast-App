@@ -79,11 +79,19 @@ class FirebaseAnalyticsManager @Inject constructor(private val bundle: Bundle, p
         firebaseAnalytics.logEvent(EventTracking.SpeakerDetails.CONTACTS, putContactOption(contactOption))
     }
 
+    fun logContactSendClickEvent(topicName: String) {
+        firebaseAnalytics.logEvent(EventTracking.Contact.SEND_MESSAGE, putTopicName(topicName))
+    }
+
+    fun logContactChooseTopicEvent(topicName: String) {
+        firebaseAnalytics.logEvent(EventTracking.Contact.CHOOSE_TOPIC, putTopicName(topicName))
+    }
+
+
     private fun putContactOption(contactOption: String): Bundle {
         bundle.putString(EventTracking.Key.CONTACT_OPTION_KEY, contactOption)
         return bundle
     }
-
 
     private fun putEventId(eventId: Long): Bundle {
         bundle.putLong(EventTracking.Key.EVENT_ID_KEY, eventId)

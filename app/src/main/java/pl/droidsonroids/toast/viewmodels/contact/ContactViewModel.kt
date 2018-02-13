@@ -10,6 +10,7 @@ import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.app.utils.ContactFormValidator
 import pl.droidsonroids.toast.app.utils.callbacks.OnPropertyChangedSkippableCallback
 import pl.droidsonroids.toast.app.utils.extensions.getUnicodeLength
+import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsManager
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
 import pl.droidsonroids.toast.data.enums.MessageType
 import pl.droidsonroids.toast.repositories.contact.ContactRepository
@@ -21,7 +22,8 @@ import javax.inject.Inject
 
 class ContactViewModel @Inject constructor(
         private val contactFormValidator: ContactFormValidator,
-        private val contactRepository: ContactRepository
+        private val contactRepository: ContactRepository,
+        private val firebaseAnalyticsManager: FirebaseAnalyticsManager
 ) : ViewModel(), LoadingViewModel, NavigatingViewModel {
 
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
@@ -105,6 +107,7 @@ class ContactViewModel @Inject constructor(
         selectedTopicPosition.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 updateSendingEnabled()
+                firebaseAnalyticsManager.logContactChooseTopicEvent(resolveMessageType().name)
             }
         })
     }
@@ -123,6 +126,7 @@ class ContactViewModel @Inject constructor(
                         onComplete = (::onSendSuccessfully),
                         onError = { loadingStatus.set(LoadingStatus.ERROR) }
                 )
+        firebaseAnalyticsManager.logContactSendClickEvent(message.type.name)
     }
 
     private fun createMessageDto(): MessageDto {
