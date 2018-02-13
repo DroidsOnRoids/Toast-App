@@ -118,7 +118,7 @@ class PhotosActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        photosViewModel.sharedTransitionInProgress = false
+        photosViewModel.isSharedTransitionInProgress = false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

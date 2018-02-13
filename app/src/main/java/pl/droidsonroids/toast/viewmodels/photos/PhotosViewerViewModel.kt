@@ -24,10 +24,10 @@ class PhotosViewerViewModel @Inject constructor() : ViewModel(), NavigatingViewM
 
     private fun imageDtoToViewModel(index: Int, image: ImageDto): SinglePhotoViewModel {
         return image.toSingleViewModel(
-                index.toLong(),
-                loadFromCache,
-                { onPhotoLoadingFinished(index.toLong()) },
-                ::onClick
+                position = index.toLong(),
+                loadFromCache = loadFromCache,
+                onPhotoLoadingFinished = { onPhotoLoadingFinished(index.toLong()) },
+                onClick = ::onClick
         )
     }
 
