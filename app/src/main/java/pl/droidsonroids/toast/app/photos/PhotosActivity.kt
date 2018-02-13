@@ -62,6 +62,10 @@ class PhotosActivity : BaseActivity() {
         setupToolbar()
         setupViewModel()
         setupRecyclerView()
+        increaseGlideMemoryCache()
+    }
+
+    private fun increaseGlideMemoryCache() {
         Glide.get(this).setMemoryCategory(MemoryCategory.HIGH)
     }
 
@@ -136,8 +140,12 @@ class PhotosActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
-        Glide.get(this).setMemoryCategory(MemoryCategory.NORMAL)
+        setDefaultGlideMemoryCache()
         compositeDisposable.dispose()
         super.onDestroy()
+    }
+
+    private fun setDefaultGlideMemoryCache() {
+        Glide.get(this).setMemoryCategory(MemoryCategory.NORMAL)
     }
 }
