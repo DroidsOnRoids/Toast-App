@@ -7,9 +7,9 @@ class SpeakerItemViewModel(
         val name: String,
         val job: String,
         val avatar: ImageDto,
-        private val action: (Long) -> Unit
+        private val onSpeakerClick: (Long) -> Unit
 ) {
     fun onClick() {
-        action(id)
+        onSpeakerClick(id)
     }
 }

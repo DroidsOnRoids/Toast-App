@@ -5,9 +5,9 @@ import pl.droidsonroids.toast.data.dto.ImageDto
 class PhotoItemViewModel(
         val position: Long,
         val image: ImageDto,
-        private val action: (Long) -> Unit
+        private val onPhotoClick: (Long) -> Unit
 ) {
     fun onClick() {
-        action(position)
+        onPhotoClick(position)
     }
 }

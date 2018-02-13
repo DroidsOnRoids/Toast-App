@@ -8,9 +8,9 @@ class SinglePhotoViewModel(
         val loadFromCache: ObservableField<Boolean>,
         val image: ImageDto,
         val onPhotoLoadingFinished: () -> Unit,
-        private val action: () -> Unit
+        private val onPhotoClick: () -> Unit
 ) {
     fun onClick() {
-        action()
+        onPhotoClick()
     }
 }
