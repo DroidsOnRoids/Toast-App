@@ -37,7 +37,7 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
                 .map {
                     it.toViewModel { id ->
                         navigationSubject.onNext(NavigationRequest.SpeakerDetails(id))
-                        firebaseAnalyticsManager.logSpeakersShowSpeakerEvent(id)
+                        onSpeakerNavigationRequestSend(it.name)
                     }
                 }
                 .map { wrapWithState(it) }
@@ -94,6 +94,8 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
     private fun createErrorState(): State.Error {
         return State.Error(::onErrorClick)
     }
+
+    abstract fun onSpeakerNavigationRequestSend(speakerName: String)
 
     protected abstract fun onErrorClick()
 }

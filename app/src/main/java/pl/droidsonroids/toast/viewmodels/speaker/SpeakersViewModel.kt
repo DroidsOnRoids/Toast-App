@@ -86,6 +86,10 @@ class SpeakersViewModel @Inject constructor(
         nextPageNumber?.let { loadPage(it) }
     }
 
+    override fun onSpeakerNavigationRequestSend(speakerName: String) {
+        firebaseAnalyticsManager.logSpeakersShowSpeakerEvent(speakerName)
+    }
+
     override fun onCleared() {
         speakersDisposable?.dispose()
     }

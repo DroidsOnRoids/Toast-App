@@ -63,12 +63,20 @@ class FirebaseAnalyticsManager @Inject constructor(private val bundle: Bundle, p
         firebaseAnalytics.logEvent(EventTracking.Speakers.SORT_OPTION, putSortingType(sortingType))
     }
 
-    fun logSpeakersShowSpeakerEvent(eventId: Long) {
-        firebaseAnalytics.logEvent(EventTracking.Speakers.SHOW_SPEAKER, putEventId(eventId))
+    fun logSpeakersShowSpeakerEvent(speakerName: String) {
+        firebaseAnalytics.logEvent(EventTracking.Speakers.SHOW_SPEAKER, putSpeakerName(speakerName))
     }
 
     fun logSpeakersShowSearchEvent() {
         firebaseAnalytics.logEvent(EventTracking.Speakers.SHOW_SEARCH, null)
+    }
+
+    fun logSearchPhraseEvent(phrase: String) {
+        firebaseAnalytics.logEvent(EventTracking.Search.PHRASE, putPhrase(phrase))
+    }
+
+    fun logSearchShowSpeakerEvent(speakerName: String) {
+        firebaseAnalytics.logEvent(EventTracking.Search.SHOW_SPEAKER, putSpeakerName(speakerName))
     }
 
 
@@ -84,6 +92,11 @@ class FirebaseAnalyticsManager @Inject constructor(private val bundle: Bundle, p
 
     private fun putSpeakerId(speakerId: Long): Bundle {
         bundle.putLong(SPEAKER_ID_KEY, speakerId)
+        return bundle
+    }
+
+    private fun putSpeakerName(speakerName: String): Bundle {
+        bundle.putString(SPEAKER_ID_KEY, speakerName)
         return bundle
     }
 

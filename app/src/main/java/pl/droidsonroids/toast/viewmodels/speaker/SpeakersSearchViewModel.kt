@@ -35,11 +35,18 @@ class SpeakersSearchViewModel @Inject constructor(private val speakersRepository
                 .doOnNext { disposePreviousLoad() }
                 .doOnNext { lastSearchedPhrase = it }
                 .switchMapSingle(::searchSpeakers)
-                .doOnError(::onFirstPageLoadError)
+                .doOnError {
+                    onFirstPageLoadError(it)
+                    firebaseAnalyticsManager.logSearchPhraseEvent(lastSearchedPhrase)
+                }
                 .retry()
                 .subscribeBy(
-                        onNext = (::onNewSpeakersPageLoaded)
-                )
+                        onNext = {
+                            onNewSpeakersPageLoaded(it)
+                            firebaseAnalyticsManager.logSearchPhraseEvent(lastSearchedPhrase)
+                        })
+
+
     }
 
     private fun shouldPerformSearch(query: String) =
@@ -77,8 +84,14 @@ class SpeakersSearchViewModel @Inject constructor(private val speakersRepository
         lastSearchedPhrase = query
         firstPageDisposable = searchSpeakers(query)
                 .subscribeBy(
-                        onSuccess = (::onNewSpeakersPageLoaded),
-                        onError = (::onFirstPageLoadError)
+                        onSuccess = {
+                            onNewSpeakersPageLoaded(it)
+                            firebaseAnalyticsManager.logSearchPhraseEvent(query)
+                        },
+                        onError = {
+                            onFirstPageLoadError(it)
+                            firebaseAnalyticsManager.logSearchPhraseEvent(query)
+                        }
                 )
     }
 
@@ -106,6 +119,10 @@ class SpeakersSearchViewModel @Inject constructor(private val speakersRepository
                         onSuccess = (::onSpeakersPageLoaded),
                         onError = (::onNextPageLoadError)
                 )
+    }
+
+    override fun onSpeakerNavigationRequestSend(speakerName: String) {
+        firebaseAnalyticsManager.logSearchShowSpeakerEvent(speakerName)
     }
 
     override fun onCleared() {
