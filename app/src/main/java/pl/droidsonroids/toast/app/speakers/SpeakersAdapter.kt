@@ -21,14 +21,7 @@ class SpeakersAdapter : BaseStateAdapter<SpeakerItemViewModel>(false) {
         }
 
         override fun areStateItemsContentTheSame(oldItem: State.Item<SpeakerItemViewModel>, newItem: State.Item<SpeakerItemViewModel>): Boolean {
-            return oldItem.item.run {
-                newItem.item.let {
-                    id == it.id
-                            && name == it.name
-                            && job == it.job
-                            && avatar == it.avatar
-                }
-            }
+            return oldItem.item == newItem.item
         }
 
     }
