@@ -150,13 +150,13 @@ class EventsViewModel @Inject constructor(
     private fun mapToSingleEventItemViewModelsPage(page: Page<EventDto>): Single<Page<State.Item<EventItemViewModel>>> {
         val (items, pageNo, pageCount) = page
         return items.toObservable()
-                .map {
-                    it.toViewModel { id ->
-                        navigationSubject.onNext(NavigationRequest.EventDetails(id))
-                    }
-                }
+                .map { it.toViewModel(::sendEventDetailsNavigationRequest) }
                 .map { wrapWithState(it) }
                 .toPage(pageNo, pageCount)
+    }
+
+    private fun sendEventDetailsNavigationRequest(id: Long) {
+        navigationSubject.onNext(NavigationRequest.EventDetails(id))
     }
 
     private fun onPreviousEventsLoadError(throwable: Throwable) {
