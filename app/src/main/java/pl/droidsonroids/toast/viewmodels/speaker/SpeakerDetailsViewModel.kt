@@ -90,7 +90,9 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
             website.set(it.website)
             twitter.set(it.twitter)
             email.set(it.email)
-            talksSubject.onNext(it.talks.map { it.toViewModel(::onReadMoreClick, ::onEventClick) })
+            talksSubject.onNext(it.talks.map {
+                it.toViewModel(::onReadMoreClick, ::onEventClick)
+            })
         }
     }
 

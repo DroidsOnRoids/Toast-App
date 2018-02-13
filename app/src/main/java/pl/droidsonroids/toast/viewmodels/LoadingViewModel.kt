@@ -8,4 +8,6 @@ interface LoadingViewModel {
     val loadingStatus: ObservableField<LoadingStatus>
 
     fun retryLoading()
+
+    val isFadingEnabled get() = false
 }

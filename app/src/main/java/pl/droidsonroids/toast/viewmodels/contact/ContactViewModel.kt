@@ -1,7 +1,6 @@
 package pl.droidsonroids.toast.viewmodels.contact
 
 import android.arch.lifecycle.ViewModel
-import android.databinding.Observable
 import android.databinding.ObservableField
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
@@ -16,6 +15,7 @@ import pl.droidsonroids.toast.data.enums.MessageType
 import pl.droidsonroids.toast.repositories.contact.ContactRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.utils.addOnPropertyChangedCallback
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import javax.inject.Inject
@@ -104,12 +104,10 @@ class ContactViewModel @Inject constructor(
     }
 
     private fun addSelectedTopicPositionListener() {
-        selectedTopicPosition.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                updateSendingEnabled()
-                firebaseAnalyticsEventTracker.logContactChooseTopicEvent(resolveMessageType().name)
-            }
-        })
+        selectedTopicPosition.addOnPropertyChangedCallback {
+            updateSendingEnabled()
+            firebaseAnalyticsEventTracker.logContactChooseTopicEvent(resolveMessageType().name)
+        }
     }
 
     override fun retryLoading() = onSendClick()
