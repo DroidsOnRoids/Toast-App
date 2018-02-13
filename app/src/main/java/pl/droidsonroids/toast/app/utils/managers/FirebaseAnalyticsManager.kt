@@ -5,18 +5,6 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import pl.droidsonroids.toast.utils.SortingType
 import javax.inject.Inject
 
-private const val EVENT_ID_KEY = "eventId"
-private const val FACEBOOK_ID_KEY = "facebookId"
-private const val LECTURE_NAME_KEY = "lectureName"
-private const val SPEAKER_ID_KEY = "speakerName"
-private const val PHRASE_KEY = "phrase"
-private const val TOPIC_NAME_KEY = "contactType"
-
-private const val SORTING_TYPE_KEY = "sortingType"
-private const val DATE_SORTING = "date"
-private const val ALPHABETICAL_SORTING = "alphabet"
-private const val CONTACT_TYPE_KEY = "contactType"
-
 class FirebaseAnalyticsManager @Inject constructor(private val bundle: Bundle, private val firebaseAnalytics: FirebaseAnalytics) {
 
     fun logUpcomingEventFacebookAttendEvent(facebookId: String) {
@@ -25,10 +13,6 @@ class FirebaseAnalyticsManager @Inject constructor(private val bundle: Bundle, p
 
     fun logUpcomingFacebookAttendSuccessEvent(facebookId: String) {
         firebaseAnalytics.logEvent(EventTracking.Events.ATTEND_SUCCESS, putFacebookId(facebookId))
-    }
-
-    fun logShowEventDetailsEvent(eventId: Long) {
-        firebaseAnalytics.logEvent(EventTracking.Events.SHOW_EVENT_DET, putEventId(eventId))
     }
 
     fun logUpcomingEventMeetupPlaceEvent() {
@@ -79,47 +63,68 @@ class FirebaseAnalyticsManager @Inject constructor(private val bundle: Bundle, p
         firebaseAnalytics.logEvent(EventTracking.Search.SHOW_SPEAKER, putSpeakerName(speakerName))
     }
 
+    fun logSpeakerDetailsReadMoreEvent(lectureName: String) {
+        firebaseAnalytics.logEvent(EventTracking.SpeakerDetails.READ_MORE, putLectureName(lectureName))
+    }
+
+    fun logShowEventDetailsEvent(eventId: Long) {
+        firebaseAnalytics.logEvent(EventTracking.Events.SHOW_EVENT_DET, putEventId(eventId))
+    }
+
+    fun logSpeakerDetailsEventTapEvent(eventId: Long) {
+        firebaseAnalytics.logEvent(EventTracking.SpeakerDetails.SHOW_EVENT_DET, putEventId(eventId))
+    }
+
+    fun logEventDetailsTapContactEvent(contactOption: String) {
+        firebaseAnalytics.logEvent(EventTracking.SpeakerDetails.CONTACTS, putContactOption(contactOption))
+    }
+
+    private fun putContactOption(contactOption: String): Bundle {
+        bundle.putString(EventTracking.Key.CONTACT_OPTION_KEY, contactOption)
+        return bundle
+    }
+
 
     private fun putEventId(eventId: Long): Bundle {
-        bundle.putLong(EVENT_ID_KEY, eventId)
+        bundle.putLong(EventTracking.Key.EVENT_ID_KEY, eventId)
         return bundle
     }
 
     private fun putFacebookId(facebookId: String): Bundle {
-        bundle.putString(FACEBOOK_ID_KEY, facebookId)
+        bundle.putString(EventTracking.Key.FACEBOOK_ID_KEY, facebookId)
         return bundle
     }
 
     private fun putSpeakerId(speakerId: Long): Bundle {
-        bundle.putLong(SPEAKER_ID_KEY, speakerId)
+        bundle.putLong(EventTracking.Key.SPEAKER_ID_KEY, speakerId)
         return bundle
     }
 
     private fun putSpeakerName(speakerName: String): Bundle {
-        bundle.putString(SPEAKER_ID_KEY, speakerName)
+        bundle.putString(EventTracking.Key.SPEAKER_ID_KEY, speakerName)
         return bundle
     }
 
     private fun putLectureName(lectureName: String): Bundle {
-        bundle.putString(LECTURE_NAME_KEY, lectureName)
+        bundle.putString(EventTracking.Key.LECTURE_NAME_KEY, lectureName)
         return bundle
     }
 
     private fun putSortingType(sortingType: SortingType): Bundle {
-        bundle.putString(SORTING_TYPE_KEY, when (sortingType) {
-            SortingType.ALPHABETICAL -> ALPHABETICAL_SORTING
-            SortingType.DATE -> DATE_SORTING
+        bundle.putString(EventTracking.Key.SORTING_TYPE_KEY, when (sortingType) {
+            SortingType.ALPHABETICAL -> EventTracking.Key.ALPHABETICAL_SORTING
+            SortingType.DATE -> EventTracking.Key.DATE_SORTING
         })
         return bundle
     }
 
     private fun putTopicName(topicName: String): Bundle {
-        bundle.putString(TOPIC_NAME_KEY, topicName)
+        bundle.putString(EventTracking.Key.TOPIC_NAME_KEY, topicName)
         return bundle
     }
 
     private fun putPhrase(phrase: String): Bundle {
-        bundle.putString(PHRASE_KEY, phrase)
+        bundle.putString(EventTracking.Key.PHRASE_KEY, phrase)
         return bundle
     }
 
@@ -163,6 +168,19 @@ class FirebaseAnalyticsManager @Inject constructor(private val bundle: Bundle, p
             const val CHOOSE_TOPIC = "contact_choose_topic"
             const val SEND_MESSAGE = "contact_send_message"
         }
-    }
 
+        object Key {
+            const val EVENT_ID_KEY = "eventId"
+            const val FACEBOOK_ID_KEY = "facebookId"
+            const val LECTURE_NAME_KEY = "lectureName"
+            const val SPEAKER_ID_KEY = "speakerName"
+            const val PHRASE_KEY = "phrase"
+            const val TOPIC_NAME_KEY = "contactType"
+
+            const val SORTING_TYPE_KEY = "sortingType"
+            const val DATE_SORTING = "date"
+            const val ALPHABETICAL_SORTING = "alphabet"
+            const val CONTACT_OPTION_KEY = "contactOption"
+        }
+    }
 }
