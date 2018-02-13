@@ -43,13 +43,13 @@ fun ApiSpeakerTalk.toDto(): SpeakerTalkDto {
     )
 }
 
-fun SpeakerTalkDto.toViewModel(onReadMoreClick: (SpeakerTalkDto) -> Unit, onEventClick: (Long) -> Unit): SpeakerTalkViewModel {
+fun SpeakerTalkDto.toViewModel(onReadMoreClick: (SpeakerTalkDto) -> Unit, onEventClick: (Long) -> Unit, onLoadingFinished: () -> Unit = {}): SpeakerTalkViewModel {
     return SpeakerTalkViewModel(
             id = id,
             title = title,
             description = description,
-            eventItemViewModel = event.toViewModel(onEventClick),
-            action = onReadMoreClick
+            eventItemViewModel = event.toViewModel(onEventClick, onLoadingFinished),
+            onReadMoreClick = onReadMoreClick
     )
 }
 
@@ -68,7 +68,7 @@ fun SpeakerDto.toViewModel(onClick: (Long) -> Unit): SpeakerItemViewModel {
             name = name,
             job = job,
             avatar = avatar,
-            action = onClick
+            onSpeakerClick = onClick
     )
 }
 

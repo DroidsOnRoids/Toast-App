@@ -18,12 +18,12 @@ class SpeakerTalkDetailsViewModel @Inject constructor() : ViewModel(), Navigatin
     val description: ObservableField<String> = ObservableField()
     val eventItemViewModel: ObservableField<EventItemViewModel> = ObservableField()
 
-    fun init(talkDto: SpeakerTalkDto) {
+    fun init(talkDto: SpeakerTalkDto, onCoverLoadingFinished: () -> Unit) {
         talkDto.let {
             id.set(it.id)
             title.set(it.title)
             description.set(it.description)
-            eventItemViewModel.set(it.event.toViewModel(::onEventClick))
+            eventItemViewModel.set(it.event.toViewModel(::onEventClick, onCoverLoadingFinished))
         }
     }
 

@@ -6,9 +6,9 @@ class SinglePhotoViewModel(
         val position: Long,
         val image: ImageDto,
         val onPhotoLoadingFinished: () -> Unit,
-        private val action: () -> Unit
+        private val onPhotoClick: () -> Unit
 ) {
     fun onClick() {
-        action()
+        onPhotoClick()
     }
 }
