@@ -12,4 +12,23 @@ class SpeakerItemViewModel(
     fun onClick() {
         onSpeakerClick(id)
     }
+
+    override fun equals(other: Any?): Boolean {
+        return (other as? SpeakerItemViewModel)?.let {
+            id == it.id
+                    && name == it.name
+                    && job == it.job
+                    && avatar == it.avatar
+        } ?: false
+    }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + name.hashCode()
+        result = 31 * result + job.hashCode()
+        result = 31 * result + avatar.hashCode()
+        return result
+    }
+
+
 }
