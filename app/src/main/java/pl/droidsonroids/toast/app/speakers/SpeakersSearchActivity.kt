@@ -19,6 +19,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.activity_speakers_search.*
+import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.utils.builders.RevealAnimatorBuilder
@@ -131,12 +132,14 @@ class SpeakersSearchActivity : BaseActivity() {
                 showActivityAnimation(isEntering = true) {
                     searchBox.requestFocus()
                     setKeyboardVisibility(isVisible = true)
+                    window.decorView.setBackgroundResource(R.color.paleGrayBackground)
                 }
             }
         }
     }
 
     private fun showParentWithLeavingAnimation() {
+        window.decorView.setBackgroundResource(R.color.transparent)
         showActivityAnimation(isEntering = false) {
             toolbar.visibility = View.INVISIBLE
             NavUtils.navigateUpFromSameTask(this@SpeakersSearchActivity)
