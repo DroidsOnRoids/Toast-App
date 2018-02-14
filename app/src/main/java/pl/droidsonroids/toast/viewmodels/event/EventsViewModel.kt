@@ -162,6 +162,7 @@ class EventsViewModel @Inject constructor(
 
     private fun sendEventDetailsNavigationRequest(id: Long) {
         navigationSubject.onNext(NavigationRequest.EventDetails(id))
+        firebaseAnalyticsEventTracker.logEventsShowEventDetailsEvent(id)
     }
 
     private fun onPreviousEventsLoadError(throwable: Throwable) {
