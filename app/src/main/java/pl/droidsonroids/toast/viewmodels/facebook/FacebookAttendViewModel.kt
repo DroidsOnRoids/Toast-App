@@ -82,8 +82,8 @@ class FacebookAttendViewModel @Inject constructor(
                 attendStatus == AttendStatus.DECLINED -> attendOnEvent()
                 else -> openFacebookEventPage()
             }
+            logFacebookAttendEvent()
         }
-        logFacebookAttendEvent()
     }
 
     private fun attendOnEvent() {
@@ -128,7 +128,7 @@ class FacebookAttendViewModel @Inject constructor(
     private fun logFacebookAttendSuccessEvent() {
         facebookId?.let {
             if (sourceAttending == SourceAttending.UPCOMING_EVENT) {
-                firebaseAnalyticsEventTracker.logUpcomingFacebookAttendSuccessEvent(it)
+                firebaseAnalyticsEventTracker.logUpcomingEventFacebookAttendSuccessEvent(it)
             } else {
                 firebaseAnalyticsEventTracker.logEventDetailsFacebookAttendSuccessEvent(it)
             }

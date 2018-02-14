@@ -46,13 +46,13 @@ class SpeakersViewModel @Inject constructor(
     fun onAlphabeticalSortingClick() {
         sortingType.set(SortingType.ALPHABETICAL)
         toggleSortingDetailsVisibility()
-        firebaseAnalyticsEventTracker.logSpeakersSortOptionEvent(sortingType.get())
+        firebaseAnalyticsEventTracker.logSpeakersChooseSortOptionEvent(sortingType.get())
     }
 
     fun onDateSortingClick() {
         sortingType.set(SortingType.DATE)
         toggleSortingDetailsVisibility()
-        firebaseAnalyticsEventTracker.logSpeakersSortOptionEvent(sortingType.get())
+        firebaseAnalyticsEventTracker.logSpeakersChooseSortOptionEvent(sortingType.get())
     }
 
     override fun retryLoading() {
@@ -98,7 +98,7 @@ class SpeakersViewModel @Inject constructor(
         nextPageNumber?.let { loadPage(it) }
     }
 
-    override fun onSpeakerNavigationRequestSend(speakerName: String) {
+    override fun onSpeakerNavigationRequestSent(speakerName: String) {
         firebaseAnalyticsEventTracker.logSpeakersShowSpeakerEvent(speakerName)
     }
 

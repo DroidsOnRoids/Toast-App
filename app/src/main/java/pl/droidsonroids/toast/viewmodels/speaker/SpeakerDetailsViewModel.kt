@@ -46,22 +46,22 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
 
     fun onGithubClick() {
         openWebsite(github.get())
-        firebaseAnalyticsEventTracker.logEventDetailsTapContactEvent(Constants.ContactLink.GITHUB)
+        firebaseAnalyticsEventTracker.logEventDetailsTapLinkEvent(Constants.ContactLink.GITHUB)
     }
 
     fun onWebsiteClick() {
         openWebsite(website.get())
-        firebaseAnalyticsEventTracker.logEventDetailsTapContactEvent(Constants.ContactLink.WEBPAGE)
+        firebaseAnalyticsEventTracker.logEventDetailsTapLinkEvent(Constants.ContactLink.WEBPAGE)
     }
 
     fun onTwitterClick() {
         openWebsite(twitter.get())
-        firebaseAnalyticsEventTracker.logEventDetailsTapContactEvent(Constants.ContactLink.TWITTER)
+        firebaseAnalyticsEventTracker.logEventDetailsTapLinkEvent(Constants.ContactLink.TWITTER)
     }
 
     fun onEmailClick() {
         email.get()?.let { navigationSubject.onNext(NavigationRequest.Email(email = it)) }
-        firebaseAnalyticsEventTracker.logEventDetailsTapContactEvent(Constants.ContactLink.EMAIL)
+        firebaseAnalyticsEventTracker.logEventDetailsTapLinkEvent(Constants.ContactLink.EMAIL)
     }
 
     private fun openWebsite(url: String?) {

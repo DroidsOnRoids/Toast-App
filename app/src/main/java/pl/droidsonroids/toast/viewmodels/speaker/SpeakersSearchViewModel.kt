@@ -39,18 +39,21 @@ class SpeakersSearchViewModel @Inject constructor(
                 .doOnNext { disposePreviousLoad() }
                 .doOnNext { lastSearchedPhrase = it }
                 .switchMapSingle(::searchSpeakers)
-                .doOnError {
-                    onFirstPageLoadError(it)
-                    firebaseAnalyticsEventTracker.logSearchPhraseEvent(lastSearchedPhrase)
-                }
+                .doOnError(::onSearchingError)
                 .retry()
                 .subscribeBy(
-                        onNext = {
-                            onNewSpeakersPageLoaded(it)
-                            firebaseAnalyticsEventTracker.logSearchPhraseEvent(lastSearchedPhrase)
-                        })
+                        onNext = (::onSearchingSuccess)
+                )
+    }
 
+    private fun onSearchingSuccess(it: Page<State.Item<SpeakerItemViewModel>>) {
+        onNewSpeakersPageLoaded(it)
+        firebaseAnalyticsEventTracker.logSearchPhraseEvent(lastSearchedPhrase)
+    }
 
+    private fun onSearchingError(it: Throwable) {
+        onFirstPageLoadError(it)
+        firebaseAnalyticsEventTracker.logSearchPhraseEvent(lastSearchedPhrase)
     }
 
     private fun shouldPerformSearch(query: String) =
@@ -125,7 +128,7 @@ class SpeakersSearchViewModel @Inject constructor(
                 )
     }
 
-    override fun onSpeakerNavigationRequestSend(speakerName: String) {
+    override fun onSpeakerNavigationRequestSent(speakerName: String) {
         firebaseAnalyticsEventTracker.logSearchShowSpeakerEvent(speakerName)
     }
 

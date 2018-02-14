@@ -64,7 +64,7 @@ class EventDetailsViewModel @Inject constructor(
     fun onLocationClick() {
         coordinates?.let {
             navigationSubject.onNext(NavigationRequest.Map(it, placeName.get()))
-            firebaseAnalyticsEventTracker.logEventDetailsMeetupPlaceEvent()
+            firebaseAnalyticsEventTracker.logEventDetailsTapMeetupPlaceEvent()
         }
     }
 

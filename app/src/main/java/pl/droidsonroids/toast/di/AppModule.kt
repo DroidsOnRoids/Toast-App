@@ -3,7 +3,6 @@ package pl.droidsonroids.toast.di
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Bundle
 import android.preference.PreferenceManager
 import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.Module
@@ -14,6 +13,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import pl.droidsonroids.toast.BuildConfig
 import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
 import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsEventTracker
+import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsEventTrackerImpl
 import pl.droidsonroids.toast.repositories.contact.ContactRepository
 import pl.droidsonroids.toast.repositories.contact.ContactRepositoryImpl
 import pl.droidsonroids.toast.repositories.event.EventsRepository
@@ -40,10 +40,6 @@ class AppModule {
     @Singleton
     @Provides
     fun provideContext(application: Application): Context = application
-
-    @Singleton
-    @Provides
-    fun provideBundle() = Bundle()
 
     @Singleton
     @Provides
@@ -97,7 +93,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideFirebaseAnalyticsManager(bundle: Bundle, firebaseAnalytics: FirebaseAnalytics): FirebaseAnalyticsEventTracker = FirebaseAnalyticsEventTracker(bundle, firebaseAnalytics)
+    fun provideFirebaseAnalyticsEventTracker(firebaseAnalytics: FirebaseAnalytics): FirebaseAnalyticsEventTracker = FirebaseAnalyticsEventTrackerImpl(firebaseAnalytics)
 
     private fun getRetrofitBuilder(httpClient: OkHttpClient) =
             Retrofit.Builder()

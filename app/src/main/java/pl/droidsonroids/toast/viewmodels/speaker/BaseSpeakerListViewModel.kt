@@ -32,7 +32,7 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
                 .map {
                     it.toViewModel { id ->
                         navigationSubject.onNext(NavigationRequest.SpeakerDetails(id))
-                        onSpeakerNavigationRequestSend(it.name)
+                        onSpeakerNavigationRequestSent(it.name)
                     }
                 }
                 .map { wrapWithState(it) }
@@ -90,7 +90,7 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
         return State.Error(::onErrorClick)
     }
 
-    abstract fun onSpeakerNavigationRequestSend(speakerName: String)
+    abstract fun onSpeakerNavigationRequestSent(speakerName: String)
 
     protected abstract fun onErrorClick()
 }
