@@ -2,6 +2,7 @@ package pl.droidsonroids.toast.app.speakers
 
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.databinding.Observable
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -11,12 +12,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.fragment_speakers.*
+import kotlinx.android.synthetic.main.layout_speakers_sorting_bar.*
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseFragment
 import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.app.utils.callbacks.LazyLoadingScrollListener
 import pl.droidsonroids.toast.databinding.FragmentSpeakersBinding
 import pl.droidsonroids.toast.utils.Constants
+import pl.droidsonroids.toast.utils.addOnPropertyChangedCallback
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersViewModel
 import javax.inject.Inject
 
@@ -36,6 +39,9 @@ class SpeakersFragment : BaseFragment() {
         setupViewModel()
     }
 
+
+    private var sortingDetailsVisibilityCallback: Observable.OnPropertyChangedCallback? = null
+
     private fun setupViewModel() {
         speakersViewModel = ViewModelProviders.of(this, viewModelFactory)[SpeakersViewModel::class.java]
         navigationDisposable = speakersViewModel.navigationSubject
@@ -54,6 +60,15 @@ class SpeakersFragment : BaseFragment() {
         showSearchMenuItemWithAnimation()
         setupRecyclerView()
         showSearchMenuItemWithAnimation()
+        speakersViewModel.isSortingDetailsVisible.run {
+            sortingDetailsVisibilityCallback = addOnPropertyChangedCallback {
+                val isSortingVisible = get()
+                sortingDetailsLayout.animate()
+                        .translationY(if (isSortingVisible) sortingDetailsLayout.height.toFloat() else 0f)
+                        .start()
+                arrowDownImage.animate().rotation(if (isSortingVisible) 180f else 0f).start()
+            }
+        }
     }
 
     private fun showSearchMenuItemWithAnimation() {
@@ -89,6 +104,7 @@ class SpeakersFragment : BaseFragment() {
     }
 
     override fun onDestroyView() {
+        speakersViewModel.isSortingDetailsVisible.removeOnPropertyChangedCallback(sortingDetailsVisibilityCallback)
         hideSearchMenuItemWithAnimation()
         speakersDisposable.dispose()
         super.onDestroyView()
