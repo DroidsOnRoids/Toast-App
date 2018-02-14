@@ -15,7 +15,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
+        android:visibility="gone"
         android:background="@color/paleGrayBackground"
+        app:fadingEnabled="@{loadingViewModel.isFadingEnabled}"
         app:connectionErrorContainerVisibility="@{loadingViewModel.loadingStatus}"
         tools:showIn="@layout/layout_loading">
 
@@ -23,6 +25,7 @@
             android:id="@+id/connectionErrorImage"
             android:layout_width="164dp"
             android:layout_height="164dp"
+            android:scaleType="fitXY"
             android:src="@drawable/ic_error_connection"
             app:layout_constraintBottom_toTopOf="@+id/noInternetConnectionText"
             app:layout_constraintEnd_toEndOf="parent"

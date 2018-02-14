@@ -23,7 +23,8 @@
         android:layout_width="170dp"
         android:layout_height="170dp"
         android:layout_marginTop="@dimen/margin_large"
-        android:background="@drawable/ic_logo_toast"
+        android:src="@drawable/ic_logo_toast"
+        android:scaleType='fitXY'
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/closeImageButton"/>

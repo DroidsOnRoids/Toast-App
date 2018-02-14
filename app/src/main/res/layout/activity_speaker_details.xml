@@ -55,6 +55,20 @@
 
             </android.support.design.widget.CollapsingToolbarLayout>
 
+            <include
+                android:id="@+id/linksBarLayout"
+                layout="@layout/layout_links_bar"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_gravity="bottom"
+                app:speakerDetailsViewModel="@{speakerDetailsViewModel}"/>
+
+            <View
+                android:id="@+id/headerDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/paleGray"/>
+
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.widget.NestedScrollView
@@ -74,26 +88,6 @@
                     android:background="@color/white"
                     tools:context=".app.speakers.SpeakerDetailsActivity">
 
-                    <include
-                        android:id="@+id/linksBarLayout"
-                        layout="@layout/layout_links_bar"
-                        android:layout_width="0dp"
-                        android:layout_height="54dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:speakerDetailsViewModel="@{speakerDetailsViewModel}"
-                        />
-
-                    <View
-                        android:id="@+id/headerDivider"
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:background="@color/paleGray"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/linksBarLayout"/>
-
                     <TextView
                         android:id="@+id/aboutBio"
                         style="@style/LectureTitleStyle"
@@ -105,7 +99,7 @@
                         app:about="@{speakerDetailsViewModel.name}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/headerDivider"
+                        app:layout_constraintTop_toTopOf="parent"
                         tools:text="@string/about"
                         />
 
@@ -167,7 +161,7 @@
             android:layout_marginTop="45dp"
             android:elevation="@dimen/margin_large"
             app:finalHeight="@dimen/small_avatar_size"
-            app:finalToolbarHeight="?attr/actionBarSize"
+            app:finalToolbarHeight="@dimen/collapsed_appbar_height"
             app:finalWidth="@dimen/small_avatar_size"
             app:finalXPosition="@dimen/margin_extra"
             app:finalYPosition="@dimen/margin_medium"
@@ -198,7 +192,7 @@
             android:layout_marginTop="57dp"
             android:elevation="@dimen/margin_large"
             app:finalHeight="@dimen/small_avatar_size"
-            app:finalToolbarHeight="?attr/actionBarSize"
+            app:finalToolbarHeight="@dimen/collapsed_appbar_height"
             app:finalWidth="@dimen/small_avatar_size"
             app:finalXPosition="@dimen/margin_extra"
             app:finalYPosition="@dimen/margin_medium"
@@ -219,7 +213,7 @@
             android:text="@{speakerDetailsViewModel.name}"
             android:textColor="@color/white"
             android:textSize="18sp"
-            app:finalToolbarHeight="?attr/actionBarSize"
+            app:finalToolbarHeight="@dimen/collapsed_appbar_height"
             app:finalXPosition="120dp"
             app:finalYPosition="@dimen/margin_large"
             app:layout_behavior="pl.droidsonroids.toast.app.speakers.SpeakerHeaderBehavior"
