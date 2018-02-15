@@ -57,6 +57,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:sortingViewModel="@{speakersViewModel}"/>
 
+        <ImageView
+            android:id="@+id/makor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:elevation="8dp"
+            android:src="@drawable/makor"
+            android:paddingBottom="@dimen/margin_tiny"
+            app:layout_constraintBottom_toTopOf="@id/sortingBarLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
     </android.support.constraint.ConstraintLayout>
 
 </layout>

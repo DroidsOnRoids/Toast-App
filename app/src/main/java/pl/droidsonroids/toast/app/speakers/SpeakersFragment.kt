@@ -21,9 +21,11 @@ import pl.droidsonroids.toast.app.utils.callbacks.LazyLoadingScrollListener
 import pl.droidsonroids.toast.databinding.FragmentSpeakersBinding
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersViewModel
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 private const val STRAIGHT_ANGLE = 180f
+private const val MIN_CLICK_COUNT = 5
 
 class SpeakersFragment : BaseFragment() {
 
@@ -84,6 +86,23 @@ class SpeakersFragment : BaseFragment() {
                             .rotation(if (it) STRAIGHT_ANGLE else 0f)
                             .start()
                 }
+        compositeDisposable += speakersViewModel.isSortingDetailsVisible
+                .skip(1L)
+                .buffer(speakersViewModel.isSortingDetailsVisible.debounce(1, TimeUnit.SECONDS))
+                .filter { it.size >= MIN_CLICK_COUNT }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext { showMakor() }
+                .delay(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { hideMakor() }
+    }
+
+    private fun hideMakor() {
+        makor.animate().translationY(0f).start()
+    }
+
+    private fun showMakor() {
+        makor.animate().translationY(makor.height.toFloat()).start()
     }
 
     private fun setupRecyclerView() {
