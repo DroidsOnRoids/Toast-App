@@ -2,15 +2,16 @@ package pl.droidsonroids.toast.app.speakers
 
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
-import android.databinding.Observable
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
+import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.fragment_speakers.*
 import kotlinx.android.synthetic.main.layout_speakers_sorting_bar.*
 import pl.droidsonroids.toast.app.Navigator
@@ -19,9 +20,10 @@ import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.app.utils.callbacks.LazyLoadingScrollListener
 import pl.droidsonroids.toast.databinding.FragmentSpeakersBinding
 import pl.droidsonroids.toast.utils.Constants
-import pl.droidsonroids.toast.utils.addOnPropertyChangedCallback
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersViewModel
 import javax.inject.Inject
+
+private const val STRAIGHT_ANGLE = 180f
 
 class SpeakersFragment : BaseFragment() {
 
@@ -32,15 +34,12 @@ class SpeakersFragment : BaseFragment() {
 
     private var navigationDisposable: Disposable = Disposables.disposed()
 
-    private var speakersDisposable: Disposable = Disposables.disposed()
+    private var compositeDisposable = CompositeDisposable()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         setupViewModel()
     }
-
-
-    private var sortingDetailsVisibilityCallback: Observable.OnPropertyChangedCallback? = null
 
     private fun setupViewModel() {
         speakersViewModel = ViewModelProviders.of(this, viewModelFactory)[SpeakersViewModel::class.java]
@@ -60,15 +59,7 @@ class SpeakersFragment : BaseFragment() {
         showSearchMenuItemWithAnimation()
         setupRecyclerView()
         showSearchMenuItemWithAnimation()
-        speakersViewModel.isSortingDetailsVisible.run {
-            sortingDetailsVisibilityCallback = addOnPropertyChangedCallback {
-                val isSortingVisible = get()
-                sortingDetailsLayout.animate()
-                        .translationY(if (isSortingVisible) sortingDetailsLayout.height.toFloat() else 0f)
-                        .start()
-                arrowDownImage.animate().rotation(if (isSortingVisible) 180f else 0f).start()
-            }
-        }
+        subscribeToSortingDetailsVisibilityChange()
     }
 
     private fun showSearchMenuItemWithAnimation() {
@@ -81,6 +72,18 @@ class SpeakersFragment : BaseFragment() {
 
     private fun animateViewByY(offset: Float) {
         (activity as MainActivity).animateSearchButton(offset)
+    }
+
+    private fun subscribeToSortingDetailsVisibilityChange() {
+        compositeDisposable += speakersViewModel.isSortingDetailsVisible
+                .subscribe {
+                    sortingDetailsLayout.animate()
+                            .translationY(if (it) sortingDetailsLayout.height.toFloat() else 0f)
+                            .start()
+                    arrowDownImage.animate()
+                            .rotation(if (it) STRAIGHT_ANGLE else 0f)
+                            .start()
+                }
     }
 
     private fun setupRecyclerView() {
@@ -98,20 +101,20 @@ class SpeakersFragment : BaseFragment() {
     }
 
     private fun subscribeToSpeakersChange(speakersAdapter: SpeakersAdapter) {
-        speakersDisposable = speakersViewModel.speakersSubject
+        compositeDisposable += speakersViewModel.speakersSubject
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(speakersAdapter::setData)
     }
 
     override fun onDestroyView() {
-        speakersViewModel.isSortingDetailsVisible.removeOnPropertyChangedCallback(sortingDetailsVisibilityCallback)
         hideSearchMenuItemWithAnimation()
-        speakersDisposable.dispose()
+        compositeDisposable.clear()
         super.onDestroyView()
     }
 
     override fun onDetach() {
         navigationDisposable.dispose()
+        compositeDisposable.dispose()
         super.onDetach()
     }
 }
