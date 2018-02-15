@@ -1,5 +1,6 @@
 package pl.droidsonroids.toast.data.mapper
 
+import android.databinding.ObservableField
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import org.hamcrest.CoreMatchers.equalTo
@@ -24,8 +25,10 @@ class ImageMapperTest {
     fun shouldMapImageDtoToSingleViewModel() {
         val photoLoadedCallback: () -> Unit = mock()
         val onClick: () -> Unit = mock()
-        val singlePhotoViewModel = testImageDto.toSingleViewModel(position, photoLoadedCallback, onClick)
+        val loadFromCache = ObservableField(true)
+        val singlePhotoViewModel = testImageDto.toSingleViewModel(position, loadFromCache, photoLoadedCallback, onClick)
         assertThat(singlePhotoViewModel.image, equalTo(testImageDto))
+        assertThat(singlePhotoViewModel.loadFromCache, equalTo(loadFromCache))
         assertThat(singlePhotoViewModel.position, equalTo(position))
         assertThat(singlePhotoViewModel.onPhotoLoadingFinished, equalTo(photoLoadedCallback))
         singlePhotoViewModel.onClick()

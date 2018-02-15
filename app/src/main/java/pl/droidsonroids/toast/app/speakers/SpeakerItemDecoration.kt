@@ -17,18 +17,20 @@ class SpeakerItemDecoration(context: Context) : RecyclerView.ItemDecoration() {
     }
 
     override fun onDrawOver(canvas: Canvas, parent: RecyclerView, state: RecyclerView.State) {
-        val left = parent.paddingStart
-        val right = parent.width - parent.paddingEnd
-        val childCount = parent.childCount
-        (0 until childCount - 1)
-                .map { parent.getChildAt(it) }
-                .forEach { drawDivider(it, left, right, canvas) }
+        if (parent.itemAnimator?.isRunning != true) {
+            val left = parent.paddingLeft
+            val right = parent.width - parent.paddingRight
+            val childCount = parent.childCount
+            (0 until childCount - 1)
+                    .map { parent.getChildAt(it) }
+                    .forEach { it.drawDivider(left, right, canvas) }
+        }
     }
 
-    private fun drawDivider(child: View, left: Int, right: Int, canvas: Canvas) {
+    private fun View.drawDivider(left: Int, right: Int, canvas: Canvas) {
         divider?.let {
-            val params = child.layoutParams as RecyclerView.LayoutParams
-            val top = child.bottom + params.bottomMargin
+            val params = layoutParams as RecyclerView.LayoutParams
+            val top = bottom + params.bottomMargin
             val bottom = top + it.intrinsicHeight
             divider.setBounds(left, top, right, bottom)
             divider.draw(canvas)
