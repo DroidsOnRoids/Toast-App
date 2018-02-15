@@ -19,4 +19,5 @@
     <dimen name="small_avatar_size">32dp</dimen>
     <dimen name="expanded_toolbar_height">213dp</dimen>
     <dimen name="collapsed_appbar_height">110dp</dimen>
+    <dimen name="elevation_large">8dp</dimen>
 </resources>
