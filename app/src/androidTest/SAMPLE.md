@@ -4,7 +4,7 @@
 
 
 ### Setup
-First thing to do is to change your BASE_API_URL. The asiest way to do that is to create new build type or product flavor that contains changed API URL to localhost.
+First thing to do is to change your BASE_API_URL. The easiest way to do that is to create new build type or product flavor that contains changed API URL to localhost.
 
 ```java
 productFlavors {
@@ -53,31 +53,31 @@ Last step is to implement it into your test class.
 
 ```java
 @JvmField
-    @Rule
-    val activityRule = ActivityTestRule(MainActivity::class.java, true, false) //launchActivity should be set to false because you want to execute your mockWebServer code before activity started
+@Rule
+val activityRule = ActivityTestRule(MainActivity::class.java, true, false) //launchActivity should be set to false because you want to execute your mockWebServer code before activity star
 
-    val mockWebServer = MockWebServer()
+val mockWebServer = MockWebServe
 
-    private fun setPathDispatcher() {
-            val dispatcher = FixtureDispatcher()
-            val condition = PathQueryConditionFactory("/api/v1/") //pathPrefix is optional you can put empty string here if your paths does not have common part
-            dispatcher.putResponse(condition.withPathInfix("path"), "yaml_file_response") //URL with whole path will look like this http://localhost:12345/api/v1/path
-            dispatcher.putResponse(condition.withPathInfix("events"), "events_200")
-            dispatcher.putResponse(condition.withPathInfix("/events/17"), "event17_200")
-            mockWebServer.setPathDispatcher(dispatcher)
-        }
+private fun setPathDispatcher() {
+        val dispatcher = FixtureDispatcher()
+        val condition = PathQueryConditionFactory("/api/v1/") //pathPrefix is optional you can put empty string here if your paths does not have common part
+        dispatcher.putResponse(condition.withPathInfix("path"), "yaml_file_response") //URL with whole path will look like this http://localhost:12345/api/v1/path
+        dispatcher.putResponse(condition.withPathInfix("events"), "events_200")
+        dispatcher.putResponse(condition.withPathInfix("/events/17"), "event17_200")
+        mockWebServer.setPathDispatcher(dispatcher)
+}
 
-    @Before
-    fun setup(){
-        setPathDispatcher() //Set your dispatcher before server is started
-        mockWebServer.start(12345) //Start mockWebServer using port you set in API URL
-        activityRule.launchActivity(null)
-    }
+@Before
+fun setup(){
+    setPathDispatcher() //Set your dispatcher before server is started
+    mockWebServer.start(12345) //Start mockWebServer using port you set in API URL
+    activityRule.launchActivity(null)
+}
 
-    @After
-    fun tearDown() {
-        mockWebServer.shutdown()
-    }
+@After
+fun tearDown() {
+    mockWebServer.shutdown()
+}
 ```
 
 Clone project to test it in action.
