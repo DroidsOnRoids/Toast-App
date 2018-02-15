@@ -16,6 +16,8 @@ class PhotosViewModel @Inject constructor() : ViewModel(), NavigatingViewModel {
 
     private var photosDto: List<ImageDto> = emptyList()
 
+    var isSharedTransitionInProgress = false
+
     fun init(photos: List<ImageDto>) {
         if (!photosSubject.hasValue()) {
             photosDto = photos
@@ -28,7 +30,10 @@ class PhotosViewModel @Inject constructor() : ViewModel(), NavigatingViewModel {
             image.toItemViewModel(index.toLong(), ::onPhotoItemClicked)
 
     private fun onPhotoItemClicked(position: Long) {
-        navigationSubject.onNext(NavigationRequest.SinglePhoto(photosDto, position))
+        if (!isSharedTransitionInProgress) {
+            isSharedTransitionInProgress = true
+            navigationSubject.onNext(NavigationRequest.SinglePhoto(photosDto, position))
+        }
     }
 
 }

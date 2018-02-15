@@ -20,9 +20,10 @@
         android:contentDescription="@string/meetup_photo_desc"
         android:scaleType="fitCenter"
         android:onClick="@{() -> singlePhotoViewModel.onClick()}"
-        app:coverImage="@{singlePhotoViewModel.image}"
+        app:originalImage="@{singlePhotoViewModel.image}"
         app:elementId="@{singlePhotoViewModel.position}"
         app:loadingFinishedListener="@{singlePhotoViewModel.onPhotoLoadingFinished}"
+        app:fromCache="@{singlePhotoViewModel.loadFromCache}"
         app:transitionName="@{PhotoTransition.PHOTO}"/>
 </layout>
 

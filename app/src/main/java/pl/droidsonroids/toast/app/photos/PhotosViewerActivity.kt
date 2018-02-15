@@ -56,7 +56,7 @@ class PhotosViewerActivity : BaseActivity() {
 
     private val compositeDisposable = CompositeDisposable()
 
-    private val isImmersiveMode get() = window.decorView.systemUiVisibility == IMMERSIVE_MODE
+    private val isImmersiveMode get() = window.decorView.systemUiVisibility and IMMERSIVE_MODE == IMMERSIVE_MODE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,6 +93,7 @@ class PhotosViewerActivity : BaseActivity() {
     private fun resumeSharedTransition() {
         supportStartPostponedEnterTransition()
         isTransitionPostponed = false
+        photosViewerViewModel.onTransitionEnd()
     }
 
     private fun handleNavigationRequest(navigationRequest: NavigationRequest) {
