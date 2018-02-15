@@ -17,7 +17,7 @@ interface FirebaseAnalyticsEventTracker {
 
     fun logEventDetailsReadMoreEvent(lectureName: String)
 
-    fun logEventDetailsShowSpeakerEvent(speakerId: Long)
+    fun logEventDetailsShowSpeakerEvent(speakerName: String)
 
     fun logEventDetailsTapMeetupPlaceEvent()
 

@@ -33,8 +33,8 @@ class FirebaseAnalyticsEventTrackerImpl @Inject constructor(private val firebase
         firebaseAnalytics.logEvent(EventTracking.EventDetails.READ_MORE, Bundle().putLectureName(lectureName.cutToHundredChars()))
     }
 
-    override fun logEventDetailsShowSpeakerEvent(speakerId: Long) {
-        firebaseAnalytics.logEvent(EventTracking.EventDetails.SHOW_SPEAKER, Bundle().putSpeakerId(speakerId))
+    override fun logEventDetailsShowSpeakerEvent(speakerName: String) {
+        firebaseAnalytics.logEvent(EventTracking.EventDetails.SHOW_SPEAKER, Bundle().putSpeakerName(speakerName))
     }
 
     override fun logEventDetailsTapMeetupPlaceEvent() {
@@ -50,7 +50,7 @@ class FirebaseAnalyticsEventTrackerImpl @Inject constructor(private val firebase
     }
 
     override fun logSpeakersShowSpeakerEvent(speakerName: String) {
-        firebaseAnalytics.logEvent(EventTracking.Speakers.SHOW_SPEAKER, Bundle().putSpeakerName(speakerName))
+        firebaseAnalytics.logEvent(EventTracking.Speakers.SHOW_SPEAKER, Bundle().putSpeakerName(speakerName.cutToHundredChars()))
     }
 
     override fun logSpeakersShowSearchEvent() {
@@ -62,7 +62,7 @@ class FirebaseAnalyticsEventTrackerImpl @Inject constructor(private val firebase
     }
 
     override fun logSearchShowSpeakerEvent(speakerName: String) {
-        firebaseAnalytics.logEvent(EventTracking.Search.SHOW_SPEAKER, Bundle().putSpeakerName(speakerName))
+        firebaseAnalytics.logEvent(EventTracking.Search.SHOW_SPEAKER, Bundle().putSpeakerName(speakerName.cutToHundredChars()))
     }
 
     override fun logSpeakerDetailsReadMoreEvent(lectureName: String) {

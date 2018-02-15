@@ -22,11 +22,6 @@ fun Bundle.putFacebookId(facebookId: String): Bundle {
     return this
 }
 
-fun Bundle.putSpeakerId(speakerId: Long): Bundle {
-    putLong(EventTracking.Key.SPEAKER_ID_KEY, speakerId)
-    return this
-}
-
 fun Bundle.putSpeakerName(speakerName: String): Bundle {
     putString(EventTracking.Key.SPEAKER_ID_KEY, speakerName)
     return this

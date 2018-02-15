@@ -112,9 +112,9 @@ class EventDetailsViewModel @Inject constructor(
         Log.d(simpleClassName, "onReadMore: ${eventSpeakerItemViewModel.id}")
     }
 
-    private fun onSpeakerClick(speakerId: Long) {
+    private fun onSpeakerClick(speakerId: Long, speakerName: String) {
         navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId))
-        firebaseAnalyticsEventTracker.logEventDetailsShowSpeakerEvent(speakerId)
+        firebaseAnalyticsEventTracker.logEventDetailsShowSpeakerEvent(speakerName)
     }
 
     private fun onEventLoadError(throwable: Throwable) {
