@@ -38,9 +38,6 @@ android {
         versionCode commitTimestamp
         versionName "0.1.$commitsOnBranchCount"
         testInstrumentationRunner "pl.droidsonroids.toast.RxAndroidJUnitRunner"
-
-        buildConfigField 'String', 'BASE_API_URL', '"https://api.letswift.pl/api/v1/"'
-        buildConfigField 'String', 'BASE_IMAGES_URL', '"https://api.letswift.pl"'
     }
 
     signingConfigs {
@@ -83,6 +80,12 @@ android {
         toast {
             // TODO change api url to toast when available
             buildConfigField 'String', 'BASE_API_URL', '"https://api.letswift.pl/api/v1/"'
+            buildConfigField 'String', 'BASE_IMAGES_URL', '"https://api.letswift.pl"'
+        }
+        mockUiTest {
+            applicationIdSuffix ".letswift"
+            versionNameSuffix "-letswift"
+            buildConfigField 'String', 'BASE_API_URL', '"http://localhost:12345"'
             buildConfigField 'String', 'BASE_IMAGES_URL', '"https://api.letswift.pl"'
         }
     }
@@ -163,6 +166,7 @@ dependencies {
     androidTestImplementation('com.squareup.rx.idler:rx2-idler:0.9.0') {
         exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
     }
+    androidTestImplementation "pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.0.1"
 }
 
 repositories {
