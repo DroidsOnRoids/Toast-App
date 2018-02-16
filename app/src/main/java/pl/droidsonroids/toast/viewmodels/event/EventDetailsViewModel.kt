@@ -106,7 +106,8 @@ class EventDetailsViewModel @Inject constructor(
     }
 
     private fun onReadMore(eventSpeakerItemViewModel: EventSpeakerItemViewModel) {
-        navigationSubject.onNext(NavigationRequest.EventTalkDetails(eventSpeakerItemViewModel.toDto()))
+        val eventTalkDto = eventSpeakerItemViewModel.toDto()
+        navigationSubject.onNext(NavigationRequest.EventTalkDetails(eventTalkDto))
         Timber.d(simpleClassName, "onReadMore: ${eventSpeakerItemViewModel.id}")
         analyticsEventTracker.logEventDetailsReadMoreEvent(eventTalkDto.title)
     }
