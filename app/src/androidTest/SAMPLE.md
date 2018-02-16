@@ -54,9 +54,9 @@ Last step is to implement it into your test class.
 ```java
 @JvmField
 @Rule
-val activityRule = ActivityTestRule(MainActivity::class.java, true, false) //launchActivity should be set to false because you want to execute your mockWebServer code before activity star
+val activityRule = ActivityTestRule(MainActivity::class.java, true, false) //launchActivity should be set to false because you want to execute your mockWebServer code before activity start
 
-val mockWebServer = MockWebServe
+val mockWebServer = MockWebServer
 
 private fun setPathDispatcher() {
         val dispatcher = FixtureDispatcher()
@@ -68,7 +68,7 @@ private fun setPathDispatcher() {
 }
 
 @Before
-fun setup(){
+fun setup() {
     setPathDispatcher() //Set your dispatcher before server is started
     mockWebServer.start(12345) //Start mockWebServer using port you set in API URL
     activityRule.launchActivity(null)
