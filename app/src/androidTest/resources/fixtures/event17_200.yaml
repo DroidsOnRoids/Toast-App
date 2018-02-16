@@ -1,0 +1,34 @@
+statusCode : 200
+headers:
+- 'Content-Type: application/json;charset=UTF-8'
+body: >
+  {
+    "event": {
+      "id": 17,
+      "title": "LET SWIFT #14",
+      "date": "2018-03-06T18:00:00+00:00",
+      "facebook": "561225637597581",
+      "place_name": "Barbara",
+      "place_street": "Świdnicka 8, 50-067 Wroclaw",
+      "cover_images": [
+        {
+          "ref": {
+            "id": "eafdd0c127b30e9e289f95361f2f461a.png",
+            "storage": "cache"
+          },
+          "big": "http://api.letswift.pl/uploads/cache/03a5e0d97a27370b86092089586a18a9.png",
+          "thumb": "http://api.letswift.pl/uploads/cache/6f12776a3aed92204e44f6fb26da7a22.png"
+        }
+      ],
+      "photos": [
+
+      ],
+      "place_coordinates": {
+        "latitude": 51.1075768,
+        "longitude": 17.0327698
+      },
+      "talks": [
+
+      ]
+    }
+  }

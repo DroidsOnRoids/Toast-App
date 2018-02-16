@@ -1,0 +1,178 @@
+statusCode : 200
+headers:
+- 'Content-Type: application/json; charset=UTF-8'
+body: >
+    {
+      "speaker": {
+        "id": 16,
+        "name": "Mateusz Budzar",
+        "job": "Android Developer",
+        "bio": "Android Developer od 3 lat. Pasjonat czystego kodu, koszykarz amator, uwielbia czytanie książek. Lubi myśleć o sobie, że jest kucharzem, ale niczego jeszcze nie ugotował. Od jutra zamierza zdrowo się odżywiać i zacząć treningi. Jego motto to \"Małymi krokami do przodu\".",
+        "email": null,
+        "github_url": null,
+        "website_url": null,
+        "twitter_url": null,
+        "avatar": {
+          "big": "/uploads/cache/efdebb744b2ca985de9d567eaa512c40.jpg",
+          "thumb": "/uploads/cache/ba0e0f28e20aa16a657ea291b2eed477.jpg"
+        },
+        "talks": [
+          {
+            "id": 25,
+            "title": "Profesjonalny developer. Kto to taki?",
+            "description": "Bycie programistą nie sprowadza się już jedynie do programowania. Mało tego, nie dość, że nie piszemy już tylko kodu, to bardzo często to od nas zależy powodzenie całego projektu. Jest to bardzo duża odpowiedzialność.\nCzy jest w takim razie coś, co jako programiści możemy zmienić? Czy siedząc przed naszymi laptopai, o czymś zapomnieliśmy?\nPodczas prezentacji spróbujemy odpowiedzieć sobie na te pytania oraz postaramy się zdefiniować profesjonalnego programistę.",
+            "tags": [
+
+            ],
+            "event": {
+              "id": 11,
+              "title": "LET SWIFT #8",
+              "date": "2017-02-16T18:00:00+00:00",
+              "facebook": "1225794264172303",
+              "place_name": "PROZA",
+              "place_street": "Przejście Garncarskie 2, 50-150 Wroclaw",
+              "cover_images": [
+                {
+                  "big": "/uploads/cache/7617bd61b24ab162673a6d61aad4eeba.jpg",
+                  "thumb": "/uploads/cache/9b0c86b9a65402f0eec4ca5d02b9749c.jpg"
+                },
+                {
+                  "big": "/uploads/cache/d66449884fe13051e6e3ced4bb74244e.jpg",
+                  "thumb": "/uploads/cache/1e9cbda3287776ba475f9f8806c0caea.jpg"
+                },
+                {
+                  "big": "/uploads/cache/07f38bfa06e8c70fa9d113b02717cfda.jpg",
+                  "thumb": "/uploads/cache/781c49683eb7c06ea3418ec178be0b68.jpg"
+                }
+              ],
+              "photos": [
+                {
+                  "big": "/uploads/cache/66ea7af77deb548347d6774844f6c92f.jpg",
+                  "thumb": "/uploads/cache/3caa4f5f44ff030a67240fd9a08e869f.jpg"
+                },
+                {
+                  "big": "/uploads/cache/903d50f58228e99e976a420d9436e95a.jpg",
+                  "thumb": "/uploads/cache/ab0def712b5b2e3632904bb27f95cfd7.jpg"
+                },
+                {
+                  "big": "/uploads/cache/01f771769d81cf14f77b29be603dad1b.jpg",
+                  "thumb": "/uploads/cache/9eb70e184aa4ffa02fc20086001e9eeb.jpg"
+                },
+                {
+                  "big": "/uploads/cache/4416db6aed469d45bc060aa96d30cfdd.jpg",
+                  "thumb": "/uploads/cache/a912fa142899f094c2da31b30726a33a.jpg"
+                },
+                {
+                  "big": "/uploads/cache/85ef921761834e5a87cfe70f080767a2.jpg",
+                  "thumb": "/uploads/cache/71340f4636513ace77bae560f25426a0.jpg"
+                },
+                {
+                  "big": "/uploads/cache/db65839ccc7763bace8046820205ec7e.jpg",
+                  "thumb": "/uploads/cache/8d6055e9a35d10bb1b75a952c76be945.jpg"
+                },
+                {
+                  "big": "/uploads/cache/a38b1f1e7918407e83732885747951bb.jpg",
+                  "thumb": "/uploads/cache/ce7d2fe8a37797b3a4965a7c3d256ced.jpg"
+                },
+                {
+                  "big": "/uploads/cache/001ffc278a275efa822bd45621f47eea.jpg",
+                  "thumb": "/uploads/cache/7f4e221d76141025c35b5dc9f8716b72.jpg"
+                },
+                {
+                  "big": "/uploads/cache/888a2c7db9b1d50c011fed21a4ffdbca.jpg",
+                  "thumb": "/uploads/cache/ab02df9818c7b13f020c5c8eb6a59d05.jpg"
+                },
+                {
+                  "big": "/uploads/cache/753ee3b82a6e32550e75539d97d7bfba.jpg",
+                  "thumb": "/uploads/cache/1bd42910f59b56132e8ecf6cf3739b82.jpg"
+                },
+                {
+                  "big": "/uploads/cache/ce181df0ccceb3e3947908a17173dc5b.jpg",
+                  "thumb": "/uploads/cache/eba55c004fbb8175d9cc4333d8066159.jpg"
+                },
+                {
+                  "big": "/uploads/cache/1a1115822751bdce736d2cc19b7f6373.jpg",
+                  "thumb": "/uploads/cache/5be4d75f53287be091b4861637884994.jpg"
+                },
+                {
+                  "big": "/uploads/cache/ed2a80edbe5e93596e6e951d565c2a6a.jpg",
+                  "thumb": "/uploads/cache/978636f5db229f07a937e027a8d2d010.jpg"
+                },
+                {
+                  "big": "/uploads/cache/a7e555692dfdf903eae892914fa11805.jpg",
+                  "thumb": "/uploads/cache/39bcfb2177d25361f88a283f41ab6948.jpg"
+                },
+                {
+                  "big": "/uploads/cache/91b470789da3d14506f69a7ba76a6390.jpg",
+                  "thumb": "/uploads/cache/0dd1efd7397156153e6560d9291a9f48.jpg"
+                },
+                {
+                  "big": "/uploads/cache/e3cdefea952a1aaa4a92c739a2be8ce9.jpg",
+                  "thumb": "/uploads/cache/1b4ee9492dec072c312de7dc10ee3e24.jpg"
+                },
+                {
+                  "big": "/uploads/cache/016317a83a9eeab83268cfd332f32c35.jpg",
+                  "thumb": "/uploads/cache/25c0035dc78900ed9a2136532e999053.jpg"
+                },
+                {
+                  "big": "/uploads/cache/c52072c18a57b8a277531b0fee2f3caa.jpg",
+                  "thumb": "/uploads/cache/fa8d23f2bcdb89cae7df0ff9c2a8a62e.jpg"
+                },
+                {
+                  "big": "/uploads/cache/35bad3132db9c182717114ec0f035dcc.jpg",
+                  "thumb": "/uplo ads/cache/c153066060641056f03c3c27247a140b.jpg"
+                },
+                {
+                  "big": "/uploads/cache/263cba29686044837a60006fdc0233fd.jpg",
+                  "thumb": "/uploads/cache/dbb538b7872c577612339e0ceb742466.jpg"
+                },
+                {
+                  "big": "/uploads/cache/490a691a1051ea430a73b86c43e88e90.jpg",
+                  "thumb": "/uploads/cache/fceac6889f45e960e429b709a5ab3bbd.jpg"
+                },
+                {
+                  "big": "/uploads/cache/06496ac35395b9607437371a1148ab4e.jpg",
+                  "thumb": "/uploads/cache/ced110a8ad93a3d604e7f65271e85914.jpg"
+                },
+                {
+                  "big": "/uploads/cache/589833eb91fcb0567f9a3643b3096f0a.jpg",
+                  "thumb": "/uploads/cache/1d34a25b3bd1fcc1dd2bf0d7bf5b41c3.jpg"
+                },
+                {
+                  "big": "/uploads/cache/d154111bd9ffe5413e91dab5ec195579.jpg",
+                  "thumb": "/uploads/cache/25eb0fa386c0e71d74a49337d928b57e.jpg"
+                },
+                {
+                  "big": "/uploads/cache/7302904d2eb10ab019829624bf586015.jpg",
+                  "thumb": "/uploads/cache/7b2d17748e00a8bdfeeca8325ed794d7.jpg"
+                },
+                {
+                  "big": "/uploads/cache/38f2a6fdab5cbcdd2ab1e213ba69410c.jpg",
+                  "thumb": "/uploads/cache/3a14240f66e11ac8ae89b91adfc64532.jpg"
+                },
+                {
+                  "big": "/uploads/cache/be2ae31c90813942da9d6e0f1bb517f9.jpg",
+                  "thumb": "/uploads/cache/66989235f4b13f1d0e40deed2ecbf18b.jpg"
+                },
+                {
+                  "big": "/uploads/cache/ec0eec38050bf08dcc27e11aaad79900.jpg",
+                  "thumb": "/uploads/cache/8ba10053f99da6c3d2c232f4627aff56.jpg"
+                },
+                {
+                  "big": "/uploads/cache/8e8e4c76fc977e2b28f82b1779ca9d7c.jpg",
+                  "thumb": "/uploads/cache/847ba075aae3cd9ab9a30535266a3a77.jpg"
+                },
+                {
+                  "big": "/uploads/cache/aa94e9a7f6d34df5bc8af957faa323e9.jpg",
+                  "thumb": "/uploads/cache/20c34fb4ce5fd3ba21fcd232f4bbf6ae.jpg"
+                }
+              ],
+              "place_coordinates": {
+                "latitude": 51.1100581,
+                "longitude": 17.0304249
+              }
+            }
+          }
+        ]
+      }
+    }
