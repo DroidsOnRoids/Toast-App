@@ -27,7 +27,7 @@ import pl.droidsonroids.toast.viewmodels.event.EventDetailsViewModel
 import javax.inject.Inject
 
 private const val ALPHA_MAX_VALUE = 255
-private const val ADD_ANIMATION_DURATION = 700L
+private const val ADD_ANIMATION_DURATION = 600L
 
 class EventDetailsActivity : BaseActivity() {
     companion object {
