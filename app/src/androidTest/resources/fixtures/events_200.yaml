@@ -1,0 +1,191 @@
+statusCode : 200
+headers:
+- 'Content-Type: application/json; charset=UTF-8'
+body: >
+    {
+      "events": [
+        {
+          "id": 16,
+          "title": "LET SWIFT #13",
+          "date": "2018-01-17T18:00:00+00:00",
+          "cover_images": [
+            {
+              "big": "/uploads/cache/e771c6b4a779586a1fc1f6aed13d1174.png",
+              "thumb": "/uploads/cache/82d45e6ad88a4215b2ebb80d814562d4.png"
+            }
+          ]
+        },
+        {
+          "id": 15,
+          "title": "LET SWIFT #12",
+          "date": "2017-11-09T18:00:00+00:00",
+          "cover_images": [
+            {
+              "big": "/uploads/cache/0b2dcc34127d818e635dbd32dddca77d.jpg",
+              "thumb": "/uploads/cache/a83c7e040fcd5f15feef504c7a81291c.jpg"
+            },
+            {
+              "big": "/uploads/cache/5ea311924b3e902245a4549f40317f9f.jpg",
+              "thumb": "/uploads/cache/a30ef4586f1a235da61d440ac33968b5.jpg"
+            },
+            {
+              "big": "/uploads/cache/324a510d674ccff23eca7727dfbaa05a.jpg",
+              "thumb": "/uploads/cache/5e392dd78910fbd122f57d942d87f9e9.jpg"
+            }
+          ]
+        },
+        {
+          "id": 14,
+          "title": "LET SWIFT #11",
+          "date": "2017-06-22T17:00:00+00:00",
+          "cover_images": [
+            {
+              "big": "/uploads/cache/fdb28801ef0d683293d7696818473389.jpg",
+              "thumb": "/uploads/cache/33ccfa7e6caf916da68efa40696f16a4.jpg"
+            },
+            {
+              "big": "/uploads/cache/96fe32e94e6e0fcac0a7a9ee7a33d965.jpg",
+              "thumb": "/uploads/cache/6e6b125d3a95faa8361809f0e01fbed5.jpg"
+            },
+            {
+              "big": "/uploads/cache/581ea3244a434a358e4e32a197a628c7.jpg",
+              "thumb": "/uploads/cache/f579b5dc3157c5cfdff8d5884b719ae5.jpg"
+            }
+          ]
+        },
+        {
+          "id": 13,
+          "title": "LET SWIFT #10",
+          "date": "2017-05-25T17:00:00+00:00",
+          "cover_images": [
+            {
+              "big": "/uploads/cache/d610e7739a7829a70176cdb196438cc7.jpg",
+              "thumb": "/uploads/cache/51c7c0a33617ed21bea5f3077c452004.jpg"
+            },
+            {
+              "big": "/uploads/cache/94c679eeb003116fd1237652a8def89f.jpg",
+              "thumb": "/uploads/cache/647e5771aa9c12b711a3f7a6487a3749.jpg"
+            },
+            {
+              "big": "/uploads/cache/f2ec91e2b462157b39744a77ec5052b3.jpg",
+              "thumb": "/uploads/cache/26a4099333f97e6a1737234ff3843734.jpg"
+            }
+          ]
+        },
+        {
+          "id": 12,
+          "title": "LET SWIFT #9",
+          "date": "2017-03-23T18:00:00+00:00",
+          "cover_images": [
+            {
+              "big": "/uploads/cache/e20e89b24624d724da1f76511cd26c6d.jpg",
+              "thumb": "/uploads/cache/dc71fff3e60aec9b804ac459963bb341.jpg"
+            },
+            {
+              "big": "/uploads/cache/6516f9c2b07514a34b4fc1987092d102.jpg",
+              "thumb": "/uploads/cache/fbce8ebf0b2dd5aef8705cce7fef7edf.jpg"
+            },
+            {
+              "big": "/uploads/cache/8055d3d849c83f2ec76b327c486d8880.jpg",
+              "thumb": "/uploads/cache/f0481cb82f8471c40fc2a4f98d59122e.jpg"
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "title": "LET SWIFT #8",
+          "date": "2017-02-16T18:00:00+00:00",
+          "cover_images": [
+            {
+              "big": "/uploads/cache/7617bd61b24ab162673a6d61aad4eeba.jpg",
+              "thumb": "/uploads/cache/9b0c86b9a65402f0eec4ca5d02b9749c.jpg"
+            },
+            {
+              "big": "/uploads/cache/d66449884fe13051e6e3ced4bb74244e.jpg",
+              "thumb": "/uploads/cache/1e9cbda3287776ba475f9f8806c0caea.jpg"
+            },
+            {
+              "big": "/uploads/cache/07f38bfa06e8c70fa9d113b02717cfda.jpg",
+              "thumb": "/uploads/cache/781c49683eb7c06ea3418ec178be0b68.jpg"
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "title": "LET SWIFT #7",
+          "date": "2017-01-19T18:30:00+00:00",
+          "cover_images": [
+            {
+              "big": "/uploads/cache/0e646d46682c2f0f5a1b851b6067232a.jpg",
+              "thumb": "/uploads/cache/7467b4c2577f644f6bead06936433d31.jpg"
+            },
+            {
+              "big": "/uploads/cache/db0c3d35fdd5b4e706e5283f47792487.jpg",
+              "thumb": "/uploads/cache/855d5c75c74eec4301b71f618a8c3624.jpg"
+            },
+            {
+              "big": "/uploads/cache/d103d325eeedd6246a106fbed88de071.jpg",
+              "thumb": "/uploads/cache/facc9852746cba08b5616be0d47818d0.jpg"
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "title": "LET SWIFT #6",
+          "date": "2016-12-15T18:00:00+00:00",
+          "cover_images": [
+            {
+              "big": "/uploads/cache/a5e6453a5b5a6b2a75340a8d64eebe39.jpg",
+              "thumb": "/uploads/cache/9e1efa044ed02ad3c66cd97a581db4aa.jpg"
+            },
+            {
+              "big": "/uploads/cache/2bc96e85bc6022c268b46db33f583ab5.jpg",
+              "thumb": "/uploads/cache/0147107de22e873bfb11bef39e3a6b51.jpg"
+            },
+            {
+              "big": "/uploads/cache/dfc0cac17a4f7c3bc9ea2a21872b8aa0.jpg",
+              "thumb": "/uploads/cache/2842b1af11d32a6ed771c2fd0fb4c4a0.jpg"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "title": "LET SWIFT #5",
+          "date": "2016-11-17T18:00:00+00:00",
+          "cover_images": [
+            {
+              "big": "/uploads/cache/5639f7634d9a0aaf9d9998443169c60c.png",
+              "thumb": "/uploads/cache/37ab404625bb40e3e2e53a8179819860.png"
+            },
+            {
+              "big": "/uploads/cache/b1845e7d1e39aeee55c3088f69431207.png",
+              "thumb": "/uploads/cache/91f0965909ec7892a384f3f8eece44b6.png"
+            },
+            {
+              "big": "/uploads/cache/6481251b406f42715c0aa2e94cf515c1.png",
+              "thumb": "/uploads/cache/0ca65a853eb04eb46372d0c116703b8a.png"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "title": "LET SWIFT #4",
+          "date": "2016-10-27T17:00:00+00:00",
+          "cover_images": [
+            {
+              "big": "/uploads/cache/93c03877e6655962dd865623dc921589.png",
+              "thumb": "/uploads/cache/f9cf764e6d3f3e3da619de6338058258.png"
+            },
+            {
+              "big": "/uploads/cache/d11528b42dbb27714d164e815211cd5c.png",
+              "thumb": "/uploads/cache/9ca3dafc9f382899a0cc6fdb1a23c221.png"
+            },
+            {
+              "big": "/wp-content/uploads/2013/05/michal-2-129x129.jpg",
+              "thumb": "/wp-content/uploads/2013/05/michal-2-129x129.jpg"
+            }
+          ]
+        }
+      ],
+      "page_count": 2
+    }
