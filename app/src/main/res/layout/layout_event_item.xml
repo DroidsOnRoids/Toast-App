@@ -23,17 +23,19 @@
             android:id="@+id/eventCoverImage"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/margin_large"
             android:adjustViewBounds="true"
             android:contentDescription="@string/previous_event_cover_desc"
             android:scaleType="centerCrop"
-            app:coverImage="@{eventViewModel.coverImage}"
+            app:originalImage="@{eventViewModel.coverImage}"
             app:layout_constraintBottom_toTopOf="@+id/eventName"
             app:layout_constraintDimensionRatio="h,3:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:fromCache="@{true}"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginBottom="@dimen/margin_large"
-            app:layout_constraintVertical_chainStyle="packed"/>
+            app:layout_constraintVertical_chainStyle="packed"
+            app:loadingFinishedListener="@{eventViewModel.onCoverLoadingFinish}"/>
 
         <TextView
             android:id="@+id/eventName"

@@ -21,6 +21,8 @@ import pl.droidsonroids.toast.repositories.speaker.SpeakersRepositoryImpl
 import pl.droidsonroids.toast.services.*
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.FacebookAttendViewModel
+import pl.droidsonroids.toast.viewmodels.speaker.Clock
+import pl.droidsonroids.toast.viewmodels.speaker.SystemClockWrapper
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -59,6 +61,10 @@ class AppModule {
 
     @Provides
     fun provideAttendViewModel(loginStateWatcher: LoginStateWatcher, facebookRepository: FacebookRepository): AttendViewModel = FacebookAttendViewModel(loginStateWatcher, facebookRepository)
+
+    @Singleton
+    @Provides
+    fun provideClock(systemClockWrapper: SystemClockWrapper): Clock = systemClockWrapper
 
     @Singleton
     @Provides

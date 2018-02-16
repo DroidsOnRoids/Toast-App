@@ -2,7 +2,6 @@ package pl.droidsonroids.toast.viewmodels.event
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
-import android.util.Log
 import io.reactivex.disposables.Disposables
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
@@ -21,6 +20,7 @@ import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -102,7 +102,7 @@ class EventDetailsViewModel @Inject constructor(
 
     private fun onReadMore(eventSpeakerItemViewModel: EventSpeakerItemViewModel) {
         navigationSubject.onNext(NavigationRequest.EventTalkDetails(eventSpeakerItemViewModel.toDto()))
-        Log.d(simpleClassName, "onReadMore: ${eventSpeakerItemViewModel.id}")
+        Timber.d(simpleClassName, "onReadMore: ${eventSpeakerItemViewModel.id}")
     }
 
     private fun onSpeakerClick(speakerId: Long) {
@@ -111,7 +111,7 @@ class EventDetailsViewModel @Inject constructor(
 
     private fun onEventLoadError(throwable: Throwable) {
         loadingStatus.set(LoadingStatus.ERROR)
-        Log.e(simpleClassName, "Something went wrong when fetching event details with id = $eventId", throwable)
+        Timber.e(simpleClassName, "Something went wrong when fetching event details with id = $eventId", throwable)
     }
 
     override fun retryLoading() {

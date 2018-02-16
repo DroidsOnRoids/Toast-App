@@ -11,15 +11,17 @@
     </data>
 
     <FrameLayout
-        android:elevation="8dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:elevation="@dimen/elevation_large">
 
         <FrameLayout
             android:id="@+id/loadingContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/paleGrayBackground"
+            android:visibility="gone"
+            app:fadingEnabled="@{loadingViewModel.isFadingEnabled}"
             app:loadingContainerVisibility="@{loadingViewModel.loadingStatus}">
 
             <ProgressBar

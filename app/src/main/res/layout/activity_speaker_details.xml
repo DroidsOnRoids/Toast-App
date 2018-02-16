@@ -67,7 +67,6 @@
                 android:id="@+id/headerDivider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_gravity="bottom"
                 android:background="@color/paleGray"/>
 
         </android.support.design.widget.AppBarLayout>
@@ -160,7 +159,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="45dp"
-            android:elevation="@dimen/margin_large"
+            android:elevation="@dimen/elevation_large"
             app:finalHeight="@dimen/small_avatar_size"
             app:finalToolbarHeight="@dimen/collapsed_appbar_height"
             app:finalWidth="@dimen/small_avatar_size"
@@ -191,7 +190,7 @@
             android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="57dp"
-            android:elevation="@dimen/margin_large"
+            android:elevation="@dimen/elevation_large"
             app:finalHeight="@dimen/small_avatar_size"
             app:finalToolbarHeight="@dimen/collapsed_appbar_height"
             app:finalWidth="@dimen/small_avatar_size"
@@ -207,7 +206,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="153dp"
-            android:elevation="@dimen/margin_large"
+            android:elevation="@dimen/elevation_large"
             android:fontFamily="@font/roboto_medium"
             android:letterSpacing="0.06"
             android:lineSpacingExtra="6sp"

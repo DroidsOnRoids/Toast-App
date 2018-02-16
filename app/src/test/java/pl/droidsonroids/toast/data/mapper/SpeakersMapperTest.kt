@@ -87,7 +87,7 @@ class SpeakersMapperTest {
 
     @Test
     fun shouldMapSpeakerTalkViewModelToDto() {
-        val speakerTalkViewModel = testSpeakerTalkDto.toViewModel(mock(), mock())
+        val speakerTalkViewModel = testSpeakerTalkDto.toViewModel(mock(), mock(), mock())
         val (id, title, description, _) = speakerTalkViewModel.toDto()
         assertThat(id, equalTo(speakerTalkViewModel.id))
         assertThat(title, equalTo(speakerTalkViewModel.title))

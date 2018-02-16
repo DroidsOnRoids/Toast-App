@@ -2,7 +2,6 @@ package pl.droidsonroids.toast.viewmodels.speaker
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
-import android.util.Log
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
@@ -15,6 +14,7 @@ import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -84,7 +84,9 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
             website.set(it.website)
             twitter.set(it.twitter)
             email.set(it.email)
-            talksSubject.onNext(it.talks.map { it.toViewModel(::onReadMoreClick, ::onEventClick) })
+            talksSubject.onNext(it.talks.map {
+                it.toViewModel(::onReadMoreClick, ::onEventClick)
+            })
         }
 
         loadMockLinks()
@@ -109,7 +111,7 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
 
     private fun onSpeakerLoadError(throwable: Throwable) {
         loadingStatus.set(LoadingStatus.ERROR)
-        Log.e(simpleClassName, "Something went wrong when fetching event details with id = $speakerId", throwable)
+        Timber.e(throwable, "Something went wrong when fetching event details with id = $speakerId")
     }
 
     override fun retryLoading() {
