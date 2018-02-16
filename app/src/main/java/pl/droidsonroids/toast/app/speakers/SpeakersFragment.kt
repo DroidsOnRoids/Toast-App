@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -78,19 +79,26 @@ class SpeakersFragment : BaseFragment() {
 
     private fun subscribeToSortingDetailsVisibilityChange() {
         compositeDisposable += speakersViewModel.isSortingDetailsVisible
-                .subscribe {
-                    sortingDetailsLayout.animate()
-                            .translationY(if (it) sortingDetailsLayout.height.toFloat() else 0f)
-                            .start()
-                    arrowDownImage.animate()
-                            .rotation(if (it) STRAIGHT_ANGLE else 0f)
-                            .start()
-                }
+                .subscribe(::animateSortingDetails)
+
         compositeDisposable += speakersViewModel.isSortingDetailsVisible
                 .skip(1L)
                 .buffer(speakersViewModel.isSortingDetailsVisible.debounce(1, TimeUnit.SECONDS))
                 .filter { it.size >= MIN_CLICK_COUNT }
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWithMakorAnimation()
+    }
+
+    private fun animateSortingDetails(it: Boolean) {
+        sortingDetailsLayout.animate()
+                .translationY(if (it) sortingDetailsLayout.height.toFloat() else 0f)
+                .start()
+        arrowDownImage.animate()
+                .rotation(if (it) STRAIGHT_ANGLE else 0f)
+                .start()
+    }
+
+    private fun Observable<List<Boolean>>.subscribeWithMakorAnimation(): Disposable {
+        return observeOn(AndroidSchedulers.mainThread())
                 .doOnNext { showMakor() }
                 .delay(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
