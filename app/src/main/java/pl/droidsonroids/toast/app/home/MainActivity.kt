@@ -11,10 +11,12 @@ import android.view.View
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_events.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.utils.extensions.setNavigationViewAnchor
+import pl.droidsonroids.toast.app.utils.extensions.showSnackbar
 import pl.droidsonroids.toast.data.enums.LoginState
 import pl.droidsonroids.toast.databinding.ActivityMainBinding
 import pl.droidsonroids.toast.di.LoginCallbackManager
@@ -121,6 +123,7 @@ class MainActivity : BaseActivity() {
     private fun handleNavigationRequest(navigationRequest: NavigationRequest) {
         when (navigationRequest) {
             NavigationRequest.SpeakersSearch -> navigator.showSearchSpeakersWithRevealAnimation(this, getViewCenterCoordinates(searchImageButton))
+            is NavigationRequest.SnackBar -> eventsScrollContainer.showSnackbar(navigationRequest)
             else -> navigator.dispatch(this, navigationRequest)
         }
     }
