@@ -12,8 +12,8 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import pl.droidsonroids.toast.BuildConfig
 import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
-import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsEventTracker
-import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsEventTrackerImpl
+import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
+import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTrackerImpl
 import pl.droidsonroids.toast.repositories.contact.ContactRepository
 import pl.droidsonroids.toast.repositories.contact.ContactRepositoryImpl
 import pl.droidsonroids.toast.repositories.event.EventsRepository
@@ -63,7 +63,7 @@ class AppModule {
     fun provideContactStorage(sharedPreferences: SharedPreferences): ContactStorage = LocalContactStorage(sharedPreferences)
 
     @Provides
-    fun provideAttendViewModel(loginStateWatcher: LoginStateWatcher, facebookRepository: FacebookRepository, firebaseAnalyticsEventTracker: FirebaseAnalyticsEventTracker): AttendViewModel = FacebookAttendViewModel(loginStateWatcher, facebookRepository, firebaseAnalyticsEventTracker)
+    fun provideAttendViewModel(loginStateWatcher: LoginStateWatcher, facebookRepository: FacebookRepository, analyticsEventTracker: AnalyticsEventTracker): AttendViewModel = FacebookAttendViewModel(loginStateWatcher, facebookRepository, analyticsEventTracker)
 
     @Singleton
     @Provides
@@ -93,7 +93,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideFirebaseAnalyticsEventTracker(firebaseAnalytics: FirebaseAnalytics): FirebaseAnalyticsEventTracker = FirebaseAnalyticsEventTrackerImpl(firebaseAnalytics)
+    fun provideFirebaseAnalyticsEventTracker(firebaseAnalytics: FirebaseAnalytics): AnalyticsEventTracker = AnalyticsEventTrackerImpl(firebaseAnalytics)
 
     private fun getRetrofitBuilder(httpClient: OkHttpClient) =
             Retrofit.Builder()

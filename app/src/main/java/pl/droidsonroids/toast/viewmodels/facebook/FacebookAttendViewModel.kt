@@ -8,7 +8,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
-import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsEventTracker
+import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.enums.AttendStatus
 import pl.droidsonroids.toast.repositories.facebook.FacebookRepository
 import pl.droidsonroids.toast.utils.Constants
@@ -22,7 +22,7 @@ import javax.inject.Inject
 class FacebookAttendViewModel @Inject constructor(
         loginStateWatcher: LoginStateWatcher,
         private val facebookRepository: FacebookRepository,
-        private val firebaseAnalyticsEventTracker: FirebaseAnalyticsEventTracker
+        private val analyticsEventTracker: AnalyticsEventTracker
 ) : AttendViewModel, LoginStateWatcher by loginStateWatcher {
     override val navigationRequests: PublishSubject<NavigationRequest> = PublishSubject.create()
     override val isPastEvent = ObservableField(false)
@@ -38,9 +38,9 @@ class FacebookAttendViewModel @Inject constructor(
     constructor(
             loginStateWatcher: LoginStateWatcher,
             facebookRepository: FacebookRepository,
-            firebaseAnalyticsEventTracker: FirebaseAnalyticsEventTracker,
+            analyticsEventTracker: AnalyticsEventTracker,
             facebookId: String?
-    ) : this(loginStateWatcher, facebookRepository, firebaseAnalyticsEventTracker) {
+    ) : this(loginStateWatcher, facebookRepository, analyticsEventTracker) {
         this.facebookId = facebookId
     }
 
@@ -118,9 +118,9 @@ class FacebookAttendViewModel @Inject constructor(
     private fun logFacebookAttendEvent() {
         facebookId?.let {
             if (sourceAttending == SourceAttending.UPCOMING_EVENT) {
-                firebaseAnalyticsEventTracker.logUpcomingEventFacebookAttendEvent(it)
+                analyticsEventTracker.logUpcomingEventFacebookAttendEvent(it)
             } else {
-                firebaseAnalyticsEventTracker.logEventDetailsFacebookAttendEvent(it)
+                analyticsEventTracker.logEventDetailsFacebookAttendEvent(it)
             }
         }
     }
@@ -128,9 +128,9 @@ class FacebookAttendViewModel @Inject constructor(
     private fun logFacebookAttendSuccessEvent() {
         facebookId?.let {
             if (sourceAttending == SourceAttending.UPCOMING_EVENT) {
-                firebaseAnalyticsEventTracker.logUpcomingEventFacebookAttendSuccessEvent(it)
+                analyticsEventTracker.logUpcomingEventFacebookAttendSuccessEvent(it)
             } else {
-                firebaseAnalyticsEventTracker.logEventDetailsFacebookAttendSuccessEvent(it)
+                analyticsEventTracker.logEventDetailsFacebookAttendSuccessEvent(it)
             }
         }
     }

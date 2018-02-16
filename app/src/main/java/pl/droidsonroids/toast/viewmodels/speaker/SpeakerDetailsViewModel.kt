@@ -6,13 +6,12 @@ import android.util.Log
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsEventTracker
+import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerTalkDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
-import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
@@ -20,7 +19,7 @@ import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import javax.inject.Inject
 
 
-class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository: SpeakersRepository, private val firebaseAnalyticsEventTracker: FirebaseAnalyticsEventTracker) : ViewModel(), LoadingViewModel, NavigatingViewModel {
+class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository: SpeakersRepository, private val analyticsEventTracker: AnalyticsEventTracker) : ViewModel(), LoadingViewModel, NavigatingViewModel {
     private val Any.simpleClassName: String get() = javaClass.simpleName
     private var speakerId: Long? = null
 
@@ -45,23 +44,31 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
     }
 
     fun onGithubClick() {
-        openWebsite(github.get())
-        firebaseAnalyticsEventTracker.logEventDetailsTapLinkEvent(Constants.ContactLink.GITHUB)
+        github.get()?.let {
+            openWebsite(github.get())
+            analyticsEventTracker.logEventDetailsTapGithubEvent(it)
+        }
     }
 
     fun onWebsiteClick() {
-        openWebsite(website.get())
-        firebaseAnalyticsEventTracker.logEventDetailsTapLinkEvent(Constants.ContactLink.WEBPAGE)
+        website.get()?.let {
+            openWebsite(website.get())
+            analyticsEventTracker.logEventDetailsTapWebsiteEvent(it)
+        }
     }
 
     fun onTwitterClick() {
-        openWebsite(twitter.get())
-        firebaseAnalyticsEventTracker.logEventDetailsTapLinkEvent(Constants.ContactLink.TWITTER)
+        twitter.get()?.let {
+            openWebsite(twitter.get())
+            analyticsEventTracker.logEventDetailsTapTwitterEvent(it)
+        }
     }
 
     fun onEmailClick() {
-        email.get()?.let { navigationSubject.onNext(NavigationRequest.Email(email = it)) }
-        firebaseAnalyticsEventTracker.logEventDetailsTapLinkEvent(Constants.ContactLink.EMAIL)
+        email.get()?.let {
+            navigationSubject.onNext(NavigationRequest.Email(email = it))
+            analyticsEventTracker.logEventDetailsTapEmailEvent(it)
+        }
     }
 
     private fun openWebsite(url: String?) {
@@ -98,12 +105,12 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
 
     private fun onReadMoreClick(talkDto: SpeakerTalkDto) {
         navigationSubject.onNext(NavigationRequest.SpeakerTalkDetails(talkDto))
-        firebaseAnalyticsEventTracker.logSpeakerDetailsReadMoreEvent(talkDto.title)
+        analyticsEventTracker.logSpeakerDetailsReadMoreEvent(talkDto.title)
     }
 
     private fun onEventClick(eventId: Long) {
         navigationSubject.onNext(NavigationRequest.EventDetails(eventId))
-        firebaseAnalyticsEventTracker.logSpeakerDetailsEventTapEvent(eventId)
+        analyticsEventTracker.logSpeakerDetailsEventTapEvent(eventId)
     }
 
     private fun onSpeakerLoadError(throwable: Throwable) {

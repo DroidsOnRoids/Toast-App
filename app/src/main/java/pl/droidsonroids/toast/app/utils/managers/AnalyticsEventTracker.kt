@@ -3,7 +3,7 @@ package pl.droidsonroids.toast.app.utils.managers
 import pl.droidsonroids.toast.utils.SortingType
 
 
-interface FirebaseAnalyticsEventTracker {
+interface AnalyticsEventTracker {
 
     fun logUpcomingEventFacebookAttendEvent(facebookId: String)
 
@@ -39,7 +39,13 @@ interface FirebaseAnalyticsEventTracker {
 
     fun logSpeakerDetailsEventTapEvent(eventId: Long)
 
-    fun logEventDetailsTapLinkEvent(linkOption: String)
+    fun logEventDetailsTapGithubEvent(link: String)
+
+    fun logEventDetailsTapWebsiteEvent(link: String)
+
+    fun logEventDetailsTapEmailEvent(link: String)
+
+    fun logEventDetailsTapTwitterEvent(link: String)
 
     fun logContactSendClickEvent(topicName: String)
 

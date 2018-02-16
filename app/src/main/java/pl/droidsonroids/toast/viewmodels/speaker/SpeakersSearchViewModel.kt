@@ -5,7 +5,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
-import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsEventTracker
+import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 class SpeakersSearchViewModel @Inject constructor(
         private val speakersRepository: SpeakersRepository,
-        private val firebaseAnalyticsEventTracker: FirebaseAnalyticsEventTracker
+        private val analyticsEventTracker: AnalyticsEventTracker
 ) : BaseSpeakerListViewModel() {
     val searchPhrase: ObservableField<String> = ObservableField("")
     private val searchObservable: Observable<String> = searchPhrase.toObservable()
@@ -48,12 +48,12 @@ class SpeakersSearchViewModel @Inject constructor(
 
     private fun onSearchingSuccess(it: Page<State.Item<SpeakerItemViewModel>>) {
         onNewSpeakersPageLoaded(it)
-        firebaseAnalyticsEventTracker.logSearchPhraseEvent(lastSearchedPhrase)
+        analyticsEventTracker.logSearchPhraseEvent(lastSearchedPhrase)
     }
 
     private fun onSearchingError(it: Throwable) {
         onFirstPageLoadError(it)
-        firebaseAnalyticsEventTracker.logSearchPhraseEvent(lastSearchedPhrase)
+        analyticsEventTracker.logSearchPhraseEvent(lastSearchedPhrase)
     }
 
     private fun shouldPerformSearch(query: String) =
@@ -93,11 +93,11 @@ class SpeakersSearchViewModel @Inject constructor(
                 .subscribeBy(
                         onSuccess = {
                             onNewSpeakersPageLoaded(it)
-                            firebaseAnalyticsEventTracker.logSearchPhraseEvent(query)
+                            analyticsEventTracker.logSearchPhraseEvent(query)
                         },
                         onError = {
                             onFirstPageLoadError(it)
-                            firebaseAnalyticsEventTracker.logSearchPhraseEvent(query)
+                            analyticsEventTracker.logSearchPhraseEvent(query)
                         }
                 )
     }
@@ -129,7 +129,7 @@ class SpeakersSearchViewModel @Inject constructor(
     }
 
     override fun onSpeakerNavigationRequestSent(speakerName: String) {
-        firebaseAnalyticsEventTracker.logSearchShowSpeakerEvent(speakerName)
+        analyticsEventTracker.logSearchShowSpeakerEvent(speakerName)
     }
 
     override fun onCleared() {

@@ -7,8 +7,23 @@ import pl.droidsonroids.toast.utils.EventTracking
 import pl.droidsonroids.toast.utils.SortingType
 
 
-fun Bundle.putLinkOption(linkOption: String): Bundle {
-    putString(EventTracking.Key.LINK_OPTION_KEY, linkOption)
+fun Bundle.putGithub(link: String): Bundle {
+    putString(EventTracking.Key.GITHUB_KEY, link)
+    return this
+}
+
+fun Bundle.putEmail(link: String): Bundle {
+    putString(EventTracking.Key.EMAIL_KEY, link)
+    return this
+}
+
+fun Bundle.putWebsite(link: String): Bundle {
+    putString(EventTracking.Key.WEBSITE_KEY, link)
+    return this
+}
+
+fun Bundle.putTwitter(link: String): Bundle {
+    putString(EventTracking.Key.TWITTER_KEY, link)
     return this
 }
 

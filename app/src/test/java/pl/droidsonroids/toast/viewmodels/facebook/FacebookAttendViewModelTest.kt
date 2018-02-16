@@ -10,7 +10,7 @@ import org.junit.Test
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
-import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsEventTracker
+import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.enums.AttendStatus
 import pl.droidsonroids.toast.repositories.facebook.FacebookRepository
 import pl.droidsonroids.toast.utils.Constants
@@ -23,7 +23,7 @@ class FacebookAttendViewModelTest : RxTestBase() {
     @Mock
     private lateinit var facebookRepository: FacebookRepository
     @Mock
-    private lateinit var firebaseAnalyticsEventTracker: FirebaseAnalyticsEventTracker
+    private lateinit var analyticsEventTracker: AnalyticsEventTracker
 
     private lateinit var facebookAttendViewModel: FacebookAttendViewModel
 
@@ -32,7 +32,7 @@ class FacebookAttendViewModelTest : RxTestBase() {
     @Before
     fun setUp() {
         whenever(loginStateWatcher.loginStateSubject).thenReturn(BehaviorSubject.create())
-        facebookAttendViewModel = FacebookAttendViewModel(loginStateWatcher, facebookRepository, firebaseAnalyticsEventTracker, facebookId)
+        facebookAttendViewModel = FacebookAttendViewModel(loginStateWatcher, facebookRepository, analyticsEventTracker, facebookId)
     }
 
     @Test

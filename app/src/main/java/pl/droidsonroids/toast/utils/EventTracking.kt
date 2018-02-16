@@ -53,6 +53,9 @@ object EventTracking {
         const val SORTING_TYPE_KEY = "sortingType"
         const val DATE_SORTING = "date"
         const val ALPHABETICAL_SORTING = "alphabet"
-        const val LINK_OPTION_KEY = "linkOption"
+        const val GITHUB_KEY = "github"
+        const val EMAIL_KEY = "email"
+        const val WEBSITE_KEY = "webpage"
+        const val TWITTER_KEY = "twitter"
     }
 }

@@ -35,7 +35,7 @@ class EventDetailsViewModelTest : RxTestBase() {
     @Before
     fun setUp() {
         whenever(attendViewModel.navigationRequests).thenReturn(PublishSubject.create())
-        eventDetailsViewModel = EventDetailsViewModel(eventsRepository, attendViewModel, firebaseAnalyticsEventTracker = mock())
+        eventDetailsViewModel = EventDetailsViewModel(eventsRepository, attendViewModel, analyticsEventTracker = mock())
     }
 
     @Test

@@ -10,7 +10,7 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.internal.verification.VerificationModeFactory.times
 import pl.droidsonroids.toast.RxTestBase
-import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsEventTracker
+import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.api.speaker.ApiSpeaker
@@ -27,7 +27,7 @@ class SpeakersSearchViewModelTest : RxTestBase() {
     @Mock
     lateinit var speakersRepository: SpeakersRepository
     @Mock
-    lateinit var firebaseAnalyticsEventTracker: FirebaseAnalyticsEventTracker
+    lateinit var analyticsEventTracker: AnalyticsEventTracker
 
     lateinit var speakersSearchViewModel: SpeakersSearchViewModel
 
@@ -36,7 +36,7 @@ class SpeakersSearchViewModelTest : RxTestBase() {
     fun shouldSearch() {
         val query = "test"
         whenever(speakersRepository.searchSpeakersPage(query)).thenReturn(Single.just(testSpeakersPage))
-        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, firebaseAnalyticsEventTracker)
+        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker)
 
         speakersSearchViewModel.searchPhrase.set(query)
 
@@ -48,7 +48,7 @@ class SpeakersSearchViewModelTest : RxTestBase() {
     fun shouldSearchSamePhraseOnlyOnce() {
         val query = "test"
         whenever(speakersRepository.searchSpeakersPage(query)).thenReturn(Single.just(testSpeakersPage))
-        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, firebaseAnalyticsEventTracker)
+        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker)
 
         speakersSearchViewModel.searchPhrase.set(query)
 
@@ -65,7 +65,7 @@ class SpeakersSearchViewModelTest : RxTestBase() {
         val secondQuery = "test2"
         whenever(speakersRepository.searchSpeakersPage(firstQuery)).thenReturn(Single.just(testSpeakersPage))
         whenever(speakersRepository.searchSpeakersPage(secondQuery)).thenReturn(Single.just(Page(emptyList(), 1, 1)))
-        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, firebaseAnalyticsEventTracker)
+        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker)
 
         speakersSearchViewModel.searchPhrase.set(firstQuery)
 
@@ -82,7 +82,7 @@ class SpeakersSearchViewModelTest : RxTestBase() {
         val secondQuery = "test2"
         whenever(speakersRepository.searchSpeakersPage(firstQuery)).thenReturn(Single.just(Page(emptyList(), 1, 1)))
         whenever(speakersRepository.searchSpeakersPage(secondQuery)).thenReturn(Single.just(testSpeakersPage))
-        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, firebaseAnalyticsEventTracker)
+        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker)
 
         speakersSearchViewModel.searchPhrase.set(firstQuery)
 
@@ -112,7 +112,7 @@ class SpeakersSearchViewModelTest : RxTestBase() {
     fun shouldRequestNavigationToSpeakerDetails() {
         val query = "test"
         whenever(speakersRepository.searchSpeakersPage(query)).thenReturn(Single.just(testSpeakersPage))
-        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, firebaseAnalyticsEventTracker)
+        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker)
         speakersSearchViewModel.searchPhrase.set(query)
         val speakerItemViewModelList = speakersSearchViewModel.speakersSubject.value
         val speakerItemViewModel = (speakerItemViewModelList.first() as? State.Item)?.item

@@ -7,7 +7,7 @@ import pl.droidsonroids.toast.utils.EventTracking
 import pl.droidsonroids.toast.utils.SortingType
 import javax.inject.Inject
 
-class FirebaseAnalyticsEventTrackerImpl @Inject constructor(private val firebaseAnalytics: FirebaseAnalytics) : FirebaseAnalyticsEventTracker {
+class AnalyticsEventTrackerImpl @Inject constructor(private val firebaseAnalytics: FirebaseAnalytics) : AnalyticsEventTracker {
 
     override fun logUpcomingEventFacebookAttendEvent(facebookId: String) {
         firebaseAnalytics.logEvent(EventTracking.Events.ATTEND_BUTTON, Bundle().putFacebookId(facebookId))
@@ -77,8 +77,20 @@ class FirebaseAnalyticsEventTrackerImpl @Inject constructor(private val firebase
         firebaseAnalytics.logEvent(EventTracking.SpeakerDetails.SHOW_EVENT_DET, Bundle().putEventId(eventId))
     }
 
-    override fun logEventDetailsTapLinkEvent(linkOption: String) {
-        firebaseAnalytics.logEvent(EventTracking.SpeakerDetails.CONTACTS, Bundle().putLinkOption(linkOption))
+    override fun logEventDetailsTapGithubEvent(link: String) {
+        firebaseAnalytics.logEvent(EventTracking.SpeakerDetails.CONTACTS, Bundle().putGithub(link))
+    }
+
+    override fun logEventDetailsTapWebsiteEvent(link: String) {
+        firebaseAnalytics.logEvent(EventTracking.SpeakerDetails.CONTACTS, Bundle().putWebsite(link))
+    }
+
+    override fun logEventDetailsTapEmailEvent(link: String) {
+        firebaseAnalytics.logEvent(EventTracking.SpeakerDetails.CONTACTS, Bundle().putEmail(link))
+    }
+
+    override fun logEventDetailsTapTwitterEvent(link: String) {
+        firebaseAnalytics.logEvent(EventTracking.SpeakerDetails.CONTACTS, Bundle().putTwitter(link))
     }
 
     override fun logContactSendClickEvent(topicName: String) {

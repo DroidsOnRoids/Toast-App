@@ -21,7 +21,7 @@ import pl.droidsonroids.toast.app.speakers.SpeakerTalkDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
 import pl.droidsonroids.toast.app.utils.extensions.copyTextToClipboard
 import pl.droidsonroids.toast.app.utils.extensions.disableActivityTransitionAnimations
-import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsEventTracker
+import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
 import java.lang.IllegalArgumentException
@@ -29,7 +29,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class Navigator @Inject constructor(private val loginManager: LoginManager, private val firebaseAnalyticsEventTracker: FirebaseAnalyticsEventTracker) {
+class Navigator @Inject constructor(private val loginManager: LoginManager, private val analyticsEventTracker: AnalyticsEventTracker) {
 
     fun dispatch(activity: Activity, navigationRequest: NavigationRequest) {
         when (navigationRequest) {
@@ -108,7 +108,7 @@ class Navigator @Inject constructor(private val loginManager: LoginManager, priv
 
         activity.startActivity(intent)
         activity.disableActivityTransitionAnimations()
-        firebaseAnalyticsEventTracker.logSpeakersShowSearchEvent()
+        analyticsEventTracker.logSpeakersShowSearchEvent()
     }
 
     private fun showEventDetails(context: Context, navigationRequest: NavigationRequest.EventDetails) {

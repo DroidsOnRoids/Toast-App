@@ -7,7 +7,7 @@ import io.reactivex.disposables.Disposables
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import pl.droidsonroids.toast.app.utils.managers.FirebaseAnalyticsEventTracker
+import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
@@ -32,7 +32,7 @@ private const val GRADIENT_COLOR_MASK = 0xE0FFFFFF.toInt()
 class EventDetailsViewModel @Inject constructor(
         private val eventsRepository: EventsRepository,
         attendViewModel: AttendViewModel,
-        private val firebaseAnalyticsEventTracker: FirebaseAnalyticsEventTracker
+        private val analyticsEventTracker: AnalyticsEventTracker
 ) : ViewModel(), LoadingViewModel, NavigatingViewModel, AttendViewModel by attendViewModel {
     private val Any.simpleClassName: String get() = javaClass.simpleName
     override val navigationSubject: PublishSubject<NavigationRequest> = navigationRequests
@@ -58,13 +58,13 @@ class EventDetailsViewModel @Inject constructor(
 
     fun onPhotosClick() {
         navigationSubject.onNext(NavigationRequest.Photos(photos, eventId, ParentView.EVENT_DETAILS))
-        firebaseAnalyticsEventTracker.logEventDetailsSeePhotosEvent(eventId)
+        analyticsEventTracker.logEventDetailsSeePhotosEvent(eventId)
     }
 
     fun onLocationClick() {
         coordinates?.let {
             navigationSubject.onNext(NavigationRequest.Map(it, placeName.get()))
-            firebaseAnalyticsEventTracker.logEventDetailsTapMeetupPlaceEvent()
+            analyticsEventTracker.logEventDetailsTapMeetupPlaceEvent()
         }
     }
 
@@ -108,13 +108,13 @@ class EventDetailsViewModel @Inject constructor(
     private fun onReadMore(eventSpeakerItemViewModel: EventSpeakerItemViewModel) {
         val eventTalkDto = eventSpeakerItemViewModel.toDto()
         navigationSubject.onNext(NavigationRequest.EventTalkDetails(eventTalkDto))
-        firebaseAnalyticsEventTracker.logEventDetailsReadMoreEvent(eventTalkDto.title)
+        analyticsEventTracker.logEventDetailsReadMoreEvent(eventTalkDto.title)
         Log.d(simpleClassName, "onReadMore: ${eventSpeakerItemViewModel.id}")
     }
 
     private fun onSpeakerClick(speakerId: Long, speakerName: String) {
         navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId))
-        firebaseAnalyticsEventTracker.logEventDetailsShowSpeakerEvent(speakerName)
+        analyticsEventTracker.logEventDetailsShowSpeakerEvent(speakerName)
     }
 
     private fun onEventLoadError(throwable: Throwable) {
