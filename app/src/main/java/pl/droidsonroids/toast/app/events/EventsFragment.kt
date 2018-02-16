@@ -56,7 +56,9 @@ class EventsFragment : BaseFragment() {
 
     private fun handleNavigationRequest(request: NavigationRequest) {
         if (request is NavigationRequest.SnackBar) {
-            eventsScrollContainer.showSnackbar(request)
+            if (isVisible) {
+                eventsScrollContainer.showSnackbar(request)
+            }
         } else {
             activity?.let { navigator.dispatch(it, request) }
         }

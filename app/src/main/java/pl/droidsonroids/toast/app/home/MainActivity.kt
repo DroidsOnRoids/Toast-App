@@ -11,7 +11,6 @@ import android.view.View
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_events.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
@@ -123,7 +122,7 @@ class MainActivity : BaseActivity() {
     private fun handleNavigationRequest(navigationRequest: NavigationRequest) {
         when (navigationRequest) {
             NavigationRequest.SpeakersSearch -> navigator.showSearchSpeakersWithRevealAnimation(this, getViewCenterCoordinates(searchImageButton))
-            is NavigationRequest.SnackBar -> eventsScrollContainer.showSnackbar(navigationRequest)
+            is NavigationRequest.SnackBar -> mainCoordinatorLayout.showSnackbar(navigationRequest)
             else -> navigator.dispatch(this, navigationRequest)
         }
     }
