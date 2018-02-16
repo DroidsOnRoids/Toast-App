@@ -1,0 +1,87 @@
+statusCode : 200
+headers:
+- 'Content-Type: application/json;charset=UTF-8'
+body: >
+    {
+      "event": {
+        "id": 16,
+        "title": "LET SWIFT #13",
+        "date": "2018-01-17T18:00:00+00:00",
+        "facebook": "2281662515393866",
+        "place_name": "Barbara",
+        "place_street": "Świdnicka 8, 50-067 Wroclaw",
+        "cover_images": [
+          {
+            "ref": {
+              "id": "c30349502da0f74f9666490bc26cb09e.png",
+              "storage": "cache"
+            },
+            "big": "http://api.letswift.pl/uploads/cache/e771c6b4a779586a1fc1f6aed13d1174.png",
+            "thumb": "http://api.letswift.pl/uploads/cache/82d45e6ad88a4215b2ebb80d814562d4.png"
+          }
+        ],
+        "photos": [
+
+        ],
+        "place_coordinates": {
+          "latitude": 51.1075768,
+          "longitude": 17.0327698
+        },
+        "talks": [
+          {
+            "id": 36,
+            "title": "From one buzzword to another, czyli historia pewnego refaktoru",
+            "description": "Jedną z charakterystycznych cech Swifta są jego bardzo zaawansowane enumy. Z tego powodu staramy się stosować je do rozwiązywania wielu problemów. Jednak czy jest to zawsze dobre rozwiązanie?\n\nPodczas swojej prezentacji Sebastian przeprowadzi case study, w którym pokaże jak za pomocą Protocol Oriented Approach możemy zastąpić masywne enumy, które modelują zapytania do API.\n",
+            "tags": [
+
+            ],
+            "speaker": {
+              "id": 25,
+              "name": "Sebastian Osiński",
+              "job": "iOS Developer",
+              "bio": "Z wykształcenia matematyk, z powołania programista. Po krótkim bankowym epizodzie z VBA, rozpoczął nowy etap ze Swiftem w roli głównej, który trwa do dzisiaj. Na nasz meetup przychodzi regularnie, by – jak mówi – zbierać książki",
+              "avatar": {
+                "big": "http://api.letswift.pl/uploads/cache/990c232e56cd7eefcc54ac4cfc76c6fa.png",
+                "thumb": "http://api.letswift.pl/uploads/cache/f7ed9cfccee992327eea3b8b6c6388ce.png"
+              }
+            }
+          },
+          {
+            "id": 37,
+            "title": "Wespół w zespół: Pair oraz Mob programming",
+            "description": "Zwinna technika programowania, której początki sięgają lat 60. poprzedniego wieku. Wykorzystywana m.in przez Johna von Neumanna oraz Edsgera Dijkstre. Jakie są jej założenia? Jakie są jej wady i zalety? Czy to się opłaca?\n\nMaciek postara się odpowiedzieć na te i inne pytania, oraz przedstawić Wam swoje doświadczenia związane z pracą w Pair Programming, Mob Programming, TDD oraz Extreme Programming.",
+            "tags": [
+
+            ],
+            "speaker": {
+              "id": 27,
+              "name": "Maciej Stramski",
+              "job": "iOS Developer",
+              "bio": "Programowanie to jego pasja, więc, jak sam mówi, nigdy nie musiał pracować ;) Po zakończeniu studiów informatycznych dostał do ręki pierwsze \"jabłko\" i po paru pierwszych kęsach, uzależnił się od platformy stworzonej przez jedną z najsłynniejszych firm z Cupertino.",
+              "avatar": {
+                "big": "http://api.letswift.pl/uploads/cache/813cf2dba59a29bf88308ecc21ee960f.jpg",
+                "thumb": "http://api.letswift.pl/uploads/cache/0df4ac1833f5d6124eaf37f5a0e8bd93.jpg"
+              }
+            }
+          },
+          {
+            "id": 38,
+            "title": "I'm only MVC after all. Don't put your blame on me.",
+            "description": "W ciągu 10-letniej obecności iOS na rynku, obserwowaliśmy wiele zmian w SDK. Ale Cocoa MVC... wydaje się nietknięty, wręcz zapomniany! Może jest idealny, a może przestarzały? Kto wie?\n\nMożemy zaobserwować, że cisza wokół tego tematu irytowała wielu developerów, więc zaczęli tworzyć nowe architektury i chwalić się każdą, która jest lepsza od innych, oczywiście także lepsza od MVC.\n\nMateusz chce jednak rzucić inne światło na ten temat i pokazać Wam, dlaczego MVC nie jest problemem.",
+            "tags": [
+
+            ],
+            "speaker": {
+              "id": 26,
+              "name": "Mateusz Zając",
+              "job": "iOS Developer",
+              "bio": "Mateusz jest Tech Leadem w Codete, gdzie ma styczność z wieloma różnorodnymi projektami i technologiami. Jego doświadczenie zawodowe rozciąga się od prostych MVP, do dużych platform social mediowych t.j. Jodel, a jego praca nie zawsze kończy się w Xcode.\n\nBardzo zorientowany na szczegóły, walczący o czysty, łatwy do utrzymania i piękny kod, zarówno w aplikacjach komercyjnych, jak i w projektach Open Source.\n\nOstatnio zauroczony programowaniem funkcyjnym, Swiftem, warzeniem piwa i podnoszeniem ciężarów na siłowni.",
+              "avatar": {
+                "big": "http://api.letswift.pl/uploads/cache/d8226c196996ce3f3c32f182b07ae5b0.jpg",
+                "thumb": "http://api.letswift.pl/uploads/cache/8e4d581fb1a5d75c4ec5b952ed2a5f0e.jpg"
+              }
+            }
+          }
+        ]
+      }
+    }
