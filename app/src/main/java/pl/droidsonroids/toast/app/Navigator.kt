@@ -25,6 +25,7 @@ import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
 import java.lang.IllegalArgumentException
+import java.net.URLEncoder
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -59,7 +60,8 @@ class Navigator @Inject constructor(private val loginManager: LoginManager, priv
             try {
                 context.startActivity(intent)
             } catch (exception: ActivityNotFoundException) {
-                Toast.makeText(context, R.string.no_map_app_found, Toast.LENGTH_SHORT).show()
+                val query = URLEncoder.encode("${coordinatesDto.latitude},${coordinatesDto.longitude}", Charsets.UTF_8.name())
+                openWebsite(context, "https://www.google.com/maps/search/?api=1&query=$query")
             }
         }
     }
