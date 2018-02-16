@@ -2,7 +2,6 @@ package pl.droidsonroids.toast.viewmodels.event
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
-import android.util.Log
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
@@ -28,6 +27,7 @@ import pl.droidsonroids.toast.utils.toPage
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
+import timber.log.Timber
 import javax.inject.Inject
 
 class EventsViewModel @Inject constructor(
@@ -133,7 +133,7 @@ class EventsViewModel @Inject constructor(
 
     private fun onEventsLoadError(error: Throwable) {
         onEmptyResponse()
-        Log.e(simpleClassName, "Something went wrong with fetching data for EventsViewModel", error)
+        Timber.e(error, "Something went wrong with fetching data for EventsViewModel")
     }
 
     private fun onEmptyResponse() {
@@ -166,7 +166,7 @@ class EventsViewModel @Inject constructor(
     }
 
     private fun onPreviousEventsLoadError(throwable: Throwable) {
-        Log.e(simpleClassName, "Something went wrong with fetching next previous events page for EventsViewModel", throwable)
+        Timber.e(throwable, "Something went wrong with fetching next previous events page for EventsViewModel")
         val previousEvents = mergeWithExistingPreviousEvents(listOf(createErrorState()))
         previousEventsSubject.onNext(previousEvents)
     }
