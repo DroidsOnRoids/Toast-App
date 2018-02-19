@@ -166,7 +166,7 @@
             app:finalWidth="@dimen/small_avatar_size"
             app:finalXPosition="@dimen/margin_extra"
             app:finalYPosition="@dimen/margin_medium"
-            app:layout_behavior="pl.droidsonroids.toast.app.speakers.SpeakerHeaderBehavior">
+            app:layout_behavior="pl.droidsonroids.toast.app.behaviors.SpeakerHeaderBehavior">
 
             <View
                 android:id="@+id/avatarBorderBig"
@@ -197,7 +197,7 @@
             app:finalWidth="@dimen/small_avatar_size"
             app:finalXPosition="@dimen/margin_extra"
             app:finalYPosition="@dimen/margin_medium"
-            app:layout_behavior="pl.droidsonroids.toast.app.speakers.SpeakerHeaderBehavior"
+            app:layout_behavior="pl.droidsonroids.toast.app.behaviors.SpeakerHeaderBehavior"
             app:roundImage="@{speakerDetailsViewModel.avatar}"
             tools:backgroundTint="@color/white"/>
 
@@ -217,7 +217,7 @@
             app:finalToolbarHeight="@dimen/collapsed_appbar_height"
             app:finalXPosition="120dp"
             app:finalYPosition="@dimen/margin_large"
-            app:layout_behavior="pl.droidsonroids.toast.app.speakers.SpeakerHeaderBehavior"
+            app:layout_behavior="pl.droidsonroids.toast.app.behaviors.SpeakerHeaderBehavior"
             tools:text="Paulina Szklarska"/>
 
         <include

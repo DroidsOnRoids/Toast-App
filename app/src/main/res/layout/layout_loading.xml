@@ -13,6 +13,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        app:layout_behavior="pl.droidsonroids.toast.app.behaviors.InsetAppBarBehavior"
         android:elevation="@dimen/elevation_large">
 
         <FrameLayout

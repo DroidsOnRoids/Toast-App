@@ -1,4 +1,4 @@
-package pl.droidsonroids.toast.app.speakers
+package pl.droidsonroids.toast.app.behaviors
 
 import android.content.Context
 import android.support.design.widget.AppBarLayout

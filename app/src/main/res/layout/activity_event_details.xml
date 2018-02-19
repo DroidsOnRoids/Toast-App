@@ -43,12 +43,12 @@
                     android:fitsSystemWindows="true"
                     android:scaleType="centerCrop"
                     app:elementId="@{eventDetailsViewModel.eventId}"
-                    app:transitionName="@{PhotoTransition.PHOTO}"
-                    app:originalImage="@{eventDetailsViewModel.coverImage}"
-                    app:imageColorListener="@{eventDetailsViewModel.onGradientColorLoaded}"
-                    app:loadingFinishedListener="@{eventDetailsViewModel.onLoadingFinished}"
                     app:fromCache="@{eventDetailsViewModel.loadFromCache}"
-                    app:layout_collapseMode="parallax"/>
+                    app:imageColorListener="@{eventDetailsViewModel.onGradientColorLoaded}"
+                    app:layout_collapseMode="parallax"
+                    app:loadingFinishedListener="@{eventDetailsViewModel.onLoadingFinished}"
+                    app:originalImage="@{eventDetailsViewModel.coverImage}"
+                    app:transitionName="@{PhotoTransition.PHOTO}"/>
 
                 <ImageSwitcher
                     android:id="@+id/gradientSwitcher"
