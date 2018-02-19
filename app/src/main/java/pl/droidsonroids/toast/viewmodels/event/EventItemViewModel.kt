@@ -8,9 +8,9 @@ class EventItemViewModel(
         val title: String,
         val date: Date,
         val coverImage: ImageDto?,
-        private val onEventClick: (Long) -> Unit,
+        private val onEventClick: (Long, ImageDto?) -> Unit,
         val onCoverLoadingFinish: () -> Unit) {
     fun onClick() {
-        onEventClick(id)
+        onEventClick(id, coverImage)
     }
 }

@@ -7,6 +7,14 @@ import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.viewmodels.event.EventItemViewModel
 
 class PreviousEventsAdapter : BaseStateAdapter<EventItemViewModel>(true) {
+    init {
+        setHasStableIds(true)
+    }
+
+    override fun getItemId(item: EventItemViewModel): Long {
+        return item.id
+    }
+
     override fun getDiffCallback(oldList: List<State<EventItemViewModel>>, newList: List<State<EventItemViewModel>>): BaseDiffCallback<EventItemViewModel> {
         return EventItemDiffCallback(oldList, newList)
     }

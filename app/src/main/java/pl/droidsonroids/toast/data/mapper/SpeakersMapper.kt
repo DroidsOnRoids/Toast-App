@@ -3,6 +3,7 @@ package pl.droidsonroids.toast.data.mapper
 import pl.droidsonroids.toast.data.api.speaker.ApiSpeaker
 import pl.droidsonroids.toast.data.api.speaker.ApiSpeakerDetails
 import pl.droidsonroids.toast.data.api.speaker.ApiSpeakerTalk
+import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerTalkDto
@@ -43,7 +44,7 @@ fun ApiSpeakerTalk.toDto(): SpeakerTalkDto {
     )
 }
 
-fun SpeakerTalkDto.toViewModel(onReadMoreClick: (SpeakerTalkDto) -> Unit, onEventClick: (Long) -> Unit, onLoadingFinished: () -> Unit = {}): SpeakerTalkViewModel {
+fun SpeakerTalkDto.toViewModel(onReadMoreClick: (SpeakerTalkDto) -> Unit, onEventClick: (Long, ImageDto?) -> Unit, onLoadingFinished: () -> Unit = {}): SpeakerTalkViewModel {
     return SpeakerTalkViewModel(
             id = id,
             title = title,

@@ -24,17 +24,16 @@ import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
-private const val DEFAULT_GRADIENT_COLOR = 0xA0000000.toInt()
+const val DEFAULT_GRADIENT_COLOR = 0xA0000000.toInt()
 private const val GRADIENT_COLOR_MASK = 0xE0FFFFFF.toInt()
 
 class EventDetailsViewModel @Inject constructor(
         private val eventsRepository: EventsRepository,
         attendViewModel: AttendViewModel
 ) : ViewModel(), LoadingViewModel, NavigatingViewModel, AttendViewModel by attendViewModel {
-    private val Any.simpleClassName: String get() = javaClass.simpleName
     override val navigationSubject: PublishSubject<NavigationRequest> = navigationRequests
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.PENDING)
-    private var eventId = Constants.NO_ID
+    val eventId = ObservableField(Constants.NO_ID)
     val title = ObservableField("")
     val date = ObservableField<Date>()
     val placeName = ObservableField("")
@@ -42,8 +41,17 @@ class EventDetailsViewModel @Inject constructor(
     val coverImage = ObservableField<ImageDto?>()
     val photosAvailable = ObservableField(false)
     val gradientColor = ObservableField(DEFAULT_GRADIENT_COLOR)
-    val onGradientColorLoaded: (Int) -> Unit = {
-        gradientColor.set(it and GRADIENT_COLOR_MASK)
+    val loadFromCache = ObservableField(true)
+
+    val coverImageLoadingFinishedSubject: PublishSubject<Unit> = PublishSubject.create()
+
+    val onLoadingFinished: () -> Unit = {
+        coverImageLoadingFinishedSubject.onNext(Unit)
+        loadFromCache.set(false)
+    }
+
+    val onGradientColorLoaded: (Int?) -> Unit = {
+        gradientColor.set(it?.and(GRADIENT_COLOR_MASK) ?: DEFAULT_GRADIENT_COLOR)
     }
     private var coordinates: CoordinatesDto? = null
 
@@ -54,7 +62,7 @@ class EventDetailsViewModel @Inject constructor(
     private var eventsDisposable = Disposables.disposed()
 
     fun onPhotosClick() {
-        navigationSubject.onNext(NavigationRequest.Photos(photos, eventId, ParentView.EVENT_DETAILS))
+        navigationSubject.onNext(NavigationRequest.Photos(photos, eventId.get(), ParentView.EVENT_DETAILS))
     }
 
     fun onLocationClick() {
@@ -63,16 +71,17 @@ class EventDetailsViewModel @Inject constructor(
         }
     }
 
-    fun init(id: Long) {
-        if (eventId == Constants.NO_ID) {
-            eventId = id
+    fun init(id: Long, coverImage: ImageDto?) {
+        if (eventId.get() == Constants.NO_ID) {
+            eventId.set(id)
+            this.coverImage.set(coverImage)
             loadEvent()
         }
     }
 
     private fun loadEvent() {
         loadingStatus.set(LoadingStatus.PENDING)
-        eventsDisposable = eventsRepository.getEvent(eventId)
+        eventsDisposable = eventsRepository.getEvent(eventId.get())
                 .subscribeBy(
                         onSuccess = (::onEventLoaded),
                         onError = (::onEventLoadError)
@@ -86,7 +95,7 @@ class EventDetailsViewModel @Inject constructor(
             date.set(it.date)
             placeName.set(it.placeName)
             placeStreet.set(it.placeStreet)
-            coverImage.set(it.coverImages.firstOrNull())
+            coverImage.run { set(get() ?: it.coverImages.firstOrNull()) }
             photosAvailable.set(it.photos.isNotEmpty())
             photos = it.photos
             coordinates = it.coordinates
@@ -102,7 +111,7 @@ class EventDetailsViewModel @Inject constructor(
 
     private fun onReadMore(eventSpeakerItemViewModel: EventSpeakerItemViewModel) {
         navigationSubject.onNext(NavigationRequest.EventTalkDetails(eventSpeakerItemViewModel.toDto()))
-        Timber.d(simpleClassName, "onReadMore: ${eventSpeakerItemViewModel.id}")
+        Timber.d("onReadMore: ${eventSpeakerItemViewModel.id}")
     }
 
     private fun onSpeakerClick(speakerId: Long) {
@@ -111,7 +120,7 @@ class EventDetailsViewModel @Inject constructor(
 
     private fun onEventLoadError(throwable: Throwable) {
         loadingStatus.set(LoadingStatus.ERROR)
-        Timber.e(simpleClassName, "Something went wrong when fetching event details with id = $eventId", throwable)
+        Timber.e(throwable, "Something went wrong when fetching event details with id = $eventId")
     }
 
     override fun retryLoading() {

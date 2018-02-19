@@ -4,7 +4,9 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v4.util.Pair
 import android.support.v4.widget.NestedScrollView
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +16,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.fragment_events.*
+import kotlinx.android.synthetic.main.layout_card_upcoming_event.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseFragment
@@ -56,13 +59,30 @@ class EventsFragment : BaseFragment() {
     }
 
     private fun handleNavigationRequest(request: NavigationRequest) {
-        if (request is NavigationRequest.SnackBar) {
-            Snackbar.make(eventsScrollContainer, request.stringRes, Snackbar.LENGTH_SHORT)
+        when (request) {
+            is NavigationRequest.SnackBar -> Snackbar.make(eventsScrollContainer, request.stringRes, Snackbar.LENGTH_SHORT)
                     .setNavigationViewAnchor()
                     .show()
-        } else {
-            activity?.let { navigator.dispatch(it, request) }
+            is NavigationRequest.EventDetails -> navigator.showActivityWithSharedAnimation(activity as AppCompatActivity, request, getSharedViews(request.id))
+            else -> activity?.let { navigator.dispatch(it, request) }
         }
+    }
+
+    private fun getSharedViews(id: Long): Array<Pair<View, String>> {
+        return if (eventsViewModel.isUpcomingEvent(id)) {
+            arrayOf(Pair(upcomingEventImage as View, upcomingEventImage.transitionName))
+        } else {
+            getSharedViewFromRecyclerView(id)
+        }
+    }
+
+    private fun getSharedViewFromRecyclerView(id: Long): Array<Pair<View, String>> {
+        return previousEventsRecyclerView.findViewHolderForItemId(id)
+                ?.itemView
+                ?.run {
+                    val coverImage = findViewById<View>(R.id.eventCoverImage)
+                    arrayOf(Pair(coverImage, coverImage.transitionName))
+                } ?: emptyArray()
     }
 
 

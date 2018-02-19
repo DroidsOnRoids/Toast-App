@@ -61,7 +61,14 @@ fun setOriginalImage(imageView: ImageView, imageDto: ImageDto?) {
 @SuppressLint("CheckResult")
 @BindingAdapter("originalImage", "loadingFinishedListener", "fromCache")
 fun loadOriginalPhoto(imageView: ImageView, imageDto: ImageDto?, onLoadingFinished: () -> Unit, loadFromCache: Boolean) {
-    val listener = object : RequestListener<Drawable> {
+    val listener = createRequestListener(onLoadingFinished)
+    loadWithListener(imageView, imageDto, listener) {
+        apply(RequestOptions().override(Target.SIZE_ORIGINAL).onlyRetrieveFromCache(loadFromCache))
+    }
+}
+
+private fun createRequestListener(onLoadingFinished: () -> Unit): RequestListener<Drawable> {
+    return object : RequestListener<Drawable> {
         override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
             onLoadingFinished()
             return false
@@ -72,15 +79,15 @@ fun loadOriginalPhoto(imageView: ImageView, imageDto: ImageDto?, onLoadingFinish
             return false
         }
     }
+}
+
+@SuppressLint("CheckResult")
+@BindingAdapter("originalImage", "imageColorListener", "loadingFinishedListener", "fromCache")
+fun setCoverImageWithPaletteListener(imageView: ImageView, imageDto: ImageDto?, onColorLoaded: (Int?) -> Unit, onLoadingFinished: () -> Unit, loadFromCache: Boolean) {
+    val listener = createGlidePaletteListener(imageDto, onColorLoaded, onLoadingFinished)
     loadWithListener(imageView, imageDto, listener) {
         apply(RequestOptions().override(Target.SIZE_ORIGINAL).onlyRetrieveFromCache(loadFromCache))
     }
-}
-
-@BindingAdapter("coverImage", "coverImageColorListener")
-fun setCoverImageWithPaletteListener(imageView: ImageView, imageDto: ImageDto?, onColorLoaded: (Int) -> Unit) {
-    val listener = createGlidePaletteListener(imageDto, onColorLoaded)
-    loadWithListener(imageView, imageDto, listener)
 }
 
 private fun loadWithListener(imageView: ImageView, imageDto: ImageDto?, listener: RequestListener<Drawable>, apply: RequestBuilder<Drawable>.() -> RequestBuilder<Drawable> = { this }) {
@@ -95,11 +102,12 @@ private fun loadWithListener(imageView: ImageView, imageDto: ImageDto?, listener
             .into(imageView)
 }
 
-private fun createGlidePaletteListener(imageDto: ImageDto?, onColorLoaded: (Int) -> Unit): GlidePalette<Drawable> {
+private fun createGlidePaletteListener(imageDto: ImageDto?, onColorLoaded: (Int?) -> Unit, onLoadingFinished: () -> Unit): GlidePalette<Drawable> {
     return GlidePalette.with(imageDto?.originalSizeUrl)
+            .setGlideListener(createRequestListener(onLoadingFinished))
             .intoCallBack { palette ->
                 val darkVibrantColor = palette?.darkVibrantSwatch?.rgb
-                darkVibrantColor?.let { onColorLoaded(it) }
+                onColorLoaded(darkVibrantColor)
             }
 }
 

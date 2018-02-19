@@ -58,7 +58,7 @@ fun ApiEvent.toDto(): EventDto {
     )
 }
 
-fun EventDto.toViewModel(onClick: (Long) -> Unit, onCoverLoadingFinish: () -> Unit = {}): EventItemViewModel {
+fun EventDto.toViewModel(onClick: (Long, ImageDto?) -> Unit, onCoverLoadingFinish: () -> Unit = {}): EventItemViewModel {
     return EventItemViewModel(
             id = id,
             title = title,
@@ -81,7 +81,7 @@ fun EventItemViewModel.toDto(): EventDto {
 fun EventDetailsDto.toViewModel(
         onLocationClick: (CoordinatesDto, String) -> Unit,
         onSeePhotosClick: (Long, List<ImageDto>) -> Unit,
-        onEventClick: (Long) -> Unit,
+        onEventClick: (Long, ImageDto?) -> Unit,
         onAttendClick: () -> Unit
 ): UpcomingEventViewModel {
     return UpcomingEventViewModel(

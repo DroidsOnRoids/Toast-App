@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
+import android.support.design.widget.CoordinatorLayout
 import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.ColorUtils
 import android.support.v4.util.Pair
@@ -19,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_event_details.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
+import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.EventTalkDto
 import pl.droidsonroids.toast.databinding.ActivityEventDetailsBinding
 import pl.droidsonroids.toast.di.LoginCallbackManager
@@ -31,15 +33,21 @@ private const val ALPHA_MAX_VALUE = 255
 class EventDetailsActivity : BaseActivity() {
     companion object {
         private const val EVENT_ID = "event_id"
+        private const val COVER_IMAGE = "cover_image"
 
         fun createIntent(context: Context, eventDetailsRequest: NavigationRequest.EventDetails): Intent {
             return Intent(context, EventDetailsActivity::class.java)
                     .putExtra(EVENT_ID, eventDetailsRequest.id)
+                    .putExtra(COVER_IMAGE, eventDetailsRequest.coverImage)
         }
     }
 
-    private val eventId: Long by lazy {
+    private val eventId by lazy {
         intent.getLongExtra(EVENT_ID, 0)
+    }
+
+    private val coverImage by lazy {
+        intent.getParcelableExtra<ImageDto?>(COVER_IMAGE)
     }
 
     private val compositeDisposable = CompositeDisposable()
@@ -58,6 +66,7 @@ class EventDetailsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        postponeEnterTransition()
         val eventDetailsBinding = ActivityEventDetailsBinding.inflate(layoutInflater)
         setContentView(eventDetailsBinding.root)
 
@@ -92,10 +101,12 @@ class EventDetailsActivity : BaseActivity() {
     }
 
     private fun setupViewModel(eventDetailsBinding: ActivityEventDetailsBinding) {
-        eventDetailsViewModel.init(eventId)
+        eventDetailsViewModel.init(eventId, coverImage)
         eventDetailsBinding.eventDetailsViewModel = eventDetailsViewModel
         compositeDisposable += eventDetailsViewModel.navigationSubject
                 .subscribe(::handleNavigationRequest)
+        compositeDisposable += eventDetailsViewModel.coverImageLoadingFinishedSubject
+                .subscribe { startPostponedEnterTransition() }
     }
 
     private fun handleNavigationRequest(it: NavigationRequest) {
@@ -136,9 +147,7 @@ class EventDetailsActivity : BaseActivity() {
     private fun subscribeToSpeakersChange(eventSpeakersAdapter: EventSpeakersAdapter) {
         compositeDisposable += eventDetailsViewModel.eventSpeakersSubject
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    eventSpeakersAdapter.setData(it)
-                }
+                .subscribe(eventSpeakersAdapter::setData)
     }
 
     override fun onStart() {
@@ -151,9 +160,23 @@ class EventDetailsActivity : BaseActivity() {
         loginCallbackManager.onActivityResult(requestCode, resultCode, data)
     }
 
+    override fun onBackPressed() {
+        if (appBar.isCollapsed) {
+            finish()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     override fun onDestroy() {
         compositeDisposable.dispose()
         super.onDestroy()
     }
 }
+
+private val AppBarLayout.isCollapsed: Boolean
+    get() {
+        val layoutParams = layoutParams as? CoordinatorLayout.LayoutParams
+        return (layoutParams?.behavior as? AppBarLayout.Behavior)?.topAndBottomOffset != 0
+    }
 

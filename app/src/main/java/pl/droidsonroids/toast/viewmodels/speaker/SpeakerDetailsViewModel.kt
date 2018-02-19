@@ -105,8 +105,8 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
         navigationSubject.onNext(NavigationRequest.SpeakerTalkDetails(talkDto))
     }
 
-    private fun onEventClick(eventId: Long) {
-        navigationSubject.onNext(NavigationRequest.EventDetails(eventId))
+    private fun onEventClick(eventId: Long, imageDto: ImageDto?) {
+        navigationSubject.onNext(NavigationRequest.EventDetails(eventId, imageDto))
     }
 
     private fun onSpeakerLoadError(throwable: Throwable) {

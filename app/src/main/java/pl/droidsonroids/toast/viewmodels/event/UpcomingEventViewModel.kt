@@ -16,14 +16,14 @@ class UpcomingEventViewModel(
         val coordinates: CoordinatesDto,
         private val locationClickCallback: (CoordinatesDto, String) -> Unit,
         private val seePhotosCallback: (Long, List<ImageDto>) -> Unit,
-        private val eventClickCallback: (Long) -> Unit,
+        private val eventClickCallback: (Long, ImageDto?) -> Unit,
         private val attendCallback: () -> Unit
 ) {
 
     val photosAvailable get() = photos.isNotEmpty()
 
     fun onEventClick() {
-        eventClickCallback(id)
+        eventClickCallback(id, coverImage)
     }
 
     fun onPhotosClick() {

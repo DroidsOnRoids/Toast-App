@@ -3,6 +3,7 @@ package pl.droidsonroids.toast.viewmodels.speaker
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import io.reactivex.subjects.PublishSubject
+import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerTalkDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.utils.NavigationRequest
@@ -27,8 +28,8 @@ class SpeakerTalkDetailsViewModel @Inject constructor() : ViewModel(), Navigatin
         }
     }
 
-    private fun onEventClick(eventId: Long) {
-        navigationSubject.onNext(NavigationRequest.EventDetails(eventId))
+    private fun onEventClick(eventId: Long, imageDto: ImageDto?) {
+        navigationSubject.onNext(NavigationRequest.EventDetails(eventId, imageDto))
     }
 
     fun onReadLess() {
