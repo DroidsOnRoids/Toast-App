@@ -83,7 +83,7 @@ class MockSpeakersScreenTest {
         with(SpeakersRobot()) {
             checkIfElementWithIdIsDisplayed(R.id.searchBox)
             checkIfHomeButtonIsDisplayed()
-            checkIfHintIsDisplayed(R.id.searchBox, getString(R.string.search_hint))
+            checkIfHintOnEditTextIsCorrect(R.id.searchBox, getString(R.string.search_hint))
         }
     }
 
