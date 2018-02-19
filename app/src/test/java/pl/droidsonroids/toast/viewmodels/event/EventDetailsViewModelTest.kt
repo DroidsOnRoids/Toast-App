@@ -14,6 +14,7 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
+import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.event.EventsRepository
@@ -22,12 +23,18 @@ import pl.droidsonroids.toast.testEventDetails
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
+import pl.droidsonroids.toast.viewmodels.speaker.Clock
 
 class EventDetailsViewModelTest : RxTestBase() {
     @Mock
     lateinit var eventsRepository: EventsRepository
     @Mock
     lateinit var attendViewModel: AttendViewModel
+    @Mock
+    lateinit var clock: Clock
+    @Mock
+    lateinit var analyticsEventTracker: AnalyticsEventTracker
+
     lateinit var eventDetailsViewModel: EventDetailsViewModel
 
     private val eventId: Long = 1
@@ -35,7 +42,7 @@ class EventDetailsViewModelTest : RxTestBase() {
     @Before
     fun setUp() {
         whenever(attendViewModel.navigationRequests).thenReturn(PublishSubject.create())
-        eventDetailsViewModel = EventDetailsViewModel(eventsRepository, attendViewModel, analyticsEventTracker = mock())
+        eventDetailsViewModel = EventDetailsViewModel(eventsRepository, attendViewModel, analyticsEventTracker, clock)
     }
 
     @Test

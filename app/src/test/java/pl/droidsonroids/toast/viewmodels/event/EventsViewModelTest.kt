@@ -1,6 +1,5 @@
 package pl.droidsonroids.toast.viewmodels.event
 
-import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Maybe
 import io.reactivex.subjects.PublishSubject
@@ -8,10 +7,10 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.junit.MockitoJUnitRunner
+import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
+import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.dto.event.SplitEvents
 import pl.droidsonroids.toast.data.enums.ParentView
@@ -23,18 +22,22 @@ import pl.droidsonroids.toast.testSplitEvents
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
+import pl.droidsonroids.toast.viewmodels.speaker.Clock
 import java.io.IOException
 
-@RunWith(MockitoJUnitRunner::class)
-class EventsViewModelTest {
+class EventsViewModelTest : RxTestBase() {
     @Mock
     lateinit var eventsRepository: EventsRepository
     @Mock
     lateinit var loginStateWatcher: LoginStateWatcher
     @Mock
     lateinit var attendViewModel: AttendViewModel
+    @Mock
+    lateinit var clock: Clock
+    @Mock
+    lateinit var analyticsEventTracker: AnalyticsEventTracker
 
-    lateinit var eventsViewModel: EventsViewModel
+    private lateinit var eventsViewModel: EventsViewModel
 
 
     @Test
@@ -138,7 +141,7 @@ class EventsViewModelTest {
     private fun setUpWith(maybe: Maybe<SplitEvents>) {
         whenever(eventsRepository.getEvents()).thenReturn(maybe)
         whenever(attendViewModel.navigationRequests).thenReturn(PublishSubject.create())
-        eventsViewModel = EventsViewModel(loginStateWatcher, attendViewModel, eventsRepository, analyticsEventTracker = mock())
+        eventsViewModel = EventsViewModel(loginStateWatcher, attendViewModel, eventsRepository, analyticsEventTracker, clock)
     }
 
 }

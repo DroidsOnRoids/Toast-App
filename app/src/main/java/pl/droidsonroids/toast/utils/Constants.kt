@@ -52,4 +52,6 @@ object Constants {
         const val TWITTER = "twitter"
     }
 
+    const val MIN_LOADING_DELAY_MILLIS = 300L
+
 }

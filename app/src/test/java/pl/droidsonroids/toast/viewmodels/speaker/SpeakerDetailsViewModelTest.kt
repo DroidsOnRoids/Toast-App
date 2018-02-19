@@ -25,6 +25,8 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
     lateinit var speakersRepository: SpeakersRepository
     @Mock
     lateinit var analyticsEventTracker: AnalyticsEventTracker
+    @Mock
+    lateinit var clock: Clock
     @InjectMocks
     lateinit var speakerDetailsViewModel: SpeakerDetailsViewModel
 

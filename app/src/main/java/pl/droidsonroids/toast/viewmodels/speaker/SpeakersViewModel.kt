@@ -10,6 +10,7 @@ import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.SortingType
 import pl.droidsonroids.toast.utils.addOnPropertyChangedCallback
+import pl.droidsonroids.toast.viewmodels.LoadingDelayViewModel
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -18,11 +19,12 @@ class SpeakersViewModel @Inject constructor(
         private val speakersRepository: SpeakersRepository,
         private val analyticsEventTracker: AnalyticsEventTracker,
         private val clock: Clock
-) : BaseSpeakerListViewModel() {
+) : BaseSpeakerListViewModel(), LoadingDelayViewModel {
 
     val isSortingDetailsVisible: ObservableField<Boolean> = ObservableField(false)
     val sortingType = ObservableField(SortingType.DATE)
-    private var lastLoadingStartTimeMillis = clock.elapsedRealtime()
+    override val isFadingEnabled get() = true
+    override var lastLoadingStartTimeMillis = clock.elapsedRealtime()
 
     private var speakersDisposable: Disposable? = null
 
@@ -32,8 +34,6 @@ class SpeakersViewModel @Inject constructor(
             loadFirstPage()
         }
     }
-
-    override val isFadingEnabled get() = true
 
     private fun clearSpeakersList() {
         speakersSubject.onNext(emptyList())

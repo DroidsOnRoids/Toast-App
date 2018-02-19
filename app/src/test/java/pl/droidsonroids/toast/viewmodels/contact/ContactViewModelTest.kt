@@ -18,6 +18,7 @@ import pl.droidsonroids.toast.data.enums.MessageType
 import pl.droidsonroids.toast.repositories.contact.ContactRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.viewmodels.speaker.Clock
 import java.io.IOException
 
 class ContactViewModelTest : RxTestBase() {
@@ -27,6 +28,8 @@ class ContactViewModelTest : RxTestBase() {
     lateinit var contactFormValidator: ContactFormValidator
     @Mock
     lateinit var analyticsEventTracker: AnalyticsEventTracker
+    @Mock
+    lateinit var clock: Clock
 
     lateinit var contactViewModel: ContactViewModel
 
@@ -44,7 +47,7 @@ class ContactViewModelTest : RxTestBase() {
     @Before
     fun setUp() {
         whenever(contactRepository.readMessage()).thenReturn(Single.just(messageDto))
-        contactViewModel = ContactViewModel(contactFormValidator, contactRepository, analyticsEventTracker)
+        contactViewModel = ContactViewModel(contactFormValidator, contactRepository, analyticsEventTracker, clock)
     }
 
     @Test
