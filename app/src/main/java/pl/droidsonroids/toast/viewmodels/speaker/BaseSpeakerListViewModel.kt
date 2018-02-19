@@ -30,8 +30,9 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
         val (items, pageNumber, allPagesCount) = page
         return items.toObservable()
                 .map {
-                    it.toViewModel { id ->
+                    it.toViewModel { id, name ->
                         navigationSubject.onNext(NavigationRequest.SpeakerDetails(id))
+                        onSpeakerNavigationRequestSent(name)
                     }
                 }
                 .map { wrapWithState(it) }
@@ -55,7 +56,7 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
         return speakers.appendLoadingItemIfNextPageAvailable(page)
     }
 
-    protected fun List<State<SpeakerItemViewModel>>.appendLoadingItemIfNextPageAvailable(page: Page<State.Item<SpeakerItemViewModel>>)
+    private fun List<State<SpeakerItemViewModel>>.appendLoadingItemIfNextPageAvailable(page: Page<State.Item<SpeakerItemViewModel>>)
             : List<State<SpeakerItemViewModel>> {
         return if (page.pageNumber < page.allPagesCount) {
             nextPageNumber = page.pageNumber + 1
@@ -88,6 +89,8 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
     private fun createErrorState(): State.Error {
         return State.Error(::onErrorClick)
     }
+
+    abstract fun onSpeakerNavigationRequestSent(speakerName: String)
 
     protected abstract fun onErrorClick()
 }

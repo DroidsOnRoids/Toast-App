@@ -10,6 +10,7 @@ import io.reactivex.rxkotlin.toObservable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
+import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.dto.ImageDto
@@ -21,6 +22,7 @@ import pl.droidsonroids.toast.data.wrapWithState
 import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.utils.SourceAttending
 import pl.droidsonroids.toast.utils.toPage
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
@@ -31,7 +33,8 @@ import javax.inject.Inject
 class EventsViewModel @Inject constructor(
         loginStateWatcher: LoginStateWatcher,
         attendViewModel: AttendViewModel,
-        private val eventsRepository: EventsRepository
+        private val eventsRepository: EventsRepository,
+        private val analyticsEventTracker: AnalyticsEventTracker
 ) : ViewModel(), LoadingViewModel, NavigatingViewModel, LoginStateWatcher by loginStateWatcher, AttendViewModel by attendViewModel {
     override val navigationSubject: PublishSubject<NavigationRequest> = navigationRequests
 
@@ -58,7 +61,7 @@ class EventsViewModel @Inject constructor(
         loadingStatus.set(LoadingStatus.PENDING)
         compositeDisposable += eventsRepository.getEvents()
                 .flatMap { (upcomingEvent, previousEventsPage) ->
-                    setEvent(upcomingEvent.facebookId, upcomingEvent.date)
+                    setEvent(upcomingEvent.facebookId, upcomingEvent.date, SourceAttending.UPCOMING_EVENT)
                     val upcomingEventViewModel = upcomingEvent.toViewModel(
                             onLocationClick = (::onUpcomingEventLocationClick),
                             onEventClick = (::onUpcomingEventClick),
@@ -78,10 +81,12 @@ class EventsViewModel @Inject constructor(
 
     private fun onUpcomingEventLocationClick(coordinates: CoordinatesDto, placeName: String) {
         navigationSubject.onNext(NavigationRequest.Map(coordinates, placeName))
+        analyticsEventTracker.logUpcomingEventTapMeetupPlaceEvent()
     }
 
     private fun onUpcomingEventClick(eventId: Long) {
         navigationSubject.onNext(NavigationRequest.EventDetails(eventId))
+        analyticsEventTracker.logEventsShowEventDetailsEvent(eventId)
     }
 
     private fun onSeePhotosClick(eventId: Long, photos: List<ImageDto>) {
@@ -157,6 +162,7 @@ class EventsViewModel @Inject constructor(
 
     private fun sendEventDetailsNavigationRequest(id: Long) {
         navigationSubject.onNext(NavigationRequest.EventDetails(id))
+        analyticsEventTracker.logEventsShowEventDetailsEvent(id)
     }
 
     private fun onPreviousEventsLoadError(throwable: Throwable) {

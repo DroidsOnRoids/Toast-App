@@ -145,6 +145,9 @@ dependencies {
     // facebook
     implementation 'com.facebook.android:facebook-login:4.30.0'
 
+    // firebase
+    implementation 'com.google.firebase:firebase-core:11.8.0'
+
     // timber logger
     implementation 'com.jakewharton.timber:timber:4.6.1'
 
@@ -198,4 +201,8 @@ private Task createTestReportTask(String taskName, String variant) {
         classDirectories = files(debugTree)
         executionData = fileTree(dir: "$buildDir", includes: ["jacoco/test${variant}UnitTest.exec"])
     }
+}
+
+if (file("google-services.json").isFile()) {
+    apply plugin: 'com.google.gms.google-services'
 }

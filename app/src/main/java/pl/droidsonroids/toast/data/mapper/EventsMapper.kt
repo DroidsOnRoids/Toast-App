@@ -100,7 +100,7 @@ fun EventDetailsDto.toViewModel(
     )
 }
 
-fun EventTalkDto.toViewModel(onReadMore: (EventSpeakerItemViewModel) -> Unit, onSpeakerClick: (Long) -> Unit): EventSpeakerItemViewModel {
+fun EventTalkDto.toViewModel(onReadMore: (EventSpeakerItemViewModel) -> Unit, onSpeakerClick: (Long, String) -> Unit): EventSpeakerItemViewModel {
     return EventSpeakerItemViewModel(
             id = id,
             title = title,
