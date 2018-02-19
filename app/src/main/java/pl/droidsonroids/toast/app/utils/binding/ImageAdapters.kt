@@ -83,7 +83,7 @@ private fun createRequestListener(onLoadingFinished: () -> Unit): RequestListene
 
 @SuppressLint("CheckResult")
 @BindingAdapter("originalImage", "imageColorListener", "loadingFinishedListener", "fromCache")
-fun setCoverImageWithPaletteListener(imageView: ImageView, imageDto: ImageDto?, onColorLoaded: (Int?) -> Unit, onLoadingFinished: () -> Unit, loadFromCache: Boolean) {
+fun setCoverImageWithPaletteListener(imageView: ImageView, imageDto: ImageDto?, onColorLoaded: (Int) -> Unit, onLoadingFinished: () -> Unit, loadFromCache: Boolean) {
     val listener = createGlidePaletteListener(imageDto, onColorLoaded, onLoadingFinished)
     loadWithListener(imageView, imageDto, listener) {
         apply(RequestOptions().override(Target.SIZE_ORIGINAL).onlyRetrieveFromCache(loadFromCache))
@@ -102,12 +102,12 @@ private fun loadWithListener(imageView: ImageView, imageDto: ImageDto?, listener
             .into(imageView)
 }
 
-private fun createGlidePaletteListener(imageDto: ImageDto?, onColorLoaded: (Int?) -> Unit, onLoadingFinished: () -> Unit): GlidePalette<Drawable> {
+private fun createGlidePaletteListener(imageDto: ImageDto?, onColorLoaded: (Int) -> Unit, onLoadingFinished: () -> Unit): GlidePalette<Drawable> {
     return GlidePalette.with(imageDto?.originalSizeUrl)
             .setGlideListener(createRequestListener(onLoadingFinished))
             .intoCallBack { palette ->
                 val darkVibrantColor = palette?.darkVibrantSwatch?.rgb
-                onColorLoaded(darkVibrantColor)
+                darkVibrantColor?.let { onColorLoaded(it) }
             }
 }
 

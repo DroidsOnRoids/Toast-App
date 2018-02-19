@@ -21,6 +21,8 @@
             android:layout_height="match_parent"
             android:background="@color/paleGrayBackground"
             android:visibility="gone"
+            android:clickable="true"
+            android:focusable="true"
             app:fadingEnabled="@{loadingViewModel.isFadingEnabled}"
             app:loadingContainerVisibility="@{loadingViewModel.loadingStatus}">
 

@@ -50,8 +50,8 @@ class EventDetailsViewModel @Inject constructor(
         loadFromCache.set(false)
     }
 
-    val onGradientColorLoaded: (Int?) -> Unit = {
-        gradientColor.set(it?.and(GRADIENT_COLOR_MASK) ?: DEFAULT_GRADIENT_COLOR)
+    val onGradientColorLoaded: (Int) -> Unit = {
+        gradientColor.set(it and GRADIENT_COLOR_MASK)
     }
     private var coordinates: CoordinatesDto? = null
 

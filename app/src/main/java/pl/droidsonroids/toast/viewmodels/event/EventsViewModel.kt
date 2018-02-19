@@ -80,7 +80,7 @@ class EventsViewModel @Inject constructor(
     }
 
     private fun onEventClick(eventId: Long, coverImage: ImageDto?) {
-        Timber.wtf("On event click: $eventId")
+        Timber.d("On event click: $eventId")
         navigationSubject.onNext(NavigationRequest.EventDetails(eventId, coverImage))
     }
 
