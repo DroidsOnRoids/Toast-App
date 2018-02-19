@@ -11,6 +11,9 @@ import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.v7.widget.RecyclerView
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.startsWith
+import org.hamcrest.Matchers.not
+import pl.droidsonroids.toast.function.matchers.isHintOnEditTextCorrect
+import pl.droidsonroids.toast.function.matchers.isHintOnTextInputLayoutCorrect
 
 abstract class BaseRobot {
 
@@ -33,6 +36,13 @@ abstract class BaseRobot {
                 .check(matches(isDisplayed()))
         return this
     }
+
+    fun checkIfElementWithIdIsNotDisplayed(id: Int): BaseRobot {
+        onView(withId(id))
+                .check(matches(not(isDisplayed())))
+        return this
+    }
+
     fun checkIfElementWithTextIsDisplayed(text: String): BaseRobot {
         onView(withText(text))
                 .check(matches(isDisplayed()))
@@ -77,9 +87,15 @@ abstract class BaseRobot {
         return this
     }
 
-    fun checkIfHintIsDisplayed(id: Int, text: String): BaseRobot {
+    fun checkIfHintOnTextInputLayoutIsCorrect(id: Int, text: String): BaseRobot {
         onView(withId(id))
-                .check(matches(withHint(text)))
+                .check(matches(isHintOnTextInputLayoutCorrect(text)))
+        return this
+    }
+
+    fun checkIfHintOnEditTextIsCorrect(id: Int, text: String): BaseRobot {
+        onView(withId(id))
+                .check(matches(isHintOnEditTextCorrect(text)))
         return this
     }
 
