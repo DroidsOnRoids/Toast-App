@@ -15,6 +15,7 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.utils.extensions.setNavigationViewAnchor
+import pl.droidsonroids.toast.app.utils.extensions.showSnackbar
 import pl.droidsonroids.toast.data.enums.LoginState
 import pl.droidsonroids.toast.databinding.ActivityMainBinding
 import pl.droidsonroids.toast.di.LoginCallbackManager
@@ -121,6 +122,7 @@ class MainActivity : BaseActivity() {
     private fun handleNavigationRequest(navigationRequest: NavigationRequest) {
         when (navigationRequest) {
             NavigationRequest.SpeakersSearch -> navigator.showSearchSpeakersWithRevealAnimation(this, getViewCenterCoordinates(searchImageButton))
+            is NavigationRequest.SnackBar -> mainCoordinatorLayout.showSnackbar(navigationRequest)
             else -> navigator.dispatch(this, navigationRequest)
         }
     }
