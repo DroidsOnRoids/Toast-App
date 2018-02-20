@@ -24,7 +24,6 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
     val speakersSubject: BehaviorSubject<List<State<SpeakerItemViewModel>>> = BehaviorSubject.create()
     protected var isNextPageLoading: Boolean = false
     protected var nextPageNumber: Int? = null
-    private val Any.simpleClassName: String get() = javaClass.simpleName
 
     protected fun mapToSingleSpeakerItemViewModelsPage(page: Page<SpeakerDto>): Single<Page<State.Item<SpeakerItemViewModel>>> {
         val (items, pageNumber, allPagesCount) = page

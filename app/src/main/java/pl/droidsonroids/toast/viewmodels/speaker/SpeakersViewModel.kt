@@ -10,7 +10,7 @@ import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.SortingType
 import pl.droidsonroids.toast.utils.addOnPropertyChangedCallback
-import pl.droidsonroids.toast.viewmodels.LoadingDelayViewModel
+import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ class SpeakersViewModel @Inject constructor(
         private val speakersRepository: SpeakersRepository,
         private val analyticsEventTracker: AnalyticsEventTracker,
         private val clock: Clock
-) : BaseSpeakerListViewModel(), LoadingDelayViewModel {
+) : BaseSpeakerListViewModel(), LoadingViewModel {
 
     val isSortingDetailsVisible: ObservableField<Boolean> = ObservableField(false)
     val sortingType = ObservableField(SortingType.DATE)

@@ -9,7 +9,7 @@ import pl.droidsonroids.toast.utils.LoadingStatus
 @BindingAdapter("loadingContainerVisibility", "fadingEnabled")
 fun View.setLoadingContainerVisibility(loadingStatus: LoadingStatus, fadingEnabled: Boolean) {
     if (fadingEnabled) {
-        fadeLoadingContainer(loadingStatus, LoadingStatus.SUCCESS)
+        fadeLoadingContainer(loadingStatus)
     } else {
         setVisible(loadingStatus != LoadingStatus.SUCCESS)
     }
@@ -26,22 +26,22 @@ fun View.setLoadingIndicatorVisibility(loadingStatus: LoadingStatus) {
 @BindingAdapter("connectionErrorContainerVisibility", "fadingEnabled")
 fun View.setConnectionErrorContainerVisibility(loadingStatus: LoadingStatus, fadingEnabled: Boolean) {
     if (fadingEnabled) {
-        fadeErrorContainer(loadingStatus, LoadingStatus.ERROR)
+        fadeErrorContainer(loadingStatus)
     } else {
         setVisible(loadingStatus == LoadingStatus.ERROR)
     }
 }
 
-private fun View.fadeErrorContainer(loadingStatus: LoadingStatus, visibleStatus: LoadingStatus) {
+private fun View.fadeErrorContainer(loadingStatus: LoadingStatus) {
     when (loadingStatus) {
-        visibleStatus -> showWithFading()
+        LoadingStatus.ERROR -> showWithFading()
         else -> hideWithFading()
     }
 }
 
-private fun View.fadeLoadingContainer(loadingStatus: LoadingStatus, visibleStatus: LoadingStatus) {
+private fun View.fadeLoadingContainer(loadingStatus: LoadingStatus) {
     when (loadingStatus) {
-        visibleStatus -> hideWithFading()
+        LoadingStatus.SUCCESS -> hideWithFading()
         else -> showWithFading()
     }
 }

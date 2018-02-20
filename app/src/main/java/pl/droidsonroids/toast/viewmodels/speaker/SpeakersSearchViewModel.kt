@@ -5,14 +5,14 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
-import pl.droidsonroids.toast.app.utils.extensions.rx.addLoadingDelay
+import pl.droidsonroids.toast.app.utils.extensions.addLoadingDelay
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.toObservable
-import pl.droidsonroids.toast.viewmodels.LoadingDelayViewModel
+import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -20,7 +20,7 @@ class SpeakersSearchViewModel @Inject constructor(
         private val speakersRepository: SpeakersRepository,
         private val analyticsEventTracker: AnalyticsEventTracker,
         private val clock: Clock
-) : BaseSpeakerListViewModel(), LoadingDelayViewModel {
+) : BaseSpeakerListViewModel(), LoadingViewModel {
     val searchPhrase: ObservableField<String> = ObservableField("")
     private val searchObservable: Observable<String> = searchPhrase.toObservable()
     private var lastSearchedPhrase: String = ""

@@ -6,7 +6,7 @@ import io.reactivex.disposables.Disposables
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import pl.droidsonroids.toast.app.utils.extensions.rx.addLoadingDelay
+import pl.droidsonroids.toast.app.utils.extensions.addLoadingDelay
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
@@ -20,7 +20,6 @@ import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.SourceAttending
-import pl.droidsonroids.toast.viewmodels.LoadingDelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
@@ -37,7 +36,7 @@ class EventDetailsViewModel @Inject constructor(
         attendViewModel: AttendViewModel,
         private val analyticsEventTracker: AnalyticsEventTracker,
         private val clock: Clock
-) : ViewModel(), LoadingViewModel, LoadingDelayViewModel, NavigatingViewModel, AttendViewModel by attendViewModel {
+) : ViewModel(), LoadingViewModel, NavigatingViewModel, AttendViewModel by attendViewModel {
     private val Any.simpleClassName: String get() = javaClass.simpleName
     override val navigationSubject: PublishSubject<NavigationRequest> = navigationRequests
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.PENDING)

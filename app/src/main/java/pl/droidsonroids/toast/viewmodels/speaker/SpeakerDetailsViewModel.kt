@@ -5,7 +5,7 @@ import android.databinding.ObservableField
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import pl.droidsonroids.toast.app.utils.extensions.rx.addLoadingDelay
+import pl.droidsonroids.toast.app.utils.extensions.addLoadingDelay
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
@@ -14,7 +14,6 @@ import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
-import pl.droidsonroids.toast.viewmodels.LoadingDelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import timber.log.Timber
@@ -25,7 +24,7 @@ class SpeakerDetailsViewModel @Inject constructor(
         private val speakersRepository: SpeakersRepository,
         private val analyticsEventTracker: AnalyticsEventTracker,
         private val clock: Clock
-) : ViewModel(), LoadingViewModel, LoadingDelayViewModel, NavigatingViewModel {
+) : ViewModel(), LoadingViewModel, NavigatingViewModel {
     private var speakerId: Long? = null
 
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
