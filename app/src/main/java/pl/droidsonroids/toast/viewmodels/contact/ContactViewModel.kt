@@ -9,7 +9,6 @@ import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.app.utils.ContactFormValidator
 import pl.droidsonroids.toast.app.utils.callbacks.OnPropertyChangedSkippableCallback
 import pl.droidsonroids.toast.app.utils.extensions.getUnicodeLength
-import pl.droidsonroids.toast.app.utils.extensions.addLoadingDelay
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
 import pl.droidsonroids.toast.data.enums.MessageType
@@ -17,22 +16,21 @@ import pl.droidsonroids.toast.repositories.contact.ContactRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.addOnPropertyChangedCallback
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
-import pl.droidsonroids.toast.viewmodels.speaker.Clock
 import javax.inject.Inject
 
 class ContactViewModel @Inject constructor(
         private val contactFormValidator: ContactFormValidator,
         private val contactRepository: ContactRepository,
         private val analyticsEventTracker: AnalyticsEventTracker,
-        private val clock: Clock
-) : ViewModel(), LoadingViewModel, NavigatingViewModel {
+        delayViewModel: DelayViewModel
+) : ViewModel(), LoadingViewModel, DelayViewModel by delayViewModel, NavigatingViewModel {
 
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.PENDING)
     override val isFadingEnabled get() = true
-    override var lastLoadingStartTimeMillis = clock.elapsedRealtime()
 
     val sendingEnabled = ObservableField(false)
 
@@ -124,9 +122,8 @@ class ContactViewModel @Inject constructor(
     fun onSendClick() {
         val message = createMessageDto()
         loadingStatus.set(LoadingStatus.PENDING)
-        lastLoadingStartTimeMillis = clock.elapsedRealtime()
         compositeDisposable += contactRepository.sendMessage(message)
-                .addLoadingDelay(lastLoadingStartTimeMillis, clock.elapsedRealtime())
+                .addLoadingDelay()
                 .subscribeBy(
                         onComplete = (::onSendSuccessfully),
                         onError = { loadingStatus.set(LoadingStatus.ERROR) }

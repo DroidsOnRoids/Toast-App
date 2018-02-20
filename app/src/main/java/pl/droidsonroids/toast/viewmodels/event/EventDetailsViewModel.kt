@@ -6,7 +6,6 @@ import io.reactivex.disposables.Disposables
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import pl.droidsonroids.toast.app.utils.extensions.addLoadingDelay
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
@@ -20,10 +19,10 @@ import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.SourceAttending
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
-import pl.droidsonroids.toast.viewmodels.speaker.Clock
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -35,13 +34,12 @@ class EventDetailsViewModel @Inject constructor(
         private val eventsRepository: EventsRepository,
         attendViewModel: AttendViewModel,
         private val analyticsEventTracker: AnalyticsEventTracker,
-        private val clock: Clock
-) : ViewModel(), LoadingViewModel, NavigatingViewModel, AttendViewModel by attendViewModel {
+        delayViewModel: DelayViewModel
+) : ViewModel(), LoadingViewModel, DelayViewModel by delayViewModel, NavigatingViewModel, AttendViewModel by attendViewModel {
     private val Any.simpleClassName: String get() = javaClass.simpleName
     override val navigationSubject: PublishSubject<NavigationRequest> = navigationRequests
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.PENDING)
     override val isFadingEnabled get() = true
-    override var lastLoadingStartTimeMillis = clock.elapsedRealtime()
     private var eventId = Constants.NO_ID
     val title = ObservableField("")
     val date = ObservableField<Date>()
@@ -82,9 +80,8 @@ class EventDetailsViewModel @Inject constructor(
 
     private fun loadEvent() {
         loadingStatus.set(LoadingStatus.PENDING)
-        lastLoadingStartTimeMillis = clock.elapsedRealtime()
         eventsDisposable = eventsRepository.getEvent(eventId)
-                .addLoadingDelay(lastLoadingStartTimeMillis, clock.elapsedRealtime())
+                .addLoadingDelay()
                 .subscribeBy(
                         onSuccess = (::onEventLoaded),
                         onError = (::onEventLoadError)

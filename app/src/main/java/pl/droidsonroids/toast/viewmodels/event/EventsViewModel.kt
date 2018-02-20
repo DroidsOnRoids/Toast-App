@@ -10,7 +10,6 @@ import io.reactivex.rxkotlin.toObservable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
-import pl.droidsonroids.toast.app.utils.extensions.addLoadingDelay
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
@@ -25,10 +24,10 @@ import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.SourceAttending
 import pl.droidsonroids.toast.utils.toPage
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
-import pl.droidsonroids.toast.viewmodels.speaker.Clock
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -37,13 +36,12 @@ class EventsViewModel @Inject constructor(
         attendViewModel: AttendViewModel,
         private val eventsRepository: EventsRepository,
         private val analyticsEventTracker: AnalyticsEventTracker,
-        private val clock: Clock
-) : ViewModel(), LoadingViewModel, NavigatingViewModel, LoginStateWatcher by loginStateWatcher, AttendViewModel by attendViewModel {
+        delayViewModel: DelayViewModel
+) : ViewModel(), LoadingViewModel, DelayViewModel by delayViewModel, NavigatingViewModel, LoginStateWatcher by loginStateWatcher, AttendViewModel by attendViewModel {
     override val navigationSubject: PublishSubject<NavigationRequest> = navigationRequests
 
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField()
     override val isFadingEnabled get() = true
-    override var lastLoadingStartTimeMillis = clock.elapsedRealtime()
 
     val isPreviousEventsEmpty = ObservableField<Boolean>(true)
     val upcomingEvent = ObservableField<UpcomingEventViewModel>()
@@ -63,7 +61,6 @@ class EventsViewModel @Inject constructor(
 
     private fun loadEvents() {
         loadingStatus.set(LoadingStatus.PENDING)
-        lastLoadingStartTimeMillis = clock.elapsedRealtime()
         compositeDisposable += eventsRepository.getEvents()
                 .flatMap { (upcomingEvent, previousEventsPage) ->
                     setEvent(upcomingEvent.facebookId, upcomingEvent.date, SourceAttending.UPCOMING_EVENT)
@@ -75,7 +72,7 @@ class EventsViewModel @Inject constructor(
                     )
                     mapToSingleEventItemViewModelsPage(previousEventsPage)
                             .map { upcomingEventViewModel to it }
-                            .addLoadingDelay(lastLoadingStartTimeMillis, clock.elapsedRealtime())
+                            .addLoadingDelay()
                             .toMaybe()
                 }
                 .subscribeBy(

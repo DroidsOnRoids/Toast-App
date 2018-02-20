@@ -7,8 +7,6 @@ import pl.droidsonroids.toast.utils.LoadingStatus
 interface LoadingViewModel {
     val loadingStatus: ObservableField<LoadingStatus>
 
-    var lastLoadingStartTimeMillis: Long
-
     fun retryLoading()
 
     val isFadingEnabled get() = false

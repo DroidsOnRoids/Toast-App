@@ -5,7 +5,6 @@ import android.databinding.ObservableField
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import pl.droidsonroids.toast.app.utils.extensions.addLoadingDelay
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
@@ -14,6 +13,7 @@ import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import timber.log.Timber
@@ -23,14 +23,13 @@ import javax.inject.Inject
 class SpeakerDetailsViewModel @Inject constructor(
         private val speakersRepository: SpeakersRepository,
         private val analyticsEventTracker: AnalyticsEventTracker,
-        private val clock: Clock
-) : ViewModel(), LoadingViewModel, NavigatingViewModel {
+        delayViewModel: DelayViewModel
+) : ViewModel(), LoadingViewModel, DelayViewModel by delayViewModel, NavigatingViewModel {
     private var speakerId: Long? = null
 
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
     override val loadingStatus = ObservableField(LoadingStatus.PENDING)
     override val isFadingEnabled get() = true
-    override var lastLoadingStartTimeMillis = clock.elapsedRealtime()
 
     val name = ObservableField("")
     val job = ObservableField("")
@@ -85,9 +84,8 @@ class SpeakerDetailsViewModel @Inject constructor(
     private fun loadSpeaker() {
         speakerId?.let {
             loadingStatus.set(LoadingStatus.PENDING)
-            lastLoadingStartTimeMillis = clock.elapsedRealtime()
             speakersRepository.getSpeaker(it)
-                    .addLoadingDelay(lastLoadingStartTimeMillis, clock.elapsedRealtime())
+                    .addLoadingDelay()
                     .subscribeBy(
                             onSuccess = (::onSpeakerLoaded),
                             onError = (::onSpeakerLoadError)

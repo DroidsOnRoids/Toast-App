@@ -5,13 +5,13 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
-import pl.droidsonroids.toast.app.utils.extensions.addLoadingDelay
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.toObservable
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -19,14 +19,13 @@ import javax.inject.Inject
 class SpeakersSearchViewModel @Inject constructor(
         private val speakersRepository: SpeakersRepository,
         private val analyticsEventTracker: AnalyticsEventTracker,
-        private val clock: Clock
-) : BaseSpeakerListViewModel(), LoadingViewModel {
+        delayViewModel: DelayViewModel
+) : BaseSpeakerListViewModel(), LoadingViewModel, DelayViewModel by delayViewModel {
     val searchPhrase: ObservableField<String> = ObservableField("")
     private val searchObservable: Observable<String> = searchPhrase.toObservable()
     private var lastSearchedPhrase: String = ""
     val noItemsFound: ObservableField<Boolean> = ObservableField(false)
     override val isFadingEnabled get() = true
-    override var lastLoadingStartTimeMillis = clock.elapsedRealtime()
 
     private var searchDisposable: Disposable? = null
     private var firstPageDisposable: Disposable? = null
@@ -71,10 +70,9 @@ class SpeakersSearchViewModel @Inject constructor(
 
     private fun searchSpeakers(query: String): Single<Page<State.Item<SpeakerItemViewModel>>> {
         loadingStatus.set(LoadingStatus.PENDING)
-        lastLoadingStartTimeMillis = clock.elapsedRealtime()
         return speakersRepository.searchSpeakersPage(query)
                 .flatMap(::mapToSingleSpeakerItemViewModelsPage)
-                .addLoadingDelay(lastLoadingStartTimeMillis, clock.elapsedRealtime())
+                .addLoadingDelay()
                 .doAfterSuccess(::isEmptyResponse)
     }
 
