@@ -16,6 +16,7 @@ import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.testSpeakerDetailsDto
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import java.io.IOException
 
 class SpeakerDetailsViewModelTest : RxTestBase() {
@@ -26,7 +27,7 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
     @Mock
     lateinit var analyticsEventTracker: AnalyticsEventTracker
     @Mock
-    lateinit var clock: Clock
+    lateinit var delayViewModel: DelayViewModel
     @InjectMocks
     lateinit var speakerDetailsViewModel: SpeakerDetailsViewModel
 
@@ -48,10 +49,14 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
 
     @Test
     fun shouldRetryLoadSpeakerDetails() {
-        whenever(speakersRepository.getSpeaker(speakerId)).thenReturn(Single.error(Exception()))
+        val error = Single.error<SpeakerDetailsDto>(Exception())
+        whenever(speakersRepository.getSpeaker(speakerId)).thenReturn(error)
+        whenever(delayViewModel.addLoadingDelay(error)).thenReturn(error)
         speakerDetailsViewModel.init(speakerId)
 
-        whenever(speakersRepository.getSpeaker(speakerId)).thenReturn(testSpeakerDetailsDto.toSingle())
+        val testSpeaker = testSpeakerDetailsDto.toSingle()
+        whenever(speakersRepository.getSpeaker(speakerId)).thenReturn(testSpeaker)
+        whenever(delayViewModel.addLoadingDelay(testSpeaker)).thenReturn(testSpeaker)
 
         speakerDetailsViewModel.retryLoading()
 
@@ -140,6 +145,7 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
 
     private fun mockSpeakerWith(value: Single<SpeakerDetailsDto>) {
         whenever(speakersRepository.getSpeaker(speakerId)).thenReturn(value)
+        whenever(delayViewModel.addLoadingDelay(value)).thenReturn(value)
         speakerDetailsViewModel.init(speakerId)
     }
 

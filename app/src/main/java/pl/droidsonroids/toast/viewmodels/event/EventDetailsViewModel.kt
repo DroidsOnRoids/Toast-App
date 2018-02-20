@@ -81,7 +81,7 @@ class EventDetailsViewModel @Inject constructor(
     private fun loadEvent() {
         loadingStatus.set(LoadingStatus.PENDING)
         eventsDisposable = eventsRepository.getEvent(eventId)
-                .addLoadingDelay()
+                .let { addLoadingDelay(it) }
                 .subscribeBy(
                         onSuccess = (::onEventLoaded),
                         onError = (::onEventLoadError)

@@ -14,6 +14,7 @@ import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.api.speaker.ApiSpeaker
+import pl.droidsonroids.toast.data.dto.speaker.SpeakerDto
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.testSpeaker
@@ -21,6 +22,7 @@ import pl.droidsonroids.toast.testSpeakers
 import pl.droidsonroids.toast.testSpeakersPage
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
 
 class SpeakersSearchViewModelTest : RxTestBase() {
 
@@ -29,7 +31,7 @@ class SpeakersSearchViewModelTest : RxTestBase() {
     @Mock
     lateinit var analyticsEventTracker: AnalyticsEventTracker
     @Mock
-    lateinit var clock: Clock
+    lateinit var delayViewModel: DelayViewModel
 
     lateinit var speakersSearchViewModel: SpeakersSearchViewModel
 
@@ -37,8 +39,10 @@ class SpeakersSearchViewModelTest : RxTestBase() {
     @Test
     fun shouldSearch() {
         val query = "test"
-        whenever(speakersRepository.searchSpeakersPage(query)).thenReturn(Single.just(testSpeakersPage))
-        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker, clock)
+        val testSpeakersPageSingle = Single.just(testSpeakersPage)
+        whenever(speakersRepository.searchSpeakersPage(query)).thenReturn(testSpeakersPageSingle)
+        whenever(delayViewModel.addLoadingDelay(testSpeakersPageSingle)).thenReturn(testSpeakersPageSingle)
+        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker, delayViewModel)
 
         speakersSearchViewModel.searchPhrase.set(query)
 
@@ -49,8 +53,10 @@ class SpeakersSearchViewModelTest : RxTestBase() {
     @Test
     fun shouldSearchSamePhraseOnlyOnce() {
         val query = "test"
-        whenever(speakersRepository.searchSpeakersPage(query)).thenReturn(Single.just(testSpeakersPage))
-        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker, clock)
+        val testSpeakersPageSingle = Single.just(testSpeakersPage)
+        whenever(speakersRepository.searchSpeakersPage(query)).thenReturn(testSpeakersPageSingle)
+        whenever(delayViewModel.addLoadingDelay(testSpeakersPageSingle)).thenReturn(testSpeakersPageSingle)
+        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker, delayViewModel)
 
         speakersSearchViewModel.searchPhrase.set(query)
 
@@ -65,9 +71,14 @@ class SpeakersSearchViewModelTest : RxTestBase() {
     fun shouldClearListAfterNewSearchWithEmptyList() {
         val firstQuery = "test"
         val secondQuery = "test2"
-        whenever(speakersRepository.searchSpeakersPage(firstQuery)).thenReturn(Single.just(testSpeakersPage))
-        whenever(speakersRepository.searchSpeakersPage(secondQuery)).thenReturn(Single.just(Page(emptyList(), 1, 1)))
-        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker, clock)
+        val testSpeakersPageSingle = Single.just(testSpeakersPage)
+        whenever(speakersRepository.searchSpeakersPage(firstQuery)).thenReturn(testSpeakersPageSingle)
+        whenever(delayViewModel.addLoadingDelay(testSpeakersPageSingle)).thenReturn(testSpeakersPageSingle)
+
+        val emptySpeakerPageSingle: Single<Page<SpeakerDto>> = Single.just(Page(emptyList(), 1, 1))
+        whenever(speakersRepository.searchSpeakersPage(secondQuery)).thenReturn(emptySpeakerPageSingle)
+        whenever(delayViewModel.addLoadingDelay(emptySpeakerPageSingle)).thenReturn(emptySpeakerPageSingle)
+        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker, delayViewModel)
 
         speakersSearchViewModel.searchPhrase.set(firstQuery)
 
@@ -82,9 +93,15 @@ class SpeakersSearchViewModelTest : RxTestBase() {
     fun shouldHaveItemsAfterNewSearch() {
         val firstQuery = "test"
         val secondQuery = "test2"
-        whenever(speakersRepository.searchSpeakersPage(firstQuery)).thenReturn(Single.just(Page(emptyList(), 1, 1)))
-        whenever(speakersRepository.searchSpeakersPage(secondQuery)).thenReturn(Single.just(testSpeakersPage))
-        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker, clock)
+
+        val emptySpeakerPageSingle: Single<Page<SpeakerDto>> = Single.just(Page(emptyList(), 1, 1))
+        whenever(speakersRepository.searchSpeakersPage(firstQuery)).thenReturn(emptySpeakerPageSingle)
+        whenever(delayViewModel.addLoadingDelay(emptySpeakerPageSingle)).thenReturn(emptySpeakerPageSingle)
+
+        val testSpeakersPageSingle = Single.just(testSpeakersPage)
+        whenever(speakersRepository.searchSpeakersPage(secondQuery)).thenReturn(testSpeakersPageSingle)
+        whenever(delayViewModel.addLoadingDelay(testSpeakersPageSingle)).thenReturn(testSpeakersPageSingle)
+        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker, delayViewModel)
 
         speakersSearchViewModel.searchPhrase.set(firstQuery)
 
@@ -113,8 +130,10 @@ class SpeakersSearchViewModelTest : RxTestBase() {
     @Test
     fun shouldRequestNavigationToSpeakerDetails() {
         val query = "test"
-        whenever(speakersRepository.searchSpeakersPage(query)).thenReturn(Single.just(testSpeakersPage))
-        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker, clock)
+        val testSpeakersPageSingle = Single.just(testSpeakersPage)
+        whenever(speakersRepository.searchSpeakersPage(query)).thenReturn(testSpeakersPageSingle)
+        whenever(delayViewModel.addLoadingDelay(testSpeakersPageSingle)).thenReturn(testSpeakersPageSingle)
+        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker, delayViewModel)
         speakersSearchViewModel.searchPhrase.set(query)
         val speakerItemViewModelList = speakersSearchViewModel.speakersSubject.value
         val speakerItemViewModel = (speakerItemViewModelList.first() as? State.Item)?.item

@@ -71,8 +71,8 @@ class SpeakersSearchViewModel @Inject constructor(
     private fun searchSpeakers(query: String): Single<Page<State.Item<SpeakerItemViewModel>>> {
         loadingStatus.set(LoadingStatus.PENDING)
         return speakersRepository.searchSpeakersPage(query)
+                .let { addLoadingDelay(it) }
                 .flatMap(::mapToSingleSpeakerItemViewModelsPage)
-                .addLoadingDelay()
                 .doAfterSuccess(::isEmptyResponse)
     }
 

@@ -62,6 +62,7 @@ class EventsViewModel @Inject constructor(
     private fun loadEvents() {
         loadingStatus.set(LoadingStatus.PENDING)
         compositeDisposable += eventsRepository.getEvents()
+                .let { addLoadingDelay(it) }
                 .flatMap { (upcomingEvent, previousEventsPage) ->
                     setEvent(upcomingEvent.facebookId, upcomingEvent.date, SourceAttending.UPCOMING_EVENT)
                     val upcomingEventViewModel = upcomingEvent.toViewModel(
@@ -72,7 +73,6 @@ class EventsViewModel @Inject constructor(
                     )
                     mapToSingleEventItemViewModelsPage(previousEventsPage)
                             .map { upcomingEventViewModel to it }
-                            .addLoadingDelay()
                             .toMaybe()
                 }
                 .subscribeBy(

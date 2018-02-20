@@ -60,9 +60,9 @@ class SpeakersViewModel @Inject constructor(
         isNextPageLoading = true
         loadingStatus.set(LoadingStatus.PENDING)
         speakersDisposable = speakersRepository.getSpeakersPage(sortingQuery = sortingType.get().toQuery())
+                .let { addLoadingDelay(it) }
                 .flatMap(::mapToSingleSpeakerItemViewModelsPage)
                 .doOnSuccess { clearSpeakersList() }
-                .addLoadingDelay()
                 .doAfterSuccess { isNextPageLoading = false }
                 .subscribeBy(
                         onSuccess = (::onNewSpeakersPageLoaded),

@@ -21,8 +21,8 @@ import pl.droidsonroids.toast.testPreviousEvents
 import pl.droidsonroids.toast.testSplitEvents
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
-import pl.droidsonroids.toast.viewmodels.speaker.Clock
 import java.io.IOException
 
 class EventsViewModelTest : RxTestBase() {
@@ -33,7 +33,7 @@ class EventsViewModelTest : RxTestBase() {
     @Mock
     lateinit var attendViewModel: AttendViewModel
     @Mock
-    lateinit var clock: Clock
+    lateinit var delayViewModel: DelayViewModel
     @Mock
     lateinit var analyticsEventTracker: AnalyticsEventTracker
 
@@ -140,8 +140,9 @@ class EventsViewModelTest : RxTestBase() {
 
     private fun setUpWith(maybe: Maybe<SplitEvents>) {
         whenever(eventsRepository.getEvents()).thenReturn(maybe)
+        whenever(delayViewModel.addLoadingDelay(maybe)).thenReturn(maybe)
         whenever(attendViewModel.navigationRequests).thenReturn(PublishSubject.create())
-        eventsViewModel = EventsViewModel(loginStateWatcher, attendViewModel, eventsRepository, analyticsEventTracker, clock)
+        eventsViewModel = EventsViewModel(loginStateWatcher, attendViewModel, eventsRepository, analyticsEventTracker, delayViewModel)
     }
 
 }
