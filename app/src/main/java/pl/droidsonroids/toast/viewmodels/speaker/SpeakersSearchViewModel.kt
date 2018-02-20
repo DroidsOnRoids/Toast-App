@@ -5,6 +5,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
+import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
@@ -13,7 +14,10 @@ import pl.droidsonroids.toast.utils.toObservable
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class SpeakersSearchViewModel @Inject constructor(private val speakersRepository: SpeakersRepository) : BaseSpeakerListViewModel() {
+class SpeakersSearchViewModel @Inject constructor(
+        private val speakersRepository: SpeakersRepository,
+        private val analyticsEventTracker: AnalyticsEventTracker
+) : BaseSpeakerListViewModel() {
     val searchPhrase: ObservableField<String> = ObservableField("")
     private val searchObservable: Observable<String> = searchPhrase.toObservable()
     private var lastSearchedPhrase: String = ""
@@ -35,11 +39,21 @@ class SpeakersSearchViewModel @Inject constructor(private val speakersRepository
                 .doOnNext { disposePreviousLoad() }
                 .doOnNext { lastSearchedPhrase = it }
                 .switchMapSingle(::searchSpeakers)
-                .doOnError(::onFirstPageLoadError)
+                .doOnError(::onSearchingError)
                 .retry()
                 .subscribeBy(
-                        onNext = (::onNewSpeakersPageLoaded)
+                        onNext = (::onSearchingSuccess)
                 )
+    }
+
+    private fun onSearchingSuccess(it: Page<State.Item<SpeakerItemViewModel>>) {
+        onNewSpeakersPageLoaded(it)
+        analyticsEventTracker.logSearchPhraseEvent(lastSearchedPhrase)
+    }
+
+    private fun onSearchingError(it: Throwable) {
+        onFirstPageLoadError(it)
+        analyticsEventTracker.logSearchPhraseEvent(lastSearchedPhrase)
     }
 
     private fun shouldPerformSearch(query: String) =
@@ -77,8 +91,14 @@ class SpeakersSearchViewModel @Inject constructor(private val speakersRepository
         lastSearchedPhrase = query
         firstPageDisposable = searchSpeakers(query)
                 .subscribeBy(
-                        onSuccess = (::onNewSpeakersPageLoaded),
-                        onError = (::onFirstPageLoadError)
+                        onSuccess = {
+                            onNewSpeakersPageLoaded(it)
+                            analyticsEventTracker.logSearchPhraseEvent(query)
+                        },
+                        onError = {
+                            onFirstPageLoadError(it)
+                            analyticsEventTracker.logSearchPhraseEvent(query)
+                        }
                 )
     }
 
@@ -106,6 +126,10 @@ class SpeakersSearchViewModel @Inject constructor(private val speakersRepository
                         onSuccess = (::onSpeakersPageLoaded),
                         onError = (::onNextPageLoadError)
                 )
+    }
+
+    override fun onSpeakerNavigationRequestSent(speakerName: String) {
+        analyticsEventTracker.logSearchShowSpeakerEvent(speakerName)
     }
 
     override fun onCleared() {

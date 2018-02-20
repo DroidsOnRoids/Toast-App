@@ -3,16 +3,19 @@ package pl.droidsonroids.toast.viewmodels.speaker
 import com.nhaarman.mockito_kotlin.mock
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import pl.droidsonroids.toast.RxTestBase
+import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.testSpeakerTalkDto
 import pl.droidsonroids.toast.utils.NavigationRequest
 
 
-@RunWith(MockitoJUnitRunner::class)
-class SpeakerTalkDetailsViewModelTest {
-
-    private val speakerTalkDetailsViewModel = SpeakerTalkDetailsViewModel()
+class SpeakerTalkDetailsViewModelTest : RxTestBase() {
+    @Mock
+    private lateinit var analyticsEventTracker: AnalyticsEventTracker
+    @InjectMocks
+    private lateinit var speakerTalkDetailsViewModel: SpeakerTalkDetailsViewModel
 
     @Before
     fun setUp() {

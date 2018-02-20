@@ -64,4 +64,6 @@
     <string name="interested_in">Interested in</string>
     <string name="attended">Attended</string>
     <string name="facebook_update_attend_error">Cannot update event attend state</string>
+    <string name="logged_in_successfully">You\'ve been successfully logged in</string>
+    <string name="logged_out_successfully">You\'ve been successfully logged out</string>
 </resources>
