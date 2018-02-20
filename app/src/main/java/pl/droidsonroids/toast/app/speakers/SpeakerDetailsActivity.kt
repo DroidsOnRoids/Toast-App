@@ -16,6 +16,7 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.events.HorizontalSnapHelper
+import pl.droidsonroids.toast.app.utils.extensions.addInsetAppBehaviorToLoadingView
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerTalkDto
 import pl.droidsonroids.toast.databinding.ActivitySpeakerDetailsBinding
 import pl.droidsonroids.toast.utils.Constants
@@ -55,6 +56,7 @@ class SpeakerDetailsActivity : BaseActivity() {
         setupToolbar()
         setupViewModel(speakerDetailsBinding)
         setupRecyclerView()
+        addInsetAppBehaviorToLoadingView()
     }
 
     private fun setupToolbar() {
