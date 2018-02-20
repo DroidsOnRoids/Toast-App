@@ -1,17 +1,33 @@
-package pl.droidsonroids.toast.test
+package pl.droidsonroids.toast.mock.test
 
 import android.support.test.rule.ActivityTestRule
-import org.junit.Rule
-import org.junit.Test
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.*
+import pl.droidsonroids.testing.mockwebserver.FixtureDispatcher
+import pl.droidsonroids.testing.mockwebserver.condition.PathQueryConditionFactory
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.function.getString
 import pl.droidsonroids.toast.robot.SpeakersRobot
 
-class SpeakersScreenTest {
+class MockSpeakersScreenTest {
     @JvmField
     @Rule
-    val activityRule = ActivityTestRule(MainActivity::class.java, true, true)
+    val activityRule = ActivityTestRule(MainActivity::class.java, true, false)
+
+    val mockWebServer = MockWebServer()
+
+    @Before
+    fun setup() {
+        setPathDispatcher()
+        mockWebServer.start(12345)
+        activityRule.launchActivity(null)
+    }
+
+    @After
+    fun tearDown() {
+        mockWebServer.shutdown()
+    }
 
     private fun goToSpeakersScreen() {
         with(SpeakersRobot()) {
@@ -30,7 +46,7 @@ class SpeakersScreenTest {
     fun isToolbarDisplayed() {
         val toolbarTitle = getString(R.string.speakers_title)
         goToSpeakersScreen()
-        with(SpeakersRobot()){
+        with(SpeakersRobot()) {
             checkIfToolbarWithTitleIsDisplayed(toolbarTitle, R.id.toolbar)
         }
     }
@@ -83,16 +99,16 @@ class SpeakersScreenTest {
     @Test
     fun isSortingBarDisplayed() {
         goToSpeakersScreen()
-        with(SpeakersRobot()){
+        with(SpeakersRobot()) {
             checkIfElementWithIdIsDisplayed(R.id.sortingBarLayout)
             checkIfElementWithIdIsDisplayed(R.id.arrowDownImage)
         }
     }
 
     @Test
-    fun isSortingBarExpanded(){
+    fun isSortingBarExpanded() {
         goToSpeakersScreen()
-        with(SpeakersRobot()){
+        with(SpeakersRobot()) {
             performClickOnElementWithId(R.id.titleSortingLayout)
             checkIfElementWithIdIsDisplayed(R.id.arrowUpImage)
             checkIfElementWithIdIsDisplayed(R.id.alphabeticalDivider)
@@ -102,5 +118,15 @@ class SpeakersScreenTest {
             checkIfElementWithIdIsDisplayed(R.id.dateSortImage)
             checkIfTextIsCorrect(getString(R.string.date), R.id.dateText)
         }
+    }
+
+    private fun setPathDispatcher() {
+        val dispatcher = FixtureDispatcher()
+        val factory = PathQueryConditionFactory("")
+        dispatcher.putResponse(factory.withPathInfix("/events"), "events17_200")
+        dispatcher.putResponse(factory.withPathInfix("/events/17"), "event17_200")
+        dispatcher.putResponse(factory.withPathInfix("/speakers"), "speakers_200")
+        dispatcher.putResponse(factory.withPathInfix("/speakers/16"), "speakers16_200")
+        mockWebServer.setDispatcher(dispatcher)
     }
 }
