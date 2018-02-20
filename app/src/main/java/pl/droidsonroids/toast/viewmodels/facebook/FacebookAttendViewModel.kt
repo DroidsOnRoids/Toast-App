@@ -8,10 +8,12 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
+import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.enums.AttendStatus
 import pl.droidsonroids.toast.repositories.facebook.FacebookRepository
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.utils.SourceAttending
 import pl.droidsonroids.toast.utils.isYesterdayOrEarlier
 import java.util.*
 import javax.inject.Inject
@@ -19,7 +21,8 @@ import javax.inject.Inject
 
 class FacebookAttendViewModel @Inject constructor(
         loginStateWatcher: LoginStateWatcher,
-        private val facebookRepository: FacebookRepository
+        private val facebookRepository: FacebookRepository,
+        private val analyticsEventTracker: AnalyticsEventTracker
 ) : AttendViewModel, LoginStateWatcher by loginStateWatcher {
     override val navigationRequests: PublishSubject<NavigationRequest> = PublishSubject.create()
     override val isPastEvent = ObservableField(false)
@@ -29,12 +32,15 @@ class FacebookAttendViewModel @Inject constructor(
     private var facebookId: String? = null
     var date: Date? = null
     private var loginStateDisposable: Disposable = Disposables.disposed()
+    private var sourceAttending = SourceAttending.UPCOMING_EVENT
 
     @VisibleForTesting
     constructor(
             loginStateWatcher: LoginStateWatcher,
             facebookRepository: FacebookRepository,
-            facebookId: String?) : this(loginStateWatcher, facebookRepository) {
+            analyticsEventTracker: AnalyticsEventTracker,
+            facebookId: String?
+    ) : this(loginStateWatcher, facebookRepository, analyticsEventTracker) {
         this.facebookId = facebookId
     }
 
@@ -43,9 +49,10 @@ class FacebookAttendViewModel @Inject constructor(
     }
 
 
-    override fun setEvent(id: String, date: Date) {
+    override fun setEvent(id: String, date: Date, sourceAttending: SourceAttending) {
         this.facebookId = id
         this.date = date
+        this.sourceAttending = sourceAttending
         invalidateAttendState()
     }
 
@@ -75,6 +82,7 @@ class FacebookAttendViewModel @Inject constructor(
                 attendStatus == AttendStatus.DECLINED -> attendOnEvent()
                 else -> openFacebookEventPage()
             }
+            logFacebookAttendEvent()
         }
     }
 
@@ -84,7 +92,10 @@ class FacebookAttendViewModel @Inject constructor(
             facebookAttendRequestDisposable = facebookRepository.setEventAttending(it)
                     .doOnComplete { facebookAttendStateDisposable.dispose() }
                     .subscribeBy(
-                            onComplete = { attendStatus.set(AttendStatus.ATTENDING) },
+                            onComplete = {
+                                attendStatus.set(AttendStatus.ATTENDING)
+                                logFacebookAttendSuccessEvent()
+                            },
                             onError = (::onSetAttendingError)
                     )
         }
@@ -102,6 +113,26 @@ class FacebookAttendViewModel @Inject constructor(
 
     private fun onSetAttendingError(throwable: Throwable) {
         navigationRequests.onNext(NavigationRequest.SnackBar(R.string.oops_no_internet_connection))
+    }
+
+    private fun logFacebookAttendEvent() {
+        facebookId?.let {
+            if (sourceAttending == SourceAttending.UPCOMING_EVENT) {
+                analyticsEventTracker.logUpcomingEventFacebookAttendEvent(it)
+            } else {
+                analyticsEventTracker.logEventDetailsFacebookAttendEvent(it)
+            }
+        }
+    }
+
+    private fun logFacebookAttendSuccessEvent() {
+        facebookId?.let {
+            if (sourceAttending == SourceAttending.UPCOMING_EVENT) {
+                analyticsEventTracker.logUpcomingEventFacebookAttendSuccessEvent(it)
+            } else {
+                analyticsEventTracker.logEventDetailsFacebookAttendSuccessEvent(it)
+            }
+        }
     }
 
     override fun dispose() {

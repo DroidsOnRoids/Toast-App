@@ -36,5 +36,6 @@ class UpcomingEventViewModel(
 
     fun onAttendClick() {
         attendCallback()
+
     }
 }

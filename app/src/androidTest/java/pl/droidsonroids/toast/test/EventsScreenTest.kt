@@ -45,7 +45,6 @@ class EventsScreenTest {
             checkIfElementWithIdIsDisplayed(R.id.upcomingEventTitleDivider)
             checkIfElementWithIdIsDisplayed(R.id.upcomingEventLocationDivider)
             checkIfElementWithIdIsDisplayed(R.id.upcomingEventTimeDivider)
-            checkIfElementWithIdIsDisplayed(R.id.upcomingEventDateDivider)
         }
     }
 }
