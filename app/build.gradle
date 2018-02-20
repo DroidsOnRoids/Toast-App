@@ -151,6 +151,8 @@ dependencies {
     // timber logger
     implementation 'com.jakewharton.timber:timber:4.6.1'
 
+    implementation 'com.alexvasilkov:gesture-views:2.4.1'
+
     // tests
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.12.0'

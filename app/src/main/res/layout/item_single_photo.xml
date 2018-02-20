@@ -13,7 +13,7 @@
             type="pl.droidsonroids.toast.utils.Constants.PhotoTransition"/>
     </data>
 
-    <ImageView
+    <com.alexvasilkov.gestures.views.GestureImageView
         android:id="@+id/photo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,6 +24,7 @@
         app:elementId="@{singlePhotoViewModel.position}"
         app:loadingFinishedListener="@{singlePhotoViewModel.onPhotoLoadingFinished}"
         app:fromCache="@{singlePhotoViewModel.loadFromCache}"
+        app:gest_maxZoom="3"
         app:transitionName="@{PhotoTransition.PHOTO}"/>
 </layout>
 
