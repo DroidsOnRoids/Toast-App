@@ -4,6 +4,7 @@ import android.databinding.ObservableField
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
+import io.reactivex.subjects.BehaviorSubject
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
@@ -19,7 +20,7 @@ class SpeakersViewModel @Inject constructor(
         delayViewModel: DelayViewModel
 ) : BaseSpeakerListViewModel(), LoadingViewModel, DelayViewModel by delayViewModel {
 
-    val isSortingDetailsVisible: ObservableField<Boolean> = ObservableField(false)
+    val isSortingDetailsVisible: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
     val sortingType = ObservableField(SortingType.DATE)
     override val isFadingEnabled get() = true
 
@@ -37,7 +38,7 @@ class SpeakersViewModel @Inject constructor(
     }
 
     fun toggleSortingDetailsVisibility() {
-        isSortingDetailsVisible.set(!isSortingDetailsVisible.get())
+        isSortingDetailsVisible.onNext(!isSortingDetailsVisible.value)
     }
 
     fun onAlphabeticalSortingClick() {

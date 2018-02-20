@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="speakersViewModel"
+            type="pl.droidsonroids.toast.viewmodels.speaker.SpeakersViewModel"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/sortingDetailsLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/paleGrayBackground"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintBottom_toBottomOf="@+id/sortingBarLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:showIn="@layout/fragment_speakers">
+
+        <ImageView
+            android:id="@+id/alphabeticalSortImage"
+            android:layout_width="@dimen/sorting_images_size"
+            android:layout_height="@dimen/sorting_images_size"
+            android:layout_marginStart="@dimen/margin_large"
+            android:src="@drawable/ic_sorting_alphabetical"
+            app:layout_constraintBottom_toBottomOf="@+id/alphabeticalText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/alphabeticalText"/>
+
+        <TextView
+            android:id="@+id/alphabeticalText"
+            style="@style/SortLayoutStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_large"
+            android:paddingBottom="@dimen/margin_medium"
+            android:paddingTop="@dimen/margin_medium"
+            android:text="@string/alphabetical"
+            app:layout_constraintBottom_toTopOf="@+id/alphabeticalDivider"
+            app:layout_constraintStart_toEndOf="@+id/alphabeticalSortImage"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"/>
+
+        <View
+            android:id="@+id/alphabeticalDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="46dp"
+            android:background="@color/paleGray"
+            app:layout_constraintBottom_toTopOf="@+id/dateText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/alphabeticalText"/>
+
+        <ImageView
+            android:id="@+id/dateSortImage"
+            android:layout_width="@dimen/sorting_images_size"
+            android:layout_height="@dimen/sorting_images_size"
+            android:layout_marginStart="@dimen/margin_large"
+            android:src="@drawable/ic_sorting_by_date"
+            app:layout_constraintBottom_toBottomOf="@+id/dateText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/dateText"/>
+
+        <TextView
+            android:id="@+id/dateText"
+            style="@style/SortLayoutStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_large"
+            android:paddingBottom="@dimen/margin_medium"
+            android:paddingTop="@dimen/margin_medium"
+            android:text="@string/date"
+            app:layout_constraintBottom_toTopOf="@+id/dateDivider"
+            app:layout_constraintStart_toEndOf="@+id/dateSortImage"
+            app:layout_constraintTop_toBottomOf="@+id/alphabeticalDivider"/>
+
+        <View
+            android:id="@+id/dateDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/paleGray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateText"/>
+
+        <View
+            android:id="@+id/alphabeticalClickArea"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="@drawable/sorting_title_layout_ripple"
+            android:onClick="@{() -> speakersViewModel.onAlphabeticalSortingClick()}"
+            app:layout_constraintBottom_toTopOf="@+id/alphabeticalDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <View
+            android:id="@+id/dateClickArea"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="@drawable/sorting_title_layout_ripple"
+            android:onClick="@{() -> speakersViewModel.onDateSortingClick()}"
+            app:layout_constraintBottom_toTopOf="@+id/dateDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/alphabeticalDivider"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>
+
+
+        
