@@ -50,7 +50,6 @@ class EventDetailsViewModel @Inject constructor(
 
     val onLoadingFinished: () -> Unit = {
         coverImageLoadingFinishedSubject.onNext(Unit)
-        loadFromCache.set(false)
     }
 
     val onGradientColorLoaded: (Int) -> Unit = {
@@ -138,5 +137,9 @@ class EventDetailsViewModel @Inject constructor(
     override fun onCleared() {
         dispose()
         eventsDisposable.dispose()
+    }
+
+    fun onTransitionEnd() {
+        loadFromCache.set(false)
     }
 }

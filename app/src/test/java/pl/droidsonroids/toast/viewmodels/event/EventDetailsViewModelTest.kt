@@ -41,7 +41,7 @@ class EventDetailsViewModelTest : RxTestBase() {
     @Test
     fun shouldLoadEventDetails() {
         whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
-        eventDetailsViewModel.init(eventId)
+        eventDetailsViewModel.init(eventId, null)
 
         assertEventDetails()
         assertThat(eventDetailsViewModel.loadingStatus.get(), equalTo(LoadingStatus.SUCCESS))
@@ -50,9 +50,9 @@ class EventDetailsViewModelTest : RxTestBase() {
     @Test
     fun shouldLoadEventDetailsOnlyOnce() {
         whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
-        eventDetailsViewModel.init(eventId)
+        eventDetailsViewModel.init(eventId, null)
 
-        eventDetailsViewModel.init(eventId)
+        eventDetailsViewModel.init(eventId, null)
 
         verify(eventsRepository, times(1)).getEvent(eventId)
     }
@@ -60,7 +60,7 @@ class EventDetailsViewModelTest : RxTestBase() {
     @Test
     fun shouldFailLoadEventDetails() {
         whenever(eventsRepository.getEvent(eventId)).thenReturn(Single.error(Exception()))
-        eventDetailsViewModel.init(eventId)
+        eventDetailsViewModel.init(eventId, null)
 
         assertThat(eventDetailsViewModel.loadingStatus.get(), equalTo(LoadingStatus.ERROR))
     }
@@ -68,7 +68,7 @@ class EventDetailsViewModelTest : RxTestBase() {
     @Test
     fun shouldRetryLoadEventDetails() {
         whenever(eventsRepository.getEvent(eventId)).thenReturn(Single.error(Exception()))
-        eventDetailsViewModel.init(eventId)
+        eventDetailsViewModel.init(eventId, null)
         whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
 
         eventDetailsViewModel.retryLoading()
@@ -80,7 +80,7 @@ class EventDetailsViewModelTest : RxTestBase() {
     @Test
     fun shouldRequestNavigationToPhotos() {
         whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
-        eventDetailsViewModel.init(eventId)
+        eventDetailsViewModel.init(eventId, null)
         val testPhotos = testEventDetails.photos.map { it.toDto() }
 
         val testObserver = eventDetailsViewModel.navigationSubject.test()
@@ -93,13 +93,34 @@ class EventDetailsViewModelTest : RxTestBase() {
     @Test
     fun shouldRequestNavigationToEventLocation() {
         whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
-        eventDetailsViewModel.init(eventId)
+        eventDetailsViewModel.init(eventId, null)
 
         val testObserver = eventDetailsViewModel.navigationSubject.test()
 
         eventDetailsViewModel.onLocationClick()
 
         testObserver.assertValue(NavigationRequest.Map(testEventDetails.placeCoordinates.toDto(), testEventDetails.placeName))
+    }
+
+    @Test
+    fun shouldNotLoadFromCacheWhenTransitionEnds() {
+        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
+        eventDetailsViewModel.init(eventId, null)
+
+        eventDetailsViewModel.onTransitionEnd()
+
+        assertThat(eventDetailsViewModel.loadFromCache.get(), equalTo(false))
+    }
+
+    @Test
+    fun shouldNotifyWhenImageLoadingFinished() {
+        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
+        eventDetailsViewModel.init(eventId, null)
+        val testObserver = eventDetailsViewModel.coverImageLoadingFinishedSubject.test()
+
+        eventDetailsViewModel.onLoadingFinished()
+
+        testObserver.assertValueCount(1)
     }
 
     private fun assertEventDetails() {

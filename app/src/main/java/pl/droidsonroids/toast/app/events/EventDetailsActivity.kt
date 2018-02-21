@@ -62,6 +62,8 @@ class EventDetailsActivity : BaseActivity() {
     @Inject
     lateinit var navigator: Navigator
 
+    private var isTransitionPostponed = false
+
     private val eventDetailsViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory)
                 .get(eventId.toString(), EventDetailsViewModel::class.java)
@@ -69,7 +71,7 @@ class EventDetailsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        postponeEnterTransition()
+        postponeSharedTransition()
         val eventDetailsBinding = ActivityEventDetailsBinding.inflate(layoutInflater)
         setContentView(eventDetailsBinding.root)
 
@@ -78,6 +80,11 @@ class EventDetailsActivity : BaseActivity() {
         setupGradientSwitcher()
         setupRecyclerView()
         addInsetAppBehaviorToLoadingLayout()
+    }
+
+    private fun postponeSharedTransition() {
+        postponeEnterTransition()
+        isTransitionPostponed = true
     }
 
     private fun setupAppBar() {
@@ -110,7 +117,14 @@ class EventDetailsActivity : BaseActivity() {
         compositeDisposable += eventDetailsViewModel.navigationSubject
                 .subscribe(::handleNavigationRequest)
         compositeDisposable += eventDetailsViewModel.coverImageLoadingFinishedSubject
-                .subscribe { startPostponedEnterTransition() }
+                .filter { isTransitionPostponed }
+                .subscribe { resumeSharedTransition() }
+    }
+
+    private fun resumeSharedTransition() {
+        startPostponedEnterTransition()
+        isTransitionPostponed = false
+        eventDetailsViewModel.onTransitionEnd()
     }
 
     private fun handleNavigationRequest(it: NavigationRequest) {
