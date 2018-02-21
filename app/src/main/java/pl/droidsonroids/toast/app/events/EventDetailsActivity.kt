@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_event_details.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
-import pl.droidsonroids.toast.app.utils.extensions.addInsetAppBehaviorToLoadingView
+import pl.droidsonroids.toast.app.utils.extensions.addInsetAppBehaviorToLoadingLayout
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.EventTalkDto
 import pl.droidsonroids.toast.databinding.ActivityEventDetailsBinding
@@ -75,7 +75,7 @@ class EventDetailsActivity : BaseActivity() {
         setupViewModel(eventDetailsBinding)
         setupGradientSwitcher()
         setupRecyclerView()
-        addInsetAppBehaviorToLoadingView()
+        addInsetAppBehaviorToLoadingLayout()
     }
 
     private fun setupAppBar() {

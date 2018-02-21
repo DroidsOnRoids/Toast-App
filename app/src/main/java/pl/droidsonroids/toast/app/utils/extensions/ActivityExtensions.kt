@@ -13,7 +13,7 @@ fun Activity.disableActivityTransitionAnimations() {
     overridePendingTransition(0, 0)
 }
 
-fun AppCompatActivity.addInsetAppBehaviorToLoadingView() {
+fun AppCompatActivity.addInsetAppBehaviorToLoadingLayout() {
     val loadingContainer = findViewById<FrameLayout>(R.id.loadingLayout)
     (loadingContainer.layoutParams as CoordinatorLayout.LayoutParams)
             .behavior = InsetAppBarBehavior(this)

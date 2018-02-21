@@ -5,6 +5,7 @@ import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CoordinatorLayout
 import android.util.AttributeSet
 import android.view.View
+import pl.droidsonroids.toast.utils.consume
 
 class InsetAppBarBehavior(context: Context, attrs: AttributeSet? = null) : CoordinatorLayout.Behavior<View>() {
 
@@ -14,13 +15,12 @@ class InsetAppBarBehavior(context: Context, attrs: AttributeSet? = null) : Coord
 
     private var appBarScrollOffset = 0
 
-    override fun onDependentViewChanged(parent: CoordinatorLayout, child: View, dependency: View): Boolean {
+    override fun onDependentViewChanged(parent: CoordinatorLayout, child: View, dependency: View) = consume {
         appBarScrollOffset = dependency.height + dependency.y.toInt()
 
         measure(child, parent.measuredWidth, parent.measuredHeight)
         layout(child)
         child.invalidate()
-        return true
     }
 
     private fun measure(child: View, width: Int, height: Int) {
@@ -30,18 +30,16 @@ class InsetAppBarBehavior(context: Context, attrs: AttributeSet? = null) : Coord
         )
     }
 
-    override fun onMeasureChild(parent: CoordinatorLayout, child: View, parentWidthMeasureSpec: Int, widthUsed: Int, parentHeightMeasureSpec: Int, heightUsed: Int): Boolean {
+    override fun onMeasureChild(parent: CoordinatorLayout, child: View, parentWidthMeasureSpec: Int, widthUsed: Int, parentHeightMeasureSpec: Int, heightUsed: Int) = consume {
         measure(
                 child,
                 View.MeasureSpec.getSize(parentWidthMeasureSpec),
                 View.MeasureSpec.getSize(parentHeightMeasureSpec)
         )
-        return true
     }
 
-    override fun onLayoutChild(parent: CoordinatorLayout, child: View, layoutDirection: Int): Boolean {
+    override fun onLayoutChild(parent: CoordinatorLayout, child: View, layoutDirection: Int) = consume {
         layout(child)
-        return true
     }
 
     private fun layout(child: View) {
