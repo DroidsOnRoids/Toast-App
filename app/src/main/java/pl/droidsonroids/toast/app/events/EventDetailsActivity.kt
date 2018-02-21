@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.ColorUtils
 import android.support.v4.util.Pair
 import android.support.v7.widget.LinearLayoutManager
+import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -26,6 +27,7 @@ import pl.droidsonroids.toast.data.dto.event.EventTalkDto
 import pl.droidsonroids.toast.databinding.ActivityEventDetailsBinding
 import pl.droidsonroids.toast.di.LoginCallbackManager
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.event.EventDetailsViewModel
 import javax.inject.Inject
 
@@ -150,6 +152,13 @@ class EventDetailsActivity : BaseActivity() {
         compositeDisposable += eventDetailsViewModel.eventSpeakersSubject
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(eventSpeakersAdapter::setData)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> consume { onBackPressed() }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onStart() {
