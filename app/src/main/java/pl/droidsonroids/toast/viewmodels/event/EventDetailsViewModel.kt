@@ -80,6 +80,7 @@ class EventDetailsViewModel @Inject constructor(
 
     private fun loadEvent() {
         loadingStatus.set(LoadingStatus.PENDING)
+        updateLastLoadingStartTime()
         eventsDisposable = eventsRepository.getEvent(eventId)
                 .let { addLoadingDelay(it) }
                 .subscribeBy(

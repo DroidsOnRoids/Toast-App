@@ -122,9 +122,9 @@ class ContactViewModel @Inject constructor(
     fun onSendClick() {
         val message = createMessageDto()
         loadingStatus.set(LoadingStatus.PENDING)
-
+        updateLastLoadingStartTime()
         compositeDisposable += contactRepository.sendMessage(message)
-                .let { addLoadingDelay(it) }
+                .let(::addLoadingDelay)
                 .subscribeBy(
                         onComplete = (::onSendSuccessfully),
                         onError = { loadingStatus.set(LoadingStatus.ERROR) }

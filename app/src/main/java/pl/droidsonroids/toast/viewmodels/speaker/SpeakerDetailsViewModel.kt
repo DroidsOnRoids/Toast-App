@@ -84,8 +84,9 @@ class SpeakerDetailsViewModel @Inject constructor(
     private fun loadSpeaker() {
         speakerId?.let {
             loadingStatus.set(LoadingStatus.PENDING)
+            updateLastLoadingStartTime()
             speakersRepository.getSpeaker(it)
-                    .let { addLoadingDelay(it) }
+                    .let(::addLoadingDelay)
                     .subscribeBy(
                             onSuccess = (::onSpeakerLoaded),
                             onError = (::onSpeakerLoadError)

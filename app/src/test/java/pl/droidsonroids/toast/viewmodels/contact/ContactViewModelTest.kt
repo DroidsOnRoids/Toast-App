@@ -1,5 +1,6 @@
 package pl.droidsonroids.toast.viewmodels.contact
 
+import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -54,7 +55,7 @@ class ContactViewModelTest : RxTestBase() {
     fun shouldSentMessage() {
         val complete = Completable.complete()
         whenever(contactRepository.sendMessage(eq(messageDto))).thenReturn(complete)
-        whenever(delayViewModel.addLoadingDelay(complete)).thenReturn(complete)
+        whenever(delayViewModel.addLoadingDelay(any())).thenReturn(complete)
         val testObserver = contactViewModel.navigationSubject.test()
 
         contactViewModel.onSendClick()
@@ -67,7 +68,7 @@ class ContactViewModelTest : RxTestBase() {
     fun shouldClearFieldsAfterMessageSent() {
         val complete = Completable.complete()
         whenever(contactRepository.sendMessage(eq(messageDto))).thenReturn(complete)
-        whenever(delayViewModel.addLoadingDelay(complete)).thenReturn(complete)
+        whenever(delayViewModel.addLoadingDelay(any())).thenReturn(complete)
 
         contactViewModel.onSendClick()
 
@@ -85,7 +86,7 @@ class ContactViewModelTest : RxTestBase() {
     fun shouldReturnError() {
         val error = Completable.error(IOException())
         whenever(contactRepository.sendMessage(eq(messageDto))).thenReturn(error)
-        whenever(delayViewModel.addLoadingDelay(error)).thenReturn(error)
+        whenever(delayViewModel.addLoadingDelay(any())).thenReturn(error)
 
         contactViewModel.onSendClick()
 
@@ -96,7 +97,7 @@ class ContactViewModelTest : RxTestBase() {
     fun shouldRetrySendingMessage() {
         val error = Completable.error(IOException())
         whenever(contactRepository.sendMessage(eq(messageDto))).thenReturn(error)
-        whenever(delayViewModel.addLoadingDelay(error)).thenReturn(error)
+        whenever(delayViewModel.addLoadingDelay(any())).thenReturn(error)
         contactViewModel.onSendClick()
 
         val complete = Completable.complete()

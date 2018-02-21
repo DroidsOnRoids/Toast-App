@@ -11,28 +11,25 @@ import javax.inject.Inject
 
 class LoadingDelayViewModel @Inject constructor(private val clock: Clock) : DelayViewModel {
 
-    var lastLoadingStartTimeMillis = clock.elapsedRealtime()
+    private var lastLoadingStartTimeMillis = clock.elapsedRealtime()
 
-    override fun addLoadingDelay(completable: Completable): Completable {
-        this@LoadingDelayViewModel.lastLoadingStartTimeMillis = clock.elapsedRealtime()
-        return completable.andThen {
-            Completable.timer(Constants.MIN_LOADING_DELAY_MILLIS + lastLoadingStartTimeMillis - clock.elapsedRealtime(), TimeUnit.MILLISECONDS)
-        }
+    override fun updateLastLoadingStartTime() {
+        lastLoadingStartTimeMillis = clock.elapsedRealtime()
     }
 
-    override fun <T> addLoadingDelay(single: Single<T>): Single<T> {
-        this@LoadingDelayViewModel.lastLoadingStartTimeMillis = clock.elapsedRealtime()
-        return single.flatMap {
-            Single.just(it)
-                    .delay(Constants.MIN_LOADING_DELAY_MILLIS + lastLoadingStartTimeMillis - clock.elapsedRealtime(), TimeUnit.MILLISECONDS)
-        }
+    override fun addLoadingDelay(completable: Completable) = completable.andThen {
+        Completable.timer(Constants.MIN_LOADING_DELAY_MILLIS + lastLoadingStartTimeMillis - clock.elapsedRealtime(), TimeUnit.MILLISECONDS)
     }
 
-    override fun <T> addLoadingDelay(maybe: Maybe<T>): Maybe<T> {
-        this@LoadingDelayViewModel.lastLoadingStartTimeMillis = clock.elapsedRealtime()
-        return maybe.flatMap {
-            Maybe.just(it)
-                    .delay(Constants.MIN_LOADING_DELAY_MILLIS + lastLoadingStartTimeMillis - clock.elapsedRealtime(), TimeUnit.MILLISECONDS)
-        }
+
+    override fun <T> addLoadingDelay(single: Single<T>) = single.flatMap {
+        Single.just(it)
+                .delay(Constants.MIN_LOADING_DELAY_MILLIS + lastLoadingStartTimeMillis - clock.elapsedRealtime(), TimeUnit.MILLISECONDS)
     }
+
+    override fun <T> addLoadingDelay(maybe: Maybe<T>) = maybe.flatMap {
+        Maybe.just(it)
+                .delay(Constants.MIN_LOADING_DELAY_MILLIS + lastLoadingStartTimeMillis - clock.elapsedRealtime(), TimeUnit.MILLISECONDS)
+    }
+
 }

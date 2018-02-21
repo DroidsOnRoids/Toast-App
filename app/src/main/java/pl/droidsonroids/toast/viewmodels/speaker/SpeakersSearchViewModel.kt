@@ -70,8 +70,9 @@ class SpeakersSearchViewModel @Inject constructor(
 
     private fun searchSpeakers(query: String): Single<Page<State.Item<SpeakerItemViewModel>>> {
         loadingStatus.set(LoadingStatus.PENDING)
+        updateLastLoadingStartTime()
         return speakersRepository.searchSpeakersPage(query)
-                .let { addLoadingDelay(it) }
+                .let(::addLoadingDelay)
                 .flatMap(::mapToSingleSpeakerItemViewModelsPage)
                 .doAfterSuccess(::isEmptyResponse)
     }

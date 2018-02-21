@@ -3,11 +3,9 @@ package pl.droidsonroids.toast.viewmodels.speaker
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.whenever
-import io.mockk.MockKAnnotations
 import io.reactivex.Single
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
-import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
@@ -36,9 +34,6 @@ class SpeakersViewModelTest : RxTestBase() {
     lateinit var delayViewModel: DelayViewModel
 
     lateinit var speakersViewModel: SpeakersViewModel
-
-    @Before
-    fun setUp() = MockKAnnotations.init(this)
 
     @Test
     fun shouldLoadFirstPage() {
