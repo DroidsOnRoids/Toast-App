@@ -1,11 +1,14 @@
 package pl.droidsonroids.toast.viewmodels.event
 
+import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Maybe
+import io.reactivex.schedulers.TestScheduler
 import io.reactivex.subjects.PublishSubject
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
+import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
@@ -16,24 +19,31 @@ import pl.droidsonroids.toast.data.dto.event.SplitEvents
 import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.event.EventsRepository
+import pl.droidsonroids.toast.rule.RxPluginSchedulerRule
 import pl.droidsonroids.toast.testEventDetails
 import pl.droidsonroids.toast.testPreviousEvents
 import pl.droidsonroids.toast.testSplitEvents
+import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
-import pl.droidsonroids.toast.viewmodels.DelayViewModel
+import pl.droidsonroids.toast.viewmodels.LoadingDelayViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 class EventsViewModelTest : RxTestBase() {
+    private val testScheduler = TestScheduler()
+    private val delayViewModel = LoadingDelayViewModel(clock = mock())
+
+    @get:Rule
+    override val rxPluginSchedulerRule = RxPluginSchedulerRule(testScheduler)
+
     @Mock
     lateinit var eventsRepository: EventsRepository
     @Mock
     lateinit var loginStateWatcher: LoginStateWatcher
     @Mock
     lateinit var attendViewModel: AttendViewModel
-    @Mock
-    lateinit var delayViewModel: DelayViewModel
     @Mock
     lateinit var analyticsEventTracker: AnalyticsEventTracker
 
@@ -43,6 +53,7 @@ class EventsViewModelTest : RxTestBase() {
     @Test
     fun shouldReturnFeaturedEvent() {
         setUpWith(Maybe.just(testSplitEvents))
+
         val upcomingEventViewModel = eventsViewModel.upcomingEvent.get()
 
         assertThat(upcomingEventViewModel, notNullValue())
@@ -140,9 +151,9 @@ class EventsViewModelTest : RxTestBase() {
 
     private fun setUpWith(maybe: Maybe<SplitEvents>) {
         whenever(eventsRepository.getEvents()).thenReturn(maybe)
-        whenever(delayViewModel.addLoadingDelay(maybe)).thenReturn(maybe)
         whenever(attendViewModel.navigationRequests).thenReturn(PublishSubject.create())
         eventsViewModel = EventsViewModel(loginStateWatcher, attendViewModel, eventsRepository, analyticsEventTracker, delayViewModel)
+        testScheduler.advanceTimeBy(Constants.MIN_LOADING_DELAY_MILLIS, TimeUnit.MILLISECONDS)
     }
 
 }

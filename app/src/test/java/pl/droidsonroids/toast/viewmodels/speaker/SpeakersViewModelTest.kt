@@ -2,10 +2,13 @@ package pl.droidsonroids.toast.viewmodels.speaker
 
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.eq
+import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Single
+import io.reactivex.schedulers.TestScheduler
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
+import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
@@ -16,22 +19,28 @@ import pl.droidsonroids.toast.data.api.speaker.ApiSpeaker
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDto
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
+import pl.droidsonroids.toast.rule.RxPluginSchedulerRule
 import pl.droidsonroids.toast.testSpeaker
 import pl.droidsonroids.toast.testSpeakers
 import pl.droidsonroids.toast.testSpeakersPage
+import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.SortingType
-import pl.droidsonroids.toast.viewmodels.DelayViewModel
+import pl.droidsonroids.toast.viewmodels.LoadingDelayViewModel
+import java.util.concurrent.TimeUnit
 
 class SpeakersViewModelTest : RxTestBase() {
+    private val testScheduler = TestScheduler()
+    private val delayViewModel = LoadingDelayViewModel(clock = mock())
+
+    @get:Rule
+    override val rxPluginSchedulerRule = RxPluginSchedulerRule(testScheduler)
 
     @Mock
     lateinit var speakersRepository: SpeakersRepository
     @Mock
     lateinit var analyticsEventTracker: AnalyticsEventTracker
-    @Mock
-    lateinit var delayViewModel: DelayViewModel
 
     lateinit var speakersViewModel: SpeakersViewModel
 
@@ -39,7 +48,6 @@ class SpeakersViewModelTest : RxTestBase() {
     fun shouldLoadFirstPage() {
         val testSpeakersPageSingle = Single.just(testSpeakersPage)
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(testSpeakersPageSingle)
-        whenever(delayViewModel.addLoadingDelay(testSpeakersPageSingle)).thenReturn(testSpeakersPageSingle)
         setupSpeakersViewModel()
 
         checkIsFirstPageLoaded()
@@ -65,7 +73,6 @@ class SpeakersViewModelTest : RxTestBase() {
     fun shouldFailLoadFirstPage() {
         val error = Single.error<Page<SpeakerDto>>(Exception())
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(error)
-        whenever(delayViewModel.addLoadingDelay(error)).thenReturn(error)
         setupSpeakersViewModel()
 
         val speakerItemViewModelList: List<State<SpeakerItemViewModel>> = speakersViewModel.speakersSubject.value
@@ -78,14 +85,13 @@ class SpeakersViewModelTest : RxTestBase() {
     fun shouldLoadFirstPageAfterRetry() {
         val error = Single.error<Page<SpeakerDto>>(Exception())
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(error)
-        whenever(delayViewModel.addLoadingDelay(error)).thenReturn(error)
         setupSpeakersViewModel()
 
         val testSpeakersPageSingle = Single.just(testSpeakersPage)
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(testSpeakersPageSingle)
-        whenever(delayViewModel.addLoadingDelay(testSpeakersPageSingle)).thenReturn(testSpeakersPageSingle)
 
         speakersViewModel.retryLoading()
+        testScheduler.advanceTimeBy(Constants.MIN_LOADING_DELAY_MILLIS, TimeUnit.MILLISECONDS)
 
         checkIsFirstPageLoaded()
     }
@@ -95,7 +101,6 @@ class SpeakersViewModelTest : RxTestBase() {
         val testSpeakersPageWithNextPageAvailable = testSpeakersPage.copy(allPagesCount = 2)
         val firstSpeakerPageSingle = Single.just(testSpeakersPageWithNextPageAvailable)
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(firstSpeakerPageSingle)
-        whenever(delayViewModel.addLoadingDelay(firstSpeakerPageSingle)).thenReturn(firstSpeakerPageSingle)
         setupSpeakersViewModel()
 
         val speakerItemViewModelList = speakersViewModel.speakersSubject.value
@@ -108,7 +113,6 @@ class SpeakersViewModelTest : RxTestBase() {
         val testSpeakersPageWithNextPageAvailable = testSpeakersPage.copy(allPagesCount = 2)
         val firstSpeakerPageSingle = Single.just(testSpeakersPageWithNextPageAvailable)
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(firstSpeakerPageSingle)
-        whenever(delayViewModel.addLoadingDelay(firstSpeakerPageSingle)).thenReturn(firstSpeakerPageSingle)
         val error = Single.error<Page<SpeakerDto>>(Exception())
         whenever(speakersRepository.getSpeakersPage(eq(2), any())).thenReturn(error)
         setupSpeakersViewModel()
@@ -125,7 +129,6 @@ class SpeakersViewModelTest : RxTestBase() {
         val testSpeakersPageWithNextPageAvailable = testSpeakersPage.copy(allPagesCount = 2)
         val firstSpeakerPageSingle = Single.just(testSpeakersPageWithNextPageAvailable)
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(firstSpeakerPageSingle)
-        whenever(delayViewModel.addLoadingDelay(firstSpeakerPageSingle)).thenReturn(firstSpeakerPageSingle)
 
         val secondSpeakersPage = testSpeakersPage.copy(pageNumber = 2, allPagesCount = 2)
         val secondSpeakerPageSingle = Single.just(secondSpeakersPage)
@@ -144,7 +147,6 @@ class SpeakersViewModelTest : RxTestBase() {
     fun shouldRequestNavigationToSpeakerDetails() {
         val testSpeakerSingle = Single.just(testSpeakersPage)
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(testSpeakerSingle)
-        whenever(delayViewModel.addLoadingDelay(testSpeakerSingle)).thenReturn(testSpeakerSingle)
         setupSpeakersViewModel()
 
         val speakerItemViewModelList = speakersViewModel.speakersSubject.value
@@ -163,12 +165,10 @@ class SpeakersViewModelTest : RxTestBase() {
     fun shouldSortSpeakersAlphabetical() {
         val error = Single.error<Page<SpeakerDto>>(Exception())
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(error)
-        whenever(delayViewModel.addLoadingDelay(error)).thenReturn(error)
         setupSpeakersViewModel()
 
         val testSpeakersPageSingle = Single.just(testSpeakersPage)
         whenever(speakersRepository.getSpeakersPage(sortingQuery = SortingType.ALPHABETICAL.toQuery())).thenReturn(testSpeakersPageSingle)
-        whenever(delayViewModel.addLoadingDelay(testSpeakersPageSingle)).thenReturn(testSpeakersPageSingle)
 
         speakersViewModel.onAlphabeticalSortingClick()
         assertThat(speakersViewModel.sortingType.get(), equalTo(SortingType.ALPHABETICAL))
@@ -178,7 +178,6 @@ class SpeakersViewModelTest : RxTestBase() {
     fun shouldSortSpeakersByDate() {
         val error = Single.error<Page<SpeakerDto>>(Exception())
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(error)
-        whenever(delayViewModel.addLoadingDelay(error)).thenReturn(error)
         setupSpeakersViewModel()
 
         whenever(speakersRepository.getSpeakersPage(sortingQuery = SortingType.DATE.toQuery())).thenReturn(Single.just(testSpeakersPage))
@@ -191,7 +190,6 @@ class SpeakersViewModelTest : RxTestBase() {
     fun shouldLoadFirstPageAfterDateSorting() {
         val testSpeakerSingle = Single.just(testSpeakersPage)
         whenever(speakersRepository.getSpeakersPage(sortingQuery = SortingType.DATE.toQuery())).thenReturn(testSpeakerSingle)
-        whenever(delayViewModel.addLoadingDelay(testSpeakerSingle)).thenReturn(testSpeakerSingle)
         setupSpeakersViewModel()
 
         speakersViewModel.onDateSortingClick()
@@ -203,18 +201,19 @@ class SpeakersViewModelTest : RxTestBase() {
     fun shouldLoadFirstPageAfterAlphabeticalSorting() {
         val error = Single.error<Page<SpeakerDto>>(Exception())
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(error)
-        whenever(delayViewModel.addLoadingDelay(error)).thenReturn(error)
         setupSpeakersViewModel()
 
         val testSpeakersPageSingle = Single.just(testSpeakersPage)
         whenever(speakersRepository.getSpeakersPage(pageNumber = any(), sortingQuery = eq(SortingType.ALPHABETICAL.toQuery()))).thenReturn(testSpeakersPageSingle)
-        whenever(delayViewModel.addLoadingDelay(testSpeakersPageSingle)).thenReturn(testSpeakersPageSingle)
 
         speakersViewModel.onAlphabeticalSortingClick()
+        testScheduler.advanceTimeBy(Constants.MIN_LOADING_DELAY_MILLIS, TimeUnit.MILLISECONDS)
+
         checkIsFirstPageLoaded()
     }
 
     private fun setupSpeakersViewModel() {
         speakersViewModel = SpeakersViewModel(speakersRepository, analyticsEventTracker, delayViewModel)
+        testScheduler.advanceTimeBy(Constants.MIN_LOADING_DELAY_MILLIS, TimeUnit.MILLISECONDS)
     }
 }
