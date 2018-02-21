@@ -22,15 +22,6 @@
             android:elevation="@dimen/home_toolbar_elevation"
             android:translationY="-10dp"/>
 
-        <include
-            android:id="@+id/sortingBarLayout"
-            layout="@layout/layout_speakers_sorting_bar"
-            app:layout_constraintBottom_toTopOf="@+id/speakersRecyclerView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:sortingViewModel="@{speakersViewModel}"/>
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/speakersRecyclerView"
             android:layout_width="0dp"
@@ -51,6 +42,33 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sortingBarLayout"
             app:loadingViewModel="@{speakersViewModel}"/>
+
+        <include
+            android:id="@+id/sortingDetailsLayout"
+            layout="@layout/layout_speakers_sorting_details"
+            app:speakersViewModel="@{speakersViewModel}"/>
+
+        <include
+            android:id="@+id/sortingBarLayout"
+            layout="@layout/layout_speakers_sorting_bar"
+            app:layout_constraintBottom_toTopOf="@+id/speakersRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:sortingViewModel="@{speakersViewModel}"/>
+
+        <ImageView
+            android:id="@+id/makor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:elevation="@dimen/elevation_large"
+            android:src="@drawable/makor"
+            android:paddingBottom="@dimen/margin_tiny"
+            app:layout_constraintBottom_toTopOf="@id/sortingBarLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
     </android.support.constraint.ConstraintLayout>
 
 </layout>
