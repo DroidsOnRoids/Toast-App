@@ -6,6 +6,7 @@ import io.reactivex.disposables.Disposables
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
@@ -17,6 +18,7 @@ import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.utils.SourceAttending
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
@@ -24,12 +26,13 @@ import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
-const val DEFAULT_GRADIENT_COLOR = 0xA0000000.toInt()
+private const val DEFAULT_GRADIENT_COLOR = 0xA0000000.toInt()
 private const val GRADIENT_COLOR_MASK = 0xE0FFFFFF.toInt()
 
 class EventDetailsViewModel @Inject constructor(
         private val eventsRepository: EventsRepository,
-        attendViewModel: AttendViewModel
+        attendViewModel: AttendViewModel,
+        private val analyticsEventTracker: AnalyticsEventTracker
 ) : ViewModel(), LoadingViewModel, NavigatingViewModel, AttendViewModel by attendViewModel {
     override val navigationSubject: PublishSubject<NavigationRequest> = navigationRequests
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.PENDING)
@@ -63,11 +66,13 @@ class EventDetailsViewModel @Inject constructor(
 
     fun onPhotosClick() {
         navigationSubject.onNext(NavigationRequest.Photos(photos, eventId.get(), ParentView.EVENT_DETAILS))
+        analyticsEventTracker.logEventDetailsSeePhotosEvent(eventId.get())
     }
 
     fun onLocationClick() {
         coordinates?.let {
             navigationSubject.onNext(NavigationRequest.Map(it, placeName.get()))
+            analyticsEventTracker.logEventDetailsTapMeetupPlaceEvent()
         }
     }
 
@@ -100,7 +105,7 @@ class EventDetailsViewModel @Inject constructor(
             photos = it.photos
             coordinates = it.coordinates
             onTalksLoaded(it.talks)
-            setEvent(it.facebookId, it.date)
+            setEvent(it.facebookId, it.date, SourceAttending.EVENT_DETAILS)
         }
     }
 
@@ -110,12 +115,15 @@ class EventDetailsViewModel @Inject constructor(
     }
 
     private fun onReadMore(eventSpeakerItemViewModel: EventSpeakerItemViewModel) {
-        navigationSubject.onNext(NavigationRequest.EventTalkDetails(eventSpeakerItemViewModel.toDto()))
+        val eventTalkDto = eventSpeakerItemViewModel.toDto()
+        navigationSubject.onNext(NavigationRequest.EventTalkDetails(eventTalkDto))
         Timber.d("onReadMore: ${eventSpeakerItemViewModel.id}")
+        analyticsEventTracker.logEventDetailsReadMoreEvent(eventTalkDto.title)
     }
 
-    private fun onSpeakerClick(speakerId: Long) {
+    private fun onSpeakerClick(speakerId: Long, speakerName: String) {
         navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId))
+        analyticsEventTracker.logEventDetailsShowSpeakerEvent(speakerName)
     }
 
     private fun onEventLoadError(throwable: Throwable) {

@@ -21,7 +21,7 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseFragment
 import pl.droidsonroids.toast.app.utils.callbacks.LazyLoadingScrollListener
-import pl.droidsonroids.toast.app.utils.extensions.setNavigationViewAnchor
+import pl.droidsonroids.toast.app.utils.extensions.showSnackbar
 import pl.droidsonroids.toast.databinding.FragmentEventsBinding
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.event.EventsViewModel
@@ -60,9 +60,9 @@ class EventsFragment : BaseFragment() {
 
     private fun handleNavigationRequest(request: NavigationRequest) {
         when (request) {
-            is NavigationRequest.SnackBar -> Snackbar.make(eventsScrollContainer, request.stringRes, Snackbar.LENGTH_SHORT)
-                    .setNavigationViewAnchor()
-                    .show()
+            is NavigationRequest.SnackBar -> if (isVisible) {
+                eventsScrollContainer.showSnackbar(request)
+            }
             is NavigationRequest.EventDetails -> navigator.showActivityWithSharedAnimation(activity as AppCompatActivity, request, getSharedViews(request.id))
             else -> activity?.let { navigator.dispatch(it, request) }
         }
