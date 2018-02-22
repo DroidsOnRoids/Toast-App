@@ -1,5 +1,6 @@
 package pl.droidsonroids.toast.app.utils.extensions
 
+import android.support.design.widget.BaseTransientBottomBar
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
@@ -16,11 +17,16 @@ fun Snackbar.setNavigationViewAnchor() = apply {
     }
 }
 
-fun View.showSnackbar(request: NavigationRequest.SnackBar, length: Int = Snackbar.LENGTH_SHORT) {
+fun View.showSnackbar(request: NavigationRequest.SnackBar, length: Int = Snackbar.LENGTH_SHORT, onDismiss: () -> Unit = {}) {
     Snackbar.make(this, request.stringRes, length)
             .apply {
                 view.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
             }
+            .addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    onDismiss()
+                }
+            })
             .setNavigationViewAnchor()
             .show()
 }

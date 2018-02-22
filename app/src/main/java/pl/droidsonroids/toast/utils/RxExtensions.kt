@@ -11,9 +11,9 @@ fun <T : Any> Observable<T>.toPage(pageNo: Int, pageCount: Int): Single<Page<T>>
 }
 
 fun <T> ObservableField<T>.toObservable(): Observable<T> {
-    return Observable.create {
+    return Observable.create { emitter ->
         addOnPropertyChangedCallback {
-            it.onNext(get())
+            emitter.onNext(it)
         }
     }
 }

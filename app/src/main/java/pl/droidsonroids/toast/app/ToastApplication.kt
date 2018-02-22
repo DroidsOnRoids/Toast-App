@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import io.reactivex.plugins.RxJavaPlugins
 import pl.droidsonroids.toast.BuildConfig
 import pl.droidsonroids.toast.di.DaggerAppComponent
 import timber.log.Timber
@@ -24,9 +25,11 @@ class ToastApplication : Application(), HasActivityInjector {
                 .application(this)
                 .build()
                 .inject(this)
-
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+        }
+        RxJavaPlugins.setErrorHandler {
+            Timber.e(it, "Caught by global error handler")
         }
     }
 }
