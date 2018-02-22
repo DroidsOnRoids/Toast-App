@@ -110,14 +110,14 @@ abstract class BaseRobot {
         return this
     }
 
-    fun performClickOnElementWithText(string: String): BaseRobot {
-        onView(withText(string))
+    fun performClickOnElementWithText(text: String): BaseRobot {
+        onView(withText(text))
                 .perform(click())
         return this
     }
 
-    fun performClickOnDataWithText(string: String): BaseRobot {
-        onData(allOf(`is`(string)))
+    fun performClickOnDataWithText(text: String): BaseRobot {
+        onData(allOf(`is`(text)))
                 .perform(click())
         return this
     }
