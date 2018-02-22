@@ -1,5 +1,6 @@
 package pl.droidsonroids.toast.robot
 
+import android.support.test.espresso.Espresso.onData
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.action.ViewActions
 import android.support.test.espresso.action.ViewActions.click
@@ -9,9 +10,7 @@ import android.support.test.espresso.contrib.RecyclerViewActions
 import android.support.test.espresso.matcher.RootMatchers.isDialog
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.v7.widget.RecyclerView
-import org.hamcrest.Matchers.allOf
-import org.hamcrest.Matchers.startsWith
-import org.hamcrest.Matchers.not
+import org.hamcrest.Matchers.*
 import pl.droidsonroids.toast.function.matchers.isHintOnEditTextCorrect
 import pl.droidsonroids.toast.function.matchers.isHintOnTextInputLayoutCorrect
 
@@ -81,6 +80,12 @@ abstract class BaseRobot {
         return this
     }
 
+    fun checkIfSpinnerTextIsCorrect(text: String, id: Int): BaseRobot {
+        onView(withId(id))
+                .check(matches(withSpinnerText(containsString(text))))
+        return this
+    }
+
     fun checkIfHomeButtonIsDisplayed(): BaseRobot {
         onView(withContentDescription(homeButtonDescription))
                 .check(matches(isDisplayed()))
@@ -107,6 +112,12 @@ abstract class BaseRobot {
 
     fun performClickOnElementWithText(string: String): BaseRobot {
         onView(withText(string))
+                .perform(click())
+        return this
+    }
+
+    fun performClickOnDataWithText(string: String): BaseRobot {
+        onData(allOf(`is`(string)))
                 .perform(click())
         return this
     }
