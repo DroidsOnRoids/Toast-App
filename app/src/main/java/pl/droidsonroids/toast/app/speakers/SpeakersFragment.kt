@@ -19,8 +19,10 @@ import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseFragment
 import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.app.utils.callbacks.LazyLoadingScrollListener
+import pl.droidsonroids.toast.app.utils.extensions.showSnackbar
 import pl.droidsonroids.toast.databinding.FragmentSpeakersBinding
 import pl.droidsonroids.toast.utils.Constants
+import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersViewModel
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -47,9 +49,15 @@ class SpeakersFragment : BaseFragment() {
     private fun setupViewModel() {
         speakersViewModel = ViewModelProviders.of(this, viewModelFactory)[SpeakersViewModel::class.java]
         navigationDisposable = speakersViewModel.navigationSubject
-                .subscribe { request ->
-                    activity?.let { navigator.dispatch(it, request) }
-                }
+                .subscribe(::handleNavigationRequest)
+    }
+
+    private fun handleNavigationRequest(request: NavigationRequest) {
+        if (request is NavigationRequest.SnackBar) {
+            speakersSwipeRefresh.showSnackbar(request)
+        } else {
+            activity?.let { navigator.dispatch(it, request) }
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -62,7 +70,15 @@ class SpeakersFragment : BaseFragment() {
         showSearchMenuItemWithAnimation()
         setupRecyclerView()
         showSearchMenuItemWithAnimation()
+        setupSwipeRefresh()
         subscribeToSortingDetailsVisibilityChange()
+    }
+
+    private fun setupSwipeRefresh() {
+        speakersSwipeRefresh.setOnRefreshListener(speakersViewModel::refresh)
+        compositeDisposable += speakersViewModel.swipeRefreshVisibleSubject
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(speakersSwipeRefresh::setRefreshing)
     }
 
     private fun showSearchMenuItemWithAnimation() {

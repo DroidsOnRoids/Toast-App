@@ -28,6 +28,7 @@ import pl.droidsonroids.toast.utils.SourceAttending
 import pl.droidsonroids.toast.utils.toPage
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
+import pl.droidsonroids.toast.viewmodels.RefreshViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
 import timber.log.Timber
 import javax.inject.Inject
@@ -37,14 +38,15 @@ class EventsViewModel @Inject constructor(
         attendViewModel: AttendViewModel,
         private val eventsRepository: EventsRepository,
         private val analyticsEventTracker: AnalyticsEventTracker
-) : ViewModel(), LoadingViewModel, NavigatingViewModel, LoginStateWatcher by loginStateWatcher, AttendViewModel by attendViewModel {
+) : ViewModel(), LoadingViewModel, NavigatingViewModel, RefreshViewModel,
+    LoginStateWatcher by loginStateWatcher, AttendViewModel by attendViewModel {
     override val navigationSubject: PublishSubject<NavigationRequest> = navigationRequests
 
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField()
     val isPreviousEventsEmpty = ObservableField<Boolean>(true)
     val upcomingEvent = ObservableField<UpcomingEventViewModel>()
     val previousEventsSubject: BehaviorSubject<List<State<EventItemViewModel>>> = BehaviorSubject.create()
-    val swipeRefreshVisibleSubject: PublishSubject<Boolean> = PublishSubject.create()
+    override val swipeRefreshVisibleSubject: PublishSubject<Boolean> = PublishSubject.create()
 
     private var isPreviousEventsLoading: Boolean = false
     private var nextPageNumber: Int? = null
@@ -194,7 +196,7 @@ class EventsViewModel @Inject constructor(
         compositeDisposable.dispose()
     }
 
-    fun refresh() {
+    override fun refresh() {
         invalidateAttendState()
         getFirstPage()
                 .subscribeBy(
@@ -215,6 +217,4 @@ class EventsViewModel @Inject constructor(
         setPreviousItems(previousEventsPage.items.addLoadingItemIfNeeded(previousEventsPage))
         swipeRefreshVisibleSubject.onNext(false)
     }
-
 }
-

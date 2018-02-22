@@ -94,9 +94,7 @@ class EventsFragment : BaseFragment() {
     }
 
     private fun setupSwipeRefresh() {
-        eventsSwipeRefresh.setOnRefreshListener {
-            eventsViewModel.refresh()
-        }
+        eventsSwipeRefresh.setOnRefreshListener(eventsViewModel::refresh)
         compositeDisposable += eventsViewModel.swipeRefreshVisibleSubject
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(eventsSwipeRefresh::setRefreshing)
