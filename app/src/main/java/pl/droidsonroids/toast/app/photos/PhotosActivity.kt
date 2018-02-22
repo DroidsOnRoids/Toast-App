@@ -8,6 +8,9 @@ import android.support.v4.util.Pair
 import android.support.v7.widget.GridLayoutManager
 import android.view.MenuItem
 import android.view.View
+import com.alexvasilkov.gestures.transition.GestureTransitions
+import com.alexvasilkov.gestures.transition.ViewsTransitionAnimator
+import com.alexvasilkov.gestures.transition.tracker.SimpleTracker
 import com.bumptech.glide.Glide
 import com.bumptech.glide.MemoryCategory
 import io.reactivex.disposables.CompositeDisposable
@@ -26,6 +29,7 @@ import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.photos.PhotosViewModel
 import java.util.*
 import javax.inject.Inject
+import kotlin.math.abs
 
 class PhotosActivity : BaseActivity() {
     companion object {
@@ -55,6 +59,9 @@ class PhotosActivity : BaseActivity() {
 
     private val compositeDisposable = CompositeDisposable()
 
+    private lateinit var listAnimator: ViewsTransitionAnimator<Int>
+    private lateinit var pagerAdapter: PhotosViewPagerAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photos)
@@ -62,7 +69,70 @@ class PhotosActivity : BaseActivity() {
         setupToolbar()
         setupViewModel()
         setupRecyclerView()
+        setupViewPager()
+        initPagerAnimator()
         increaseGlideMemoryCache()
+    }
+
+    override fun onBackPressed() {
+        if (!listAnimator.isLeaving) {
+            listAnimator.exit(true)
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    private fun setupViewPager() {
+        pagerAdapter = PhotosViewPagerAdapter(photosViewModel.fullPhotosSubject.value)
+        fullPhotoViewPager.adapter = pagerAdapter
+        fullPhotoViewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.margin_large)
+        fullPhotoViewPager.offscreenPageLimit = photosViewModel.fullPhotosSubject.value.size
+    }
+
+    private fun initPagerAnimator() {
+        val gridTracker = object : SimpleTracker() {
+            public override fun getViewAt(pos: Int): View? {
+                return photosRecyclerView.findViewHolderForLayoutPosition(pos).itemView
+            }
+        }
+
+        val pagerTracker = object : SimpleTracker() {
+            public override fun getViewAt(pos: Int): View? {
+                return fullPhotoViewPager.getChildAt(pos)
+            }
+        }
+
+        listAnimator = GestureTransitions.from<Int>(photosRecyclerView, gridTracker)
+                .into(fullPhotoViewPager, pagerTracker)
+
+        listAnimator.addPositionUpdateListener(::applyFullPagerState)
+    }
+
+
+    private fun applyFullPagerState(position: Float, isLeaving: Boolean) {
+        fullPhotoBackground.visibility = if (position == 0f) View.INVISIBLE else View.VISIBLE
+        fullPhotoBackground.alpha = position
+
+        fullPhotoToolbar.visibility = if (position == 0f) View.INVISIBLE else View.VISIBLE
+        fullPhotoToolbar.alpha = if (isSystemUiShown()) position else 0f
+
+        photosAppBar.alpha = if (isSystemUiShown()) abs(1 - position) else 0f
+
+        if (isLeaving && position == 0f) {
+            showSystemUi(true)
+        }
+    }
+
+    private fun isSystemUiShown(): Boolean {
+        return window.decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_FULLSCREEN === 0
+    }
+
+    private fun showSystemUi(show: Boolean) {
+        val flags = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_IMMERSIVE)
+
+        window.decorView.systemUiVisibility = if (show) 0 else flags
     }
 
     private fun increaseGlideMemoryCache() {
@@ -79,9 +149,13 @@ class PhotosActivity : BaseActivity() {
     }
 
     private fun setupViewModel() {
-        photosViewModel.init(photos)
+        photosViewModel.init(photos, ::onPhotoItemClicked)
         compositeDisposable += photosViewModel.navigationSubject
                 .subscribe(::handleNavigationRequest)
+    }
+
+    private fun onPhotoItemClicked(index: Long) {
+        listAnimator.enter(index.toInt(), true)
     }
 
     private fun handleNavigationRequest(navigationRequest: NavigationRequest) {

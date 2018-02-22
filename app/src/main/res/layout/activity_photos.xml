@@ -33,8 +33,26 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/photosRecyclerView"
         android:layout_width="match_parent"
-        android:padding="2dp"
-        android:clipToPadding="false"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:padding="2dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <View
+        android:id="@+id/fullPhotoBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:visibility="invisible"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/fullPhotoViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/fullPhotoToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/black"/>
 </android.support.design.widget.CoordinatorLayout>
