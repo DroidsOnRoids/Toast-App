@@ -45,13 +45,6 @@ class PhotosViewModel @Inject constructor() : ViewModel(), NavigatingViewModel {
         )
     }
 
-    //    private fun onPhotoItemClicked(position: Long) {
-    //        if (!isSharedTransitionInProgress) {
-    //            isSharedTransitionInProgress = true
-    //            navigationSubject.onNext(NavigationRequest.SinglePhoto(photosDto, position))
-    //        }
-    //    }
-
     fun onClick() {
         navigationSubject.onNext(NavigationRequest.ToggleImmersive)
     }
