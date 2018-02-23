@@ -86,19 +86,20 @@ class PhotosActivity : BaseActivity() {
         pagerAdapter = PhotosViewPagerAdapter(photosViewModel.fullPhotosSubject.value)
         fullPhotoViewPager.adapter = pagerAdapter
         fullPhotoViewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.margin_large)
-        fullPhotoViewPager.offscreenPageLimit = photosViewModel.fullPhotosSubject.value.size
+        pagerAdapter.notifyDataSetChanged()
     }
 
     private fun initPagerAnimator() {
         val gridTracker = object : SimpleTracker() {
-            public override fun getViewAt(pos: Int): View? {
-                return photosRecyclerView.findViewHolderForLayoutPosition(pos).itemView
+            public override fun getViewAt(position: Int): View? {
+                return photosRecyclerView.findViewHolderForLayoutPosition(position).itemView
             }
         }
 
         val pagerTracker = object : SimpleTracker() {
-            public override fun getViewAt(pos: Int): View? {
-                return fullPhotoViewPager.getChildAt(pos)
+            public override fun getViewAt(position: Int): View? {
+                val holder = pagerAdapter.getViewHolder(position)
+                return if (holder == null) null else pagerAdapter.getImage(holder)
             }
         }
 
@@ -114,17 +115,13 @@ class PhotosActivity : BaseActivity() {
         fullPhotoBackground.alpha = position
 
         fullPhotoToolbar.visibility = if (position == 0f) View.INVISIBLE else View.VISIBLE
-        fullPhotoToolbar.alpha = if (isSystemUiShown()) position else 0f
+        fullPhotoToolbar.alpha = position
 
-        photosAppBar.alpha = if (isSystemUiShown()) abs(1 - position) else 0f
+        photosAppBar.alpha = abs(1 - position)
 
         if (isLeaving && position == 0f) {
             showSystemUi(true)
         }
-    }
-
-    private fun isSystemUiShown(): Boolean {
-        return window.decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_FULLSCREEN === 0
     }
 
     private fun showSystemUi(show: Boolean) {

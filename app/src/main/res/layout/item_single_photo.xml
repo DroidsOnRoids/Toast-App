@@ -21,13 +21,11 @@
         android:scaleType="fitCenter"
         android:onClick="@{() -> singlePhotoViewModel.onClick()}"
         app:originalImage="@{singlePhotoViewModel.image}"
-        app:elementId="@{singlePhotoViewModel.position}"
         app:loadingFinishedListener="@{singlePhotoViewModel.onPhotoLoadingFinished}"
         app:fromCache="@{singlePhotoViewModel.loadFromCache}"
         app:gest_maxZoom="3"
         app:gest_exitEnabled="true"
         app:gest_panEnabled="true"
-        app:gest_fillViewport="true"
-        app:transitionName="@{PhotoTransition.PHOTO}"/>
+        app:gest_fillViewport="true"/>
 </layout>
 
