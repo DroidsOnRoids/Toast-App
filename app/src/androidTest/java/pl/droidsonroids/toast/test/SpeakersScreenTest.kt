@@ -130,8 +130,7 @@ class SpeakersScreenTest {
     }
 
     @Test
-    fun isSpeakersListDisplayedAfterClickingBackFromSpeakerDetails()
-    {
+    fun isSpeakersListDisplayedAfterClickingBackFromSpeakerDetails() {
         goToSpeakerDetailsScreen()
         Espresso.pressBack()
         with(SpeakersRobot()) {
