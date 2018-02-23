@@ -110,7 +110,7 @@ class MockSpeakersScreenTest {
         goToSpeakersScreen()
         with(SpeakersRobot()) {
             performClickOnElementWithId(R.id.titleSortingLayout)
-            checkIfElementWithIdIsDisplayed(R.id.arrowUpImage)
+            checkIfElementWithIdIsDisplayed(R.id.arrowDownImage)
             checkIfElementWithIdIsDisplayed(R.id.alphabeticalDivider)
             checkIfElementWithIdIsDisplayed(R.id.alphabeticalSortImage)
             checkIfTextIsCorrect(getString(R.string.alphabetical), R.id.alphabeticalText)
