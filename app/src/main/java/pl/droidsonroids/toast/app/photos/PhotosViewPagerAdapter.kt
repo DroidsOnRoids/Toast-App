@@ -4,7 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.alexvasilkov.gestures.commons.RecyclePagerAdapter
 import com.alexvasilkov.gestures.views.GestureImageView
-import pl.droidsonroids.toast.R
+import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.item_single_photo.view.*
 import pl.droidsonroids.toast.databinding.ItemSinglePhotoBinding
 import pl.droidsonroids.toast.viewmodels.photos.SinglePhotoViewModel
 
@@ -20,6 +21,14 @@ class PhotosViewPagerAdapter(private val singlePhotoViewModels: List<SinglePhoto
         holder.bind(singlePhotoViewModels[position])
     }
 
+    override fun onRecycleViewHolder(holder: FullPhotoViewHolder) {
+        super.onRecycleViewHolder(holder)
+        with(holder.itemView.photo) {
+            Glide.with(this).clear(this)
+            setImageDrawable(null)
+        }
+    }
+
     override fun getCount() = singlePhotoViewModels.size
 
     inner class FullPhotoViewHolder(private val binding: ItemSinglePhotoBinding) : RecyclePagerAdapter.ViewHolder(binding.root) {
@@ -29,8 +38,6 @@ class PhotosViewPagerAdapter(private val singlePhotoViewModels: List<SinglePhoto
         }
     }
 
-    fun getImage(holder: FullPhotoViewHolder): GestureImageView {
-        return holder.itemView.findViewById(R.id.photo)
-    }
+    fun getPhotoView(holder: FullPhotoViewHolder): GestureImageView = holder.itemView.photo
 
 }

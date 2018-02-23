@@ -20,12 +20,13 @@
         android:contentDescription="@string/meetup_photo_desc"
         android:scaleType="fitCenter"
         android:onClick="@{() -> singlePhotoViewModel.onClick()}"
-        app:originalImage="@{singlePhotoViewModel.image}"
-        app:loadingFinishedListener="@{singlePhotoViewModel.onPhotoLoadingFinished}"
         app:fromCache="@{singlePhotoViewModel.loadFromCache}"
-        app:gest_maxZoom="3"
         app:gest_exitEnabled="true"
+        app:gest_fillViewport="true"
+        app:gest_fitMethod="inside"
+        app:gest_gravity="center"
+        app:gest_maxZoom="3"
         app:gest_panEnabled="true"
-        app:gest_fillViewport="true"/>
+        app:originalImage="@{singlePhotoViewModel.image}"/>
 </layout>
 

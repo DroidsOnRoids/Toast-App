@@ -70,7 +70,7 @@ class PhotosActivity : BaseActivity() {
         setupViewModel()
         setupRecyclerView()
         setupViewPager()
-        initPagerAnimator()
+        setupPagerAnimator()
         increaseGlideMemoryCache()
     }
 
@@ -87,9 +87,10 @@ class PhotosActivity : BaseActivity() {
         fullPhotoViewPager.adapter = pagerAdapter
         fullPhotoViewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.margin_large)
         pagerAdapter.notifyDataSetChanged()
+        fullPhotoToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
     }
 
-    private fun initPagerAnimator() {
+    private fun setupPagerAnimator() {
         val gridTracker = object : SimpleTracker() {
             public override fun getViewAt(position: Int): View? {
                 return photosRecyclerView.findViewHolderForLayoutPosition(position).itemView
@@ -99,7 +100,7 @@ class PhotosActivity : BaseActivity() {
         val pagerTracker = object : SimpleTracker() {
             public override fun getViewAt(position: Int): View? {
                 val holder = pagerAdapter.getViewHolder(position)
-                return if (holder == null) null else pagerAdapter.getImage(holder)
+                return if (holder == null) null else pagerAdapter.getPhotoView(holder)
             }
         }
 
