@@ -13,6 +13,12 @@ import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.function.getString
 import pl.droidsonroids.toast.function.getStringWithoutFormattingArguments
 import pl.droidsonroids.toast.robot.InfoDialogRobot
+import android.app.Instrumentation
+import android.support.test.espresso.intent.Intents.intending
+import android.content.Intent
+import android.support.test.espresso.intent.matcher.IntentMatchers.*
+import org.hamcrest.CoreMatchers
+import org.hamcrest.CoreMatchers.allOf
 
 class MockInfoDialogTest {
 
@@ -120,9 +126,11 @@ class MockInfoDialogTest {
 
     @Test
     fun isFbFanPageDeepLinkDisplayedAndActive() {
+        val expectedIntent = allOf(hasAction(CoreMatchers.equalTo(Intent.ACTION_VIEW)))
         showDialog()
         with(InfoDialogRobot()) {
             checkIfTextIsCorrect(getString(R.string.toast_facebook_fanpage), R.id.fanpageLinkText)
+            intending(expectedIntent).respondWith(Instrumentation.ActivityResult(0, null))
             performClickOnElementWithId(R.id.fanpageLinkText)
             checkIfIntentOpensFacebook()
         }
