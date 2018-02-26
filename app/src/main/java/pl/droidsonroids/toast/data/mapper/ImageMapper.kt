@@ -14,7 +14,7 @@ fun ImageDto.toItemViewModel(position: Long, onClick: (Long) -> Unit): PhotoItem
     )
 }
 
-fun ImageDto.toSingleViewModel(position: Long, onClick: () -> Unit): FullscreenPhotoViewModel {
+fun ImageDto.toFullscreenViewModel(position: Long, onClick: () -> Unit): FullscreenPhotoViewModel {
     return FullscreenPhotoViewModel(
             position = position,
             image = this,

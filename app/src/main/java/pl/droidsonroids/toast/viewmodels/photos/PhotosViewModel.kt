@@ -4,8 +4,8 @@ import android.arch.lifecycle.ViewModel
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.data.dto.ImageDto
+import pl.droidsonroids.toast.data.mapper.toFullscreenViewModel
 import pl.droidsonroids.toast.data.mapper.toItemViewModel
-import pl.droidsonroids.toast.data.mapper.toSingleViewModel
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import javax.inject.Inject
@@ -35,12 +35,8 @@ class PhotosViewModel @Inject constructor() : ViewModel(), NavigatingViewModel {
     private fun imageDtoToViewModel(index: Int, image: ImageDto) =
             image.toItemViewModel(index.toLong(), onPhotoItemClicked)
 
-    private fun fullImageDtoToViewModel(index: Int, image: ImageDto): FullscreenPhotoViewModel {
-        return image.toSingleViewModel(
-                position = index.toLong(),
-                onClick = ::onClick
-        )
-    }
+    private fun fullImageDtoToViewModel(index: Int, image: ImageDto) =
+            image.toFullscreenViewModel(index.toLong(), ::onClick)
 
     fun onClick() {
         navigationSubject.onNext(NavigationRequest.ToggleImmersive)

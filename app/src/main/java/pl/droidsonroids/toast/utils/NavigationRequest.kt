@@ -16,7 +16,6 @@ sealed class NavigationRequest {
     data class SpeakerTalkDetails(val speakerTalkDto: SpeakerTalkDto) : NavigationRequest()
     object Close : NavigationRequest()
     data class Photos(val photos: List<ImageDto>, val eventId: Long, val parentView: ParentView) : NavigationRequest()
-    data class SinglePhoto(val photos: List<ImageDto>, val position: Long) : NavigationRequest()
     data class Map(val coordinatesDto: CoordinatesDto, val placeName: String) : NavigationRequest()
     object ToggleImmersive : NavigationRequest()
     data class Website(val url: String): NavigationRequest()
