@@ -67,11 +67,19 @@ class FacebookAttendViewModel @Inject constructor(
         facebookId?.let {
             facebookAttendStateDisposable.dispose()
             facebookAttendStateDisposable = facebookRepository.getEventAttendState(it)
-                    .subscribeBy(
-                            onSuccess = { status -> attendStatus.set(status) },
-                            onError = (::onInvalidateAttendStateError)
-                    )
+                    .subscribe(::onUpdateAttendStatus)
         }
+    }
+
+    private fun onUpdateAttendStatus(status: AttendStatus) {
+        when (status) {
+            AttendStatus.ERROR -> onInvalidateAttendStateError()
+            else -> attendStatus.set(status)
+        }
+    }
+
+    private fun onInvalidateAttendStateError() {
+        navigationRequests.onNext(NavigationRequest.SnackBar(R.string.facebook_update_attend_error))
     }
 
     override fun onAttendClick() {
@@ -105,10 +113,6 @@ class FacebookAttendViewModel @Inject constructor(
         facebookId?.let {
             navigationRequests.onNext(NavigationRequest.Website("${Constants.Facebook.EVENT_URL}$it"))
         }
-    }
-
-    private fun onInvalidateAttendStateError(throwable: Throwable) {
-        navigationRequests.onNext(NavigationRequest.SnackBar(R.string.facebook_update_attend_error))
     }
 
     private fun onSetAttendingError(throwable: Throwable) {
