@@ -11,9 +11,7 @@ class PreviousEventsAdapter : BaseStateAdapter<EventItemViewModel>(true) {
         setHasStableIds(true)
     }
 
-    override fun getItemId(item: EventItemViewModel): Long {
-        return item.id
-    }
+    override fun getItemId(item: EventItemViewModel) = item.id
 
     override fun getDiffCallback(oldList: List<State<EventItemViewModel>>, newList: List<State<EventItemViewModel>>): BaseDiffCallback<EventItemViewModel> {
         return EventItemDiffCallback(oldList, newList)

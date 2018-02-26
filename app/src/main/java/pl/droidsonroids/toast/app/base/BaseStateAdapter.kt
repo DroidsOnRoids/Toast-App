@@ -36,9 +36,7 @@ abstract class BaseStateAdapter<in T>(private val isHorizontal: Boolean) : Recyc
         }
     }
 
-    protected open fun getItemId(item: T): Long {
-        return NO_ID
-    }
+    protected open fun getItemId(item: T) = NO_ID
 
     override fun onBindViewHolder(holder: StateViewHolder, position: Int) {
         when (holder) {
