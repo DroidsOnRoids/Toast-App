@@ -12,6 +12,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
+import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.dto.event.SplitEvents
 import pl.droidsonroids.toast.data.enums.ParentView
@@ -42,9 +43,7 @@ class EventsViewModelTest {
         setUpWith(Maybe.just(testSplitEvents))
         val upcomingEventViewModel = eventsViewModel.upcomingEvent.get()
 
-        assertThat(upcomingEventViewModel, notNullValue())
-        assertThat(upcomingEventViewModel.id, equalTo(testEventDetails.id))
-        assertThat(upcomingEventViewModel.title, equalTo(testEventDetails.title))
+        checkIsUpcomingEventLoaded(upcomingEventViewModel)
     }
 
     @Test
@@ -53,11 +52,7 @@ class EventsViewModelTest {
 
         val previousEvents = eventsViewModel.previousEventsSubject.value
 
-        assertThat(previousEvents.size, equalTo(1))
-        val previousEventViewModel = (previousEvents.first() as? State.Item)?.item
-        val testPreviousApiEvent = testPreviousEvents.first()
-        assertThat(previousEventViewModel?.id, equalTo(testPreviousApiEvent.id))
-        assertThat(previousEventViewModel?.title, equalTo(testPreviousApiEvent.title))
+        checkIsPreviousEventsLoaded(previousEvents)
     }
 
     @Test
@@ -91,7 +86,6 @@ class EventsViewModelTest {
         }
     }
 
-
     @Test
     fun shouldRequestNavigationToFeaturedEventDetails() {
         setUpWith(Maybe.just(testSplitEvents))
@@ -121,6 +115,7 @@ class EventsViewModelTest {
         }
     }
 
+
     @Test
     fun shouldRequestNavigationToFeaturedEventLocation() {
         setUpWith(Maybe.just(testSplitEvents))
@@ -135,10 +130,102 @@ class EventsViewModelTest {
         }
     }
 
+    @Test
+    fun shouldRefreshPreviousEvents() {
+        setUpWith(Maybe.just(testSplitEvents.copy(previousEvents = Page(emptyList(), 1, 1))))
+        whenever(eventsRepository.getEvents()).thenReturn(Maybe.just(testSplitEvents))
+
+        eventsViewModel.refresh()
+
+        val previousEvents = eventsViewModel.previousEventsSubject.value
+        checkIsPreviousEventsLoaded(previousEvents)
+    }
+
+    @Test
+    fun shouldRefreshUpcomingEvent() {
+        testSplitEvents.run {
+            setUpWith(Maybe.just(copy(upcomingEvent = upcomingEvent.copy(id = -1))))
+        }
+        whenever(eventsRepository.getEvents()).thenReturn(Maybe.just(testSplitEvents))
+
+        eventsViewModel.refresh()
+
+        val upcomingEventViewModel = eventsViewModel.upcomingEvent.get()
+        checkIsUpcomingEventLoaded(upcomingEventViewModel)
+    }
+
+    @Test
+    fun shouldHideSwipeRefreshLoaderWhenDataRefreshed() {
+        setUpWith(Maybe.just(testSplitEvents.copy(previousEvents = Page(emptyList(), 1, 1))))
+        whenever(eventsRepository.getEvents()).thenReturn(Maybe.just(testSplitEvents))
+        val testObserver = eventsViewModel.isSwipeRefreshLoaderVisibleSubject.test()
+
+        eventsViewModel.refresh()
+
+        testObserver.assertValue { !it }
+    }
+
+    @Test
+    fun shouldRetainUpcomingEventWhenRefreshFailed() {
+        setUpWith(Maybe.just(testSplitEvents))
+        whenever(eventsRepository.getEvents()).thenReturn(Maybe.error(IOException()))
+
+        eventsViewModel.refresh()
+
+        val upcomingEventViewModel = eventsViewModel.upcomingEvent.get()
+        checkIsUpcomingEventLoaded(upcomingEventViewModel)
+    }
+
+    @Test
+    fun shouldRetainPreviousEventsWhenRefreshFailed() {
+        setUpWith(Maybe.just(testSplitEvents))
+        whenever(eventsRepository.getEvents()).thenReturn(Maybe.error(IOException()))
+
+        eventsViewModel.refresh()
+
+        val previousEvents = eventsViewModel.previousEventsSubject.value
+        checkIsPreviousEventsLoaded(previousEvents)
+    }
+
+    @Test
+    fun shouldRequestSnackBarWhenRefreshFailed() {
+        setUpWith(Maybe.just(testSplitEvents))
+        whenever(eventsRepository.getEvents()).thenReturn(Maybe.error(IOException()))
+        val testObserver = eventsViewModel.navigationSubject.test()
+
+        eventsViewModel.refresh()
+
+        testObserver.assertValue { it is NavigationRequest.SnackBar }
+    }
+
+    @Test
+    fun shouldHideSwipeRefreshLoaderWhenRefreshFailed() {
+        setUpWith(Maybe.just(testSplitEvents))
+        whenever(eventsRepository.getEvents()).thenReturn(Maybe.error(IOException()))
+        val testObserver = eventsViewModel.isSwipeRefreshLoaderVisibleSubject.test()
+
+        eventsViewModel.refresh()
+
+        testObserver.assertValue { !it }
+    }
+
     private fun setUpWith(maybe: Maybe<SplitEvents>) {
         whenever(eventsRepository.getEvents()).thenReturn(maybe)
         whenever(attendViewModel.navigationRequests).thenReturn(PublishSubject.create())
         eventsViewModel = EventsViewModel(loginStateWatcher, attendViewModel, eventsRepository, analyticsEventTracker = mock())
     }
 
+    private fun checkIsPreviousEventsLoaded(previousEvents: List<State<EventItemViewModel>>) {
+        assertThat(previousEvents.size, equalTo(1))
+        val previousEventViewModel = (previousEvents.first() as? State.Item)?.item
+        val testPreviousApiEvent = testPreviousEvents.first()
+        assertThat(previousEventViewModel?.id, equalTo(testPreviousApiEvent.id))
+        assertThat(previousEventViewModel?.title, equalTo(testPreviousApiEvent.title))
+    }
+
+    private fun checkIsUpcomingEventLoaded(upcomingEventViewModel: UpcomingEventViewModel) {
+        assertThat(upcomingEventViewModel, notNullValue())
+        assertThat(upcomingEventViewModel.id, equalTo(testEventDetails.id))
+        assertThat(upcomingEventViewModel.title, equalTo(testEventDetails.title))
+    }
 }
