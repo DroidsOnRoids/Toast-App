@@ -21,7 +21,7 @@ class ImageMapperTest {
     }
 
     @Test
-    fun shouldMapImageDtoToSingleViewModel() {
+    fun shouldMapImageDtoToFullscreenViewModel() {
         val onClick: () -> Unit = mock()
         val fullscreenPhotoViewModel = testImageDto.toFullscreenViewModel(position, onClick)
         assertThat(fullscreenPhotoViewModel.image, equalTo(testImageDto))

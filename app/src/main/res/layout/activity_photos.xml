@@ -29,7 +29,6 @@
                 android:text="@string/photos_title"
                 android:textAllCaps="true"/>
         </android.support.v7.widget.Toolbar>
-
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
@@ -37,8 +36,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:background="@color/white"
         android:padding="2dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/toolbar_shadow"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <View

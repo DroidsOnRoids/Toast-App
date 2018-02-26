@@ -76,7 +76,8 @@ class PhotosActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photos)
         setupWindow()
-        setupToolbar()
+        setupMainToolbar()
+        setupFullPhotoToolbar()
         setupViewModel()
         setupRecyclerView()
         setupViewPager()
@@ -99,9 +100,16 @@ class PhotosActivity : BaseActivity() {
         }
     }
 
-    private fun setupToolbar() {
+    private fun setupMainToolbar() {
         setSupportActionBar(photosToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+
+    private fun setupFullPhotoToolbar() {
+        fullPhotoToolbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
     }
 
     private fun setupViewModel() {
