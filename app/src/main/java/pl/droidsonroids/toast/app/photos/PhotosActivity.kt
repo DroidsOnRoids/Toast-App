@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.GridLayoutManager
 import android.view.MenuItem
@@ -20,6 +19,7 @@ import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.home.MainActivity
+import pl.droidsonroids.toast.app.utils.extensions.setVisibility
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.utils.Constants
@@ -72,8 +72,6 @@ class PhotosActivity : BaseActivity() {
     private lateinit var listAnimator: ViewsTransitionAnimator<Int>
     private lateinit var photosViewPagerAdapter: PhotosViewPagerAdapter
 
-    private var defaultStatusBarColor: Int = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photos)
@@ -91,8 +89,6 @@ class PhotosActivity : BaseActivity() {
     }
 
     private fun setupWindow() {
-        defaultStatusBarColor = window.statusBarColor
-        window.navigationBarColor = ContextCompat.getColor(this, R.color.black)
         window.sharedElementsUseOverlay = false
         window.decorView.systemUiVisibility = PhotosActivity.NORMAL_MODE
         ViewCompat.setOnApplyWindowInsetsListener(fullPhotoViewPager) { _, insets ->
@@ -146,7 +142,7 @@ class PhotosActivity : BaseActivity() {
     private fun setupPagerAnimator() {
         listAnimator = GestureTransitions.from<Int>(photosRecyclerView, getRecyclerViewTracker())
                 .into(fullPhotoViewPager, getViewPagerTracker())
-        listAnimator.addPositionUpdateListener(::applyFullPagerState)
+        listAnimator.addPositionUpdateListener(::applyFullPhotoPagerState)
     }
 
     private fun getRecyclerViewTracker(): SimpleTracker {
@@ -170,32 +166,18 @@ class PhotosActivity : BaseActivity() {
         }
     }
 
-    private fun applyFullPagerState(position: Float, isLeaving: Boolean) {
-        val isFullPhotoHidden = position == 0f
+    private fun applyFullPhotoPagerState(position: Float, isLeaving: Boolean) {
+        val isFullPhotoVisible = position != 0f
 
-        fullPhotoBackground.visibility = if (isFullPhotoHidden) View.INVISIBLE else View.VISIBLE
+        fullPhotoBackground.setVisibility(isFullPhotoVisible)
         fullPhotoBackground.alpha = position
 
-        fullPhotoToolbar.visibility = if (isFullPhotoHidden) View.INVISIBLE else View.VISIBLE
+        fullPhotoToolbar.setVisibility(isFullPhotoVisible)
         fullPhotoToolbar.alpha = position
 
-        if (isFullPhotoHidden) {
-            setDefaultSystemComponentsColor()
-        } else {
-            setSystemComponentsTranslucentColor()
-        }
-
-        if (isLeaving && isFullPhotoHidden && isImmersiveMode) {
+        if (isLeaving && isFullPhotoVisible && isImmersiveMode) {
             toggleImmersiveMode()
         }
-    }
-
-    private fun setDefaultSystemComponentsColor() {
-        window.statusBarColor = defaultStatusBarColor
-    }
-
-    private fun setSystemComponentsTranslucentColor() {
-        window.statusBarColor = ContextCompat.getColor(this, R.color.blackAlpha40)
     }
 
     private fun toggleImmersiveMode() {
