@@ -133,12 +133,12 @@ class SpeakersSearchActivity : BaseActivity() {
     private fun getLengthFilter(): InputFilter {
         return InputFilter { source, start, end, dest, dstart, dend ->
             val destString = dest.toString()
-            val keep = MAX_QUERY_LENGTH - destString.unicodeLength - (destString.codePointCount(dstart, dend))
+            val remainingCharCount = MAX_QUERY_LENGTH - destString.unicodeLength - (destString.codePointCount(dstart, dend))
             val sourceString = source.toString()
             when {
-                keep <= 0 -> ""
-                keep >= sourceString.codePointCount(start, end) -> null // keep original
-                else -> source.subSequence(start, sourceString.offsetByCodePoints(start, keep))
+                remainingCharCount <= 0 -> ""
+                remainingCharCount >= sourceString.codePointCount(start, end) -> null // keep original
+                else -> source.subSequence(start, sourceString.offsetByCodePoints(start, remainingCharCount))
             }
         }
     }
