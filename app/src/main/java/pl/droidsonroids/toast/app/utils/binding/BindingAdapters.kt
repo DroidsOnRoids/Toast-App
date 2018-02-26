@@ -28,6 +28,7 @@ fun setTransitionName(view: View, transitionName: String, elementId: Long?) {
 fun setAboutPrefix(textView: TextView, name: String) {
     textView.text = textView.context.getString(R.string.about, name.firstWord())
 }
+
 @BindingAdapter(value = ["linkEnabled"], requireAll = false)
 fun setLinkImageButtonEnabledWithColor(imageButton: ImageButton, link: String?) {
     imageButton.isEnabled = !link.isNullOrEmpty()
@@ -46,6 +47,7 @@ fun setAttendText(textView: TextView, isPastEvent: Boolean, attendStatus: Attend
         AttendStatus.ATTENDING -> if (isPastEvent) R.string.attended else R.string.attending
         AttendStatus.UNSURE -> R.string.interested_in
         AttendStatus.DECLINED, null -> R.string.attend
+        AttendStatus.ERROR -> throw IllegalArgumentException("AttendStatus.ERROR is not allowed as text value")
     }
     textView.setText(text)
 }
