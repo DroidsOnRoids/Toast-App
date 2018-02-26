@@ -31,10 +31,11 @@ import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.event.EventDetailsViewModel
 import javax.inject.Inject
 
-private const val ALPHA_MAX_VALUE = 255
-
 class EventDetailsActivity : BaseActivity() {
+
     companion object {
+        private const val ALPHA_MAX_VALUE = 255
+        private const val ADD_ANIMATION_DURATION_MS = 600L
         private const val EVENT_ID = "event_id"
         private const val COVER_IMAGE = "cover_image"
 
@@ -157,6 +158,7 @@ class EventDetailsActivity : BaseActivity() {
             val eventSpeakersAdapter = EventSpeakersAdapter()
             adapter = eventSpeakersAdapter
             layoutManager = LinearLayoutManager(context)
+            itemAnimator.addDuration = ADD_ANIMATION_DURATION_MS
 
             subscribeToSpeakersChange(eventSpeakersAdapter)
         }
