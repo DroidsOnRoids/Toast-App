@@ -49,6 +49,7 @@ class EventDetailsViewModel @Inject constructor(
         gradientColor.set(it and GRADIENT_COLOR_MASK)
     }
     private var coordinates: CoordinatesDto? = null
+    val isSpeakersLabelVisible = ObservableField(false)
 
     val eventSpeakersSubject: BehaviorSubject<List<EventSpeakerItemViewModel>> = BehaviorSubject.create()
 
@@ -103,6 +104,7 @@ class EventDetailsViewModel @Inject constructor(
     private fun onTalksLoaded(talks: List<EventTalkDto>) {
         val eventSpeakerViewModels = talks.map { it.toViewModel(::onReadMore, ::onSpeakerClick) }
         eventSpeakersSubject.onNext(eventSpeakerViewModels)
+        isSpeakersLabelVisible.set(eventSpeakerViewModels.isNotEmpty())
     }
 
     private fun onReadMore(eventSpeakerItemViewModel: EventSpeakerItemViewModel) {
@@ -119,7 +121,7 @@ class EventDetailsViewModel @Inject constructor(
 
     private fun onEventLoadError(throwable: Throwable) {
         loadingStatus.set(LoadingStatus.ERROR)
-        Timber.e(simpleClassName, "Something went wrong when fetching event details with id = $eventId", throwable)
+        Timber.e(throwable, "Something went wrong when fetching event details with id = $eventId")
     }
 
     override fun retryLoading() {
