@@ -1,7 +1,6 @@
 package pl.droidsonroids.toast.viewmodels.photos
 
 import android.arch.lifecycle.ViewModel
-import android.databinding.ObservableField
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.data.dto.ImageDto
@@ -15,7 +14,7 @@ class PhotosViewModel @Inject constructor() : ViewModel(), NavigatingViewModel {
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
 
     val photosSubject: BehaviorSubject<List<PhotoItemViewModel>> = BehaviorSubject.create()
-    val fullPhotosSubject: BehaviorSubject<List<SinglePhotoViewModel>> = BehaviorSubject.create()
+    val fullscreenPhotosSubject: BehaviorSubject<List<FullscreenPhotoViewModel>> = BehaviorSubject.create()
     private lateinit var onPhotoItemClicked: (Long) -> Unit
 
     private var photosDto: List<ImageDto> = emptyList()
@@ -29,18 +28,16 @@ class PhotosViewModel @Inject constructor() : ViewModel(), NavigatingViewModel {
             val photosViewModels = photos.mapIndexed(::imageDtoToViewModel)
             val fullPhotosViewModels = photos.mapIndexed(::fullImageDtoToViewModel)
             photosSubject.onNext(photosViewModels)
-            fullPhotosSubject.onNext(fullPhotosViewModels)
+            fullscreenPhotosSubject.onNext(fullPhotosViewModels)
         }
     }
 
     private fun imageDtoToViewModel(index: Int, image: ImageDto) =
             image.toItemViewModel(index.toLong(), onPhotoItemClicked)
 
-    private fun fullImageDtoToViewModel(index: Int, image: ImageDto): SinglePhotoViewModel {
+    private fun fullImageDtoToViewModel(index: Int, image: ImageDto): FullscreenPhotoViewModel {
         return image.toSingleViewModel(
                 position = index.toLong(),
-                loadFromCache = ObservableField(false),
-                onPhotoLoadingFinished = { },
                 onClick = ::onClick
         )
     }

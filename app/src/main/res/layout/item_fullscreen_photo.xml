@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="singlePhotoViewModel"
-            type="pl.droidsonroids.toast.viewmodels.photos.SinglePhotoViewModel"/>
+            name="fullscreenPhotoViewModel"
+            type="pl.droidsonroids.toast.viewmodels.photos.FullscreenPhotoViewModel"/>
 
         <import
             type="pl.droidsonroids.toast.utils.Constants.PhotoTransition"/>
@@ -18,14 +18,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@string/meetup_photo_desc"
-        android:onClick="@{() -> singlePhotoViewModel.onClick()}"
+        android:onClick="@{() -> fullscreenPhotoViewModel.onClick()}"
         android:scaleType="fitCenter"
         app:gest_exitEnabled="true"
         app:gest_fillViewport="true"
         app:gest_fitMethod="inside"
         app:gest_gravity="center"
-        app:gest_maxZoom="3"
+        app:gest_maxZoom="4"
         app:gest_panEnabled="true"
-        app:originalImage="@{singlePhotoViewModel.image}"/>
+        app:originalImage="@{fullscreenPhotoViewModel.image}"/>
 </layout>
 

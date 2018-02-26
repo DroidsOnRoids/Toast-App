@@ -50,18 +50,18 @@
 
     <android.support.v4.view.ViewPager
         android:id="@+id/fullPhotoViewPager"
-        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"/>
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/fullPhotoToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:navigationIcon="@drawable/ic_arrow_back"
         android:background="@color/blackAlpha40"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:visibility="invisible"
+        app:navigationIcon="@drawable/ic_arrow_back"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"/>
 
 </android.support.design.widget.CoordinatorLayout>
