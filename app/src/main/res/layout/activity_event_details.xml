@@ -49,8 +49,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:fitsSystemWindows="true"
-                    android:inAnimation="@anim/animation_fade_in"
-                    android:outAnimation="@anim/animation_fade_out"
+                    android:inAnimation="@anim/animation_slow_fade_in"
+                    android:outAnimation="@anim/animation_slow_fade_out"
                     app:gradientColor="@{eventDetailsViewModel.gradientColor}"
                     app:layout_collapseMode="parallax"/>
 

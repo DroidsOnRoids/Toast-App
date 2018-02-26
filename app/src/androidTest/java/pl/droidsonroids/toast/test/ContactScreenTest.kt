@@ -51,4 +51,21 @@ class ContactScreenTest {
             checkIfElementWithIdIsNotDisplayed(R.id.enabledSendButton)
         }
     }
+
+    @Test
+    fun isSpinnerWithTopicsExpandableAndHasCorrectData() {
+        goToContactScreen()
+        with(ContactRobot()) {
+            performClickOnElementWithId(R.id.topicSpinner)
+            performClickOnDataWithText(getString(R.string.speak_on_the_next_event))
+            checkIfSpinnerTextIsCorrect(getString(R.string.speak_on_the_next_event), R.id.topicSpinner)
+            performClickOnElementWithId(R.id.topicSpinner)
+            performClickOnDataWithText(getString(R.string.claim_a_reward))
+            checkIfSpinnerTextIsCorrect(getString(R.string.claim_a_reward), R.id.topicSpinner)
+            performClickOnElementWithId(R.id.topicSpinner)
+            performClickOnDataWithText(getString(R.string.i_want_to))
+            performClickOnDataWithText(getString(R.string.become_a_partner))
+            checkIfSpinnerTextIsCorrect(getString(R.string.become_a_partner), R.id.topicSpinner)
+        }
+    }
 }
