@@ -15,11 +15,19 @@ class FacebookRepositoryImpl @Inject constructor(private val facebookService: Fa
         return userManager.getUserInfo()?.run {
             Single.zip(
                     facebookService.getEventAttendingState(token, eventId, userId)
-                            .mapToAttendStatus(),
+                            .mapToAttendStatus()
+                            .onErrorReturnItem(AttendStatus.ERROR),
                     facebookService.getEventInterestedState(token, eventId, userId)
-                            .mapToAttendStatus(),
+                            .mapToAttendStatus()
+                            .onErrorReturnItem(AttendStatus.ERROR),
                     BiFunction<AttendStatus, AttendStatus, AttendStatus> { attendStatus, interestedStatus ->
-                        attendStatus.takeIf { it == AttendStatus.ATTENDING } ?: interestedStatus
+                        when {
+                            attendStatus == AttendStatus.ATTENDING -> AttendStatus.ATTENDING
+                            interestedStatus == AttendStatus.UNSURE -> AttendStatus.UNSURE
+                            attendStatus == AttendStatus.DECLINED
+                                    && interestedStatus == AttendStatus.DECLINED -> AttendStatus.DECLINED
+                            else -> AttendStatus.ERROR
+                        }
                     }
             )
         } ?: Single.just(AttendStatus.DECLINED)
