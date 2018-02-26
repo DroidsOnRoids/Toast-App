@@ -4,5 +4,5 @@ import io.reactivex.subjects.PublishSubject
 
 interface RefreshViewModel {
     fun refresh()
-    val swipeRefreshVisibleSubject: PublishSubject<Boolean>
+    val isSwipeRefreshLoaderVisibleSubject: PublishSubject<Boolean>
 }

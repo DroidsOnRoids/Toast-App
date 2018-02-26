@@ -76,7 +76,7 @@ class SpeakersFragment : BaseFragment() {
 
     private fun setupSwipeRefresh() {
         speakersSwipeRefresh.setOnRefreshListener(speakersViewModel::refresh)
-        compositeDisposable += speakersViewModel.swipeRefreshVisibleSubject
+        compositeDisposable += speakersViewModel.isSwipeRefreshLoaderVisibleSubject
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(speakersSwipeRefresh::setRefreshing)
     }

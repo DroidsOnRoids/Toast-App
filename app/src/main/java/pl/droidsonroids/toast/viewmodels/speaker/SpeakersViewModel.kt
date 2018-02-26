@@ -27,7 +27,7 @@ class SpeakersViewModel @Inject constructor(
         private val clock: Clock
 ) : BaseSpeakerListViewModel(), RefreshViewModel {
 
-    override val swipeRefreshVisibleSubject: PublishSubject<Boolean> = PublishSubject.create()
+    override val isSwipeRefreshLoaderVisibleSubject: PublishSubject<Boolean> = PublishSubject.create()
 
     val isSortingDetailsVisible: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
     val sortingType = ObservableField(SortingType.DATE)
@@ -138,11 +138,11 @@ class SpeakersViewModel @Inject constructor(
 
     private fun onRefreshError(throwable: Throwable) {
         navigationSubject.onNext(NavigationRequest.SnackBar(R.string.cannot_refresh_data))
-        swipeRefreshVisibleSubject.onNext(false)
+        isSwipeRefreshLoaderVisibleSubject.onNext(false)
     }
 
     private fun refreshSuccessful() {
-        swipeRefreshVisibleSubject.onNext(false)
+        isSwipeRefreshLoaderVisibleSubject.onNext(false)
         loadingStatus.set(LoadingStatus.PENDING)
         lastLoadingStartTimeMillis = clock.elapsedRealtime()
     }

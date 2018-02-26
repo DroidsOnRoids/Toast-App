@@ -10,6 +10,7 @@ import org.junit.Test
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
+import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.api.speaker.ApiSpeaker
 import pl.droidsonroids.toast.data.mapper.toDto
@@ -20,6 +21,7 @@ import pl.droidsonroids.toast.testSpeakersPage
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.SortingType
+import java.io.IOException
 
 class SpeakersViewModelTest : RxTestBase() {
 
@@ -59,7 +61,7 @@ class SpeakersViewModelTest : RxTestBase() {
 
     @Test
     fun shouldFailLoadFirstPage() {
-        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(Exception()))
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(IOException()))
         speakersViewModel = SpeakersViewModel(speakersRepository, analyticsEventTracker, clock)
 
         val speakerItemViewModelList: List<State<SpeakerItemViewModel>> = speakersViewModel.speakersSubject.value
@@ -70,7 +72,7 @@ class SpeakersViewModelTest : RxTestBase() {
 
     @Test
     fun shouldLoadFirstPageAfterRetry() {
-        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(Exception()))
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(IOException()))
         speakersViewModel = SpeakersViewModel(speakersRepository, analyticsEventTracker, clock)
 
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPage))
@@ -95,7 +97,7 @@ class SpeakersViewModelTest : RxTestBase() {
     fun shouldHaveErrorItemWhenNextPageLoadFailed() {
         val testSpeakersPageWithNextPageAvailable = testSpeakersPage.copy(allPagesCount = 2)
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPageWithNextPageAvailable))
-        whenever(speakersRepository.getSpeakersPage(eq(2), any())).thenReturn(Single.error(Exception()))
+        whenever(speakersRepository.getSpeakersPage(eq(2), any())).thenReturn(Single.error(IOException()))
         speakersViewModel = SpeakersViewModel(speakersRepository, analyticsEventTracker, clock)
 
         speakersViewModel.loadNextPage()
@@ -138,7 +140,7 @@ class SpeakersViewModelTest : RxTestBase() {
 
     @Test
     fun shouldSortSpeakersAlphabetical() {
-        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(Exception()))
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(IOException()))
         speakersViewModel = SpeakersViewModel(speakersRepository, analyticsEventTracker, clock)
 
         whenever(speakersRepository.getSpeakersPage(sortingQuery = SortingType.ALPHABETICAL.toQuery())).thenReturn(Single.just(testSpeakersPage))
@@ -149,7 +151,7 @@ class SpeakersViewModelTest : RxTestBase() {
 
     @Test
     fun shouldSortSpeakersByDate() {
-        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(Exception()))
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(IOException()))
         speakersViewModel = SpeakersViewModel(speakersRepository, analyticsEventTracker, clock)
 
         whenever(speakersRepository.getSpeakersPage(sortingQuery = SortingType.DATE.toQuery())).thenReturn(Single.just(testSpeakersPage))
@@ -170,12 +172,71 @@ class SpeakersViewModelTest : RxTestBase() {
 
     @Test
     fun shouldLoadFirstPageAfterAlphabeticalSorting() {
-        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(Exception()))
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(IOException()))
         speakersViewModel = SpeakersViewModel(speakersRepository, analyticsEventTracker, clock)
 
         whenever(speakersRepository.getSpeakersPage(pageNumber = any(), sortingQuery = eq(SortingType.ALPHABETICAL.toQuery()))).thenReturn(Single.just(testSpeakersPage))
 
         speakersViewModel.onAlphabeticalSortingClick()
         checkIsFirstPageLoaded()
+    }
+
+    @Test
+    fun shouldRefreshData() {
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(Page(items = emptyList(), pageNumber = 1, allPagesCount = 1)))
+        speakersViewModel = SpeakersViewModel(speakersRepository, analyticsEventTracker, clock)
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPage))
+
+        speakersViewModel.refresh()
+
+        checkIsFirstPageLoaded()
+    }
+
+    @Test
+    fun shouldHideSwipeRefreshLoaderWhenDataRefreshed() {
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(Page(items = emptyList(), pageNumber = 1, allPagesCount = 1)))
+        speakersViewModel = SpeakersViewModel(speakersRepository, analyticsEventTracker, clock)
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPage))
+        val testObserver = speakersViewModel.isSwipeRefreshLoaderVisibleSubject.test()
+
+        speakersViewModel.refresh()
+
+        testObserver.assertValue { !it }
+    }
+
+    @Test
+    fun shouldRetainDataWhenRefreshFailed() {
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPage))
+        speakersViewModel = SpeakersViewModel(speakersRepository, analyticsEventTracker, clock)
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(IOException()))
+
+        speakersViewModel.refresh()
+
+        checkIsFirstPageLoaded()
+    }
+
+    @Test
+    fun shouldRequestSnackBarWhenRefreshFailed() {
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPage))
+        speakersViewModel = SpeakersViewModel(speakersRepository, analyticsEventTracker, clock)
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(IOException()))
+        val testObserver = speakersViewModel.navigationSubject.test()
+
+        speakersViewModel.refresh()
+
+        testObserver.assertValue { it is NavigationRequest.SnackBar }
+    }
+
+
+    @Test
+    fun shouldHideSwipeRefreshLoaderWhenRefreshFailed() {
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(Page(items = emptyList(), pageNumber = 1, allPagesCount = 1)))
+        speakersViewModel = SpeakersViewModel(speakersRepository, analyticsEventTracker, clock)
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(IOException()))
+        val testObserver = speakersViewModel.isSwipeRefreshLoaderVisibleSubject.test()
+
+        speakersViewModel.refresh()
+
+        testObserver.assertValue { !it }
     }
 }

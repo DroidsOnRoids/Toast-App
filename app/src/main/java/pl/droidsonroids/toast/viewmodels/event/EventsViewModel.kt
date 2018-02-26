@@ -46,7 +46,7 @@ class EventsViewModel @Inject constructor(
     val isPreviousEventsEmpty = ObservableField<Boolean>(true)
     val upcomingEvent = ObservableField<UpcomingEventViewModel>()
     val previousEventsSubject: BehaviorSubject<List<State<EventItemViewModel>>> = BehaviorSubject.create()
-    override val swipeRefreshVisibleSubject: PublishSubject<Boolean> = PublishSubject.create()
+    override val isSwipeRefreshLoaderVisibleSubject: PublishSubject<Boolean> = PublishSubject.create()
 
     private var isPreviousEventsLoading: Boolean = false
     private var nextPageNumber: Int? = null
@@ -208,13 +208,13 @@ class EventsViewModel @Inject constructor(
 
     private fun onRefreshError() {
         navigationSubject.onNext(NavigationRequest.SnackBar(R.string.cannot_refresh_data))
-        swipeRefreshVisibleSubject.onNext(false)
+        isSwipeRefreshLoaderVisibleSubject.onNext(false)
     }
 
     private fun onEventsRefreshed(events: Pair<UpcomingEventViewModel, Page<State.Item<EventItemViewModel>>>) {
         val (upcomingEventViewModel, previousEventsPage) = events
         upcomingEvent.set(upcomingEventViewModel)
         setPreviousItems(previousEventsPage.items.addLoadingItemIfNeeded(previousEventsPage))
-        swipeRefreshVisibleSubject.onNext(false)
+        isSwipeRefreshLoaderVisibleSubject.onNext(false)
     }
 }
