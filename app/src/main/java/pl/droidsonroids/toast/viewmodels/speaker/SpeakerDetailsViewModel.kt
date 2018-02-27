@@ -39,6 +39,7 @@ class SpeakerDetailsViewModel @Inject constructor(
     val website = ObservableField<String?>(null)
     val twitter = ObservableField<String?>(null)
     val email = ObservableField<String?>(null)
+    val isTalksLabelVisible = ObservableField(false)
 
     val talksSubject: BehaviorSubject<List<SpeakerTalkViewModel>> = BehaviorSubject.create()
 
@@ -105,10 +106,15 @@ class SpeakerDetailsViewModel @Inject constructor(
             website.set(it.website)
             twitter.set(it.twitter)
             email.set(it.email)
-            talksSubject.onNext(it.talks.map {
-                it.toViewModel(::onReadMoreClick, ::onEventClick)
-            })
+            onTalksLoaded(it.talks)
         }
+    }
+
+    private fun onTalksLoaded(talks: List<SpeakerTalkDto>) {
+        talksSubject.onNext(talks.map {
+            it.toViewModel(::onReadMoreClick, ::onEventClick)
+        })
+        isTalksLabelVisible.set(talks.isNotEmpty())
     }
 
     private fun onReadMoreClick(talkDto: SpeakerTalkDto) {
