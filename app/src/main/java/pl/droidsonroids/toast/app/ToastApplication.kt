@@ -2,6 +2,8 @@ package pl.droidsonroids.toast.app
 
 import android.app.Activity
 import android.app.Application
+import android.util.Log
+import com.google.firebase.crash.FirebaseCrash
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import pl.droidsonroids.toast.BuildConfig
@@ -16,7 +18,6 @@ class ToastApplication : Application(), HasActivityInjector {
 
     override fun activityInjector() = activityInjector
 
-
     override fun onCreate() {
         super.onCreate()
         DaggerAppComponent
@@ -25,8 +26,23 @@ class ToastApplication : Application(), HasActivityInjector {
                 .build()
                 .inject(this)
 
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
+        Timber.plant(
+                if (BuildConfig.DEBUG) {
+                    Timber.DebugTree()
+                } else {
+                    CrashReportingTree()
+                }
+        )
+    }
+
+    private inner class CrashReportingTree : Timber.Tree() {
+
+        override fun log(priority: Int, tag: String?, message: String, throwable: Throwable?) {
+            if (priority != Log.VERBOSE && priority != Log.DEBUG) {
+                val exception = throwable ?: Exception(message)
+                FirebaseCrash.logcat(priority, tag, message)
+                FirebaseCrash.report(exception)
+            }
         }
     }
 }

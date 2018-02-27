@@ -147,6 +147,7 @@ dependencies {
 
     // firebase
     implementation 'com.google.firebase:firebase-core:11.8.0'
+    implementation 'com.google.firebase:firebase-crash:11.8.0'
 
     // timber logger
     implementation 'com.jakewharton.timber:timber:4.6.1'
