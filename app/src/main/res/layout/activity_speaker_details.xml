@@ -140,6 +140,7 @@
                     android:layout_marginStart="@dimen/margin_large"
                     android:layout_marginTop="@dimen/margin_large"
                     android:text="@string/participated_in"
+                    android:visibility="@{speakerDetailsViewModel.isTalksLabelVisible}"
                     android:textAllCaps="true"/>
 
                 <android.support.v7.widget.RecyclerView
