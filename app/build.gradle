@@ -12,6 +12,8 @@ apply plugin: 'composer'
 
 apply plugin: "pl.droidsonroids.ui.test"
 
+apply plugin: 'io.fabric'
+
 buildscript {
     repositories {
         jcenter()
@@ -147,7 +149,11 @@ dependencies {
 
     // firebase
     implementation 'com.google.firebase:firebase-core:11.8.0'
-    implementation 'com.google.firebase:firebase-crash:11.8.0'
+
+    // crashlytics
+    implementation('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
+        transitive = true
+    }
 
     // timber logger
     implementation 'com.jakewharton.timber:timber:4.6.1'

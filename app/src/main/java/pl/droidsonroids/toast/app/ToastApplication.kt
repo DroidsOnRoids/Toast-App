@@ -3,13 +3,18 @@ package pl.droidsonroids.toast.app
 import android.app.Activity
 import android.app.Application
 import android.util.Log
-import com.google.firebase.crash.FirebaseCrash
+import com.crashlytics.android.Crashlytics
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import io.fabric.sdk.android.Fabric
 import pl.droidsonroids.toast.BuildConfig
 import pl.droidsonroids.toast.di.DaggerAppComponent
 import timber.log.Timber
 import javax.inject.Inject
+
+private const val CRASHLYTICS_KEY_PRIORITY = "priority"
+private const val CRASHLYTICS_KEY_TAG = "tag"
+private const val CRASHLYTICS_KEY_MESSAGE = "message"
 
 class ToastApplication : Application(), HasActivityInjector {
 
@@ -30,18 +35,22 @@ class ToastApplication : Application(), HasActivityInjector {
                 if (BuildConfig.DEBUG) {
                     Timber.DebugTree()
                 } else {
-                    CrashReportingTree()
+                    CrashlyticsTree()
                 }
         )
+
+        Fabric.with(this, Crashlytics())
     }
 
-    private inner class CrashReportingTree : Timber.Tree() {
+    private inner class CrashlyticsTree : Timber.Tree() {
 
         override fun log(priority: Int, tag: String?, message: String, throwable: Throwable?) {
-            if (priority != Log.VERBOSE && priority != Log.DEBUG) {
+            if (priority == Log.ERROR) {
                 val exception = throwable ?: Exception(message)
-                FirebaseCrash.logcat(priority, tag, message)
-                FirebaseCrash.report(exception)
+                Crashlytics.setInt(CRASHLYTICS_KEY_PRIORITY, priority)
+                Crashlytics.setString(CRASHLYTICS_KEY_TAG, tag)
+                Crashlytics.setString(CRASHLYTICS_KEY_MESSAGE, message)
+                Crashlytics.logException(exception)
             }
         }
     }
