@@ -142,4 +142,9 @@ class EventDetailsViewModel @Inject constructor(
     fun onTransitionEnd() {
         loadFromCache.set(false)
     }
+
+    fun invalidateLoading() {
+        //        Due to shared element transition bug https://github.com/UweTrottmann/SeriesGuide/issues/522
+        loadingStatus.notifyChange()
+    }
 }

@@ -83,6 +83,11 @@ class EventDetailsActivity : BaseActivity() {
         addInsetAppBehaviorToLoadingLayout()
     }
 
+    override fun onEnterAnimationComplete() {
+        eventDetailsViewModel.onTransitionEnd()
+        eventDetailsViewModel.invalidateLoading()
+    }
+
     private fun postponeSharedTransition() {
         postponeEnterTransition()
         isTransitionPostponed = true
@@ -125,7 +130,6 @@ class EventDetailsActivity : BaseActivity() {
     private fun resumeSharedTransition() {
         startPostponedEnterTransition()
         isTransitionPostponed = false
-        eventDetailsViewModel.onTransitionEnd()
     }
 
     private fun handleNavigationRequest(it: NavigationRequest) {
@@ -180,6 +184,7 @@ class EventDetailsActivity : BaseActivity() {
     override fun onStart() {
         super.onStart()
         eventDetailsViewModel.invalidateAttendState()
+        eventDetailsViewModel.invalidateLoading()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
