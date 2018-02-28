@@ -10,6 +10,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.NavUtils
 import android.support.v7.widget.LinearLayoutManager
+import android.text.InputFilter
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AccelerateInterpolator
@@ -26,6 +27,7 @@ import pl.droidsonroids.toast.app.utils.builders.RevealAnimatorBuilder
 import pl.droidsonroids.toast.app.utils.builders.ViewTreeObserverBuilder
 import pl.droidsonroids.toast.app.utils.callbacks.LazyLoadingScrollListener
 import pl.droidsonroids.toast.app.utils.extensions.disableActivityTransitionAnimations
+import pl.droidsonroids.toast.app.utils.extensions.unicodeLength
 import pl.droidsonroids.toast.databinding.ActivitySpeakersSearchBinding
 import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersSearchViewModel
@@ -37,6 +39,7 @@ class SpeakersSearchActivity : BaseActivity() {
     companion object {
         private const val EXTRA_CIRCULAR_REVEAL_X = "EXTRA_CIRCULAR_REVEAL_X"
         private const val EXTRA_CIRCULAR_REVEAL_Y = "EXTRA_CIRCULAR_REVEAL_Y"
+        private const val MAX_QUERY_LENGTH = 2000
 
         fun createIntent(context: Context, revealCenterX: Int? = null, revealCenterY: Int? = null): Intent {
             val intent = Intent(context, SpeakersSearchActivity::class.java)
@@ -123,6 +126,20 @@ class SpeakersSearchActivity : BaseActivity() {
                 setKeyboardVisibility(isVisible = false)
             }
             true
+        }
+        searchBox.filters = arrayOf(getLengthFilter())
+    }
+
+    private fun getLengthFilter(): InputFilter {
+        return InputFilter { source, start, end, dest, dstart, dend ->
+            val destString = dest.toString()
+            val remainingCharCount = MAX_QUERY_LENGTH - destString.unicodeLength - (destString.codePointCount(dstart, dend))
+            val sourceString = source.toString()
+            when {
+                remainingCharCount <= 0 -> ""
+                remainingCharCount >= sourceString.codePointCount(start, end) -> null // keep original
+                else -> source.subSequence(start, sourceString.offsetByCodePoints(start, remainingCharCount))
+            }
         }
     }
 
