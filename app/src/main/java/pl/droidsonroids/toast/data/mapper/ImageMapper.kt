@@ -6,7 +6,7 @@ import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.viewmodels.photos.FullscreenPhotoViewModel
 import pl.droidsonroids.toast.viewmodels.photos.PhotoItemViewModel
 
-fun ImageDto.toItemViewModel(position: Long, onClick: (Long) -> Unit): PhotoItemViewModel {
+fun ImageDto.toItemViewModel(position: Int, onClick: (Int) -> Unit): PhotoItemViewModel {
     return PhotoItemViewModel(
             position = position,
             image = this,
@@ -14,7 +14,7 @@ fun ImageDto.toItemViewModel(position: Long, onClick: (Long) -> Unit): PhotoItem
     )
 }
 
-fun ImageDto.toFullscreenViewModel(position: Long, onClick: () -> Unit): FullscreenPhotoViewModel {
+fun ImageDto.toFullscreenViewModel(position: Int, onClick: () -> Unit): FullscreenPhotoViewModel {
     return FullscreenPhotoViewModel(
             position = position,
             image = this,

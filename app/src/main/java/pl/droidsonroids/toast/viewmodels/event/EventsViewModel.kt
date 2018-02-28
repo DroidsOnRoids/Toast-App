@@ -46,8 +46,6 @@ class EventsViewModel @Inject constructor(
     private var isPreviousEventsLoading: Boolean = false
     private var nextPageNumber: Int? = null
     private var compositeDisposable = CompositeDisposable()
-    private val Any.simpleClassName: String get() = javaClass.simpleName
-
 
     init {
         loadEvents()

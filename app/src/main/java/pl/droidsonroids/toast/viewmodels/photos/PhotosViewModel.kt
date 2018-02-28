@@ -15,16 +15,12 @@ class PhotosViewModel @Inject constructor() : ViewModel(), NavigatingViewModel {
 
     val photosSubject: BehaviorSubject<List<PhotoItemViewModel>> = BehaviorSubject.create()
     val fullscreenPhotosSubject: BehaviorSubject<List<FullscreenPhotoViewModel>> = BehaviorSubject.create()
-    private lateinit var onPhotoItemClicked: (Long) -> Unit
 
     private var photosDto: List<ImageDto> = emptyList()
 
-    var isSharedTransitionInProgress = false
-
-    fun init(photos: List<ImageDto>, onPhotoItemClicked: (Long) -> Unit) {
+    fun init(photos: List<ImageDto>) {
         if (!photosSubject.hasValue()) {
             photosDto = photos
-            this.onPhotoItemClicked = onPhotoItemClicked
             val photosViewModels = photos.mapIndexed(::imageDtoToViewModel)
             val fullPhotosViewModels = photos.mapIndexed(::fullImageDtoToViewModel)
             photosSubject.onNext(photosViewModels)
@@ -33,13 +29,17 @@ class PhotosViewModel @Inject constructor() : ViewModel(), NavigatingViewModel {
     }
 
     private fun imageDtoToViewModel(index: Int, image: ImageDto) =
-            image.toItemViewModel(index.toLong(), onPhotoItemClicked)
+            image.toItemViewModel(index, ::onPhotoItemClicked)
 
     private fun fullImageDtoToViewModel(index: Int, image: ImageDto) =
-            image.toFullscreenViewModel(index.toLong(), ::onClick)
+            image.toFullscreenViewModel(index, ::onFullscreenPhotoClick)
 
-    fun onClick() {
+    fun onFullscreenPhotoClick() {
         navigationSubject.onNext(NavigationRequest.ToggleImmersive)
+    }
+
+    fun onPhotoItemClicked(index: Int) {
+        navigationSubject.onNext(NavigationRequest.FullscreenPhoto(index))
     }
 
 }

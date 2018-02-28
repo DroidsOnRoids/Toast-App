@@ -11,6 +11,8 @@ import android.view.View
 import com.alexvasilkov.gestures.transition.GestureTransitions
 import com.alexvasilkov.gestures.transition.ViewsTransitionAnimator
 import com.alexvasilkov.gestures.transition.tracker.SimpleTracker
+import com.bumptech.glide.Glide
+import com.bumptech.glide.MemoryCategory
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_photos.*
@@ -19,7 +21,7 @@ import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.home.MainActivity
-import pl.droidsonroids.toast.app.utils.extensions.setVisibility
+import pl.droidsonroids.toast.app.utils.binding.setVisible
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.utils.Constants
@@ -69,8 +71,7 @@ class PhotosActivity : BaseActivity() {
     private val isImmersiveMode
         get() = window.decorView.systemUiVisibility and PhotosActivity.IMMERSIVE_MODE == PhotosActivity.IMMERSIVE_MODE
 
-    private lateinit var listAnimator: ViewsTransitionAnimator<Int>
-    private lateinit var photosViewPagerAdapter: PhotosViewPagerAdapter
+    private var pagerAnimator: ViewsTransitionAnimator<Int>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,15 +83,10 @@ class PhotosActivity : BaseActivity() {
         setupRecyclerView()
         setupViewPager()
         setupPagerAnimator()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        photosViewModel.isSharedTransitionInProgress = false
+        increaseGlideMemoryCache()
     }
 
     private fun setupWindow() {
-        window.sharedElementsUseOverlay = false
         window.decorView.systemUiVisibility = PhotosActivity.NORMAL_MODE
         ViewCompat.setOnApplyWindowInsetsListener(fullPhotoViewPager) { _, insets ->
             for (i in 0 until fullPhotoViewPager.childCount) {
@@ -113,7 +109,7 @@ class PhotosActivity : BaseActivity() {
     }
 
     private fun setupViewModel() {
-        photosViewModel.init(photos, ::onPhotoItemClicked)
+        photosViewModel.init(photos)
         compositeDisposable += photosViewModel.navigationSubject
                 .subscribe(::handleNavigationRequest)
     }
@@ -134,23 +130,23 @@ class PhotosActivity : BaseActivity() {
     }
 
     private fun setupViewPager() {
-        photosViewPagerAdapter = PhotosViewPagerAdapter(photosViewModel.fullscreenPhotosSubject.value)
+        val photosViewPagerAdapter = PhotosViewPagerAdapter()
         fullPhotoViewPager.adapter = photosViewPagerAdapter
         fullPhotoViewPager.pageMargin = resources.getDimensionPixelSize(R.dimen.margin_large)
-        photosViewPagerAdapter.notifyDataSetChanged()
 
         subscribeToFullscreenPhotosChange()
     }
 
     private fun subscribeToFullscreenPhotosChange() {
+        val pagerAdapter = fullPhotoViewPager.adapter as PhotosViewPagerAdapter
         compositeDisposable += photosViewModel.fullscreenPhotosSubject
-                .subscribe { this.photosViewPagerAdapter.setData(it) }
+                .subscribe(pagerAdapter::setData)
     }
 
     private fun setupPagerAnimator() {
-        listAnimator = GestureTransitions.from<Int>(photosRecyclerView, getRecyclerViewTracker())
+        pagerAnimator = GestureTransitions.from<Int>(photosRecyclerView, getRecyclerViewTracker())
                 .into(fullPhotoViewPager, getViewPagerTracker())
-        listAnimator.addPositionUpdateListener(::applyFullPhotoPagerState)
+                .apply { addPositionUpdateListener(::applyFullPhotoPagerState) }
     }
 
     private fun getRecyclerViewTracker(): SimpleTracker {
@@ -162,26 +158,23 @@ class PhotosActivity : BaseActivity() {
     }
 
     private fun getViewPagerTracker(): SimpleTracker {
+        val pagerAdapter = fullPhotoViewPager.adapter as PhotosViewPagerAdapter
         return object : SimpleTracker() {
             public override fun getViewAt(position: Int): View? {
-                val holder = photosViewPagerAdapter.getViewHolder(position)
-                return if (holder == null) {
-                    null
-                } else {
-                    photosViewPagerAdapter.getPhotoView(holder)
-                }
+                val holder = pagerAdapter.getViewHolder(position)
+                return holder?.let(pagerAdapter::getPhotoView)
             }
         }
     }
 
-    private fun applyFullPhotoPagerState(position: Float, isLeaving: Boolean) {
-        val isFullPhotoVisible = position != 0f
+    private fun applyFullPhotoPagerState(fullPhotoVisibilityOffset: Float, isLeaving: Boolean) {
+        val isFullPhotoVisible = fullPhotoVisibilityOffset != 0f
 
-        fullPhotoBackground.setVisibility(isFullPhotoVisible)
-        fullPhotoBackground.alpha = position
+        fullPhotoBackground.setVisible(isFullPhotoVisible)
+        fullPhotoBackground.alpha = fullPhotoVisibilityOffset
 
-        fullPhotoToolbar.setVisibility(isFullPhotoVisible)
-        fullPhotoToolbar.alpha = position
+        fullPhotoToolbar.setVisible(isFullPhotoVisible)
+        fullPhotoToolbar.alpha = fullPhotoVisibilityOffset
 
         if (isLeaving && isFullPhotoVisible && isImmersiveMode) {
             toggleImmersiveMode()
@@ -194,27 +187,41 @@ class PhotosActivity : BaseActivity() {
         fullPhotoToolbar.animate().translationY(appBarTranslation).start()
     }
 
-    private fun onPhotoItemClicked(index: Long) {
-        listAnimator.enter(index.toInt(), true)
-    }
-
     private fun handleNavigationRequest(navigationRequest: NavigationRequest) {
         when (navigationRequest) {
-            NavigationRequest.ToggleImmersive -> {
-                toggleImmersiveMode()
-            }
+            is NavigationRequest.FullscreenPhoto -> onPhotoItemClicked(navigationRequest.index)
+            NavigationRequest.ToggleImmersive -> toggleImmersiveMode()
             else -> navigator.dispatch(this, navigationRequest)
         }
     }
 
+    private fun onPhotoItemClicked(index: Int) {
+        openFullPhoto(index)
+    }
+
+    private fun increaseGlideMemoryCache() {
+        Glide.get(this).setMemoryCategory(MemoryCategory.HIGH)
+    }
+
+    private fun setDefaultGlideMemoryCache() {
+        Glide.get(this).setMemoryCategory(MemoryCategory.NORMAL)
+    }
+
+    private fun isFullPhotoOpened() = pagerAnimator?.isLeaving == false
+
+    private fun openFullPhoto(index: Int) {
+        pagerAnimator?.enter(index, true)
+    }
+
+    private fun closeFullPhoto() {
+        pagerAnimator?.exit(true)
+    }
+
     override fun onBackPressed() {
-        if (listAnimator.isLeaving) {
-            super.onBackPressed()
+        if (isFullPhotoOpened()) {
+            closeFullPhoto()
         } else {
-            listAnimator.exit(true)
-        }
-        if (isImmersiveMode) {
-            toggleImmersiveMode()
+            super.onBackPressed()
         }
     }
 
@@ -237,6 +244,7 @@ class PhotosActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
+        setDefaultGlideMemoryCache()
         compositeDisposable.dispose()
         super.onDestroy()
     }

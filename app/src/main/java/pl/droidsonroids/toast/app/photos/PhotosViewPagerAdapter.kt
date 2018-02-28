@@ -9,8 +9,8 @@ import kotlinx.android.synthetic.main.item_fullscreen_photo.view.*
 import pl.droidsonroids.toast.databinding.ItemFullscreenPhotoBinding
 import pl.droidsonroids.toast.viewmodels.photos.FullscreenPhotoViewModel
 
-class PhotosViewPagerAdapter(private var fullscreenPhotoViewModels: List<FullscreenPhotoViewModel>) : RecyclePagerAdapter<PhotosViewPagerAdapter.FullPhotoViewHolder>() {
-
+class PhotosViewPagerAdapter : RecyclePagerAdapter<PhotosViewPagerAdapter.FullPhotoViewHolder>() {
+    private var fullscreenPhotoViewModels: List<FullscreenPhotoViewModel> = emptyList()
 
     override fun onCreateViewHolder(container: ViewGroup): FullPhotoViewHolder {
         val singlePhotoBinding = ItemFullscreenPhotoBinding.inflate(LayoutInflater.from(container.context), container, false)

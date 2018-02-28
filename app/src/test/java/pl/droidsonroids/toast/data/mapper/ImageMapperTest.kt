@@ -8,11 +8,11 @@ import org.junit.Test
 import pl.droidsonroids.toast.testImageDto
 
 class ImageMapperTest {
-    private val position = 1L
+    private val position = 1
 
     @Test
     fun shouldMapImageDtoToItemViewModel() {
-        val action: (Long) -> Unit = mock()
+        val action: (Int) -> Unit = mock()
         val photoItemViewModel = testImageDto.toItemViewModel(position, action)
         assertThat(photoItemViewModel.image, equalTo(testImageDto))
         assertThat(photoItemViewModel.position, equalTo(position))
