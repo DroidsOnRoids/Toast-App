@@ -1,7 +1,7 @@
 package pl.droidsonroids.toast.app.utils
 
 import pl.droidsonroids.toast.R
-import pl.droidsonroids.toast.app.utils.extensions.getUnicodeLength
+import pl.droidsonroids.toast.app.utils.extensions.unicodeLength
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.StringProvider
 import javax.inject.Inject
@@ -31,8 +31,8 @@ class ContactFormValidator @Inject constructor(private val stringProvider: Strin
     fun getMessageError(messageInput: CharSequence): String? {
         return when {
             messageInput.isEmpty() -> stringProvider.getString(R.string.empty_message_error)
-            messageInput.getUnicodeLength() < MIN_MESSAGE_LENGTH -> stringProvider.getString(R.string.min_message_length_error)
-            messageInput.getUnicodeLength() > MAX_MESSAGE_LENGTH -> stringProvider.getString(R.string.max_message_length_error)
+            messageInput.unicodeLength < MIN_MESSAGE_LENGTH -> stringProvider.getString(R.string.min_message_length_error)
+            messageInput.unicodeLength > MAX_MESSAGE_LENGTH -> stringProvider.getString(R.string.max_message_length_error)
             else -> null
         }
     }
