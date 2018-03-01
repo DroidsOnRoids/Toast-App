@@ -19,7 +19,7 @@ import pl.droidsonroids.toast.viewmodels.RefreshViewModel
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-private const val MIN_LOADING_DELAY = 500
+private const val MIN_LOADING_DELAY_MS = 500
 
 class SpeakersViewModel @Inject constructor(
         private val speakersRepository: SpeakersRepository,
@@ -121,7 +121,7 @@ class SpeakersViewModel @Inject constructor(
 
     private fun <T> Single<T>.addLoadingDelay() = flatMap {
         Single.just(it)
-                .delay(MIN_LOADING_DELAY + lastLoadingStartTimeMillis - clock.elapsedRealtime(), TimeUnit.MILLISECONDS)
+                .delay(MIN_LOADING_DELAY_MS + lastLoadingStartTimeMillis - clock.elapsedRealtime(), TimeUnit.MILLISECONDS)
     }
 
     override fun refresh() {

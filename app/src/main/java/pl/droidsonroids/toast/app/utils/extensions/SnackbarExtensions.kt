@@ -17,16 +17,21 @@ fun Snackbar.setNavigationViewAnchor() = apply {
     }
 }
 
-fun View.showSnackbar(request: NavigationRequest.SnackBar, length: Int = Snackbar.LENGTH_SHORT, onDismiss: () -> Unit = {}) {
+fun View.showSnackbar(request: NavigationRequest.SnackBar, length: Int = Snackbar.LENGTH_SHORT, apply: Snackbar.() -> Snackbar = { this }, onDismiss: () -> Unit = {}) {
     Snackbar.make(this, request.stringRes, length)
             .apply {
                 view.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
             }
-            .addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
-                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                    onDismiss()
-                }
-            })
+            .apply()
+            .addCallback(onDismiss = onDismiss)
             .setNavigationViewAnchor()
             .show()
 }
+
+inline fun Snackbar.addCallback(crossinline onShow: () -> Unit = {}, crossinline onDismiss: () -> Unit = {}) = addCallback(
+        object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
+            override fun onShown(transientBottomBar: Snackbar?) = onShow()
+
+            override fun onDismissed(transientBottomBar: Snackbar?, event: Int) = onDismiss()
+        }
+)

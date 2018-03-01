@@ -22,8 +22,8 @@ import pl.droidsonroids.toast.app.utils.callbacks.LazyLoadingScrollListener
 import pl.droidsonroids.toast.app.utils.extensions.showSnackbar
 import pl.droidsonroids.toast.databinding.FragmentEventsBinding
 import pl.droidsonroids.toast.utils.NavigationRequest
-import pl.droidsonroids.toast.utils.removeFirst
 import pl.droidsonroids.toast.viewmodels.event.EventsViewModel
+import java.util.*
 import javax.inject.Inject
 
 private const val TOP_BAR_TRANSLATION_FACTOR = 2f
@@ -70,14 +70,14 @@ class EventsFragment : BaseFragment() {
         }
     }
 
-    private val snackbarQueue = mutableListOf<NavigationRequest.SnackBar>()
+    private val snackbarQueue = LinkedList<NavigationRequest.SnackBar>()
 
     private fun showNextSnackbar() {
-        if (isVisible && snackbarQueue.isNotEmpty()) {
-            eventsScrollContainer.showSnackbar(snackbarQueue.first()) {
-                snackbarQueue.removeFirst()
+        val snackbarRequest = snackbarQueue.poll()
+        if (isVisible && snackbarRequest != null) {
+            eventsScrollContainer.showSnackbar(snackbarRequest, onDismiss = {
                 showNextSnackbar()
-            }
+            })
         }
     }
 
