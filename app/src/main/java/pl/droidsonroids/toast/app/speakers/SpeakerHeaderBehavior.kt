@@ -9,13 +9,11 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.utils.extensions.haveSize
-import timber.log.Timber
 import kotlin.math.abs
 
 private const val ACCELERATE_INTERPOLATOR_FACTOR = 0.5f
 private const val DECELERATE_INTERPOLATOR_FACTOR = 2f
 private const val UNKNOWN_VALUE = -1f
-private const val LOG_TAG = "SPEAKER_BEHAVIOR"
 
 class SpeakerHeaderBehavior(private val context: Context, private val attrs: AttributeSet? = null) : CoordinatorLayout.Behavior<View>() {
     private var childStartCenterXPosition = 0f
@@ -44,7 +42,6 @@ class SpeakerHeaderBehavior(private val context: Context, private val attrs: Att
             val appBarClosingOffset = calculateToolbarClosingOffset(dependency as AppBarLayout)
             child.updateViewSize(appBarClosingOffset)
             child.updateViewPosition(appBarClosingOffset)
-            Timber.wtf("${dependency.y}y ${dependency.translationY}ty ${dependency.height}h ${(dependency as AppBarLayout).totalScrollRange}t")
         }
         return true
     }
