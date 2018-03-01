@@ -8,7 +8,7 @@ import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import pl.droidsonroids.toast.R
-import pl.droidsonroids.toast.app.utils.extensions.haveSize
+import pl.droidsonroids.toast.app.utils.extensions.hasSize
 import kotlin.math.abs
 
 private const val ACCELERATE_INTERPOLATOR_FACTOR = 0.5f
@@ -37,7 +37,7 @@ class SpeakerHeaderBehavior(private val context: Context, private val attrs: Att
             dependency is AppBarLayout
 
     override fun onDependentViewChanged(parent: CoordinatorLayout, child: View, dependency: View): Boolean {
-        if (child.haveSize) {
+        if (child.hasSize) {
             child.initBehaviorProperties(dependency)
             val appBarClosingOffset = calculateToolbarClosingOffset(dependency as AppBarLayout)
             child.updateViewSize(appBarClosingOffset)
