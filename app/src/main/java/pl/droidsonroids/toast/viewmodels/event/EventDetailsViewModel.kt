@@ -19,6 +19,7 @@ import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.SourceAttending
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
@@ -32,11 +33,13 @@ private const val GRADIENT_COLOR_MASK = 0xE0FFFFFF.toInt()
 class EventDetailsViewModel @Inject constructor(
         private val eventsRepository: EventsRepository,
         attendViewModel: AttendViewModel,
-        private val analyticsEventTracker: AnalyticsEventTracker
-) : ViewModel(), LoadingViewModel, NavigatingViewModel, AttendViewModel by attendViewModel {
+        private val analyticsEventTracker: AnalyticsEventTracker,
+        delayViewModel: DelayViewModel
+) : ViewModel(), LoadingViewModel, DelayViewModel by delayViewModel, NavigatingViewModel, AttendViewModel by attendViewModel {
     private val Any.simpleClassName: String get() = javaClass.simpleName
     override val navigationSubject: PublishSubject<NavigationRequest> = navigationRequests
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.PENDING)
+    override val isFadingEnabled get() = true
     private var eventId = Constants.NO_ID
     val title = ObservableField("")
     val date = ObservableField<Date>()
@@ -78,7 +81,9 @@ class EventDetailsViewModel @Inject constructor(
 
     private fun loadEvent() {
         loadingStatus.set(LoadingStatus.PENDING)
+        updateLastLoadingStartTime()
         eventsDisposable = eventsRepository.getEvent(eventId)
+                .let { addLoadingDelay(it) }
                 .subscribeBy(
                         onSuccess = (::onEventLoaded),
                         onError = (::onEventLoadError)
