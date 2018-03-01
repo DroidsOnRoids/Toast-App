@@ -1,6 +1,5 @@
 package pl.droidsonroids.toast.viewmodels.event
 
-import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -14,6 +13,8 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
+import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
+import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
 import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.event.EventsRepository
@@ -21,6 +22,7 @@ import pl.droidsonroids.toast.testApiEventTalk
 import pl.droidsonroids.toast.testEventDetails
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
 
 class EventDetailsViewModelTest : RxTestBase() {
@@ -28,6 +30,11 @@ class EventDetailsViewModelTest : RxTestBase() {
     lateinit var eventsRepository: EventsRepository
     @Mock
     lateinit var attendViewModel: AttendViewModel
+    @Mock
+    lateinit var delayViewModel: DelayViewModel
+    @Mock
+    lateinit var analyticsEventTracker: AnalyticsEventTracker
+
     lateinit var eventDetailsViewModel: EventDetailsViewModel
 
     private val eventId: Long = 1
@@ -35,12 +42,14 @@ class EventDetailsViewModelTest : RxTestBase() {
     @Before
     fun setUp() {
         whenever(attendViewModel.navigationRequests).thenReturn(PublishSubject.create())
-        eventDetailsViewModel = EventDetailsViewModel(eventsRepository, attendViewModel, analyticsEventTracker = mock())
+        eventDetailsViewModel = EventDetailsViewModel(eventsRepository, attendViewModel, analyticsEventTracker, delayViewModel)
     }
 
     @Test
     fun shouldLoadEventDetails() {
-        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
+        val testEventDetailsSingle = testEventDetails.toDto().toSingle()
+        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetailsSingle)
+        whenever(delayViewModel.addLoadingDelay(testEventDetailsSingle)).thenReturn(testEventDetailsSingle)
         eventDetailsViewModel.init(eventId, null)
 
         assertEventDetails()
@@ -49,7 +58,9 @@ class EventDetailsViewModelTest : RxTestBase() {
 
     @Test
     fun shouldLoadEventDetailsOnlyOnce() {
-        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
+        val testEventDetailsSingle = testEventDetails.toDto().toSingle()
+        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetailsSingle)
+        whenever(delayViewModel.addLoadingDelay(testEventDetailsSingle)).thenReturn(testEventDetailsSingle)
         eventDetailsViewModel.init(eventId, null)
 
         eventDetailsViewModel.init(eventId, null)
@@ -59,7 +70,9 @@ class EventDetailsViewModelTest : RxTestBase() {
 
     @Test
     fun shouldFailLoadEventDetails() {
-        whenever(eventsRepository.getEvent(eventId)).thenReturn(Single.error(Exception()))
+        val error = Single.error<EventDetailsDto>(Exception())
+        whenever(eventsRepository.getEvent(eventId)).thenReturn(error)
+        whenever(delayViewModel.addLoadingDelay(error)).thenReturn(error)
         eventDetailsViewModel.init(eventId, null)
 
         assertThat(eventDetailsViewModel.loadingStatus.get(), equalTo(LoadingStatus.ERROR))
@@ -67,9 +80,14 @@ class EventDetailsViewModelTest : RxTestBase() {
 
     @Test
     fun shouldRetryLoadEventDetails() {
-        whenever(eventsRepository.getEvent(eventId)).thenReturn(Single.error(Exception()))
+        val error = Single.error<EventDetailsDto>(Exception())
+        whenever(eventsRepository.getEvent(eventId)).thenReturn(error)
+        whenever(delayViewModel.addLoadingDelay(error)).thenReturn(error)
         eventDetailsViewModel.init(eventId, null)
-        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
+
+        val testEventDetailsSingle = testEventDetails.toDto().toSingle()
+        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetailsSingle)
+        whenever(delayViewModel.addLoadingDelay(testEventDetailsSingle)).thenReturn(testEventDetailsSingle)
 
         eventDetailsViewModel.retryLoading()
 
@@ -79,7 +97,9 @@ class EventDetailsViewModelTest : RxTestBase() {
 
     @Test
     fun shouldRequestNavigationToPhotos() {
-        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
+        val testEventDetailsSingle = testEventDetails.toDto().toSingle()
+        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetailsSingle)
+        whenever(delayViewModel.addLoadingDelay(testEventDetailsSingle)).thenReturn(testEventDetailsSingle)
         eventDetailsViewModel.init(eventId, null)
         val testPhotos = testEventDetails.photos.map { it.toDto() }
 
@@ -92,7 +112,9 @@ class EventDetailsViewModelTest : RxTestBase() {
 
     @Test
     fun shouldRequestNavigationToEventLocation() {
-        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
+        val testEventDetailsSingle = testEventDetails.toDto().toSingle()
+        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetailsSingle)
+        whenever(delayViewModel.addLoadingDelay(testEventDetailsSingle)).thenReturn(testEventDetailsSingle)
         eventDetailsViewModel.init(eventId, null)
 
         val testObserver = eventDetailsViewModel.navigationSubject.test()
