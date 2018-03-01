@@ -8,7 +8,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.app.utils.ContactFormValidator
 import pl.droidsonroids.toast.app.utils.callbacks.OnPropertyChangedSkippableCallback
-import pl.droidsonroids.toast.app.utils.extensions.getUnicodeLength
+import pl.droidsonroids.toast.app.utils.extensions.unicodeLength
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
 import pl.droidsonroids.toast.data.enums.MessageType
@@ -86,7 +86,7 @@ class ContactViewModel @Inject constructor(
 
     private fun updateMessage(message: String) {
         messageInputError.set(contactFormValidator.getMessageError(message))
-        messageCounter.set("${message.getUnicodeLength()} / 250")
+        messageCounter.set("${message.unicodeLength} / 250")
     }
 
     private fun setMessage(messageDto: MessageDto) {
