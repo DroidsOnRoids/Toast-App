@@ -22,6 +22,8 @@ import pl.droidsonroids.toast.repositories.facebook.FacebookRepository
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepositoryImpl
 import pl.droidsonroids.toast.services.*
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
+import pl.droidsonroids.toast.viewmodels.LoadingDelayViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.FacebookAttendViewModel
 import pl.droidsonroids.toast.viewmodels.speaker.Clock
@@ -64,6 +66,9 @@ class AppModule {
 
     @Provides
     fun provideAttendViewModel(loginStateWatcher: LoginStateWatcher, facebookRepository: FacebookRepository, analyticsEventTracker: AnalyticsEventTracker): AttendViewModel = FacebookAttendViewModel(loginStateWatcher, facebookRepository, analyticsEventTracker)
+
+    @Provides
+    fun provideDelayViewModel(clock: Clock): DelayViewModel = LoadingDelayViewModel(clock)
 
     @Singleton
     @Provides

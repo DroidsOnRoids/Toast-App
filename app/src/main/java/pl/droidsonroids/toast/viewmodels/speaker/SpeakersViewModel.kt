@@ -1,7 +1,6 @@
 package pl.droidsonroids.toast.viewmodels.speaker
 
 import android.databinding.ObservableField
-import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
@@ -11,19 +10,19 @@ import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.SortingType
 import pl.droidsonroids.toast.utils.addOnPropertyChangedCallback
-import java.util.concurrent.TimeUnit
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
+import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import javax.inject.Inject
 
-private const val MIN_LOADING_DELAY = 500
 class SpeakersViewModel @Inject constructor(
         private val speakersRepository: SpeakersRepository,
         private val analyticsEventTracker: AnalyticsEventTracker,
-        private val clock: Clock
-) : BaseSpeakerListViewModel() {
+        delayViewModel: DelayViewModel
+) : BaseSpeakerListViewModel(), LoadingViewModel, DelayViewModel by delayViewModel {
 
     val isSortingDetailsVisible: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
     val sortingType = ObservableField(SortingType.DATE)
-    private var lastLoadingStartTimeMillis = clock.elapsedRealtime()
+    override val isFadingEnabled get() = true
 
     private var speakersDisposable: Disposable? = null
 
@@ -33,8 +32,6 @@ class SpeakersViewModel @Inject constructor(
             loadFirstPage()
         }
     }
-
-    override val isFadingEnabled get() = true
 
     private fun clearSpeakersList() {
         speakersSubject.onNext(emptyList())
@@ -63,11 +60,11 @@ class SpeakersViewModel @Inject constructor(
     private fun loadFirstPage() {
         isNextPageLoading = true
         loadingStatus.set(LoadingStatus.PENDING)
-        lastLoadingStartTimeMillis = clock.elapsedRealtime()
+        updateLastLoadingStartTime()
         speakersDisposable = speakersRepository.getSpeakersPage(sortingQuery = sortingType.get().toQuery())
                 .flatMap(::mapToSingleSpeakerItemViewModelsPage)
                 .doOnSuccess { clearSpeakersList() }
-                .addLoadingDelay()
+                .let(::addLoadingDelay)
                 .doAfterSuccess { isNextPageLoading = false }
                 .subscribeBy(
                         onSuccess = (::onNewSpeakersPageLoaded),
@@ -105,11 +102,6 @@ class SpeakersViewModel @Inject constructor(
 
     override fun onCleared() {
         speakersDisposable?.dispose()
-    }
-
-    private fun <T> Single<T>.addLoadingDelay() = flatMap {
-        Single.just(it)
-                .delay(MIN_LOADING_DELAY + lastLoadingStartTimeMillis - clock.elapsedRealtime(), TimeUnit.MILLISECONDS)
     }
 
 }
