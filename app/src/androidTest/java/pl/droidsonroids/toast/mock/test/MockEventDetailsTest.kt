@@ -8,7 +8,7 @@ import pl.droidsonroids.testing.mockwebserver.condition.PathQueryConditionFactor
 import pl.droidsonroids.toast.app.home.MainActivity
 
 
-class MockEventsScreenTest {
+class MockEventDetailsTest {
     @JvmField
     @Rule
     val activityRule = ActivityTestRule(MainActivity::class.java, true, false)
@@ -30,8 +30,10 @@ class MockEventsScreenTest {
     private fun setPathDispatcher() {
         val dispatcher = FixtureDispatcher()
         val factory = PathQueryConditionFactory("")
-        dispatcher.putResponse(factory.withPathInfix("/events"), "events_200")
-        dispatcher.putResponse(factory.withPathInfix("/events/16"), "event16_200")
+        dispatcher.putResponse(factory.withPathInfix("/events"), "events17_200")
+        dispatcher.putResponse(factory.withPathInfix("/events/17"), "event17_200")
+        dispatcher.putResponse(factory.withPathInfix("/speakers"), "speakers_200")
+        dispatcher.putResponse(factory.withPathInfix("/speakers/16"), "speakers16_200")
         mockWebServer.setDispatcher(dispatcher)
     }
 }

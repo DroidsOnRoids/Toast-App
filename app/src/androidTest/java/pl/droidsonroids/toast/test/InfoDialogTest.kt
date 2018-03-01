@@ -24,43 +24,26 @@ class InfoDialogTest {
     @Rule
     val activityRule = IntentsTestRule(MainActivity::class.java, true, true)
 
-    private fun showDialog() {
-        with(InfoDialogRobot()) {
-            openMenuOverflow()
-            performClickOnElementWithText(getString(R.string.about_app))
-        }
-    }
-
-    private fun openMenuOverflow() {
-        openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
-    }
-
-    private fun isDialogClosed() {
-        with(InfoDialogRobot()) {
-            checkIfElementWithIdIsNotPresentInHierarchy(R.id.toastLogoImage)
-        }
-    }
-
     @Test
     fun isMenuOverflowDisplayed() {
-        openMenuOverflow()
         with(InfoDialogRobot()) {
+            openMenuOverflow()
             checkIfElementWithTextIsDisplayed(getString(R.string.about_app))
         }
     }
 
     @Test
     fun isMenuOverflowClickable() {
-        openMenuOverflow()
         with(InfoDialogRobot()) {
+            openMenuOverflow()
             checkIfElementWithTextIsClickable(getString(R.string.about_app))
         }
     }
 
     @Test
     fun isEveryElementOnInfoDialogDisplayed() {
-        showDialog()
         with(InfoDialogRobot()) {
+            showDialog()
             checkIfElementWithIdIsDisplayedInDialog(R.id.toastLogoImage)
             checkIfElementWithIdIsDisplayedInDialog(R.id.hearthImage)
             checkIfTextIsCorrect(getString(R.string.created_with), R.id.createdWithText)
@@ -77,8 +60,8 @@ class InfoDialogTest {
 
     @Test
     fun isDialogClosedAfterClickingOnCloseButton() {
-        showDialog()
         with(InfoDialogRobot()) {
+            showDialog()
             checkIfElementWithIdIsDisplayedInDialog(R.id.closeImageButton)
             performClickOnElementWithId(R.id.closeImageButton)
             isDialogClosed()
@@ -87,15 +70,17 @@ class InfoDialogTest {
 
     @Test
     fun isDialogClosedAfterClickingOnBackButton() {
-        showDialog()
-        Espresso.pressBack()
-        isDialogClosed()
+        with(InfoDialogRobot()) {
+            showDialog()
+            Espresso.pressBack()
+            isDialogClosed()
+        }
     }
 
     @Test
     fun isDialogNotDismissedAfterTappingOnDialog() {
-        showDialog()
         with(InfoDialogRobot()) {
+            showDialog()
             performClickOnElementWithId(R.id.toastLogoImage)
             checkIfElementWithIdIsDisplayedInDialog(R.id.toastLogoImage)
         }
@@ -103,16 +88,18 @@ class InfoDialogTest {
 
     @Test
     fun isDialogDismissedAfterTappingOutsideDialog() {
-        showDialog()
-        UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).click(0, 300)
-        isDialogClosed()
+        with(InfoDialogRobot()) {
+            showDialog()
+            UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).click(0, 300)
+            isDialogClosed()
+        }
     }
 
     @Test
     fun isFbFanPageDeepLinkDisplayedAndActive() {
         val expectedIntent = CoreMatchers.allOf(IntentMatchers.hasAction(CoreMatchers.equalTo(Intent.ACTION_VIEW)))
-        showDialog()
         with(InfoDialogRobot()) {
+            showDialog()
             checkIfTextIsCorrect(getString(R.string.toast_facebook_fanpage), R.id.fanpageLinkText)
             Intents.intending(expectedIntent).respondWith(Instrumentation.ActivityResult(0, null))
             performClickOnElementWithId(R.id.fanpageLinkText)
