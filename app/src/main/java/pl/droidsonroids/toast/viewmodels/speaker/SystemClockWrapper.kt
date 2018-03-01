@@ -4,10 +4,9 @@ import android.os.SystemClock
 import javax.inject.Inject
 
 interface Clock {
-    fun elapsedRealtime(): Long
+    fun elapsedRealtimeMillis(): Long
 }
 
 class SystemClockWrapper @Inject constructor() : Clock {
-    override fun elapsedRealtime() = SystemClock.elapsedRealtime()
-
+    override fun elapsedRealtimeMillis() = SystemClock.elapsedRealtime()
 }
