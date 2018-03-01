@@ -28,8 +28,8 @@ import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.SortingType
 import pl.droidsonroids.toast.viewmodels.LoadingDelayViewModel
-import java.util.concurrent.TimeUnit
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 class SpeakersViewModelTest : RxTestBase() {
     private val testScheduler = TestScheduler()
@@ -220,6 +220,7 @@ class SpeakersViewModelTest : RxTestBase() {
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPage))
 
         speakersViewModel.refresh()
+        testScheduler.advanceTimeBy(Constants.MIN_LOADING_DELAY_MILLIS, TimeUnit.MILLISECONDS)
 
         checkIsFirstPageLoaded()
     }
@@ -232,6 +233,7 @@ class SpeakersViewModelTest : RxTestBase() {
         val testObserver = speakersViewModel.isSwipeRefreshLoaderVisibleSubject.test()
 
         speakersViewModel.refresh()
+        testScheduler.advanceTimeBy(Constants.MIN_LOADING_DELAY_MILLIS, TimeUnit.MILLISECONDS)
 
         testObserver.assertValue { !it }
     }
@@ -243,6 +245,7 @@ class SpeakersViewModelTest : RxTestBase() {
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(IOException()))
 
         speakersViewModel.refresh()
+        testScheduler.advanceTimeBy(Constants.MIN_LOADING_DELAY_MILLIS, TimeUnit.MILLISECONDS)
 
         checkIsFirstPageLoaded()
     }
@@ -255,6 +258,7 @@ class SpeakersViewModelTest : RxTestBase() {
         val testObserver = speakersViewModel.navigationSubject.test()
 
         speakersViewModel.refresh()
+        testScheduler.advanceTimeBy(Constants.MIN_LOADING_DELAY_MILLIS, TimeUnit.MILLISECONDS)
 
         testObserver.assertValue { it is NavigationRequest.SnackBar }
     }
@@ -268,6 +272,7 @@ class SpeakersViewModelTest : RxTestBase() {
         val testObserver = speakersViewModel.isSwipeRefreshLoaderVisibleSubject.test()
 
         speakersViewModel.refresh()
+        testScheduler.advanceTimeBy(Constants.MIN_LOADING_DELAY_MILLIS, TimeUnit.MILLISECONDS)
 
         testObserver.assertValue { !it }
     }
