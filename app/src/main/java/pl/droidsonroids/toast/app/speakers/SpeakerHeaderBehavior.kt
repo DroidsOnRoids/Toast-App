@@ -8,7 +8,8 @@ import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import pl.droidsonroids.toast.R
-import pl.droidsonroids.toast.app.utils.extensions.isNotEmpty
+import pl.droidsonroids.toast.app.utils.extensions.haveSize
+import timber.log.Timber
 import kotlin.math.abs
 
 private const val ACCELERATE_INTERPOLATOR_FACTOR = 0.5f
@@ -19,23 +20,13 @@ private const val LOG_TAG = "SPEAKER_BEHAVIOR"
 class SpeakerHeaderBehavior(private val context: Context, private val attrs: AttributeSet? = null) : CoordinatorLayout.Behavior<View>() {
     private var childStartCenterXPosition = 0f
     private var childStartCenterYPosition = 0f
-    private var childStartHeight = 0f
-    private var childStartWidth = 0f
-    private var appBarStartHeight = 0f
-
-    private var finalToolbarHeight = 0f
     private var childFinalXPosition = 0f
-    private var childFinalYPosition = 0f
     private var childFinalHeight = 0f
     private var childFinalWidth = 0f
-
-    private var appBarHeightToReduce = 0f
-    private var childHeightToReduce = UNKNOWN_VALUE
-    private var childWidthToReduce = UNKNOWN_VALUE
-    private var childTotalDistanceX = 0f
-    private var childTotalDistanceY = 0f
+    private var toolbarCenterY = 0
 
     private val accelerateInterpolator = AccelerateInterpolator(ACCELERATE_INTERPOLATOR_FACTOR)
+
     private val decelerateInterpolator = DecelerateInterpolator(DECELERATE_INTERPOLATOR_FACTOR)
 
     private var initialised = false
@@ -48,82 +39,58 @@ class SpeakerHeaderBehavior(private val context: Context, private val attrs: Att
             dependency is AppBarLayout
 
     override fun onDependentViewChanged(parent: CoordinatorLayout, child: View, dependency: View): Boolean {
-        if (child.isNotEmpty()) {
-            child.post {
-                initProperties(child, dependency)
-                val appBarClosingOffset = calculateToolbarClosingOffset(dependency as AppBarLayout)
-
-                updateViewSize(appBarClosingOffset, child)
-                updateViewPosition(appBarClosingOffset, child)
-                child.requestLayout()
-            }
+        if (child.haveSize) {
+            child.initBehaviorProperties(dependency)
+            val appBarClosingOffset = calculateToolbarClosingOffset(dependency as AppBarLayout)
+            child.updateViewSize(appBarClosingOffset)
+            child.updateViewPosition(appBarClosingOffset)
+            Timber.wtf("${dependency.y}y ${dependency.translationY}ty ${dependency.height}h ${(dependency as AppBarLayout).totalScrollRange}t")
         }
         return true
     }
 
     private fun calculateToolbarClosingOffset(dependency: AppBarLayout): Float {
-        return abs(dependency.y) / appBarHeightToReduce
+        return abs(dependency.y) / dependency.totalScrollRange
     }
 
-    private fun updateViewPosition(appBarClosingOffset: Float, child: View) {
-        val (distanceXToSubtract, distanceYToSubtract) = getDistanceToSubtract(child, appBarClosingOffset)
-        child.x = childStartCenterXPosition - distanceXToSubtract
-        child.y = childStartCenterYPosition - distanceYToSubtract
+    private fun View.updateViewPosition(appBarClosingOffset: Float) {
+        val (translationX, translationY) = getTranslation(appBarClosingOffset)
+        this.translationX = translationX
+        this.translationY = translationY
     }
 
-    private fun getDistanceToSubtract(child: View, appBarClosingOffset: Float): Pair<Float, Float> =
-            when (child.id) {
-                R.id.speakerName -> {
-                    val distanceXToSubtract = accelerateInterpolator.getInterpolation(appBarClosingOffset) * childTotalDistanceX + child.width / 2
-                    val distanceYToSubtract = appBarClosingOffset * childTotalDistanceY + child.height / 2
-                    distanceXToSubtract to distanceYToSubtract
-                }
-                else -> {
-                    val distanceXToSubtract = accelerateInterpolator.getInterpolation(appBarClosingOffset) * childTotalDistanceX + child.width / 2
-                    val distanceYToSubtract = decelerateInterpolator.getInterpolation(appBarClosingOffset) * childTotalDistanceY + child.height / 2
-                    distanceXToSubtract to distanceYToSubtract
-                }
-            }
+    private fun View.getTranslation(appBarClosingOffset: Float): Pair<Float, Float> {
+        val translationX = -accelerateInterpolator.getInterpolation(appBarClosingOffset) * (childStartCenterXPosition - childFinalXPosition - childFinalWidth / 2)
+        val translationY = when (id) {
+            R.id.speakerName -> -appBarClosingOffset * (childStartCenterYPosition - toolbarCenterY)
+            else -> -decelerateInterpolator.getInterpolation(appBarClosingOffset) * (childStartCenterYPosition - toolbarCenterY)
+        }
+        return translationX to translationY
+    }
 
-    private fun updateViewSize(appBarClosingOffset: Float, child: View) {
-        val heightToSubtract = appBarClosingOffset * childHeightToReduce
-        val widthToSubtract = appBarClosingOffset * childWidthToReduce
+    private fun View.updateViewSize(appBarClosingOffset: Float) {
+        val heightToSubtract = appBarClosingOffset * (height - childFinalHeight)
+        val widthToSubtract = appBarClosingOffset * (width - childFinalWidth)
 
-        val offsetHeight = abs(heightToSubtract / childStartHeight - 1)
-        val offsetWidth = abs(widthToSubtract / childStartWidth - 1)
-
-        child.scaleX = offsetWidth
-        child.scaleY = offsetHeight
+        scaleX = 1 - widthToSubtract / width
+        scaleY = 1 - heightToSubtract / height
     }
 
     private fun initAttributes() {
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.SpeakerHeaderBehavior)
-        finalToolbarHeight = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalToolbarHeight, 0f)
-        childFinalHeight = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalHeight, -1f)
-        childFinalWidth = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalWidth, -1f)
+        childFinalHeight = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalHeight, UNKNOWN_VALUE)
+        childFinalWidth = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalWidth, UNKNOWN_VALUE)
         childFinalXPosition = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalXPosition, 0f)
-        childFinalYPosition = attributes.getDimension(R.styleable.SpeakerHeaderBehavior_finalYPosition, 0f)
         attributes.recycle()
     }
 
-    private fun initProperties(child: View, dependency: View) {
+    private fun View.initBehaviorProperties(dependency: View) {
         if (!initialised) {
-            childStartHeight = child.height.toFloat()
-            childStartWidth = child.width.toFloat()
-            childStartCenterXPosition = (child.x.toInt() + child.width / 2).toFloat()
-            childStartCenterYPosition = (child.y.toInt() + child.height / 2).toFloat()
-            appBarStartHeight = dependency.height.toFloat()
-
-            if (childFinalWidth == UNKNOWN_VALUE) childFinalWidth = childStartWidth
-            if (childFinalHeight == UNKNOWN_VALUE) childFinalHeight = childStartHeight
-
-            appBarHeightToReduce = appBarStartHeight - finalToolbarHeight
-            childHeightToReduce = childStartHeight - childFinalHeight
-            childWidthToReduce = childStartWidth - childFinalWidth
-            childTotalDistanceX = childStartCenterXPosition - childFinalXPosition - childFinalWidth / 2
-            childTotalDistanceY = childStartCenterYPosition - childFinalYPosition - childFinalHeight / 2
-
-
+            if (childFinalWidth == UNKNOWN_VALUE) childFinalWidth = width.toFloat()
+            if (childFinalHeight == UNKNOWN_VALUE) childFinalHeight = height.toFloat()
+            childStartCenterXPosition = left + width / 2f
+            childStartCenterYPosition = top + height / 2f
+            toolbarCenterY = dependency.findViewById<View>(R.id.toolbar).height / 2
             initialised = true
         }
     }
