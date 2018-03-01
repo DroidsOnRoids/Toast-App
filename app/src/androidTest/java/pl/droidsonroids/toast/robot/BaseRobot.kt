@@ -1,5 +1,6 @@
 package pl.droidsonroids.toast.robot
 
+import android.support.test.espresso.Espresso.onData
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.action.ViewActions
 import android.support.test.espresso.action.ViewActions.click
@@ -9,8 +10,9 @@ import android.support.test.espresso.contrib.RecyclerViewActions
 import android.support.test.espresso.matcher.RootMatchers.isDialog
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.v7.widget.RecyclerView
-import org.hamcrest.Matchers.allOf
-import org.hamcrest.Matchers.startsWith
+import org.hamcrest.Matchers.*
+import pl.droidsonroids.toast.function.matchers.isHintOnEditTextCorrect
+import pl.droidsonroids.toast.function.matchers.isHintOnTextInputLayoutCorrect
 
 abstract class BaseRobot {
 
@@ -33,6 +35,13 @@ abstract class BaseRobot {
                 .check(matches(isDisplayed()))
         return this
     }
+
+    fun checkIfElementWithIdIsNotDisplayed(id: Int): BaseRobot {
+        onView(withId(id))
+                .check(matches(not(isDisplayed())))
+        return this
+    }
+
     fun checkIfElementWithTextIsDisplayed(text: String): BaseRobot {
         onView(withText(text))
                 .check(matches(isDisplayed()))
@@ -71,15 +80,27 @@ abstract class BaseRobot {
         return this
     }
 
+    fun checkIfSpinnerTextIsCorrect(text: String, id: Int): BaseRobot {
+        onView(withId(id))
+                .check(matches(withSpinnerText(containsString(text))))
+        return this
+    }
+
     fun checkIfHomeButtonIsDisplayed(): BaseRobot {
         onView(withContentDescription(homeButtonDescription))
                 .check(matches(isDisplayed()))
         return this
     }
 
-    fun checkIfHintIsDisplayed(id: Int, text: String): BaseRobot {
+    fun checkIfHintOnTextInputLayoutIsCorrect(id: Int, text: String): BaseRobot {
         onView(withId(id))
-                .check(matches(withHint(text)))
+                .check(matches(isHintOnTextInputLayoutCorrect(text)))
+        return this
+    }
+
+    fun checkIfHintOnEditTextIsCorrect(id: Int, text: String): BaseRobot {
+        onView(withId(id))
+                .check(matches(isHintOnEditTextCorrect(text)))
         return this
     }
 
@@ -89,8 +110,14 @@ abstract class BaseRobot {
         return this
     }
 
-    fun performClickOnElementWithText(string: String): BaseRobot {
-        onView(withText(string))
+    fun performClickOnElementWithText(text: String): BaseRobot {
+        onView(withText(text))
+                .perform(click())
+        return this
+    }
+
+    fun performClickOnDataWithText(text: String): BaseRobot {
+        onData(allOf(`is`(text)))
                 .perform(click())
         return this
     }

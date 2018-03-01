@@ -2,11 +2,11 @@ package pl.droidsonroids.toast.viewmodels.event
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
-import android.util.Log
 import io.reactivex.disposables.Disposables
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
@@ -18,9 +18,11 @@ import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.utils.SourceAttending
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -29,7 +31,8 @@ private const val GRADIENT_COLOR_MASK = 0xE0FFFFFF.toInt()
 
 class EventDetailsViewModel @Inject constructor(
         private val eventsRepository: EventsRepository,
-        attendViewModel: AttendViewModel
+        attendViewModel: AttendViewModel,
+        private val analyticsEventTracker: AnalyticsEventTracker
 ) : ViewModel(), LoadingViewModel, NavigatingViewModel, AttendViewModel by attendViewModel {
     private val Any.simpleClassName: String get() = javaClass.simpleName
     override val navigationSubject: PublishSubject<NavigationRequest> = navigationRequests
@@ -46,6 +49,7 @@ class EventDetailsViewModel @Inject constructor(
         gradientColor.set(it and GRADIENT_COLOR_MASK)
     }
     private var coordinates: CoordinatesDto? = null
+    val isSpeakersLabelVisible = ObservableField(false)
 
     val eventSpeakersSubject: BehaviorSubject<List<EventSpeakerItemViewModel>> = BehaviorSubject.create()
 
@@ -55,11 +59,13 @@ class EventDetailsViewModel @Inject constructor(
 
     fun onPhotosClick() {
         navigationSubject.onNext(NavigationRequest.Photos(photos, eventId, ParentView.EVENT_DETAILS))
+        analyticsEventTracker.logEventDetailsSeePhotosEvent(eventId)
     }
 
     fun onLocationClick() {
         coordinates?.let {
             navigationSubject.onNext(NavigationRequest.Map(it, placeName.get()))
+            analyticsEventTracker.logEventDetailsTapMeetupPlaceEvent()
         }
     }
 
@@ -91,27 +97,31 @@ class EventDetailsViewModel @Inject constructor(
             photos = it.photos
             coordinates = it.coordinates
             onTalksLoaded(it.talks)
-            setEvent(it.facebookId, it.date)
+            setEvent(it.facebookId, it.date, SourceAttending.EVENT_DETAILS)
         }
     }
 
     private fun onTalksLoaded(talks: List<EventTalkDto>) {
         val eventSpeakerViewModels = talks.map { it.toViewModel(::onReadMore, ::onSpeakerClick) }
         eventSpeakersSubject.onNext(eventSpeakerViewModels)
+        isSpeakersLabelVisible.set(eventSpeakerViewModels.isNotEmpty())
     }
 
     private fun onReadMore(eventSpeakerItemViewModel: EventSpeakerItemViewModel) {
-        navigationSubject.onNext(NavigationRequest.EventTalkDetails(eventSpeakerItemViewModel.toDto()))
-        Log.d(simpleClassName, "onReadMore: ${eventSpeakerItemViewModel.id}")
+        val eventTalkDto = eventSpeakerItemViewModel.toDto()
+        navigationSubject.onNext(NavigationRequest.EventTalkDetails(eventTalkDto))
+        Timber.d(simpleClassName, "onReadMore: ${eventSpeakerItemViewModel.id}")
+        analyticsEventTracker.logEventDetailsReadMoreEvent(eventTalkDto.title)
     }
 
-    private fun onSpeakerClick(speakerId: Long) {
+    private fun onSpeakerClick(speakerId: Long, speakerName: String) {
         navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId))
+        analyticsEventTracker.logEventDetailsShowSpeakerEvent(speakerName)
     }
 
     private fun onEventLoadError(throwable: Throwable) {
         loadingStatus.set(LoadingStatus.ERROR)
-        Log.e(simpleClassName, "Something went wrong when fetching event details with id = $eventId", throwable)
+        Timber.e(throwable, "Something went wrong when fetching event details with id = $eventId")
     }
 
     override fun retryLoading() {

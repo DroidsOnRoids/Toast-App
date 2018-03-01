@@ -26,7 +26,7 @@
             android:foreground="@drawable/photo_item_ripple"
             android:onClick="@{() -> photoItemViewModel.onClick()}"
             android:scaleType="centerCrop"
-            app:coverImage="@{photoItemViewModel.image}"
+            app:originalImage="@{photoItemViewModel.image}"
             app:elementId="@{photoItemViewModel.position}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="h,1:1"

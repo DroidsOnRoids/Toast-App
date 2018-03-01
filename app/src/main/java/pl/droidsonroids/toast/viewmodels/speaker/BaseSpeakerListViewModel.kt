@@ -2,7 +2,6 @@ package pl.droidsonroids.toast.viewmodels.speaker
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
-import android.util.Log
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.subjects.BehaviorSubject
@@ -17,6 +16,7 @@ import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.toPage
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
+import timber.log.Timber
 
 abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, NavigatingViewModel {
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.SUCCESS)
@@ -30,8 +30,9 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
         val (items, pageNumber, allPagesCount) = page
         return items.toObservable()
                 .map {
-                    it.toViewModel { id ->
+                    it.toViewModel { id, name ->
                         navigationSubject.onNext(NavigationRequest.SpeakerDetails(id))
+                        onSpeakerNavigationRequestSent(name)
                     }
                 }
                 .map { wrapWithState(it) }
@@ -55,7 +56,7 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
         return speakers.appendLoadingItemIfNextPageAvailable(page)
     }
 
-    protected fun List<State<SpeakerItemViewModel>>.appendLoadingItemIfNextPageAvailable(page: Page<State.Item<SpeakerItemViewModel>>)
+    private fun List<State<SpeakerItemViewModel>>.appendLoadingItemIfNextPageAvailable(page: Page<State.Item<SpeakerItemViewModel>>)
             : List<State<SpeakerItemViewModel>> {
         return if (page.pageNumber < page.allPagesCount) {
             nextPageNumber = page.pageNumber + 1
@@ -76,18 +77,20 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
     protected fun onFirstPageLoadError(throwable: Throwable) {
         speakersSubject.onNext(emptyList())
         loadingStatus.set(LoadingStatus.ERROR)
-        Log.e(simpleClassName, "Something went wrong with fetching data for SpeakersListViewModel", throwable)
+        Timber.e(throwable, "Something went wrong with fetching data for SpeakersListViewModel")
     }
 
     protected fun onNextPageLoadError(throwable: Throwable) {
         val speakers = mergeWithExistingSpeakers(listOf(createErrorState()))
         speakersSubject.onNext(speakers)
-        Log.e(simpleClassName, "Something went wrong with fetching next speakers page for SpeakersListViewModel", throwable)
+        Timber.e(throwable, "Something went wrong with fetching next speakers page for SpeakersListViewModel")
     }
 
     private fun createErrorState(): State.Error {
         return State.Error(::onErrorClick)
     }
+
+    abstract fun onSpeakerNavigationRequestSent(speakerName: String)
 
     protected abstract fun onErrorClick()
 }

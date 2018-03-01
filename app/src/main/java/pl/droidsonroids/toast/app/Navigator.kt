@@ -21,14 +21,16 @@ import pl.droidsonroids.toast.app.speakers.SpeakerTalkDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
 import pl.droidsonroids.toast.app.utils.extensions.copyTextToClipboard
 import pl.droidsonroids.toast.app.utils.extensions.disableActivityTransitionAnimations
+import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
 import java.lang.IllegalArgumentException
+import java.net.URLEncoder
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class Navigator @Inject constructor(private val loginManager: LoginManager) {
+class Navigator @Inject constructor(private val loginManager: LoginManager, private val analyticsEventTracker: AnalyticsEventTracker) {
 
     fun dispatch(activity: Activity, navigationRequest: NavigationRequest) {
         when (navigationRequest) {
@@ -58,7 +60,8 @@ class Navigator @Inject constructor(private val loginManager: LoginManager) {
             try {
                 context.startActivity(intent)
             } catch (exception: ActivityNotFoundException) {
-                Toast.makeText(context, R.string.no_map_app_found, Toast.LENGTH_SHORT).show()
+                val query = URLEncoder.encode("${coordinatesDto.latitude},${coordinatesDto.longitude}", Charsets.UTF_8.name())
+                openWebsite(context, "https://www.google.com/maps/search/?api=1&query=$query")
             }
         }
     }
@@ -107,6 +110,7 @@ class Navigator @Inject constructor(private val loginManager: LoginManager) {
 
         activity.startActivity(intent)
         activity.disableActivityTransitionAnimations()
+        analyticsEventTracker.logSpeakersShowSearchEvent()
     }
 
     private fun showEventDetails(context: Context, navigationRequest: NavigationRequest.EventDetails) {

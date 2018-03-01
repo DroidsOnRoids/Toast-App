@@ -1,7 +1,9 @@
 package pl.droidsonroids.toast.viewmodels
 
+import com.nhaarman.mockito_kotlin.whenever
+import io.reactivex.subjects.BehaviorSubject
+import org.junit.Before
 import org.junit.Test
-import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
@@ -11,8 +13,13 @@ class MainViewModelTest : RxTestBase() {
     @Mock
     lateinit var loginStateWatcher: LoginStateWatcher
 
-    @InjectMocks
     lateinit var mainViewModel: MainViewModel
+
+    @Before
+    fun setUp() {
+        whenever(loginStateWatcher.loginStateSubject).thenReturn(BehaviorSubject.create())
+        mainViewModel = MainViewModel(loginStateWatcher)
+    }
 
     @Test
     fun shouldRequestNavigationToLogIn() {

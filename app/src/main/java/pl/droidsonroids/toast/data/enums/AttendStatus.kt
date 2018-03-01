@@ -6,7 +6,7 @@ import com.google.gson.stream.JsonWriter
 import java.util.*
 
 enum class AttendStatus {
-    ATTENDING, UNSURE, DECLINED;
+    ATTENDING, UNSURE, DECLINED, ERROR;
 }
 
 class AttendStatusAdapter : TypeAdapter<AttendStatus>() {

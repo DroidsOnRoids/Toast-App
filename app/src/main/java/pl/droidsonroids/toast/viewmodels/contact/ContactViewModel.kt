@@ -8,7 +8,8 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.app.utils.ContactFormValidator
 import pl.droidsonroids.toast.app.utils.callbacks.OnPropertyChangedSkippableCallback
-import pl.droidsonroids.toast.app.utils.extensions.getUnicodeLength
+import pl.droidsonroids.toast.app.utils.extensions.unicodeLength
+import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.dto.contact.MessageDto
 import pl.droidsonroids.toast.data.enums.MessageType
 import pl.droidsonroids.toast.repositories.contact.ContactRepository
@@ -21,7 +22,8 @@ import javax.inject.Inject
 
 class ContactViewModel @Inject constructor(
         private val contactFormValidator: ContactFormValidator,
-        private val contactRepository: ContactRepository
+        private val contactRepository: ContactRepository,
+        private val analyticsEventTracker: AnalyticsEventTracker
 ) : ViewModel(), LoadingViewModel, NavigatingViewModel {
 
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
@@ -81,7 +83,7 @@ class ContactViewModel @Inject constructor(
 
     private fun updateMessage(message: String) {
         messageInputError.set(contactFormValidator.getMessageError(message))
-        messageCounter.set("${message.getUnicodeLength()} / 250")
+        messageCounter.set("${message.unicodeLength} / 250")
     }
 
     private fun setMessage(messageDto: MessageDto) {
@@ -104,6 +106,7 @@ class ContactViewModel @Inject constructor(
     private fun addSelectedTopicPositionListener() {
         selectedTopicPosition.addOnPropertyChangedCallback {
             updateSendingEnabled()
+            analyticsEventTracker.logContactChooseTopicEvent(resolveMessageType().name)
         }
     }
 
@@ -121,6 +124,7 @@ class ContactViewModel @Inject constructor(
                         onComplete = (::onSendSuccessfully),
                         onError = { loadingStatus.set(LoadingStatus.ERROR) }
                 )
+        analyticsEventTracker.logContactSendClickEvent(message.type.name)
     }
 
     private fun createMessageDto(): MessageDto {

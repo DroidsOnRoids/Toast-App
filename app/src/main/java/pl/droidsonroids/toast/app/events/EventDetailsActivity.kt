@@ -27,6 +27,7 @@ import pl.droidsonroids.toast.viewmodels.event.EventDetailsViewModel
 import javax.inject.Inject
 
 private const val ALPHA_MAX_VALUE = 255
+private const val ADD_ANIMATION_DURATION_MS = 600L
 
 class EventDetailsActivity : BaseActivity() {
     companion object {
@@ -128,6 +129,7 @@ class EventDetailsActivity : BaseActivity() {
             val eventSpeakersAdapter = EventSpeakersAdapter()
             adapter = eventSpeakersAdapter
             layoutManager = LinearLayoutManager(context)
+            itemAnimator.addDuration = ADD_ANIMATION_DURATION_MS
 
             subscribeToSpeakersChange(eventSpeakersAdapter)
         }
@@ -136,9 +138,7 @@ class EventDetailsActivity : BaseActivity() {
     private fun subscribeToSpeakersChange(eventSpeakersAdapter: EventSpeakersAdapter) {
         compositeDisposable += eventDetailsViewModel.eventSpeakersSubject
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    eventSpeakersAdapter.setData(it)
-                }
+                .subscribe(eventSpeakersAdapter::setData)
     }
 
     override fun onStart() {
