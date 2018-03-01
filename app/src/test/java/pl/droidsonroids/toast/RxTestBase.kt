@@ -8,6 +8,5 @@ import pl.droidsonroids.toast.rule.RxPluginSchedulerRule
 @RunWith(MockitoJUnitRunner::class)
 abstract class RxTestBase {
     @get:Rule
-    val rxPluginSchedulerRule = RxPluginSchedulerRule()
-
+    open val rxPluginSchedulerRule = RxPluginSchedulerRule()
 }

@@ -45,11 +45,6 @@ object Constants {
         const val EVENT_URL: String = "https://www.facebook.com/events/"
     }
 
-    object ContactLink {
-        const val GITHUB = "github"
-        const val WEBPAGE = "webpage"
-        const val EMAIL = "email"
-        const val TWITTER = "twitter"
-    }
+    const val MIN_LOADING_DELAY_MILLIS = 300L
 
 }

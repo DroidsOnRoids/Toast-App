@@ -24,6 +24,7 @@ import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.SourceAttending
 import pl.droidsonroids.toast.utils.toPage
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
@@ -34,11 +35,14 @@ class EventsViewModel @Inject constructor(
         loginStateWatcher: LoginStateWatcher,
         attendViewModel: AttendViewModel,
         private val eventsRepository: EventsRepository,
-        private val analyticsEventTracker: AnalyticsEventTracker
-) : ViewModel(), LoadingViewModel, NavigatingViewModel, LoginStateWatcher by loginStateWatcher, AttendViewModel by attendViewModel {
+        private val analyticsEventTracker: AnalyticsEventTracker,
+        delayViewModel: DelayViewModel
+) : ViewModel(), LoadingViewModel, DelayViewModel by delayViewModel, NavigatingViewModel, LoginStateWatcher by loginStateWatcher, AttendViewModel by attendViewModel {
     override val navigationSubject: PublishSubject<NavigationRequest> = navigationRequests
 
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField()
+    override val isFadingEnabled get() = true
+
     val isPreviousEventsEmpty = ObservableField<Boolean>(true)
     val upcomingEvent = ObservableField<UpcomingEventViewModel>()
     val previousEventsSubject: BehaviorSubject<List<State<EventItemViewModel>>> = BehaviorSubject.create()
@@ -57,6 +61,7 @@ class EventsViewModel @Inject constructor(
 
     private fun loadEvents() {
         loadingStatus.set(LoadingStatus.PENDING)
+        updateLastLoadingStartTime()
         compositeDisposable += eventsRepository.getEvents()
                 .flatMap { (upcomingEvent, previousEventsPage) ->
                     setEvent(upcomingEvent.facebookId, upcomingEvent.date, SourceAttending.UPCOMING_EVENT)
@@ -70,6 +75,7 @@ class EventsViewModel @Inject constructor(
                             .map { upcomingEventViewModel to it }
                             .toMaybe()
                 }
+                .let(::addLoadingDelay)
                 .subscribeBy(
                         onSuccess = (::onEventsLoaded),
                         onError = (::onEventsLoadError),
