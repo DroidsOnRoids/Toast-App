@@ -20,4 +20,5 @@
     <dimen name="expanded_toolbar_height">213dp</dimen>
     <dimen name="collapsed_appbar_height">110dp</dimen>
     <dimen name="elevation_large">8dp</dimen>
+    <dimen name="photo_item_pading">2dp</dimen>
 </resources>

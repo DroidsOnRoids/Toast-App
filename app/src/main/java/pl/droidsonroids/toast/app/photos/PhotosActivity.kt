@@ -23,7 +23,6 @@ import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.app.utils.binding.setVisible
-import pl.droidsonroids.toast.app.utils.extensions.toPx
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.utils.Constants
@@ -100,16 +99,11 @@ class PhotosActivity : BaseActivity() {
             insets
         }
         ViewCompat.setOnApplyWindowInsetsListener(photosRecyclerView) { view, insets ->
-            val bottomPadding = insets.systemWindowInsetBottom + insets.systemWindowInsetTop + 2.toPx
-            val padding = 2.toPx
-            view.setPadding(padding, padding, padding, bottomPadding)
+            val photoItemPadding = resources.getDimension(R.dimen.photo_item_pading).toInt()
+            val bottomPadding = insets.systemWindowInsetBottom + insets.systemWindowInsetTop + photoItemPadding
+            view.setPadding(photoItemPadding, photoItemPadding, photoItemPadding, bottomPadding)
             insets
         }
-    }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        setStatusBarColor(0f)
     }
 
     private fun setupMainToolbar() {
