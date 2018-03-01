@@ -15,10 +15,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:background="@color/paleGrayBackground"
         android:visibility="gone"
-        app:connectionErrorContainerVisibility="@{loadingViewModel.loadingStatus}"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@color/paleGrayBackground"
         app:fadingEnabled="@{loadingViewModel.isFadingEnabled}"
+        app:connectionErrorContainerVisibility="@{loadingViewModel.loadingStatus}"
         tools:showIn="@layout/layout_loading">
 
         <ImageView
@@ -72,3 +74,4 @@
     </android.support.constraint.ConstraintLayout>
 </layout>
 
+    
