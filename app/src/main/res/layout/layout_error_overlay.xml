@@ -15,10 +15,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:visibility="gone"
         android:background="@color/paleGrayBackground"
-        app:fadingEnabled="@{loadingViewModel.isFadingEnabled}"
+        android:visibility="gone"
         app:connectionErrorContainerVisibility="@{loadingViewModel.loadingStatus}"
+        app:fadingEnabled="@{loadingViewModel.isFadingEnabled}"
         tools:showIn="@layout/layout_loading">
 
         <ImageView
@@ -72,4 +72,3 @@
     </android.support.constraint.ConstraintLayout>
 </layout>
 
-    
