@@ -26,6 +26,7 @@ import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.SourceAttending
 import pl.droidsonroids.toast.utils.toPage
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import pl.droidsonroids.toast.viewmodels.RefreshViewModel
@@ -37,12 +38,15 @@ class EventsViewModel @Inject constructor(
         loginStateWatcher: LoginStateWatcher,
         attendViewModel: AttendViewModel,
         private val eventsRepository: EventsRepository,
-        private val analyticsEventTracker: AnalyticsEventTracker
-) : ViewModel(), LoadingViewModel, NavigatingViewModel, RefreshViewModel,
+        private val analyticsEventTracker: AnalyticsEventTracker,
+        delayViewModel: DelayViewModel
+) : ViewModel(), LoadingViewModel, DelayViewModel by delayViewModel, NavigatingViewModel, RefreshViewModel,
     LoginStateWatcher by loginStateWatcher, AttendViewModel by attendViewModel {
     override val navigationSubject: PublishSubject<NavigationRequest> = navigationRequests
 
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField()
+    override val isFadingEnabled get() = true
+
     val isPreviousEventsEmpty = ObservableField<Boolean>(true)
     val upcomingEvent = ObservableField<UpcomingEventViewModel>()
     val previousEventsSubject: BehaviorSubject<List<State<EventItemViewModel>>> = BehaviorSubject.create()
@@ -51,7 +55,6 @@ class EventsViewModel @Inject constructor(
     private var isPreviousEventsLoading: Boolean = false
     private var nextPageNumber: Int? = null
     private var compositeDisposable = CompositeDisposable()
-
 
     init {
         loadEvents()
@@ -63,7 +66,9 @@ class EventsViewModel @Inject constructor(
 
     private fun loadEvents() {
         loadingStatus.set(LoadingStatus.PENDING)
+        updateLastLoadingStartTime()
         compositeDisposable += getFirstPage()
+                .let(::addLoadingDelay)
                 .subscribeBy(
                         onSuccess = (::onEventsLoaded),
                         onError = (::onEventsLoadError),
