@@ -152,7 +152,7 @@ dependencies {
 
     // crashlytics
     compile('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
-        transitive = true;
+        transitive = true
     }
 
     // timber logger

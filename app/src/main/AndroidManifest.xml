@@ -14,9 +14,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="bdd1304e6f33f5170308024582c6b5bd89bd48bc"/>
 
         <activity
             android:name="pl.droidsonroids.toast.app.home.MainActivity"
