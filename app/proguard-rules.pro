@@ -28,6 +28,13 @@
     public *;
 }
 
+# Crashlytics
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keepnames public class * extends java.lang.Exception
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
+
 # OkHttp
 -dontwarn okio.**
 -dontwarn com.squareup.okhttp.**

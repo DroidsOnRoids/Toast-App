@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.util.Log
 import com.crashlytics.android.Crashlytics
+import com.crashlytics.android.core.CrashlyticsCore
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import io.fabric.sdk.android.Fabric
@@ -25,12 +26,20 @@ class ToastApplication : Application(), HasActivityInjector {
 
     override fun onCreate() {
         super.onCreate()
+        setupDagger()
+        setupTimber()
+        setupCrashlytics()
+    }
+
+    private fun setupDagger() {
         DaggerAppComponent
                 .builder()
                 .application(this)
                 .build()
                 .inject(this)
+    }
 
+    private fun setupTimber() {
         Timber.plant(
                 if (BuildConfig.DEBUG) {
                     Timber.DebugTree()
@@ -38,8 +47,19 @@ class ToastApplication : Application(), HasActivityInjector {
                     CrashlyticsTree()
                 }
         )
+    }
 
-        Fabric.with(this, Crashlytics())
+    private fun setupCrashlytics() {
+        val crashlyticsKit = Crashlytics.Builder()
+                .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+                .build()
+
+        val fabric = Fabric.Builder(this)
+                .kits(crashlyticsKit)
+                .debuggable(true)
+                .build()
+
+        Fabric.with(fabric)
     }
 
     private inner class CrashlyticsTree : Timber.Tree() {

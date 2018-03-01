@@ -151,8 +151,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:11.8.0'
 
     // crashlytics
-    implementation('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
-        transitive = true
+    compile('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
+        transitive = true;
     }
 
     // timber logger
