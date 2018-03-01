@@ -4,7 +4,6 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v4.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +13,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_info_dialog.*
 import pl.droidsonroids.toast.BuildConfig
 import pl.droidsonroids.toast.R
+import pl.droidsonroids.toast.app.utils.extensions.showSnackbar
+import pl.droidsonroids.toast.utils.NavigationRequest
 
 class InfoDialogFragment : DialogFragment() {
 
@@ -64,7 +65,7 @@ class InfoDialogFragment : DialogFragment() {
     }
 
     private fun showBrowserNotFoundErrorToast() {
-        Snackbar.make((activity as MainActivity).mainCoordinatorLayout, R.string.error_internet_browser_not_found, Snackbar.LENGTH_SHORT).show()
+        (activity as MainActivity).mainCoordinatorLayout.showSnackbar(NavigationRequest.SnackBar(R.string.error_internet_browser_not_found))
     }
 
     private fun setVersionText() {

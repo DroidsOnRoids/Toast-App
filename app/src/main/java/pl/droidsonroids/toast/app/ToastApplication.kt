@@ -24,7 +24,6 @@ class ToastApplication : Application(), HasActivityInjector {
                 .application(this)
                 .build()
                 .inject(this)
-
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
