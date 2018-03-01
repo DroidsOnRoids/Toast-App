@@ -29,73 +29,79 @@
             android:layout_height="@dimen/events_top_bar_height"
             android:background="@color/colorPrimary"/>
 
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/eventsScrollContainer"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/eventsSwipeRefresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/eventsScrollContainer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:descendantFocusability="blocksDescendants"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
-                <include
-                    android:id="@+id/upcomingEventCard"
-                    layout="@layout/layout_card_upcoming_event"
-                    app:upcomingEvent="@{eventsViewModel.upcomingEvent}"/>
-
-                <include
-                    android:id="@+id/upcomingEventActions"
-                    layout="@layout/layout_upcoming_event_actions"
-                    app:attendViewModel="@{eventsViewModel}"
-                    app:upcomingEvent="@{eventsViewModel.upcomingEvent}"/>
-
-                <TextView
-                    android:id="@+id/previousEventsLabel"
-                    style="@style/SectionHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_tiny"
-                    android:layout_marginStart="@dimen/margin_large"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:text="@string/previous_events_label"
-                    app:layout_constraintBottom_toTopOf="@+id/previousEventsListContainer"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/upcomingEventCard"/>
-
-                <FrameLayout
-                    android:id="@+id/previousEventsListContainer"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/previousEventsLabel">
+                    android:descendantFocusability="blocksDescendants"
+                    android:orientation="vertical">
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/previousEventsRecyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_medium"
-                        android:clipToPadding="false"
-                        android:paddingEnd="@dimen/margin_tiny"
-                        android:paddingStart="@dimen/margin_tiny"
-                        android:visibility="@{!eventsViewModel.isPreviousEventsEmpty}"/>
+                    <include
+                        android:id="@+id/upcomingEventCard"
+                        layout="@layout/layout_card_upcoming_event"
+                        app:upcomingEvent="@{eventsViewModel.upcomingEvent}"/>
+
+                    <include
+                        android:id="@+id/upcomingEventActions"
+                        layout="@layout/layout_upcoming_event_actions"
+                        app:attendViewModel="@{eventsViewModel}"
+                        app:upcomingEvent="@{eventsViewModel.upcomingEvent}"/>
 
                     <TextView
-                        style="@style/EventHeaderStyle"
+                        android:id="@+id/previousEventsLabel"
+                        style="@style/SectionHeader"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_tiny"
+                        android:layout_marginStart="@dimen/margin_large"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:text="@string/previous_events_label"
+                        app:layout_constraintBottom_toTopOf="@+id/previousEventsListContainer"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/upcomingEventCard"/>
+
+                    <FrameLayout
+                        android:id="@+id/previousEventsListContainer"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:gravity="center"
-                        android:padding="@dimen/margin_large"
-                        android:text="@string/no_events_loaded"
-                        android:visibility="@{eventsViewModel.isPreviousEventsEmpty}"/>
-                </FrameLayout>
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/previousEventsLabel">
 
-            </LinearLayout>
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/previousEventsRecyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/margin_medium"
+                            android:clipToPadding="false"
+                            android:paddingEnd="@dimen/margin_tiny"
+                            android:paddingStart="@dimen/margin_tiny"
+                            android:visibility="@{!eventsViewModel.isPreviousEventsEmpty}"/>
 
-        </android.support.v4.widget.NestedScrollView>
+                        <TextView
+                            style="@style/EventHeaderStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:gravity="center"
+                            android:padding="@dimen/margin_large"
+                            android:text="@string/no_events_loaded"
+                            android:visibility="@{eventsViewModel.isPreviousEventsEmpty}"/>
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <include
             android:id="@+id/loadingLayout"

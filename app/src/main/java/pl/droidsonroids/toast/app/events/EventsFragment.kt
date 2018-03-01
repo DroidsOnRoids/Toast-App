@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.fragment_events.*
@@ -24,6 +25,7 @@ import pl.droidsonroids.toast.app.utils.extensions.showSnackbar
 import pl.droidsonroids.toast.databinding.FragmentEventsBinding
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.event.EventsViewModel
+import java.util.*
 import javax.inject.Inject
 
 private const val TOP_BAR_TRANSLATION_FACTOR = 2f
@@ -32,11 +34,14 @@ class EventsFragment : BaseFragment() {
 
     @Inject
     lateinit var navigator: Navigator
+
     private lateinit var eventsViewModel: EventsViewModel
 
-    private var previousEventsDisposable: Disposable = Disposables.disposed()
+    private val compositeDisposable = CompositeDisposable()
 
     private var navigationDisposable: Disposable = Disposables.disposed()
+
+    private val snackbarQueue = LinkedList<NavigationRequest.SnackBar>()
 
     private val topBarHeight by lazy {
         resources.getDimension(R.dimen.events_top_bar_height)
@@ -59,11 +64,16 @@ class EventsFragment : BaseFragment() {
 
     private fun handleNavigationRequest(request: NavigationRequest) {
         when (request) {
-            is NavigationRequest.SnackBar -> if (isVisible) {
-                eventsScrollContainer.showSnackbar(request)
-            }
+            is NavigationRequest.SnackBar -> showSnackbar(request)
             is NavigationRequest.EventDetails -> showEventDetails(request)
             else -> activity?.let { navigator.dispatch(it, request) }
+        }
+    }
+
+    private fun showSnackbar(request: NavigationRequest.SnackBar) {
+        snackbarQueue.add(request)
+        if (snackbarQueue.size == 1) {
+            showNextSnackbar()
         }
     }
 
@@ -88,6 +98,14 @@ class EventsFragment : BaseFragment() {
                 } ?: emptyArray()
     }
 
+    private fun showNextSnackbar() {
+        val snackbarRequest = snackbarQueue.poll()
+        if (isVisible && snackbarRequest != null) {
+            eventsScrollContainer.showSnackbar(snackbarRequest, onDismiss = {
+                showNextSnackbar()
+            })
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = FragmentEventsBinding.inflate(inflater, container, false)
@@ -98,6 +116,14 @@ class EventsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupRecyclerView()
         setupAppBarShadow()
+        setupSwipeRefresh()
+    }
+
+    private fun setupSwipeRefresh() {
+        eventsSwipeRefresh.setOnRefreshListener(eventsViewModel::refresh)
+        compositeDisposable += eventsViewModel.isSwipeRefreshLoaderVisibleSubject
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(eventsSwipeRefresh::setRefreshing)
     }
 
     private fun setupRecyclerView() {
@@ -115,7 +141,7 @@ class EventsFragment : BaseFragment() {
     }
 
     private fun subscribeToPreviousEventChange(previousEventsAdapter: PreviousEventsAdapter) {
-        previousEventsDisposable = eventsViewModel.previousEventsSubject
+        compositeDisposable += eventsViewModel.previousEventsSubject
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(previousEventsAdapter::setData)
     }
@@ -140,11 +166,13 @@ class EventsFragment : BaseFragment() {
     }
 
     override fun onDestroyView() {
-        previousEventsDisposable.dispose()
+        snackbarQueue.clear()
+        compositeDisposable.clear()
         super.onDestroyView()
     }
 
     override fun onDetach() {
+        compositeDisposable.dispose()
         navigationDisposable.dispose()
         super.onDetach()
     }
