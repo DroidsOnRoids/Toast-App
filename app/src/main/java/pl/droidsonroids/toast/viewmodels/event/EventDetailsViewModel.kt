@@ -83,7 +83,6 @@ class EventDetailsViewModel @Inject constructor(
         if (eventId.get() == Constants.NO_ID) {
             eventId.set(id)
             this.coverImage.set(coverImage)
-            loadEvent()
         }
     }
 
@@ -134,7 +133,7 @@ class EventDetailsViewModel @Inject constructor(
 
     private fun onEventLoadError(throwable: Throwable) {
         loadingStatus.set(LoadingStatus.ERROR)
-        Timber.e(throwable, "Something went wrong when fetching event details with id = $eventId")
+        Timber.e(throwable, "Something went wrong when fetching event details with id = ${eventId.get()}")
     }
 
     override fun retryLoading() {
@@ -147,7 +146,10 @@ class EventDetailsViewModel @Inject constructor(
     }
 
     fun onTransitionEnd() {
-        loadFromCache.set(false)
+        if (loadFromCache.get()) {
+            loadFromCache.set(false)
+            loadEvent()
+        }
     }
 
     fun invalidateLoading() {

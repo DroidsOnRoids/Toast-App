@@ -85,7 +85,6 @@ class EventDetailsActivity : BaseActivity() {
 
     override fun onEnterAnimationComplete() {
         eventDetailsViewModel.onTransitionEnd()
-        eventDetailsViewModel.invalidateLoading()
     }
 
     private fun postponeSharedTransition() {
