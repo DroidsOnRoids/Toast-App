@@ -21,6 +21,7 @@
     </style>
 
     <style name="AppTheme.NoActionBar.Photo">
+        <item name="android:navigationBarColor">@color/blackAlpha40</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 

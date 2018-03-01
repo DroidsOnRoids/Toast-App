@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.GridLayoutManager
 import android.view.MenuItem
@@ -22,6 +23,7 @@ import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.app.utils.binding.setVisible
+import pl.droidsonroids.toast.app.utils.extensions.toPx
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.utils.Constants
@@ -30,6 +32,7 @@ import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.photos.PhotosViewModel
 import java.util.*
 import javax.inject.Inject
+
 
 class PhotosActivity : BaseActivity() {
     companion object {
@@ -72,6 +75,7 @@ class PhotosActivity : BaseActivity() {
         get() = window.decorView.systemUiVisibility and PhotosActivity.IMMERSIVE_MODE == PhotosActivity.IMMERSIVE_MODE
 
     private var pagerAnimator: ViewsTransitionAnimator<Int>? = null
+    private var defaultStatusBarColor = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,12 +92,24 @@ class PhotosActivity : BaseActivity() {
 
     private fun setupWindow() {
         window.decorView.systemUiVisibility = PhotosActivity.NORMAL_MODE
+        defaultStatusBarColor = window.statusBarColor
         ViewCompat.setOnApplyWindowInsetsListener(fullPhotoViewPager) { _, insets ->
             for (i in 0 until fullPhotoViewPager.childCount) {
                 ViewCompat.dispatchApplyWindowInsets(fullPhotoViewPager.getChildAt(i), insets)
             }
             insets
         }
+        ViewCompat.setOnApplyWindowInsetsListener(photosRecyclerView) { view, insets ->
+            val bottomPadding = insets.systemWindowInsetBottom + insets.systemWindowInsetTop + 2.toPx
+            val padding = 2.toPx
+            view.setPadding(padding, padding, padding, bottomPadding)
+            insets
+        }
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        setStatusBarColor(0f)
     }
 
     private fun setupMainToolbar() {
@@ -176,10 +192,21 @@ class PhotosActivity : BaseActivity() {
         fullPhotoToolbar.setVisible(isFullPhotoVisible)
         fullPhotoToolbar.alpha = fullPhotoVisibilityOffset
 
+        setStatusBarColor(fullPhotoVisibilityOffset)
+
         if (isLeaving && isFullPhotoVisible && isImmersiveMode) {
             toggleImmersiveMode()
         }
     }
+
+    private fun setStatusBarColor(offset: Float) {
+        if (offset == 0f) {
+            window.statusBarColor = defaultStatusBarColor
+        } else {
+            window.statusBarColor = ContextCompat.getColor(this, R.color.blackAlpha40)
+        }
+    }
+
 
     private fun toggleImmersiveMode() {
         window.decorView.systemUiVisibility = if (isImmersiveMode) PhotosActivity.NORMAL_MODE else PhotosActivity.IMMERSIVE_MODE
