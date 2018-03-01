@@ -66,4 +66,5 @@
     <string name="facebook_update_attend_error">Cannot update event attend state</string>
     <string name="logged_in_successfully">You\'ve been successfully logged in</string>
     <string name="logged_out_successfully">You\'ve been successfully logged out</string>
+    <string name="cannot_refresh_data">Cannot refresh data</string>
 </resources>

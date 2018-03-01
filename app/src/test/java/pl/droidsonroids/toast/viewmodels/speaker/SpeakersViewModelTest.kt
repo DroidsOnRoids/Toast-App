@@ -28,6 +28,7 @@ import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.SortingType
 import pl.droidsonroids.toast.viewmodels.LoadingDelayViewModel
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 class SpeakersViewModelTest : RxTestBase() {
@@ -210,6 +211,70 @@ class SpeakersViewModelTest : RxTestBase() {
         testScheduler.advanceTimeBy(Constants.MIN_LOADING_DELAY_MILLIS, TimeUnit.MILLISECONDS)
 
         checkIsFirstPageLoaded()
+    }
+
+    @Test
+    fun shouldRefreshData() {
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(Page(items = emptyList(), pageNumber = 1, allPagesCount = 1)))
+        setupSpeakersViewModel()
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPage))
+
+        speakersViewModel.refresh()
+        testScheduler.advanceTimeBy(Constants.MIN_LOADING_DELAY_MILLIS, TimeUnit.MILLISECONDS)
+
+        checkIsFirstPageLoaded()
+    }
+
+    @Test
+    fun shouldHideSwipeRefreshLoaderWhenDataRefreshed() {
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(Page(items = emptyList(), pageNumber = 1, allPagesCount = 1)))
+        setupSpeakersViewModel()
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPage))
+        val testObserver = speakersViewModel.isSwipeRefreshLoaderVisibleSubject.test()
+
+        speakersViewModel.refresh()
+        testScheduler.advanceTimeBy(Constants.MIN_LOADING_DELAY_MILLIS, TimeUnit.MILLISECONDS)
+
+        testObserver.assertValue { !it }
+    }
+
+    @Test
+    fun shouldRetainDataWhenRefreshFailed() {
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPage))
+        setupSpeakersViewModel()
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(IOException()))
+
+        speakersViewModel.refresh()
+        testScheduler.advanceTimeBy(Constants.MIN_LOADING_DELAY_MILLIS, TimeUnit.MILLISECONDS)
+
+        checkIsFirstPageLoaded()
+    }
+
+    @Test
+    fun shouldRequestSnackBarWhenRefreshFailed() {
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(testSpeakersPage))
+        setupSpeakersViewModel()
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(IOException()))
+        val testObserver = speakersViewModel.navigationSubject.test()
+
+        speakersViewModel.refresh()
+        testScheduler.advanceTimeBy(Constants.MIN_LOADING_DELAY_MILLIS, TimeUnit.MILLISECONDS)
+
+        testObserver.assertValue { it is NavigationRequest.SnackBar }
+    }
+
+
+    @Test
+    fun shouldHideSwipeRefreshLoaderWhenRefreshFailed() {
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.just(Page(items = emptyList(), pageNumber = 1, allPagesCount = 1)))
+        setupSpeakersViewModel()
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(Single.error(IOException()))
+        val testObserver = speakersViewModel.isSwipeRefreshLoaderVisibleSubject.test()
+
+        speakersViewModel.refresh()
+        testScheduler.advanceTimeBy(Constants.MIN_LOADING_DELAY_MILLIS, TimeUnit.MILLISECONDS)
+
+        testObserver.assertValue { !it }
     }
 
     private fun setupSpeakersViewModel() {

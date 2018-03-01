@@ -123,7 +123,7 @@ class AppModule {
 
     private fun OkHttpClient.Builder.addHttpLoggingInterceptorIfDebugBuildConfig(): OkHttpClient.Builder {
         if (BuildConfig.DEBUG) {
-            addNetworkInterceptor(getHttpLoggingInterceptor())
+            addInterceptor(getHttpLoggingInterceptor())
         }
         return this
     }
