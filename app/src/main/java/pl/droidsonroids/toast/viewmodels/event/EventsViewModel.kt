@@ -2,6 +2,7 @@ package pl.droidsonroids.toast.viewmodels.event
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
+import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
@@ -9,6 +10,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.Page
@@ -24,8 +26,10 @@ import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.SourceAttending
 import pl.droidsonroids.toast.utils.toPage
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
+import pl.droidsonroids.toast.viewmodels.RefreshViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
 import timber.log.Timber
 import javax.inject.Inject
@@ -34,20 +38,23 @@ class EventsViewModel @Inject constructor(
         loginStateWatcher: LoginStateWatcher,
         attendViewModel: AttendViewModel,
         private val eventsRepository: EventsRepository,
-        private val analyticsEventTracker: AnalyticsEventTracker
-) : ViewModel(), LoadingViewModel, NavigatingViewModel, LoginStateWatcher by loginStateWatcher, AttendViewModel by attendViewModel {
+        private val analyticsEventTracker: AnalyticsEventTracker,
+        delayViewModel: DelayViewModel
+) : ViewModel(), LoadingViewModel, DelayViewModel by delayViewModel, NavigatingViewModel, RefreshViewModel,
+    LoginStateWatcher by loginStateWatcher, AttendViewModel by attendViewModel {
     override val navigationSubject: PublishSubject<NavigationRequest> = navigationRequests
 
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField()
+    override val isFadingEnabled get() = true
+
     val isPreviousEventsEmpty = ObservableField<Boolean>(true)
     val upcomingEvent = ObservableField<UpcomingEventViewModel>()
     val previousEventsSubject: BehaviorSubject<List<State<EventItemViewModel>>> = BehaviorSubject.create()
+    override val isSwipeRefreshLoaderVisibleSubject: PublishSubject<Boolean> = PublishSubject.create()
 
     private var isPreviousEventsLoading: Boolean = false
     private var nextPageNumber: Int? = null
     private var compositeDisposable = CompositeDisposable()
-    private val Any.simpleClassName: String get() = javaClass.simpleName
-
 
     init {
         loadEvents()
@@ -59,7 +66,18 @@ class EventsViewModel @Inject constructor(
 
     private fun loadEvents() {
         loadingStatus.set(LoadingStatus.PENDING)
-        compositeDisposable += eventsRepository.getEvents()
+        updateLastLoadingStartTime()
+        compositeDisposable += getFirstPage()
+                .let(::addLoadingDelay)
+                .subscribeBy(
+                        onSuccess = (::onEventsLoaded),
+                        onError = (::onEventsLoadError),
+                        onComplete = (::onEmptyResponse)
+                )
+    }
+
+    private fun getFirstPage(): Maybe<Pair<UpcomingEventViewModel, Page<State.Item<EventItemViewModel>>>> {
+        return eventsRepository.getEvents()
                 .flatMap { (upcomingEvent, previousEventsPage) ->
                     setEvent(upcomingEvent.facebookId, upcomingEvent.date, SourceAttending.UPCOMING_EVENT)
                     val upcomingEventViewModel = upcomingEvent.toViewModel(
@@ -72,11 +90,6 @@ class EventsViewModel @Inject constructor(
                             .map { upcomingEventViewModel to it }
                             .toMaybe()
                 }
-                .subscribeBy(
-                        onSuccess = (::onEventsLoaded),
-                        onError = (::onEventsLoadError),
-                        onComplete = (::onEmptyResponse)
-                )
     }
 
     private fun onUpcomingEventLocationClick(coordinates: CoordinatesDto, placeName: String) {
@@ -101,33 +114,35 @@ class EventsViewModel @Inject constructor(
     }
 
     private fun onEventsLoaded(events: Pair<UpcomingEventViewModel, Page<State.Item<EventItemViewModel>>>) {
-        val (upcomingEventViewModel, previousEventsPage) = events
-        upcomingEvent.set(upcomingEventViewModel)
-        onPreviousEventsPageLoaded(previousEventsPage)
+        onEventsRefreshed(events)
         loadingStatus.set(LoadingStatus.SUCCESS)
     }
 
     private fun onPreviousEventsPageLoaded(page: Page<State<EventItemViewModel>>) {
-        val previousEvents = getPreviousEvents(page)
+        val previousEvents = mergeWithExistingPreviousEvents(page.items)
+                .addLoadingItemIfNeeded(page)
+        setPreviousItems(previousEvents)
+    }
+
+    private fun setPreviousItems(previousEvents: List<State<EventItemViewModel>>) {
         isPreviousEventsEmpty.set(previousEvents.isEmpty())
         previousEventsSubject.onNext(previousEvents)
     }
 
-    private fun getPreviousEvents(page: Page<State<EventItemViewModel>>): List<State<EventItemViewModel>> {
-        var previousEvents = mergeWithExistingPreviousEvents(page.items)
-        if (page.pageNumber < page.allPagesCount) {
-            previousEvents += State.Loading
+    private fun List<State<EventItemViewModel>>.addLoadingItemIfNeeded(page: Page<State<EventItemViewModel>>): List<State<EventItemViewModel>> {
+        return if (page.pageNumber < page.allPagesCount) {
             nextPageNumber = page.pageNumber + 1
+            this + State.Loading
         } else {
             nextPageNumber = null
+            this
         }
-        return previousEvents
     }
 
     private fun mergeWithExistingPreviousEvents(newList: List<State<EventItemViewModel>>): List<State<EventItemViewModel>> {
         val previousList = previousEventsSubject.value
                 ?.filter { it is State.Item }
-                ?: listOf()
+                ?: emptyList()
         return previousList + newList
     }
 
@@ -186,5 +201,25 @@ class EventsViewModel @Inject constructor(
         compositeDisposable.dispose()
     }
 
-}
+    override fun refresh() {
+        invalidateAttendState()
+        getFirstPage()
+                .subscribeBy(
+                        onSuccess = (::onEventsRefreshed),
+                        onError = { onRefreshError() },
+                        onComplete = (::onRefreshError)
+                )
+    }
 
+    private fun onRefreshError() {
+        navigationSubject.onNext(NavigationRequest.SnackBar(R.string.cannot_refresh_data))
+        isSwipeRefreshLoaderVisibleSubject.onNext(false)
+    }
+
+    private fun onEventsRefreshed(events: Pair<UpcomingEventViewModel, Page<State.Item<EventItemViewModel>>>) {
+        val (upcomingEventViewModel, previousEventsPage) = events
+        upcomingEvent.set(upcomingEventViewModel)
+        setPreviousItems(previousEventsPage.items.addLoadingItemIfNeeded(previousEventsPage))
+        isSwipeRefreshLoaderVisibleSubject.onNext(false)
+    }
+}

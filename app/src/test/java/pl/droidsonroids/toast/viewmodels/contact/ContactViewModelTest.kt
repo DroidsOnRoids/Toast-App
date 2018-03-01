@@ -1,5 +1,6 @@
 package pl.droidsonroids.toast.viewmodels.contact
 
+import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -18,6 +19,7 @@ import pl.droidsonroids.toast.data.enums.MessageType
 import pl.droidsonroids.toast.repositories.contact.ContactRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import java.io.IOException
 
 class ContactViewModelTest : RxTestBase() {
@@ -27,6 +29,8 @@ class ContactViewModelTest : RxTestBase() {
     lateinit var contactFormValidator: ContactFormValidator
     @Mock
     lateinit var analyticsEventTracker: AnalyticsEventTracker
+    @Mock
+    lateinit var delayViewModel: DelayViewModel
 
     lateinit var contactViewModel: ContactViewModel
 
@@ -44,12 +48,14 @@ class ContactViewModelTest : RxTestBase() {
     @Before
     fun setUp() {
         whenever(contactRepository.readMessage()).thenReturn(Single.just(messageDto))
-        contactViewModel = ContactViewModel(contactFormValidator, contactRepository, analyticsEventTracker)
+        contactViewModel = ContactViewModel(contactFormValidator, contactRepository, analyticsEventTracker, delayViewModel)
     }
 
     @Test
     fun shouldSentMessage() {
-        whenever(contactRepository.sendMessage(eq(messageDto))).thenReturn(Completable.complete())
+        val complete = Completable.complete()
+        whenever(contactRepository.sendMessage(eq(messageDto))).thenReturn(complete)
+        whenever(delayViewModel.addLoadingDelay(any())).thenReturn(complete)
         val testObserver = contactViewModel.navigationSubject.test()
 
         contactViewModel.onSendClick()
@@ -60,7 +66,9 @@ class ContactViewModelTest : RxTestBase() {
 
     @Test
     fun shouldClearFieldsAfterMessageSent() {
-        whenever(contactRepository.sendMessage(eq(messageDto))).thenReturn(Completable.complete())
+        val complete = Completable.complete()
+        whenever(contactRepository.sendMessage(eq(messageDto))).thenReturn(complete)
+        whenever(delayViewModel.addLoadingDelay(any())).thenReturn(complete)
 
         contactViewModel.onSendClick()
 
@@ -76,7 +84,9 @@ class ContactViewModelTest : RxTestBase() {
 
     @Test
     fun shouldReturnError() {
-        whenever(contactRepository.sendMessage(eq(messageDto))).thenReturn(Completable.error(IOException()))
+        val error = Completable.error(IOException())
+        whenever(contactRepository.sendMessage(eq(messageDto))).thenReturn(error)
+        whenever(delayViewModel.addLoadingDelay(any())).thenReturn(error)
 
         contactViewModel.onSendClick()
 
@@ -85,9 +95,14 @@ class ContactViewModelTest : RxTestBase() {
 
     @Test
     fun shouldRetrySendingMessage() {
-        whenever(contactRepository.sendMessage(eq(messageDto))).thenReturn(Completable.error(IOException()))
+        val error = Completable.error(IOException())
+        whenever(contactRepository.sendMessage(eq(messageDto))).thenReturn(error)
+        whenever(delayViewModel.addLoadingDelay(any())).thenReturn(error)
         contactViewModel.onSendClick()
-        whenever(contactRepository.sendMessage(eq(messageDto))).thenReturn(Completable.complete())
+
+        val complete = Completable.complete()
+        whenever(contactRepository.sendMessage(eq(messageDto))).thenReturn(complete)
+        whenever(delayViewModel.addLoadingDelay(complete)).thenReturn(complete)
         val testObserver = contactViewModel.navigationSubject.test()
 
         contactViewModel.retryLoading()
