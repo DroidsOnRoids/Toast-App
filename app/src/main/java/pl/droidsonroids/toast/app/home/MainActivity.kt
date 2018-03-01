@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -14,7 +13,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
-import pl.droidsonroids.toast.app.utils.extensions.setNavigationViewAnchor
 import pl.droidsonroids.toast.app.utils.extensions.showSnackbar
 import pl.droidsonroids.toast.data.enums.LoginState
 import pl.droidsonroids.toast.databinding.ActivityMainBinding
@@ -57,10 +55,9 @@ class MainActivity : BaseActivity() {
     }
 
     private fun showFacebookError() {
-        Snackbar.make(mainCoordinatorLayout, R.string.oops_no_internet_connection, Snackbar.LENGTH_LONG)
-                .setNavigationViewAnchor()
-                .setAction(R.string.retry) { mainViewModel.onLogInClick() }
-                .show()
+        mainCoordinatorLayout.showSnackbar(NavigationRequest.SnackBar(R.string.oops_no_internet_connection), apply = {
+            setAction(R.string.retry) { mainViewModel.onLogInClick() }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
