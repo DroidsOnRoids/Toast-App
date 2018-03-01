@@ -3,7 +3,6 @@ package pl.droidsonroids.toast.app.events
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v4.util.Pair
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.app.AppCompatActivity
@@ -63,9 +62,13 @@ class EventsFragment : BaseFragment() {
             is NavigationRequest.SnackBar -> if (isVisible) {
                 eventsScrollContainer.showSnackbar(request)
             }
-            is NavigationRequest.EventDetails -> navigator.showActivityWithSharedAnimation(activity as AppCompatActivity, request, getSharedViews(request.id))
+            is NavigationRequest.EventDetails -> showEventDetails(request)
             else -> activity?.let { navigator.dispatch(it, request) }
         }
+    }
+
+    private fun showEventDetails(request: NavigationRequest.EventDetails) {
+        navigator.showActivityWithSharedAnimation(activity as AppCompatActivity, request, getSharedViews(request.id))
     }
 
     private fun getSharedViews(id: Long): Array<Pair<View, String>> {

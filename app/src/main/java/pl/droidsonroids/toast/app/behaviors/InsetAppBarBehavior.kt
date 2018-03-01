@@ -9,11 +9,11 @@ import pl.droidsonroids.toast.utils.consume
 
 class InsetAppBarBehavior(context: Context, attrs: AttributeSet? = null) : CoordinatorLayout.Behavior<View>() {
 
+    private var appBarScrollOffset = 0
+
     override fun layoutDependsOn(parent: CoordinatorLayout, child: View, dependency: View): Boolean {
         return dependency is AppBarLayout
     }
-
-    private var appBarScrollOffset = 0
 
     override fun onDependentViewChanged(parent: CoordinatorLayout, child: View, dependency: View) = consume {
         appBarScrollOffset = dependency.height + dependency.y.toInt()
