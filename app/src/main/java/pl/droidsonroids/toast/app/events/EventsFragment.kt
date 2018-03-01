@@ -15,6 +15,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
+import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.fragment_events.*
 import kotlinx.android.synthetic.main.layout_card_upcoming_event.*
 import pl.droidsonroids.toast.R
@@ -99,9 +100,10 @@ class EventsFragment : BaseFragment() {
     }
 
     private fun showNextSnackbar() {
-        val snackbarRequest = snackbarQueue.poll()
+        val snackbarRequest = snackbarQueue.peek()
         if (isVisible && snackbarRequest != null) {
             eventsScrollContainer.showSnackbar(snackbarRequest, onDismiss = {
+                snackbarQueue.poll()
                 showNextSnackbar()
             })
         }
