@@ -39,6 +39,7 @@ class PhotosActivity : BaseActivity() {
         private const val EVENT_ID_KEY = "event_id_key"
         private const val PARENT_VIEW_KEY = "parent_view_key"
         private const val PHOTOS_GRID_SIZE = 2
+        private const val SYSTEM_UI_FLAG_SHOW_NAVIGATION = 6
 
         private const val IMMERSIVE_MODE =
                 (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -103,6 +104,11 @@ class PhotosActivity : BaseActivity() {
             val bottomPadding = insets.systemWindowInsetBottom + insets.systemWindowInsetTop + photoItemPadding
             view.setPadding(photoItemPadding, photoItemPadding, photoItemPadding, bottomPadding)
             insets
+        }
+        window.decorView.setOnSystemUiVisibilityChangeListener { visibility ->
+            if (visibility == SYSTEM_UI_FLAG_SHOW_NAVIGATION) {
+                toggleImmersiveMode()
+            }
         }
     }
 
@@ -188,7 +194,7 @@ class PhotosActivity : BaseActivity() {
 
         setStatusBarColor(fullPhotoVisibilityOffset)
 
-        if (isLeaving && isFullPhotoVisible && isImmersiveMode) {
+        if (isImmersiveMode && !isFullPhotoVisible && isImmersiveMode) {
             toggleImmersiveMode()
         }
     }
