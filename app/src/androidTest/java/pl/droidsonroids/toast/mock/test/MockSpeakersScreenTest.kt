@@ -16,7 +16,7 @@ class MockSpeakersScreenTest {
     val mockWebServer = MockWebServer()
 
     @Before
-    fun setup() {
+    fun setUp() {
         setPathDispatcher()
         mockWebServer.start(12345)
         activityRule.launchActivity(null)
