@@ -61,9 +61,13 @@ class SpeakerTalkDetailsActivity : BaseActivity() {
     private fun handleNavigationRequest(request: NavigationRequest) {
         when (request) {
             NavigationRequest.Close -> finishAfterTransition()
-            is NavigationRequest.EventDetails -> navigator.showActivityWithSharedAnimation(this, request, getSharedViews())
+            is NavigationRequest.EventDetails -> showEventDetails(request)
             else -> navigator.dispatch(this, request)
         }
+    }
+
+    private fun showEventDetails(request: NavigationRequest) {
+        navigator.showActivityWithSharedAnimation(this, request, getSharedViews())
     }
 
     private fun getSharedViews() = arrayOf(Pair(eventCoverImage as View, eventCoverImage.transitionName))

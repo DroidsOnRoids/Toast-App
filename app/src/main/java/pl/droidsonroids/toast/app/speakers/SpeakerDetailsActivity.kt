@@ -73,10 +73,18 @@ class SpeakerDetailsActivity : BaseActivity() {
 
     private fun handleNavigationRequest(request: NavigationRequest) {
         when (request) {
-            is NavigationRequest.SpeakerTalkDetails -> navigator.showActivityWithSharedAnimation(this, request, getSharedViews(request.speakerTalkDto))
-            is NavigationRequest.EventDetails -> navigator.showActivityWithSharedAnimation(this, request, getSharedViews(request.talkId))
+            is NavigationRequest.SpeakerTalkDetails -> showTalkDetails(request)
+            is NavigationRequest.EventDetails -> showEventDetails(request)
             else -> navigator.dispatch(this, request)
         }
+    }
+
+    private fun showTalkDetails(request: NavigationRequest.SpeakerTalkDetails) {
+        navigator.showActivityWithSharedAnimation(this, request, getSharedViews(request.speakerTalkDto))
+    }
+
+    private fun showEventDetails(request: NavigationRequest.EventDetails) {
+        navigator.showActivityWithSharedAnimation(this, request, getSharedViews(request.talkId))
     }
 
     private fun getSharedViews(speakerTalkDto: SpeakerTalkDto): Array<Pair<View, String>> {
