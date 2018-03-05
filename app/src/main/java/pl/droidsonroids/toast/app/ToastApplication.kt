@@ -50,8 +50,12 @@ class ToastApplication : Application(), HasActivityInjector {
     }
 
     private fun setupCrashlytics() {
+        val crashlyticsCore = CrashlyticsCore.Builder()
+                .disabled(BuildConfig.DEBUG)
+                .build()
+
         val crashlyticsKit = Crashlytics.Builder()
-                .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+                .core(crashlyticsCore)
                 .build()
 
         val fabric = Fabric.Builder(this)
