@@ -4,8 +4,11 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import io.reactivex.disposables.Disposable
-import io.reactivex.disposables.Disposables
+import android.support.v4.util.Pair
+import android.view.View
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.synthetic.main.layout_event_item.*
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerTalkDto
@@ -35,7 +38,7 @@ class SpeakerTalkDetailsActivity : BaseActivity() {
         ViewModelProviders.of(this, viewModelFactory).get(talkDto.id.toString(), SpeakerTalkDetailsViewModel::class.java)
     }
 
-    private var navigationDisposable: Disposable = Disposables.disposed()
+    private var compositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,24 +49,27 @@ class SpeakerTalkDetailsActivity : BaseActivity() {
     }
 
     private fun setupViewModel(binding: ActivitySpeakerTalkDetailsBinding) {
-        speakerTalkDetailsViewModel.init(talkDto) {
-            supportStartPostponedEnterTransition()
-        }
-        navigationDisposable = speakerTalkDetailsViewModel.navigationSubject
+        speakerTalkDetailsViewModel.init(talkDto)
+        compositeDisposable += speakerTalkDetailsViewModel.navigationSubject
                 .subscribe(::handleNavigationRequest)
+        compositeDisposable += speakerTalkDetailsViewModel.coverLoadingFinishedSubject
+                .take(1)
+                .subscribe { supportStartPostponedEnterTransition() }
         binding.speakerTalkDetailsViewModel = speakerTalkDetailsViewModel
     }
 
-    private fun handleNavigationRequest(it: NavigationRequest) {
-        if (it is NavigationRequest.Close) {
-            finishAfterTransition()
-        } else {
-            navigator.dispatch(this, it)
+    private fun handleNavigationRequest(request: NavigationRequest) {
+        when (request) {
+            NavigationRequest.Close -> finishAfterTransition()
+            is NavigationRequest.EventDetails -> navigator.showActivityWithSharedAnimation(this, request, getSharedViews())
+            else -> navigator.dispatch(this, request)
         }
     }
 
+    private fun getSharedViews() = arrayOf(Pair(eventCoverImage as View, eventCoverImage.transitionName))
+
     override fun onDestroy() {
-        navigationDisposable.dispose()
+        compositeDisposable.dispose()
         super.onDestroy()
     }
 }

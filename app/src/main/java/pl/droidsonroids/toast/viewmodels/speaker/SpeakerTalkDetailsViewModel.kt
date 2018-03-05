@@ -3,8 +3,8 @@ package pl.droidsonroids.toast.viewmodels.speaker
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import io.reactivex.subjects.PublishSubject
-import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
+import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerTalkDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.utils.NavigationRequest
@@ -20,18 +20,24 @@ class SpeakerTalkDetailsViewModel @Inject constructor(private val analyticsEvent
     val description: ObservableField<String> = ObservableField()
     val eventItemViewModel: ObservableField<EventItemViewModel> = ObservableField()
 
-    fun init(talkDto: SpeakerTalkDto, onCoverLoadingFinished: () -> Unit) {
+    val coverLoadingFinishedSubject: PublishSubject<Unit> = PublishSubject.create()
+
+    fun init(talkDto: SpeakerTalkDto) {
         talkDto.let {
             id.set(it.id)
             title.set(it.title)
             description.set(it.description)
-            eventItemViewModel.set(it.event.toViewModel(::onEventClick, onCoverLoadingFinished))
+            eventItemViewModel.set(it.event.toViewModel(::onEventClick, ::onCoverLoadingFinished))
         }
     }
 
     private fun onEventClick(eventId: Long, imageDto: ImageDto?) {
         navigationSubject.onNext(NavigationRequest.EventDetails(eventId, imageDto))
         analyticsEventTracker.logSpeakerDetailsEventTapEvent(eventId)
+    }
+
+    private fun onCoverLoadingFinished() {
+        coverLoadingFinishedSubject.onNext(Unit)
     }
 
     fun onReadLess() {

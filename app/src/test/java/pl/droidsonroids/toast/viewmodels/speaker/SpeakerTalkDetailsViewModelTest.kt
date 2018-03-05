@@ -1,6 +1,5 @@
 package pl.droidsonroids.toast.viewmodels.speaker
 
-import com.nhaarman.mockito_kotlin.mock
 import org.junit.Before
 import org.junit.Test
 import org.mockito.InjectMocks
@@ -19,7 +18,7 @@ class SpeakerTalkDetailsViewModelTest : RxTestBase() {
 
     @Before
     fun setUp() {
-        speakerTalkDetailsViewModel.init(testSpeakerTalkDto, onCoverLoadingFinished = mock())
+        speakerTalkDetailsViewModel.init(testSpeakerTalkDto)
     }
 
     @Test

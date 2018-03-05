@@ -9,7 +9,7 @@ import pl.droidsonroids.toast.data.enums.ParentView
 
 sealed class NavigationRequest {
     object SpeakersSearch : NavigationRequest()
-    data class EventDetails(val id: Long, val coverImage: ImageDto? = null) : NavigationRequest()
+    data class EventDetails(val id: Long, val coverImage: ImageDto? = null, val talkId: Long? = null) : NavigationRequest()
     data class SpeakerDetails(val id: Long) : NavigationRequest()
     object MessageSent : NavigationRequest()
     data class EventTalkDetails(val eventTalkDto: EventTalkDto) : NavigationRequest()
@@ -19,8 +19,8 @@ sealed class NavigationRequest {
     data class SinglePhoto(val photos: List<ImageDto>, val position: Long) : NavigationRequest()
     data class Map(val coordinatesDto: CoordinatesDto, val placeName: String) : NavigationRequest()
     object ToggleImmersive : NavigationRequest()
-    data class Website(val url: String): NavigationRequest()
-    data class Email(val email: String): NavigationRequest()
+    data class Website(val url: String) : NavigationRequest()
+    data class Email(val email: String) : NavigationRequest()
     object LogIn : NavigationRequest()
     object LogOut : NavigationRequest()
     data class SnackBar(@StringRes val stringRes: Int) : NavigationRequest()
