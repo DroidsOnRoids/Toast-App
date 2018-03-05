@@ -3,11 +3,8 @@ package pl.droidsonroids.toast.app
 import android.app.Activity
 import android.app.Application
 import android.util.Log
-import com.crashlytics.android.Crashlytics
-import com.crashlytics.android.core.CrashlyticsCore
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
-import io.fabric.sdk.android.Fabric
 import pl.droidsonroids.toast.BuildConfig
 import pl.droidsonroids.toast.di.DaggerAppComponent
 import timber.log.Timber
@@ -70,11 +67,10 @@ class ToastApplication : Application(), HasActivityInjector {
 
         override fun log(priority: Int, tag: String?, message: String, throwable: Throwable?) {
             if (priority == Log.ERROR) {
-                val exception = throwable ?: Exception(message)
                 Crashlytics.setInt(CRASHLYTICS_KEY_PRIORITY, priority)
                 Crashlytics.setString(CRASHLYTICS_KEY_TAG, tag)
                 Crashlytics.setString(CRASHLYTICS_KEY_MESSAGE, message)
-                Crashlytics.logException(exception)
+                Crashlytics.logException(throwable)
             }
         }
     }
