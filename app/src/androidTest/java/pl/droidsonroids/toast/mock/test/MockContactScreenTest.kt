@@ -1,6 +1,6 @@
 package pl.droidsonroids.toast.mock.test
 
-import android.support.test.rule.ActivityTestRule
+import android.support.test.espresso.intent.rule.IntentsTestRule
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.*
 import pl.droidsonroids.testing.mockwebserver.FixtureDispatcher
@@ -8,10 +8,10 @@ import pl.droidsonroids.testing.mockwebserver.condition.PathQueryConditionFactor
 import pl.droidsonroids.toast.app.home.MainActivity
 
 
-class MockEventsScreenTest {
+class MockContactScreenTest {
     @JvmField
     @Rule
-    val activityRule = ActivityTestRule(MainActivity::class.java, true, false)
+    val activityRule = IntentsTestRule(MainActivity::class.java, true, false)
 
     val mockWebServer = MockWebServer()
 

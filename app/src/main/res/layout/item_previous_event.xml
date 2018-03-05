@@ -9,6 +9,8 @@
         <variable
             name="itemViewModel"
             type="pl.droidsonroids.toast.viewmodels.event.EventItemViewModel"/>
+
+        <import type="pl.droidsonroids.toast.utils.Constants.PhotoTransition"/>
     </data>
 
     <android.support.v7.widget.CardView
@@ -32,8 +34,10 @@
                 android:layout_width="0dp"
                 android:layout_height="111dp"
                 android:contentDescription="@string/previous_event_cover_desc"
-                app:coverImage="@{itemViewModel.coverImage}"
+                app:originalImage="@{itemViewModel.coverImage}"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:elementId="@{itemViewModel.id}"
+                app:transitionName="@{PhotoTransition.PHOTO}"
                 android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
