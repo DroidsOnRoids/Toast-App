@@ -2,9 +2,7 @@
 <resources>
     <declare-styleable name="SpeakerHeaderBehavior">
         <attr name="finalXPosition" format="dimension"/>
-        <attr name="finalYPosition" format="dimension"/>
         <attr name="finalHeight" format="dimension"/>
         <attr name="finalWidth" format="dimension"/>
-        <attr name="finalToolbarHeight" format="dimension"/>
     </declare-styleable>
 </resources>

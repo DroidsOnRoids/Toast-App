@@ -12,4 +12,24 @@ class SpeakersRobot : BaseRobot() {
                 .perform(pressImeActionButton())
         return this
     }
+
+    fun goToSpeakersScreen() {
+        with(SpeakersRobot()) {
+            performClickOnElementWithId(R.id.actionSpeakers)
+        }
+    }
+
+    fun goToSearchScreen() {
+        goToSpeakersScreen()
+        with(SpeakersRobot()) {
+            performClickOnElementWithId(R.id.searchImageButton)
+        }
+    }
+
+    fun goToSpeakerDetailsScreen() {
+        with(SpeakersRobot()) {
+            goToSpeakersScreen()
+            performClickOnRecyclerViewElement(R.id.speakersRecyclerView, 0)
+        }
+    }
 }

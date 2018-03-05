@@ -1,6 +1,5 @@
 package pl.droidsonroids.toast.test
 
-import android.support.test.espresso.Espresso
 import android.support.test.rule.ActivityTestRule
 import org.junit.Rule
 import org.junit.Test
@@ -14,20 +13,25 @@ class SpeakersScreenTest {
     @Rule
     val activityRule = ActivityTestRule(MainActivity::class.java, true, true)
 
-    private fun goToSpeakersScreen() {
+    @Test
+    fun isToolbarDisplayed() {
+        val toolbarTitle = getString(R.string.speakers_title)
         with(SpeakersRobot()) {
-            performClickOnElementWithId(R.id.actionSpeakers)
+            goToSpeakersScreen()
+            checkIfToolbarWithTitleIsDisplayed(toolbarTitle, R.id.toolbar)
         }
     }
 
-    private fun goToSearchScreen() {
-        goToSpeakersScreen()
+    @Test
+    fun isSearchIconDisplayed() {
         with(SpeakersRobot()) {
-            performClickOnElementWithId(R.id.searchImageButton)
+            goToSpeakersScreen()
+            checkIfElementWithIdIsDisplayed(R.id.searchImageButton)
         }
     }
 
-    private fun goToSpeakerDetailsScreen() {
+    @Test
+    fun isSpeakerSelectedOnSpeakersScreen() {
         with(SpeakersRobot()) {
             goToSpeakersScreen()
             performClickOnRecyclerViewElement(R.id.speakersRecyclerView, 0)
@@ -35,34 +39,9 @@ class SpeakersScreenTest {
     }
 
     @Test
-    fun isToolbarDisplayed() {
-        val toolbarTitle = getString(R.string.speakers_title)
-        goToSpeakersScreen()
-        with(SpeakersRobot()) {
-            checkIfToolbarWithTitleIsDisplayed(toolbarTitle, R.id.toolbar)
-        }
-    }
-
-    @Test
-    fun isSearchIconDisplayed() {
-        goToSpeakersScreen()
-        with(SpeakersRobot()) {
-            checkIfElementWithIdIsDisplayed(R.id.searchImageButton)
-        }
-    }
-
-    @Test
-    fun isSpeakerSelectedOnSpeakersScreen() {
-        goToSpeakersScreen()
-        with(SpeakersRobot()) {
-            performClickOnRecyclerViewElement(R.id.speakersRecyclerView, 0)
-        }
-    }
-
-    @Test
     fun isSpeakerSelectedOnSearchScreen() {
-        goToSearchScreen()
         with(SpeakersRobot()) {
+            goToSearchScreen()
             performTyping("a", R.id.searchBox)
             checkIfSearchIsPerformed()
             performClickOnRecyclerViewElement(R.id.speakersSearchRecyclerView, 0)
@@ -71,8 +50,8 @@ class SpeakersScreenTest {
 
     @Test
     fun isEveryElementOnSearchScreenDisplayed() {
-        goToSearchScreen()
         with(SpeakersRobot()) {
+            goToSearchScreen()
             checkIfElementWithIdIsDisplayed(R.id.searchBox)
             checkIfHomeButtonIsDisplayed()
             checkIfHintOnEditTextIsCorrect(R.id.searchBox, getString(R.string.search_hint))
@@ -81,8 +60,8 @@ class SpeakersScreenTest {
 
     @Test
     fun isSpeakersScreenDisplayedAfterClickingOnBackButton() {
-        goToSearchScreen()
         with(SpeakersRobot()) {
+            goToSearchScreen()
             performNavigateUp()
             checkIfElementWithIdIsDisplayed(R.id.searchImageButton)
         }
@@ -90,8 +69,8 @@ class SpeakersScreenTest {
 
     @Test
     fun isSortingBarDisplayed() {
-        goToSpeakersScreen()
         with(SpeakersRobot()) {
+            goToSpeakersScreen()
             checkIfElementWithIdIsDisplayed(R.id.sortingBarLayout)
             checkIfElementWithIdIsDisplayed(R.id.arrowDownImage)
         }
@@ -99,8 +78,8 @@ class SpeakersScreenTest {
 
     @Test
     fun isSortingBarExpanded() {
-        goToSpeakersScreen()
         with(SpeakersRobot()) {
+            goToSpeakersScreen()
             performClickOnElementWithId(R.id.titleSortingLayout)
             checkIfElementWithIdIsDisplayed(R.id.arrowDownImage)
             checkIfElementWithIdIsDisplayed(R.id.alphabeticalDivider)
@@ -109,32 +88,6 @@ class SpeakersScreenTest {
             checkIfElementWithIdIsDisplayed(R.id.dateDivider)
             checkIfElementWithIdIsDisplayed(R.id.dateSortImage)
             checkIfTextIsCorrect(getString(R.string.date), R.id.dateText)
-        }
-    }
-
-    /**
-     * Tests for Speaker Details
-     */
-
-    @Test
-    fun isHeaderDisplayedWithProperElements() {
-        goToSpeakerDetailsScreen()
-        with(SpeakersRobot()) {
-            checkIfElementWithIdIsDisplayed(R.id.collapsingToolbar)
-            checkIfElementWithIdIsDisplayed(R.id.avatarImage)
-            checkIfElementWithIdIsDisplayed(R.id.avatarBorderSmall)
-            checkIfElementWithIdIsDisplayed(R.id.avatarBorderBig)
-            checkIfElementWithIdIsDisplayed(R.id.speakerName)
-            checkIfElementWithIdIsDisplayed(R.id.speakerJob)
-        }
-    }
-
-    @Test
-    fun isSpeakersListDisplayedAfterClickingBackFromSpeakerDetails() {
-        goToSpeakerDetailsScreen()
-        Espresso.pressBack()
-        with(SpeakersRobot()) {
-            checkIfElementWithIdIsDisplayed(R.id.searchImageButton)
         }
     }
 }

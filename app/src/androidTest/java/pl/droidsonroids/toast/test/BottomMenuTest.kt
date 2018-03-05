@@ -8,6 +8,7 @@ import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.function.getString
 import pl.droidsonroids.toast.robot.MenuRobot
 
+
 class TestBottomsMenu {
     @JvmField
     @Rule
@@ -15,7 +16,6 @@ class TestBottomsMenu {
 
     @Test
     fun isEveryTabInBottomMenuDisplayed() {
-
         with(MenuRobot()) {
             checkIfElementWithIdIsDisplayed(R.id.actionEvents)
             checkIfElementWithIdIsDisplayed(R.id.actionSpeakers)
