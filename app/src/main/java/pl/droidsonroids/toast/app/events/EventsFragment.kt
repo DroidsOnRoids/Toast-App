@@ -3,7 +3,9 @@ package pl.droidsonroids.toast.app.events
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.util.Pair
 import android.support.v4.widget.NestedScrollView
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +17,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.fragment_events.*
+import kotlinx.android.synthetic.main.layout_card_upcoming_event.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseFragment
@@ -39,6 +42,8 @@ class EventsFragment : BaseFragment() {
 
     private var navigationDisposable: Disposable = Disposables.disposed()
 
+    private val snackbarQueue = LinkedList<NavigationRequest.SnackBar>()
+
     private val topBarHeight by lazy {
         resources.getDimension(R.dimen.events_top_bar_height)
     }
@@ -58,24 +63,47 @@ class EventsFragment : BaseFragment() {
                 .subscribe(::handleNavigationRequest)
     }
 
-
     private fun handleNavigationRequest(request: NavigationRequest) {
-        if (request is NavigationRequest.SnackBar) {
-            snackbarQueue += request
-            if (snackbarQueue.size == 1) {
-                showNextSnackbar()
-            }
-        } else {
-            activity?.let { navigator.dispatch(it, request) }
+        when (request) {
+            is NavigationRequest.SnackBar -> showSnackbar(request)
+            is NavigationRequest.EventDetails -> showEventDetails(request)
+            else -> activity?.let { navigator.dispatch(it, request) }
         }
     }
 
-    private val snackbarQueue = LinkedList<NavigationRequest.SnackBar>()
+    private fun showSnackbar(request: NavigationRequest.SnackBar) {
+        snackbarQueue.add(request)
+        if (snackbarQueue.size == 1) {
+            showNextSnackbar()
+        }
+    }
+
+    private fun showEventDetails(request: NavigationRequest.EventDetails) {
+        navigator.showActivityWithSharedAnimation(activity as AppCompatActivity, request, getSharedViews(request.id))
+    }
+
+    private fun getSharedViews(id: Long): Array<Pair<View, String>> {
+        return if (eventsViewModel.isUpcomingEvent(id)) {
+            arrayOf(Pair(upcomingEventImage as View, upcomingEventImage.transitionName))
+        } else {
+            getSharedViewFromRecyclerView(id)
+        }
+    }
+
+    private fun getSharedViewFromRecyclerView(id: Long): Array<Pair<View, String>> {
+        return previousEventsRecyclerView.findViewHolderForItemId(id)
+                ?.itemView
+                ?.run {
+                    val coverImage = findViewById<View>(R.id.eventCoverImage)
+                    arrayOf(Pair(coverImage, coverImage.transitionName))
+                } ?: emptyArray()
+    }
 
     private fun showNextSnackbar() {
-        val snackbarRequest = snackbarQueue.poll()
+        val snackbarRequest = snackbarQueue.peek()
         if (isVisible && snackbarRequest != null) {
             eventsScrollContainer.showSnackbar(snackbarRequest, onDismiss = {
+                snackbarQueue.poll()
                 showNextSnackbar()
             })
         }

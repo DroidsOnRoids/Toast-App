@@ -9,7 +9,7 @@ import pl.droidsonroids.toast.data.enums.ParentView
 
 sealed class NavigationRequest {
     object SpeakersSearch : NavigationRequest()
-    data class EventDetails(val id: Long) : NavigationRequest()
+    data class EventDetails(val id: Long, val coverImage: ImageDto? = null) : NavigationRequest()
     data class SpeakerDetails(val id: Long) : NavigationRequest()
     object MessageSent : NavigationRequest()
     data class EventTalkDetails(val eventTalkDto: EventTalkDto) : NavigationRequest()

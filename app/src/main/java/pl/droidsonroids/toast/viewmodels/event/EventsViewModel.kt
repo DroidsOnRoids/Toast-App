@@ -82,7 +82,7 @@ class EventsViewModel @Inject constructor(
                     setEvent(upcomingEvent.facebookId, upcomingEvent.date, SourceAttending.UPCOMING_EVENT)
                     val upcomingEventViewModel = upcomingEvent.toViewModel(
                             onLocationClick = (::onUpcomingEventLocationClick),
-                            onEventClick = (::onUpcomingEventClick),
+                            onEventClick = (::onEventClick),
                             onSeePhotosClick = (::onSeePhotosClick),
                             onAttendClick = (::onAttendClick)
                     )
@@ -97,12 +97,14 @@ class EventsViewModel @Inject constructor(
         analyticsEventTracker.logUpcomingEventTapMeetupPlaceEvent()
     }
 
-    private fun onUpcomingEventClick(eventId: Long) {
-        navigationSubject.onNext(NavigationRequest.EventDetails(eventId))
+    private fun onEventClick(eventId: Long, coverImage: ImageDto?) {
+        Timber.d("On event click: $eventId")
+        navigationSubject.onNext(NavigationRequest.EventDetails(eventId, coverImage))
         analyticsEventTracker.logEventsShowEventDetailsEvent(eventId)
     }
 
     private fun onSeePhotosClick(eventId: Long, photos: List<ImageDto>) {
+        Timber.d("On upcoming photos click: $eventId")
         navigationSubject.onNext(NavigationRequest.Photos(photos, eventId, ParentView.HOME))
     }
 
@@ -170,14 +172,9 @@ class EventsViewModel @Inject constructor(
     private fun mapToSingleEventItemViewModelsPage(page: Page<EventDto>): Single<Page<State.Item<EventItemViewModel>>> {
         val (items, pageNo, pageCount) = page
         return items.toObservable()
-                .map { it.toViewModel(::sendEventDetailsNavigationRequest) }
+                .map { it.toViewModel(::onEventClick) }
                 .map { wrapWithState(it) }
                 .toPage(pageNo, pageCount)
-    }
-
-    private fun sendEventDetailsNavigationRequest(id: Long) {
-        navigationSubject.onNext(NavigationRequest.EventDetails(id))
-        analyticsEventTracker.logEventsShowEventDetailsEvent(id)
     }
 
     private fun onPreviousEventsLoadError(throwable: Throwable) {
@@ -222,4 +219,6 @@ class EventsViewModel @Inject constructor(
         setPreviousItems(previousEventsPage.items.addLoadingItemIfNeeded(previousEventsPage))
         isSwipeRefreshLoaderVisibleSubject.onNext(false)
     }
+
+    fun isUpcomingEvent(id: Long) = upcomingEvent.get()?.id == id
 }
