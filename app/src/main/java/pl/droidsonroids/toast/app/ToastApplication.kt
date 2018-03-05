@@ -3,8 +3,11 @@ package pl.droidsonroids.toast.app
 import android.app.Activity
 import android.app.Application
 import android.util.Log
+import com.crashlytics.android.Crashlytics
+import com.crashlytics.android.core.CrashlyticsCore
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import io.fabric.sdk.android.Fabric
 import pl.droidsonroids.toast.BuildConfig
 import pl.droidsonroids.toast.di.DaggerAppComponent
 import timber.log.Timber
