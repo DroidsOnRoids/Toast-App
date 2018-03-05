@@ -38,7 +38,6 @@ android {
         versionCode commitTimestamp
         versionName "0.1.$commitsOnBranchCount"
         testInstrumentationRunner "pl.droidsonroids.toast.RxAndroidJUnitRunner"
-        multiDexEnabled true
     }
 
     signingConfigs {
@@ -64,6 +63,8 @@ android {
             signingConfig signingConfigs.debug
         }
         debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
             signingConfig signingConfigs.debug
