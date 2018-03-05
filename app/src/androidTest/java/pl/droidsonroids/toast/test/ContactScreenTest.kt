@@ -14,25 +14,19 @@ class ContactScreenTest {
     @Rule
     val activityRule = ActivityTestRule(MainActivity::class.java, true, true)
 
-    private fun goToContactScreen() {
-        with(ContactRobot()) {
-            performClickOnElementWithId(R.id.actionContact)
-        }
-    }
-
     @Test
     fun isToolbarDisplayed() {
         val toolbarTitle = getString(R.string.contact_title)
-        goToContactScreen()
         with(ContactRobot()) {
+            goToContactScreen()
             checkIfToolbarWithTitleIsDisplayed(toolbarTitle, R.id.toolbar)
         }
     }
 
     @Test
     fun isEveryFieldInContactFormDisplayed() {
-        goToContactScreen()
         with(ContactRobot()) {
+            goToContactScreen()
             checkIfElementWithIdIsDisplayed(R.id.topicSpinner)
             checkIfElementWithIdIsDisplayed(R.id.contactNameInputLayout)
             checkIfHintOnTextInputLayoutIsCorrect(R.id.contactNameInputLayout, getString(R.string.your_name))
@@ -45,8 +39,8 @@ class ContactScreenTest {
 
     @Test
     fun isSendButtonDisplayedInDefaultState() {
-        goToContactScreen()
         with(ContactRobot()) {
+            goToContactScreen()
             checkIfElementWithIdIsDisplayed(R.id.disabledSendButton)
             checkIfElementWithIdIsNotDisplayed(R.id.enabledSendButton)
         }
@@ -54,8 +48,8 @@ class ContactScreenTest {
 
     @Test
     fun isSpinnerWithTopicsExpandableAndHasCorrectData() {
-        goToContactScreen()
         with(ContactRobot()) {
+            goToContactScreen()
             performClickOnElementWithId(R.id.topicSpinner)
             performClickOnDataWithText(getString(R.string.speak_on_the_next_event))
             checkIfSpinnerTextIsCorrect(getString(R.string.speak_on_the_next_event), R.id.topicSpinner)
