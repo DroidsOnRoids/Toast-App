@@ -10,6 +10,9 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.ColorUtils
 import android.support.v4.util.Pair
 import android.support.v7.widget.LinearLayoutManager
+import android.transition.ChangeBounds
+import android.transition.ChangeImageTransform
+import android.transition.TransitionSet
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
@@ -22,6 +25,7 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.utils.extensions.addInsetAppBehaviorToLoadingLayout
+import pl.droidsonroids.toast.app.utils.extensions.doOnEnd
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.EventTalkDto
 import pl.droidsonroids.toast.databinding.ActivityEventDetailsBinding
@@ -83,12 +87,12 @@ class EventDetailsActivity : BaseActivity() {
         addInsetAppBehaviorToLoadingLayout()
     }
 
-    override fun onEnterAnimationComplete() {
-        eventDetailsViewModel.onTransitionEnd()
-    }
-
     private fun postponeSharedTransition() {
         postponeEnterTransition()
+        window.sharedElementEnterTransition = TransitionSet()
+                .addTransition(ChangeImageTransform())
+                .addTransition(ChangeBounds())
+                .doOnEnd { eventDetailsViewModel.onTransitionEnd() }
         isTransitionPostponed = true
     }
 
