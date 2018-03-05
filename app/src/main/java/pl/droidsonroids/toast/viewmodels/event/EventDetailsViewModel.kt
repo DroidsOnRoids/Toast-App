@@ -36,11 +36,10 @@ class EventDetailsViewModel @Inject constructor(
         private val analyticsEventTracker: AnalyticsEventTracker,
         delayViewModel: DelayViewModel
 ) : ViewModel(), LoadingViewModel, DelayViewModel by delayViewModel, NavigatingViewModel, AttendViewModel by attendViewModel {
-    private val Any.simpleClassName: String get() = javaClass.simpleName
     override val navigationSubject: PublishSubject<NavigationRequest> = navigationRequests
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.PENDING)
+    val eventId = ObservableField(Constants.NO_ID)
     override val isFadingEnabled get() = true
-    private var eventId = Constants.NO_ID
     val title = ObservableField("")
     val date = ObservableField<Date>()
     val placeName = ObservableField("")
@@ -48,6 +47,14 @@ class EventDetailsViewModel @Inject constructor(
     val coverImage = ObservableField<ImageDto?>()
     val photosAvailable = ObservableField(false)
     val gradientColor = ObservableField(DEFAULT_GRADIENT_COLOR)
+    val loadFromCache = ObservableField(true)
+
+    val coverImageLoadingFinishedSubject: PublishSubject<Unit> = PublishSubject.create()
+
+    val onLoadingFinished: () -> Unit = {
+        coverImageLoadingFinishedSubject.onNext(Unit)
+    }
+
     val onGradientColorLoaded: (Int) -> Unit = {
         gradientColor.set(it and GRADIENT_COLOR_MASK)
     }
@@ -61,8 +68,8 @@ class EventDetailsViewModel @Inject constructor(
     private var eventsDisposable = Disposables.disposed()
 
     fun onPhotosClick() {
-        navigationSubject.onNext(NavigationRequest.Photos(photos, eventId, ParentView.EVENT_DETAILS))
-        analyticsEventTracker.logEventDetailsSeePhotosEvent(eventId)
+        navigationSubject.onNext(NavigationRequest.Photos(photos, eventId.get(), ParentView.EVENT_DETAILS))
+        analyticsEventTracker.logEventDetailsSeePhotosEvent(eventId.get())
     }
 
     fun onLocationClick() {
@@ -72,17 +79,17 @@ class EventDetailsViewModel @Inject constructor(
         }
     }
 
-    fun init(id: Long) {
-        if (eventId == Constants.NO_ID) {
-            eventId = id
-            loadEvent()
+    fun init(id: Long, coverImage: ImageDto?) {
+        if (eventId.get() == Constants.NO_ID) {
+            eventId.set(id)
+            this.coverImage.set(coverImage)
         }
     }
 
     private fun loadEvent() {
         loadingStatus.set(LoadingStatus.PENDING)
         updateLastLoadingStartTime()
-        eventsDisposable = eventsRepository.getEvent(eventId)
+        eventsDisposable = eventsRepository.getEvent(eventId.get())
                 .let { addLoadingDelay(it) }
                 .subscribeBy(
                         onSuccess = (::onEventLoaded),
@@ -97,7 +104,7 @@ class EventDetailsViewModel @Inject constructor(
             date.set(it.date)
             placeName.set(it.placeName)
             placeStreet.set(it.placeStreet)
-            coverImage.set(it.coverImages.firstOrNull())
+            coverImage.run { set(get() ?: it.coverImages.firstOrNull()) }
             photosAvailable.set(it.photos.isNotEmpty())
             photos = it.photos
             coordinates = it.coordinates
@@ -115,7 +122,7 @@ class EventDetailsViewModel @Inject constructor(
     private fun onReadMore(eventSpeakerItemViewModel: EventSpeakerItemViewModel) {
         val eventTalkDto = eventSpeakerItemViewModel.toDto()
         navigationSubject.onNext(NavigationRequest.EventTalkDetails(eventTalkDto))
-        Timber.d(simpleClassName, "onReadMore: ${eventSpeakerItemViewModel.id}")
+        Timber.d("onReadMore: ${eventSpeakerItemViewModel.id}")
         analyticsEventTracker.logEventDetailsReadMoreEvent(eventTalkDto.title)
     }
 
@@ -126,7 +133,7 @@ class EventDetailsViewModel @Inject constructor(
 
     private fun onEventLoadError(throwable: Throwable) {
         loadingStatus.set(LoadingStatus.ERROR)
-        Timber.e(throwable, "Something went wrong when fetching event details with id = $eventId")
+        Timber.e(throwable, "Something went wrong when fetching event details with id = ${eventId.get()}")
     }
 
     override fun retryLoading() {
@@ -136,5 +143,17 @@ class EventDetailsViewModel @Inject constructor(
     override fun onCleared() {
         dispose()
         eventsDisposable.dispose()
+    }
+
+    fun onTransitionEnd() {
+        if (loadFromCache.get()) {
+            loadFromCache.set(false)
+            loadEvent()
+        }
+    }
+
+    fun invalidateLoading() {
+        //        Due to shared element transition bug https://github.com/UweTrottmann/SeriesGuide/issues/522
+        loadingStatus.notifyChange()
     }
 }
