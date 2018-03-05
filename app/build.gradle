@@ -38,6 +38,7 @@ android {
         versionCode commitTimestamp
         versionName "0.1.$commitsOnBranchCount"
         testInstrumentationRunner "pl.droidsonroids.toast.RxAndroidJUnitRunner"
+        multiDexEnabled true
     }
 
     signingConfigs {

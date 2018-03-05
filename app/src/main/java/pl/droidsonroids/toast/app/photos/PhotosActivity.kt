@@ -87,7 +87,7 @@ class PhotosActivity : BaseActivity() {
         setupRecyclerView()
         setupViewPager()
         setupPagerAnimator()
-        increaseGlideMemoryCache()
+        setHighGlideMemoryCache()
     }
 
     private fun setupWindow() {
@@ -99,8 +99,8 @@ class PhotosActivity : BaseActivity() {
             }
             insets
         }
+        val photoItemPadding = resources.getDimensionPixelSize(R.dimen.photo_item_pading)
         ViewCompat.setOnApplyWindowInsetsListener(photosRecyclerView) { view, insets ->
-            val photoItemPadding = resources.getDimension(R.dimen.photo_item_pading).toInt()
             val bottomPadding = insets.systemWindowInsetBottom + insets.systemWindowInsetTop + photoItemPadding
             view.setPadding(photoItemPadding, photoItemPadding, photoItemPadding, bottomPadding)
             insets
@@ -200,10 +200,10 @@ class PhotosActivity : BaseActivity() {
     }
 
     private fun setStatusBarColor(offset: Float) {
-        if (offset == 0f) {
-            window.statusBarColor = defaultStatusBarColor
+        window.statusBarColor = if (offset == 0f) {
+            defaultStatusBarColor
         } else {
-            window.statusBarColor = ContextCompat.getColor(this, R.color.blackAlpha40)
+            ContextCompat.getColor(this, R.color.blackAlpha40)
         }
     }
 
@@ -226,7 +226,7 @@ class PhotosActivity : BaseActivity() {
         openFullPhoto(index)
     }
 
-    private fun increaseGlideMemoryCache() {
+    private fun setHighGlideMemoryCache() {
         Glide.get(this).setMemoryCategory(MemoryCategory.HIGH)
     }
 
