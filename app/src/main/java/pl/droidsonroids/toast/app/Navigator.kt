@@ -44,12 +44,13 @@ class Navigator @Inject constructor(private val loginManager: LoginManager, priv
         }
     }
 
+    // Not used for now due to graph API change - removed possibility to check attend status
     private fun logIn(activity: Activity) {
-        loginManager.logInWithPublishPermissions(activity, Constants.Facebook.PERMISSIONS)
+        //        loginManager.logInWithPublishPermissions(activity, Constants.Facebook.PERMISSIONS)
     }
 
     private fun logOut() {
-        loginManager.logOut()
+        //        loginManager.logOut()
     }
 
     private fun showMap(context: Context, navigationRequest: NavigationRequest.Map) {
