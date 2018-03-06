@@ -3,6 +3,7 @@ package pl.droidsonroids.toast.app.photos
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
+import android.databinding.Observable
 import android.os.Bundle
 import android.support.v4.util.Pair
 import android.support.v7.widget.GridLayoutManager
@@ -22,6 +23,7 @@ import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.utils.addOnPropertyChangedCallback
 import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.photos.PhotosViewModel
 import java.util.*
@@ -55,6 +57,8 @@ class PhotosActivity : BaseActivity() {
 
     private val compositeDisposable = CompositeDisposable()
 
+    private var rotationCallback: Observable.OnPropertyChangedCallback? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photos)
@@ -82,6 +86,11 @@ class PhotosActivity : BaseActivity() {
         photosViewModel.init(photos)
         compositeDisposable += photosViewModel.navigationSubject
                 .subscribe(::handleNavigationRequest)
+        rotationCallback = photosViewModel.rotation
+                .apply { photosContainer.rotation = get() }
+                .addOnPropertyChangedCallback {
+                    photosContainer.rotation = it
+                }
     }
 
     private fun handleNavigationRequest(navigationRequest: NavigationRequest) {
@@ -140,6 +149,7 @@ class PhotosActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
+        photosViewModel.rotation.removeOnPropertyChangedCallback(rotationCallback)
         setDefaultGlideMemoryCache()
         compositeDisposable.dispose()
         super.onDestroy()

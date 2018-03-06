@@ -9,7 +9,7 @@ import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import javax.inject.Inject
 
-class PhotosViewerViewModel @Inject constructor() : ViewModel(), NavigatingViewModel {
+class PhotosViewerViewModel @Inject constructor(val rotation: ObservableField<Float>) : ViewModel(), NavigatingViewModel {
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
     var singlePhotoViewModels: List<SinglePhotoViewModel> = emptyList()
         private set

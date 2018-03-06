@@ -14,6 +14,7 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.data.dto.ImageDto
+import pl.droidsonroids.toast.databinding.ActivityPhotosViewerBinding
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.photos.PhotosViewerViewModel
@@ -60,10 +61,11 @@ class PhotosViewerActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_photos_viewer)
+        val binding = ActivityPhotosViewerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         postponeSharedTransition()
         setupToolbar()
-        setupViewModel()
+        setupViewModel(binding)
         setupViewPager()
         setupWindow()
     }
@@ -78,10 +80,10 @@ class PhotosViewerActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    private fun setupViewModel() {
+    private fun setupViewModel(binding: ActivityPhotosViewerBinding) {
         val photos = intent.getParcelableArrayListExtra<ImageDto>(PHOTOS_KEY)
         photosViewerViewModel.init(photos)
-
+        binding.photosViewerViewModel = photosViewerViewModel
         compositeDisposable += photosViewerViewModel.photoLoadingFinishedSubject
                 .filter { currentPosition == it && isTransitionPostponed }
                 .subscribe { resumeSharedTransition() }

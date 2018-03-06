@@ -1,5 +1,6 @@
 package pl.droidsonroids.toast.viewmodels.photos
 
+import android.databinding.ObservableField
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
@@ -15,7 +16,7 @@ class PhotosViewerViewModelTest : RxTestBase() {
 
     @Before
     fun setUp() {
-        photosViewerViewModel = PhotosViewerViewModel()
+        photosViewerViewModel = PhotosViewerViewModel(ObservableField(0f))
         photosViewerViewModel.init(testPhotos)
     }
 

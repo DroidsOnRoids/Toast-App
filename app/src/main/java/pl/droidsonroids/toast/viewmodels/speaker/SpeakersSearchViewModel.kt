@@ -19,7 +19,8 @@ import javax.inject.Inject
 class SpeakersSearchViewModel @Inject constructor(
         private val speakersRepository: SpeakersRepository,
         private val analyticsEventTracker: AnalyticsEventTracker,
-        delayViewModel: DelayViewModel
+        delayViewModel: DelayViewModel,
+        val rotation: ObservableField<Float>
 ) : BaseSpeakerListViewModel(), LoadingViewModel, DelayViewModel by delayViewModel {
     val searchPhrase: ObservableField<String> = ObservableField("")
     private val searchObservable: Observable<String> = searchPhrase.toObservable()
