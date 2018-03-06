@@ -90,7 +90,7 @@ class EventDetailsViewModel @Inject constructor(
         loadingStatus.set(LoadingStatus.PENDING)
         updateLastLoadingStartTime()
         eventsDisposable = eventsRepository.getEvent(eventId.get())
-                .let { addLoadingDelay(it) }
+                .let(::addLoadingDelay)
                 .subscribeBy(
                         onSuccess = (::onEventLoaded),
                         onError = (::onEventLoadError)
@@ -126,8 +126,8 @@ class EventDetailsViewModel @Inject constructor(
         analyticsEventTracker.logEventDetailsReadMoreEvent(eventTalkDto.title)
     }
 
-    private fun onSpeakerClick(speakerId: Long, speakerName: String) {
-        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId))
+    private fun onSpeakerClick(speakerId: Long, speakerName: String, avatar: ImageDto?) {
+        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId, avatar))
         analyticsEventTracker.logEventDetailsShowSpeakerEvent(speakerName)
     }
 

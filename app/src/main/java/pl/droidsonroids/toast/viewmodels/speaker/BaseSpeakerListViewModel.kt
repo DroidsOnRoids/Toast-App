@@ -29,8 +29,8 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
         val (items, pageNumber, allPagesCount) = page
         return items.toObservable()
                 .map {
-                    it.toViewModel { id, name ->
-                        navigationSubject.onNext(NavigationRequest.SpeakerDetails(id))
+                    it.toViewModel { id, name, avatar ->
+                        navigationSubject.onNext(NavigationRequest.SpeakerDetails(id, avatar))
                         onSpeakerNavigationRequestSent(name)
                     }
                 }

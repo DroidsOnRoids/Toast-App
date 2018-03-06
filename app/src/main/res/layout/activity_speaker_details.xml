@@ -10,6 +10,8 @@
         <variable
             name="speakerDetailsViewModel"
             type="pl.droidsonroids.toast.viewmodels.speaker.SpeakerDetailsViewModel"/>
+
+        <import type="pl.droidsonroids.toast.utils.Constants.AvatarTransition"/>
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -19,9 +21,9 @@
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appBar"
-            android:stateListAnimator="@null"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:stateListAnimator="@null"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <android.support.design.widget.CollapsingToolbarLayout
@@ -194,6 +196,10 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="57dp"
             android:elevation="@dimen/elevation_large"
+            app:fromCache="@{speakerDetailsViewModel.loadFromCache}"
+            app:transitionName="@{AvatarTransition.AVATAR}"
+            app:elementId="@{speakerDetailsViewModel.speakerId}"
+            app:loadingFinishedListener="@{speakerDetailsViewModel.onLoadingFinished}"
             app:finalHeight="@dimen/small_avatar_size"
             app:finalWidth="@dimen/small_avatar_size"
             app:finalXPosition="@dimen/avatar_collapsed_margin"

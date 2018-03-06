@@ -7,6 +7,13 @@ import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakerItemViewModel
 
 class SpeakersAdapter : BaseStateAdapter<SpeakerItemViewModel>(false) {
+
+    init {
+        setHasStableIds(true)
+    }
+
+    override fun getItemId(item: SpeakerItemViewModel) = item.id
+
     override fun getDiffCallback(oldList: List<State<SpeakerItemViewModel>>, newList: List<State<SpeakerItemViewModel>>): BaseDiffCallback<SpeakerItemViewModel> {
         return SpeakerItemDiffCallback(oldList, newList)
     }

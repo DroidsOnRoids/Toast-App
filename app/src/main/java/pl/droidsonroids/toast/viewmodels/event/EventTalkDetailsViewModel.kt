@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
+import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.EventTalkDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.utils.NavigationRequest
@@ -28,8 +29,8 @@ class EventTalkDetailsViewModel @Inject constructor(private val analyticsEventTr
         }
     }
 
-    private fun onSpeakerClick(speakerId: Long, speakerName: String) {
-        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId))
+    private fun onSpeakerClick(speakerId: Long, speakerName: String, avatar: ImageDto?) {
+        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId, avatar))
         analyticsEventTracker.logEventDetailsShowSpeakerEvent(speakerName)
     }
 

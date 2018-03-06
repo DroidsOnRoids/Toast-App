@@ -98,6 +98,7 @@ class Navigator @Inject constructor(private val loginManager: LoginManager, priv
             is NavigationRequest.EventTalkDetails -> EventTalkDetailsActivity.createIntent(activity, navigationRequest)
             is NavigationRequest.SpeakerTalkDetails -> SpeakerTalkDetailsActivity.createIntent(activity, navigationRequest)
             is NavigationRequest.EventDetails -> EventDetailsActivity.createIntent(activity, navigationRequest)
+            is NavigationRequest.SpeakerDetails -> SpeakerDetailsActivity.createIntent(activity, navigationRequest)
             else -> throw IllegalArgumentException("The $navigationRequest is not supported.")
         }
         activity.startActivity(intent, options)
