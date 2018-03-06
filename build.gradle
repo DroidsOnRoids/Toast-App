@@ -24,6 +24,9 @@ buildscript {
         maven {
             url "https://jitpack.io"
         }
+        maven {
+            url 'https://maven.fabric.io/public'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
@@ -32,6 +35,7 @@ buildscript {
         classpath "gradle.plugin.pl.droidsonroids.gradle.ui.test:plugin:2.0.2"
         classpath 'com.github.trevjonez.composer-gradle-plugin:plugin:0.5.1'
         classpath 'com.google.gms:google-services:3.2.0'
+        classpath 'io.fabric.tools:gradle:1.25.1'
     }
 }
 
