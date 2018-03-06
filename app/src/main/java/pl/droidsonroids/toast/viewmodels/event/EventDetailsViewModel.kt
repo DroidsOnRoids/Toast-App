@@ -26,8 +26,8 @@ import javax.inject.Inject
 
 private const val DEFAULT_GRADIENT_COLOR = 0xA0000000.toInt()
 private const val GRADIENT_COLOR_MASK = 0xE0FFFFFF.toInt()
-private const val WINDOW_ROTATION_DEGREES = 5f
-private const val WINDOW_DEFAULT_ROTATION = 0f
+private const val WINDOW_MAX_ROTATION_DEGREES = 5f
+private const val WINDOW_DEFAULT_ROTATION_DEGREES = 0f
 
 class EventDetailsViewModel @Inject constructor(
         private val eventsRepository: EventsRepository,
@@ -80,10 +80,12 @@ class EventDetailsViewModel @Inject constructor(
     }
 
     fun onTitleLongClick() = consume {
-        with(rotation) {
-            when (get()) {
-                WINDOW_DEFAULT_ROTATION -> set(WINDOW_ROTATION_DEGREES)
-                WINDOW_ROTATION_DEGREES -> set(WINDOW_DEFAULT_ROTATION)
+        if (date.get().isToday) {
+            with(rotation) {
+                when (get()) {
+                    WINDOW_DEFAULT_ROTATION_DEGREES -> set(WINDOW_MAX_ROTATION_DEGREES)
+                    WINDOW_MAX_ROTATION_DEGREES -> set(WINDOW_DEFAULT_ROTATION_DEGREES)
+                }
             }
         }
     }
