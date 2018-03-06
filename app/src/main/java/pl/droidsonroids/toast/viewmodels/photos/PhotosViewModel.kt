@@ -5,6 +5,7 @@ import android.databinding.ObservableField
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.data.dto.ImageDto
+import pl.droidsonroids.toast.data.mapper.toFullscreenViewModel
 import pl.droidsonroids.toast.data.mapper.toItemViewModel
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
@@ -14,27 +15,32 @@ class PhotosViewModel @Inject constructor(val rotation: ObservableField<Float>) 
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
 
     val photosSubject: BehaviorSubject<List<PhotoItemViewModel>> = BehaviorSubject.create()
+    val fullscreenPhotosSubject: BehaviorSubject<List<FullscreenPhotoViewModel>> = BehaviorSubject.create()
 
     private var photosDto: List<ImageDto> = emptyList()
-
-    var isSharedTransitionInProgress = false
 
     fun init(photos: List<ImageDto>) {
         if (!photosSubject.hasValue()) {
             photosDto = photos
             val photosViewModels = photos.mapIndexed(::imageDtoToViewModel)
+            val fullPhotosViewModels = photos.mapIndexed(::fullImageDtoToViewModel)
             photosSubject.onNext(photosViewModels)
+            fullscreenPhotosSubject.onNext(fullPhotosViewModels)
         }
     }
 
     private fun imageDtoToViewModel(index: Int, image: ImageDto) =
-            image.toItemViewModel(index.toLong(), ::onPhotoItemClicked)
+            image.toItemViewModel(index, ::onPhotoItemClicked)
 
-    private fun onPhotoItemClicked(position: Long) {
-        if (!isSharedTransitionInProgress) {
-            isSharedTransitionInProgress = true
-            navigationSubject.onNext(NavigationRequest.SinglePhoto(photosDto, position))
-        }
+    private fun fullImageDtoToViewModel(index: Int, image: ImageDto) =
+            image.toFullscreenViewModel(index, ::onFullscreenPhotoClick)
+
+    fun onFullscreenPhotoClick() {
+        navigationSubject.onNext(NavigationRequest.ToggleImmersive)
+    }
+
+    fun onPhotoItemClicked(index: Int) {
+        navigationSubject.onNext(NavigationRequest.FullscreenPhoto(index))
     }
 
 }

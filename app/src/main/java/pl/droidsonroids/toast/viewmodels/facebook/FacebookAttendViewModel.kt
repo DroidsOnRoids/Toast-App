@@ -18,7 +18,7 @@ import pl.droidsonroids.toast.utils.isYesterdayOrEarlier
 import java.util.*
 import javax.inject.Inject
 
-
+// Not used for now due to graph API change - removed possibility to check attend status
 class FacebookAttendViewModel @Inject constructor(
         loginStateWatcher: LoginStateWatcher,
         private val facebookRepository: FacebookRepository,

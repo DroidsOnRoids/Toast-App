@@ -12,21 +12,19 @@ import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import pl.droidsonroids.toast.BuildConfig
-import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTrackerImpl
 import pl.droidsonroids.toast.repositories.contact.ContactRepository
 import pl.droidsonroids.toast.repositories.contact.ContactRepositoryImpl
 import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.repositories.event.EventsRepositoryImpl
-import pl.droidsonroids.toast.repositories.facebook.FacebookRepository
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepositoryImpl
 import pl.droidsonroids.toast.services.*
 import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingDelayViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
-import pl.droidsonroids.toast.viewmodels.facebook.FacebookAttendViewModel
+import pl.droidsonroids.toast.viewmodels.facebook.WebAttendViewModel
 import pl.droidsonroids.toast.viewmodels.speaker.Clock
 import pl.droidsonroids.toast.viewmodels.speaker.SystemClockWrapper
 import retrofit2.Retrofit
@@ -65,8 +63,9 @@ class AppModule {
     @Provides
     fun provideContactStorage(sharedPreferences: SharedPreferences): ContactStorage = LocalContactStorage(sharedPreferences)
 
+    //    Replace with FacebookAttendViewModel to use Graph API & attend status check
     @Provides
-    fun provideAttendViewModel(loginStateWatcher: LoginStateWatcher, facebookRepository: FacebookRepository, analyticsEventTracker: AnalyticsEventTracker): AttendViewModel = FacebookAttendViewModel(loginStateWatcher, facebookRepository, analyticsEventTracker)
+    fun provideAttendViewModel(): AttendViewModel = WebAttendViewModel()
 
     @Provides
     fun provideDelayViewModel(clock: Clock): DelayViewModel = LoadingDelayViewModel(clock)

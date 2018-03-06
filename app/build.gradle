@@ -12,6 +12,8 @@ apply plugin: 'composer'
 
 apply plugin: "pl.droidsonroids.ui.test"
 
+apply plugin: 'io.fabric'
+
 buildscript {
     repositories {
         jcenter()
@@ -63,6 +65,8 @@ android {
             signingConfig signingConfigs.debug
         }
         debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
             signingConfig signingConfigs.debug
@@ -148,8 +152,15 @@ dependencies {
     // firebase
     implementation 'com.google.firebase:firebase-core:11.8.0'
 
+    // crashlytics
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.1@aar'){
+        transitive = true
+    }
+
     // timber logger
     implementation 'com.jakewharton.timber:timber:4.6.1'
+
+    implementation 'com.alexvasilkov:gesture-views:2.4.1'
 
     // tests
     testImplementation 'junit:junit:4.12'
