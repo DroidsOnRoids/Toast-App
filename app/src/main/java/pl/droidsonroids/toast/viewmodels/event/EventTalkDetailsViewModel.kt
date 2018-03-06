@@ -30,7 +30,7 @@ class EventTalkDetailsViewModel @Inject constructor(private val analyticsEventTr
     }
 
     private fun onSpeakerClick(speakerId: Long, speakerName: String, avatar: ImageDto?) {
-        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId, avatar))
+        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId, avatar, id.get()))
         analyticsEventTracker.logEventDetailsShowSpeakerEvent(speakerName)
     }
 

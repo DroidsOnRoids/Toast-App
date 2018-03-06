@@ -126,8 +126,8 @@ class EventDetailsViewModel @Inject constructor(
         analyticsEventTracker.logEventDetailsReadMoreEvent(eventTalkDto.title)
     }
 
-    private fun onSpeakerClick(speakerId: Long, speakerName: String, avatar: ImageDto?) {
-        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId, avatar))
+    private fun onSpeakerClick(speakerTalkId: Long?, speakerId: Long, speakerName: String, avatar: ImageDto?) {
+        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId, avatar, speakerTalkId))
         analyticsEventTracker.logEventDetailsShowSpeakerEvent(speakerName)
     }
 

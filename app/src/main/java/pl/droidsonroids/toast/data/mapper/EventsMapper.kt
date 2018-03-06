@@ -100,7 +100,10 @@ fun EventDetailsDto.toViewModel(
     )
 }
 
-fun EventTalkDto.toViewModel(onReadMore: (EventSpeakerItemViewModel) -> Unit, onSpeakerClick: (Long, String, ImageDto?) -> Unit): EventSpeakerItemViewModel {
+fun EventTalkDto.toViewModel(onReadMore: (EventSpeakerItemViewModel) -> Unit, onEventClickCallback: (Long?, Long, String, ImageDto?) -> Unit): EventSpeakerItemViewModel {
+    val onSpeakerClick: (Long, String, ImageDto?) -> Unit = { speakerId, name, avatar ->
+        onEventClickCallback(id, speakerId, name, avatar)
+    }
     return EventSpeakerItemViewModel(
             id = id,
             title = title,
