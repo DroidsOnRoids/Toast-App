@@ -15,7 +15,6 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.events.EventTalkDetailsActivity
 import pl.droidsonroids.toast.app.photos.PhotosActivity
-import pl.droidsonroids.toast.app.photos.PhotosViewerActivity
 import pl.droidsonroids.toast.app.speakers.SpeakerDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakerTalkDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
@@ -84,12 +83,6 @@ class Navigator @Inject constructor(private val loginManager: LoginManager, priv
         } catch (exception: ActivityNotFoundException) {
             Toast.makeText(context, R.string.browser_not_found, Toast.LENGTH_SHORT).show()
         }
-    }
-
-    fun showSinglePhotoWithSharedAnimation(activity: AppCompatActivity, navigationRequest: NavigationRequest.SinglePhoto, sharedViews: Array<Pair<View, String>>) {
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, *sharedViews).toBundle()
-        val intent = PhotosViewerActivity.createIntent(activity, navigationRequest)
-        activity.startActivity(intent, options)
     }
 
     fun showActivityWithSharedAnimation(activity: AppCompatActivity, navigationRequest: NavigationRequest, sharedViews: Array<Pair<View, String>>) {

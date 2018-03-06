@@ -1,28 +1,49 @@
 package pl.droidsonroids.toast.app.photos
 
-import android.support.v4.view.PagerAdapter
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import pl.droidsonroids.toast.databinding.ItemSinglePhotoBinding
-import pl.droidsonroids.toast.viewmodels.photos.SinglePhotoViewModel
+import com.alexvasilkov.gestures.commons.RecyclePagerAdapter
+import com.alexvasilkov.gestures.views.GestureImageView
+import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.item_fullscreen_photo.view.*
+import pl.droidsonroids.toast.databinding.ItemFullscreenPhotoBinding
+import pl.droidsonroids.toast.viewmodels.photos.FullscreenPhotoViewModel
 
-class PhotosViewPagerAdapter(private val singlePhotoViewModels: List<SinglePhotoViewModel>) : PagerAdapter() {
+class PhotosViewPagerAdapter : RecyclePagerAdapter<PhotosViewPagerAdapter.FullPhotoViewHolder>() {
+    private var fullscreenPhotoViewModels: List<FullscreenPhotoViewModel> = emptyList()
 
-    override fun isViewFromObject(view: View, other: Any) = view == other
-
-    override fun getCount() = singlePhotoViewModels.size
-
-    override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val layoutInflater = LayoutInflater.from(container.context)
-        val singlePhotoBinding = ItemSinglePhotoBinding.inflate(layoutInflater, container, false)
-        singlePhotoBinding.singlePhotoViewModel = singlePhotoViewModels[position]
-        container.addView(singlePhotoBinding.root)
-        return singlePhotoBinding.root
+    override fun onCreateViewHolder(container: ViewGroup): FullPhotoViewHolder {
+        val singlePhotoBinding = ItemFullscreenPhotoBinding.inflate(LayoutInflater.from(container.context), container, false)
+        return FullPhotoViewHolder(singlePhotoBinding)
     }
 
-    override fun destroyItem(container: ViewGroup, position: Int, view: Any) {
-        container.removeView(view as View)
+    override fun onBindViewHolder(holder: FullPhotoViewHolder, position: Int) {
+        holder.bind(fullscreenPhotoViewModels[position])
     }
+
+    override fun onRecycleViewHolder(holder: FullPhotoViewHolder) {
+        super.onRecycleViewHolder(holder)
+        with(holder.itemView.photo) {
+            Glide.with(this).clear(this)
+            setImageDrawable(null)
+        }
+    }
+
+    override fun getCount() = fullscreenPhotoViewModels.size
+
+    fun getPhotoView(holder: FullPhotoViewHolder): GestureImageView = holder.itemView.photo
+
+    fun setData(newFullscreenPhotoViewModels: List<FullscreenPhotoViewModel>) {
+        fullscreenPhotoViewModels = newFullscreenPhotoViewModels
+        notifyDataSetChanged()
+    }
+
+    inner class FullPhotoViewHolder(private val binding: ItemFullscreenPhotoBinding) : RecyclePagerAdapter.ViewHolder(binding.root) {
+        fun bind(fullscreenPhotoViewModel: FullscreenPhotoViewModel) {
+            binding.fullscreenPhotoViewModel = fullscreenPhotoViewModel
+            binding.executePendingBindings()
+        }
+    }
+
 
 }
