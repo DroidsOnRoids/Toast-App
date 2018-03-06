@@ -54,12 +54,7 @@
             android:name=".app.photos.PhotosActivity"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity
-            android:name=".app.photos.PhotosViewerActivity"
-            android:label=""
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar.PhotoViewer"/>
+            android:theme="@style/AppTheme.NoActionBar.Photo"/>
 
         <!--Facebook-->
         <meta-data
