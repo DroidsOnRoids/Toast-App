@@ -13,6 +13,7 @@ import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
+import pl.droidsonroids.toast.testImageDto
 import pl.droidsonroids.toast.testSpeakerDetailsDto
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
@@ -51,8 +52,7 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
     fun shouldRetryLoadSpeakerDetails() {
         val error = Single.error<SpeakerDetailsDto>(Exception())
         whenever(speakersRepository.getSpeaker(speakerId)).thenReturn(error)
-        whenever(delayViewModel.addLoadingDelay(error)).thenReturn(error)
-        speakerDetailsViewModel.init(speakerId)
+        speakerDetailsViewModel.init(speakerId, testImageDto)
 
         val testSpeaker = testSpeakerDetailsDto.toSingle()
         whenever(speakersRepository.getSpeaker(speakerId)).thenReturn(testSpeaker)
@@ -146,7 +146,8 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
     private fun mockSpeakerWith(value: Single<SpeakerDetailsDto>) {
         whenever(speakersRepository.getSpeaker(speakerId)).thenReturn(value)
         whenever(delayViewModel.addLoadingDelay(value)).thenReturn(value)
-        speakerDetailsViewModel.init(speakerId)
+        speakerDetailsViewModel.init(speakerId, testImageDto)
+        speakerDetailsViewModel.onTransitionEnd()
     }
 
     private fun assertSpeakerDetails() {

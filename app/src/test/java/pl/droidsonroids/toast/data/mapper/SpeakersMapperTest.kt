@@ -51,7 +51,7 @@ class SpeakersMapperTest {
         val name = "name"
         val job = "job"
         val avatar = ImageDto("bigImageUrl", "thumbImageUrl")
-        val onClick: (Long, String) -> Unit = mock()
+        val onClick: (Long, String, ImageDto?) -> Unit = mock()
         val speakerDto = SpeakerDto(id, name, job, avatar)
         val speakerItemViewModel = speakerDto.toViewModel(onClick)
 
@@ -60,7 +60,7 @@ class SpeakersMapperTest {
         assertThat(speakerItemViewModel.job, equalTo(job))
         assertThat(speakerItemViewModel.avatar, equalTo(avatar))
         speakerItemViewModel.onClick()
-        verify(onClick).invoke(id, name)
+        verify(onClick).invoke(id, name, avatar)
     }
 
     @Test
