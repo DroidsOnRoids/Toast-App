@@ -3,9 +3,9 @@ package pl.droidsonroids.toast.viewmodels.photos
 import pl.droidsonroids.toast.data.dto.ImageDto
 
 class PhotoItemViewModel(
-        val position: Long,
+        val position: Int,
         val image: ImageDto,
-        private val onPhotoClick: (Long) -> Unit
+        private val onPhotoClick: (Int) -> Unit
 ) {
     fun onClick() {
         onPhotoClick(position)

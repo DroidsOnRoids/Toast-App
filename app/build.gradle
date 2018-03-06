@@ -65,6 +65,8 @@ android {
             signingConfig signingConfigs.debug
         }
         debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
             signingConfig signingConfigs.debug
@@ -157,6 +159,8 @@ dependencies {
 
     // timber logger
     implementation 'com.jakewharton.timber:timber:4.6.1'
+
+    implementation 'com.alexvasilkov:gesture-views:2.4.1'
 
     // tests
     testImplementation 'junit:junit:4.12'
