@@ -80,14 +80,14 @@ class SpeakerDetailsActivity : BaseActivity() {
     }
 
     private fun showTalkDetails(request: NavigationRequest.SpeakerTalkDetails) {
-        navigator.showActivityWithSharedAnimation(this, request, getSharedViews(request.speakerTalkDto))
+        navigator.showActivityWithSharedAnimation(this, request, getTalkSharedViews(request.speakerTalkDto))
     }
 
     private fun showEventDetails(request: NavigationRequest.EventDetails) {
-        navigator.showActivityWithSharedAnimation(this, request, getSharedViews(request.talkId))
+        navigator.showActivityWithSharedAnimation(this, request, getEventSharedViews(request.talkId))
     }
 
-    private fun getSharedViews(speakerTalkDto: SpeakerTalkDto): Array<Pair<View, String>> {
+    private fun getTalkSharedViews(speakerTalkDto: SpeakerTalkDto): Array<Pair<View, String>> {
         return talksRecyclerView.findViewHolderForItemId(speakerTalkDto.id)
                 ?.itemView
                 ?.run {
@@ -96,7 +96,7 @@ class SpeakerDetailsActivity : BaseActivity() {
                 } ?: emptyArray()
     }
 
-    private fun getSharedViews(talkId: Long?): Array<Pair<View, String>> {
+    private fun getEventSharedViews(talkId: Long?): Array<Pair<View, String>> {
         return talkId?.let {
             talksRecyclerView.findViewHolderForItemId(it)
                     ?.itemView

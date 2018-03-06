@@ -44,9 +44,9 @@ fun ApiSpeakerTalk.toDto(): SpeakerTalkDto {
     )
 }
 
-fun SpeakerTalkDto.toViewModel(onReadMoreClick: (SpeakerTalkDto) -> Unit, onEventClickCallback: (Long, Long, ImageDto?) -> Unit, onLoadingFinished: () -> Unit = {}): SpeakerTalkViewModel {
+fun SpeakerTalkDto.toViewModel(onReadMoreClick: (SpeakerTalkDto) -> Unit, onEventClickCallback: (Long, ImageDto?, Long) -> Unit, onLoadingFinished: () -> Unit = {}): SpeakerTalkViewModel {
     val onEventClick: (Long, ImageDto?) -> Unit = { eventId, image ->
-        onEventClickCallback(id, eventId, image)
+        onEventClickCallback(eventId, image, id)
     }
     return SpeakerTalkViewModel(
             id = id,
