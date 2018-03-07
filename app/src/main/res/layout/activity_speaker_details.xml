@@ -196,15 +196,16 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="57dp"
             android:elevation="@dimen/elevation_large"
-            app:fromCache="@{speakerDetailsViewModel.loadFromCache}"
-            app:transitionName="@{AvatarTransition.AVATAR}"
+            android:onLongClick="@{() -> speakerDetailsViewModel.onAvatarLongClick()}"
             app:elementId="@{speakerDetailsViewModel.speakerId}"
-            app:loadingFinishedListener="@{speakerDetailsViewModel.onLoadingFinished}"
             app:finalHeight="@dimen/small_avatar_size"
             app:finalWidth="@dimen/small_avatar_size"
             app:finalXPosition="@dimen/avatar_collapsed_margin"
+            app:fromCache="@{speakerDetailsViewModel.loadFromCache}"
             app:layout_behavior="pl.droidsonroids.toast.app.behaviors.SpeakerHeaderBehavior"
+            app:loadingFinishedListener="@{speakerDetailsViewModel.onLoadingFinished}"
             app:roundImage="@{speakerDetailsViewModel.avatar}"
+            app:transitionName="@{AvatarTransition.AVATAR}"
             tools:backgroundTint="@color/white"/>
 
         <TextView

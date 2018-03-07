@@ -14,6 +14,7 @@ import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
@@ -82,6 +83,10 @@ class SpeakerDetailsViewModel @Inject constructor(
             navigationSubject.onNext(NavigationRequest.Email(email = it))
             analyticsEventTracker.logEventDetailsTapEmailEvent(it)
         }
+    }
+
+    fun onAvatarLongClick() = consume {
+        navigationSubject.onNext(NavigationRequest.AvatarAnimation)
     }
 
     private fun openWebsite(url: String?) {

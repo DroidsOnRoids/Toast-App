@@ -24,5 +24,6 @@ sealed class NavigationRequest {
     object LogIn : NavigationRequest()
     object LogOut : NavigationRequest()
     data class SnackBar(@StringRes val stringRes: Int) : NavigationRequest()
+    object AvatarAnimation : NavigationRequest()
 }
 

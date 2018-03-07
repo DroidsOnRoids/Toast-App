@@ -11,6 +11,7 @@ import android.transition.ChangeImageTransform
 import android.transition.TransitionSet
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.AnimationUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
@@ -61,6 +62,7 @@ class SpeakerDetailsActivity : BaseActivity() {
     private val compositeDisposable = CompositeDisposable()
 
     private var isTransitionPostponed = false
+    private var isAvatarAnimationShowing = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,8 +109,28 @@ class SpeakerDetailsActivity : BaseActivity() {
         when (request) {
             is NavigationRequest.SpeakerTalkDetails -> showTalkDetails(request)
             is NavigationRequest.EventDetails -> showEventDetails(request)
+            NavigationRequest.AvatarAnimation -> toggleAvatarAnimation()
             else -> navigator.dispatch(this, request)
         }
+    }
+
+    private fun toggleAvatarAnimation() {
+        if (isAvatarAnimationShowing) {
+            stopAvatarAnimation()
+        } else {
+            showAvatarAnimation()
+        }
+    }
+
+    private fun showAvatarAnimation() {
+        val rotateAnimation = AnimationUtils.loadAnimation(this, R.anim.animation_rotation)
+        avatarImage.startAnimation(rotateAnimation)
+        isAvatarAnimationShowing = true
+    }
+
+    private fun stopAvatarAnimation() {
+        avatarImage.clearAnimation()
+        isAvatarAnimationShowing = false
     }
 
     private fun showTalkDetails(request: NavigationRequest.SpeakerTalkDetails) {
@@ -164,6 +186,7 @@ class SpeakerDetailsActivity : BaseActivity() {
 
     override fun onBackPressed() {
         avatarBorderContainer.setVisible(false)
+        stopAvatarAnimation()
         super.onBackPressed()
     }
 
