@@ -62,8 +62,6 @@ class MainActivity : BaseActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-        menu.findItem(R.id.menuItemLogin).isVisible = !mainViewModel.isLoggedIn
-        menu.findItem(R.id.menuItemLogout).isVisible = mainViewModel.isLoggedIn
         return true
     }
 
