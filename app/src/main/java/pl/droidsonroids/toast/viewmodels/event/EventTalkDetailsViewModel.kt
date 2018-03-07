@@ -19,6 +19,7 @@ class EventTalkDetailsViewModel @Inject constructor(private val analyticsEventTr
     val title: ObservableField<String> = ObservableField()
     val description: ObservableField<String> = ObservableField()
     val speakerItemViewModel: ObservableField<SpeakerItemViewModel> = ObservableField()
+    var isSharedTransitionInProgress = false
 
     fun init(talkDto: EventTalkDto) {
         talkDto.let {
@@ -30,8 +31,11 @@ class EventTalkDetailsViewModel @Inject constructor(private val analyticsEventTr
     }
 
     private fun onSpeakerClick(speakerId: Long, speakerName: String, avatar: ImageDto?) {
-        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId, avatar, id.get()))
-        analyticsEventTracker.logEventDetailsShowSpeakerEvent(speakerName)
+        if (!isSharedTransitionInProgress) {
+            isSharedTransitionInProgress = true
+            navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId, avatar, id.get()))
+            analyticsEventTracker.logEventDetailsShowSpeakerEvent(speakerName)
+        }
     }
 
     fun onReadLess() {

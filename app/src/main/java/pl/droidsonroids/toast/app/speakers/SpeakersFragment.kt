@@ -48,6 +48,25 @@ class SpeakersFragment : BaseFragment() {
         setupViewModel()
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        val binding = FragmentSpeakersBinding.inflate(inflater, container, false)
+        binding.speakersViewModel = speakersViewModel
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        showSearchMenuItemWithAnimation()
+        setupRecyclerView()
+        showSearchMenuItemWithAnimation()
+        setupSwipeRefresh()
+        subscribeToSortingDetailsVisibilityChange()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        speakersViewModel.isSharedTransitionInProgress = false
+    }
+
     private fun setupViewModel() {
         speakersViewModel = ViewModelProviders.of(this, viewModelFactory)[SpeakersViewModel::class.java]
         navigationDisposable = speakersViewModel.navigationSubject
@@ -71,20 +90,6 @@ class SpeakersFragment : BaseFragment() {
                     val speakerAvatar = findViewById<View>(R.id.speakerAvatarImage)
                     arrayOf(Pair(speakerAvatar, speakerAvatar.transitionName))
                 } ?: emptyArray()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val binding = FragmentSpeakersBinding.inflate(inflater, container, false)
-        binding.speakersViewModel = speakersViewModel
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        showSearchMenuItemWithAnimation()
-        setupRecyclerView()
-        showSearchMenuItemWithAnimation()
-        setupSwipeRefresh()
-        subscribeToSortingDetailsVisibilityChange()
     }
 
     private fun setupSwipeRefresh() {

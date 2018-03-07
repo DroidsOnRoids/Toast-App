@@ -87,6 +87,11 @@ class EventDetailsActivity : BaseActivity() {
         addInsetAppBehaviorToLoadingLayout()
     }
 
+    override fun onResume() {
+        super.onResume()
+        eventDetailsViewModel.isSharedTransitionInProgress = false
+    }
+
     private fun postponeSharedTransition() {
         postponeEnterTransition()
         window.sharedElementEnterTransition = TransitionSet()
@@ -137,13 +142,13 @@ class EventDetailsActivity : BaseActivity() {
 
     private fun handleNavigationRequest(navigationRequest: NavigationRequest) {
         when (navigationRequest) {
-            is NavigationRequest.EventTalkDetails -> navigator.showActivityWithSharedAnimation(this, navigationRequest, getSharedViews(navigationRequest.eventTalkDto))
-            is NavigationRequest.SpeakerDetails -> navigator.showActivityWithSharedAnimation(this, navigationRequest, getSharedViews(navigationRequest.talkId))
+            is NavigationRequest.EventTalkDetails -> navigator.showActivityWithSharedAnimation(this, navigationRequest, getTalkSharedViews(navigationRequest.eventTalkDto))
+            is NavigationRequest.SpeakerDetails -> navigator.showActivityWithSharedAnimation(this, navigationRequest, getSpeakerSharedViews(navigationRequest.talkId))
             else -> navigator.dispatch(this, navigationRequest)
         }
     }
 
-    private fun getSharedViews(eventTalkDto: EventTalkDto): Array<Pair<View, String>> {
+    private fun getTalkSharedViews(eventTalkDto: EventTalkDto): Array<Pair<View, String>> {
         return eventSpeakersRecyclerView.findViewHolderForItemId(eventTalkDto.id)
                 ?.itemView
                 ?.run {
@@ -152,7 +157,7 @@ class EventDetailsActivity : BaseActivity() {
                 } ?: emptyArray()
     }
 
-    private fun getSharedViews(talkId: Long?): Array<Pair<View, String>> {
+    private fun getSpeakerSharedViews(talkId: Long?): Array<Pair<View, String>> {
         return talkId?.let {
             eventSpeakersRecyclerView.findViewHolderForItemId(it)
                     ?.itemView

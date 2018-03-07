@@ -24,14 +24,18 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
     val speakersSubject: BehaviorSubject<List<State<SpeakerItemViewModel>>> = BehaviorSubject.create()
     protected var isNextPageLoading: Boolean = false
     protected var nextPageNumber: Int? = null
+    var isSharedTransitionInProgress = false
 
     protected fun mapToSingleSpeakerItemViewModelsPage(page: Page<SpeakerDto>): Single<Page<State.Item<SpeakerItemViewModel>>> {
         val (items, pageNumber, allPagesCount) = page
         return items.toObservable()
                 .map {
                     it.toViewModel { id, name, avatar ->
-                        navigationSubject.onNext(NavigationRequest.SpeakerDetails(id, avatar))
-                        onSpeakerNavigationRequestSent(name)
+                        if (!isSharedTransitionInProgress) {
+                            isSharedTransitionInProgress = true
+                            navigationSubject.onNext(NavigationRequest.SpeakerDetails(id, avatar))
+                            onSpeakerNavigationRequestSent(name)
+                        }
                     }
                 }
                 .map { wrapWithState(it) }
