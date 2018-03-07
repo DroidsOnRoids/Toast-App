@@ -116,6 +116,18 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
     }
 
     @Test
+    fun shouldRequestAvatarAnimation() {
+        speakerDetailsViewModel.email.set(testSpeakerDetailsDto.email)
+        val testObserver = speakerDetailsViewModel.navigationSubject.test()
+
+        speakerDetailsViewModel.onAvatarLongClick()
+
+        testObserver
+                .assertNoErrors()
+                .assertValue { it == NavigationRequest.AvatarAnimation }
+    }
+
+    @Test
     fun shouldRequestNavigationToSpeakerTalkDetails() {
         mockSpeakerWith(testSpeakerDetailsDto.toSingle())
         val testObserver = speakerDetailsViewModel.navigationSubject.test()
