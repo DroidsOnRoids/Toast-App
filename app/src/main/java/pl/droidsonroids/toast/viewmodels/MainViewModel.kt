@@ -1,6 +1,7 @@
 package pl.droidsonroids.toast.viewmodels
 
 import android.arch.lifecycle.ViewModel
+import android.databinding.ObservableField
 import io.reactivex.disposables.Disposables
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.R
@@ -9,7 +10,10 @@ import pl.droidsonroids.toast.data.enums.LoginState
 import pl.droidsonroids.toast.utils.NavigationRequest
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor(loginStateWatcher: LoginStateWatcher) : ViewModel(), NavigatingViewModel, LoginStateWatcher by loginStateWatcher {
+class MainViewModel @Inject constructor(
+        loginStateWatcher: LoginStateWatcher,
+        val rotation: ObservableField<Float>
+) : ViewModel(), NavigatingViewModel, LoginStateWatcher by loginStateWatcher {
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
 
     private var loginStateDisposable = Disposables.disposed()

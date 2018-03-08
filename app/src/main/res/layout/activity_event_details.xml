@@ -14,8 +14,10 @@
     </data>
 
     <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/eventDetailsContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:rotation="@{eventDetailsViewModel.rotation}"
         android:fitsSystemWindows="true"
         tools:context=".app.events.EventDetailsActivity">
 
@@ -89,7 +91,7 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
-                android:id="@+id/eventDetailsContainer"
+                android:id="@+id/eventDetailsInfoContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -128,6 +130,7 @@
         </android.support.v4.widget.NestedScrollView>
 
         <View
+            android:id="@+id/attendButtonShadow"
             android:layout_width="match_parent"
             android:layout_height="4dp"
             android:background="@drawable/bottom_nav_bar_shadow"

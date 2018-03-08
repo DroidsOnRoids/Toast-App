@@ -110,7 +110,7 @@ class EventDetailsActivity : BaseActivity() {
     }
 
     private fun setToolbarScrim(verticalOffset: Int, appBarLayout: AppBarLayout, contentScrimColor: Int, statusBarScrimColor: Int) {
-        val offsetFraction = -verticalOffset / appBarLayout.totalScrollRange.toFloat()
+        val offsetFraction = (-verticalOffset / appBarLayout.totalScrollRange.toFloat()).coerceIn(0f, 1f)
         val alphaValue = (offsetFraction * ALPHA_MAX_VALUE).toInt()
         val contentScrimWithAlpha = ColorUtils.setAlphaComponent(contentScrimColor, alphaValue)
         val statusBarScrimWithAlpha = ColorUtils.setAlphaComponent(statusBarScrimColor, alphaValue)

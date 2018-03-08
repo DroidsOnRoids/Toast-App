@@ -17,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
+        android:rotation="@{eventTalkDetailsViewModel.rotation}"
         android:background="@color/blackAlpha40">
 
         <android.support.v7.widget.CardView

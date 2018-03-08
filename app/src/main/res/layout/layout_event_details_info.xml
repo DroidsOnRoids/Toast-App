@@ -23,6 +23,16 @@
             android:layout_height="wrap_content"
             android:background="@color/white">
 
+            <View
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/titleTouchArea"
+                app:layout_constraintTop_toTopOf="parent"
+                android:onLongClick="@{() -> eventDetailsViewModel.onTitleLongClick()}"
+                app:layout_constraintBottom_toTopOf="@+id/eventTitleDivider"
+                android:layout_width="0dp"
+                android:layout_height="0dp"/>
+
             <TextView
                 android:id="@+id/eventTitleText"
                 style="@style/EventHeaderStyle"
@@ -107,12 +117,12 @@
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:onClick="@{() -> eventDetailsViewModel.onLocationClick()}"
                 android:background="?attr/selectableItemBackground"
-                app:layout_constraintTop_toTopOf="@id/eventTitleDivider"
+                android:onClick="@{() -> eventDetailsViewModel.onLocationClick()}"
                 app:layout_constraintBottom_toBottomOf="@id/eventLocationDivider"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toTopOf="@id/eventTitleDivider"/>
 
             <View
                 android:id="@+id/eventLocationDivider"
