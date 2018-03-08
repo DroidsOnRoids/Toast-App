@@ -1,5 +1,6 @@
 package pl.droidsonroids.toast.viewmodels.speaker
 
+import android.databinding.ObservableField
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toSingle
@@ -8,6 +9,7 @@ import org.junit.Assert.assertThat
 import org.junit.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
+import org.mockito.Spy
 import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
@@ -28,6 +30,9 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
     lateinit var analyticsEventTracker: AnalyticsEventTracker
     @Mock
     lateinit var delayViewModel: DelayViewModel
+    @Spy
+    private var rotation = ObservableField(0f)
+
     @InjectMocks
     lateinit var speakerDetailsViewModel: SpeakerDetailsViewModel
 

@@ -1,6 +1,7 @@
 package pl.droidsonroids.toast.viewmodels.photos
 
 import android.arch.lifecycle.ViewModel
+import android.databinding.ObservableField
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.data.dto.ImageDto
@@ -10,7 +11,7 @@ import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import javax.inject.Inject
 
-class PhotosViewModel @Inject constructor() : ViewModel(), NavigatingViewModel {
+class PhotosViewModel @Inject constructor(val rotation: ObservableField<Float>) : ViewModel(), NavigatingViewModel {
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
 
     val photosSubject: BehaviorSubject<List<PhotoItemViewModel>> = BehaviorSubject.create()

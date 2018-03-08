@@ -3,6 +3,7 @@ package pl.droidsonroids.toast.di
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.databinding.ObservableField
 import android.preference.PreferenceManager
 import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.Module
@@ -72,6 +73,10 @@ class AppModule {
     @Singleton
     @Provides
     fun provideClock(systemClockWrapper: SystemClockWrapper): Clock = systemClockWrapper
+
+    @Singleton
+    @Provides
+    fun provideRotation() = ObservableField(0f)
 
     @Singleton
     @Provides

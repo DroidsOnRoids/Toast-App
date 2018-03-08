@@ -15,10 +15,7 @@ import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.repositories.event.EventsRepository
-import pl.droidsonroids.toast.utils.Constants
-import pl.droidsonroids.toast.utils.LoadingStatus
-import pl.droidsonroids.toast.utils.NavigationRequest
-import pl.droidsonroids.toast.utils.SourceAttending
+import pl.droidsonroids.toast.utils.*
 import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
@@ -29,12 +26,15 @@ import javax.inject.Inject
 
 private const val DEFAULT_GRADIENT_COLOR = 0xA0000000.toInt()
 private const val GRADIENT_COLOR_MASK = 0xE0FFFFFF.toInt()
+private const val WINDOW_MAX_ROTATION_DEGREES = 5f
+private const val WINDOW_DEFAULT_ROTATION_DEGREES = 0f
 
 class EventDetailsViewModel @Inject constructor(
         private val eventsRepository: EventsRepository,
         attendViewModel: AttendViewModel,
         private val analyticsEventTracker: AnalyticsEventTracker,
-        delayViewModel: DelayViewModel
+        delayViewModel: DelayViewModel,
+        val rotation: ObservableField<Float>
 ) : ViewModel(), LoadingViewModel, DelayViewModel by delayViewModel, NavigatingViewModel, AttendViewModel by attendViewModel {
     override val navigationSubject: PublishSubject<NavigationRequest> = navigationRequests
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.PENDING)
@@ -76,6 +76,17 @@ class EventDetailsViewModel @Inject constructor(
         coordinates?.let {
             navigationSubject.onNext(NavigationRequest.Map(it, placeName.get()))
             analyticsEventTracker.logEventDetailsTapMeetupPlaceEvent()
+        }
+    }
+
+    fun onTitleLongClick() = consume {
+        if (date.get().isToday) {
+            with(rotation) {
+                when (get()) {
+                    WINDOW_DEFAULT_ROTATION_DEGREES -> set(WINDOW_MAX_ROTATION_DEGREES)
+                    WINDOW_MAX_ROTATION_DEGREES -> set(WINDOW_DEFAULT_ROTATION_DEGREES)
+                }
+            }
         }
     }
 

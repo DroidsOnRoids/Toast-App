@@ -1,5 +1,6 @@
 package pl.droidsonroids.toast.viewmodels
 
+import android.databinding.ObservableField
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.subjects.BehaviorSubject
 import org.junit.Before
@@ -18,7 +19,7 @@ class MainViewModelTest : RxTestBase() {
     @Before
     fun setUp() {
         whenever(loginStateWatcher.loginStateSubject).thenReturn(BehaviorSubject.create())
-        mainViewModel = MainViewModel(loginStateWatcher)
+        mainViewModel = MainViewModel(loginStateWatcher, ObservableField(0f))
     }
 
     @Test
