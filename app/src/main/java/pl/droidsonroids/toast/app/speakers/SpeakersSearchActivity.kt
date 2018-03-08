@@ -74,11 +74,6 @@ class SpeakersSearchActivity : BaseActivity() {
         setupEnterAnimation(isAnimationNeeded = haveNoSavedInstances && hasCircularRevealExtras())
     }
 
-    override fun onResume() {
-        super.onResume()
-        speakersSearchViewModel.isSharedTransitionInProgress = false
-    }
-
     override fun onBackPressed() {
         showParentWithLeavingAnimation()
     }

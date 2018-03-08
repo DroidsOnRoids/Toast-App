@@ -49,11 +49,6 @@ class EventTalkDetailsActivity : BaseActivity() {
         setupBinding(binding)
     }
 
-    override fun onResume() {
-        super.onResume()
-        eventTalkDetailsViewModel.isSharedTransitionInProgress = false
-    }
-
     private fun setupBinding(binding: ActivityEventTalkDetailsBinding) {
         binding.addOnRebindCallback(object : OnRebindCallback<ActivityEventTalkDetailsBinding>() {
             override fun onBound(binding: ActivityEventTalkDetailsBinding?) {

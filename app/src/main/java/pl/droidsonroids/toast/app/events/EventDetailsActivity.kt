@@ -87,11 +87,6 @@ class EventDetailsActivity : BaseActivity() {
         addInsetAppBehaviorToLoadingLayout()
     }
 
-    override fun onResume() {
-        super.onResume()
-        eventDetailsViewModel.isSharedTransitionInProgress = false
-    }
-
     private fun postponeSharedTransition() {
         postponeEnterTransition()
         window.sharedElementEnterTransition = TransitionSet()

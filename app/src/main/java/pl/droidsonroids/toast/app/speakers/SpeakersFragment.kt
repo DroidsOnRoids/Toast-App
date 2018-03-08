@@ -62,11 +62,6 @@ class SpeakersFragment : BaseFragment() {
         subscribeToSortingDetailsVisibilityChange()
     }
 
-    override fun onResume() {
-        super.onResume()
-        speakersViewModel.isSharedTransitionInProgress = false
-    }
-
     private fun setupViewModel() {
         speakersViewModel = ViewModelProviders.of(this, viewModelFactory)[SpeakersViewModel::class.java]
         navigationDisposable = speakersViewModel.navigationSubject

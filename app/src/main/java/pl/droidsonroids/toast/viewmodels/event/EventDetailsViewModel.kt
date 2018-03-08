@@ -65,8 +65,6 @@ class EventDetailsViewModel @Inject constructor(
 
     var photos: List<ImageDto> = emptyList()
 
-    var isSharedTransitionInProgress = false
-
     private var eventsDisposable = Disposables.disposed()
 
     fun onPhotosClick() {
@@ -140,11 +138,8 @@ class EventDetailsViewModel @Inject constructor(
     }
 
     private fun onSpeakerClick(speakerTalkId: Long?, speakerId: Long, speakerName: String, avatar: ImageDto?) {
-        if (!isSharedTransitionInProgress) {
-            isSharedTransitionInProgress = true
-            navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId, avatar, speakerTalkId))
-            analyticsEventTracker.logEventDetailsShowSpeakerEvent(speakerName)
-        }
+        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId, avatar, speakerTalkId))
+        analyticsEventTracker.logEventDetailsShowSpeakerEvent(speakerName)
     }
 
     private fun onEventLoadError(throwable: Throwable) {
