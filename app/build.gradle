@@ -34,7 +34,7 @@ android {
     compileSdkVersion 27
     buildToolsVersion '27.0.1'
     defaultConfig {
-        applicationId "pl.droidsonrioids.toast"
+        applicationId "pl.droidsonroids.toast"
         minSdkVersion 21
         targetSdkVersion 26
         versionCode commitTimestamp
@@ -82,9 +82,8 @@ android {
             buildConfigField 'String', 'BASE_IMAGES_URL', '"https://api.letswift.pl"'
         }
         toast {
-            // TODO change api url to toast when available
-            buildConfigField 'String', 'BASE_API_URL', '"https://api.letswift.pl/api/v1/"'
-            buildConfigField 'String', 'BASE_IMAGES_URL', '"https://api.letswift.pl"'
+            buildConfigField 'String', 'BASE_API_URL', '"http://default-environment.qr3cuxzfs5.eu-central-1.elasticbeanstalk.com/api/v1/"'
+            buildConfigField 'String', 'BASE_IMAGES_URL', '"http://default-environment.qr3cuxzfs5.eu-central-1.elasticbeanstalk.com"'
         }
         mockUiTest {
             applicationIdSuffix ".letswift"

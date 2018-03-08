@@ -25,7 +25,8 @@ import javax.inject.Inject
 class SpeakerDetailsViewModel @Inject constructor(
         private val speakersRepository: SpeakersRepository,
         private val analyticsEventTracker: AnalyticsEventTracker,
-        delayViewModel: DelayViewModel
+        delayViewModel: DelayViewModel,
+        val rotation: ObservableField<Float>
 ) : ViewModel(), LoadingViewModel, DelayViewModel by delayViewModel, NavigatingViewModel {
 
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()

@@ -1,5 +1,6 @@
 package pl.droidsonroids.toast.viewmodels.speaker
 
+import android.databinding.ObservableField
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -31,6 +32,7 @@ import pl.droidsonroids.toast.viewmodels.LoadingDelayViewModel
 import java.util.concurrent.TimeUnit
 
 private const val SEARCH_DEBOUNCE = 1000L
+
 class SpeakersSearchViewModelTest : RxTestBase() {
     private val testScheduler = TestScheduler()
     private val delayViewModel = LoadingDelayViewModel(clock = mock())
@@ -51,7 +53,7 @@ class SpeakersSearchViewModelTest : RxTestBase() {
         val query = "test"
         val testSpeakersPageSingle = Single.just(testSpeakersPage)
         whenever(speakersRepository.searchSpeakersPage(query)).thenReturn(testSpeakersPageSingle)
-        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker, delayViewModel)
+        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker, delayViewModel, ObservableField(0f))
 
         speakersSearchViewModel.searchPhrase.set(query)
         testScheduler.advanceTimeBy(Constants.MIN_LOADING_DELAY_MILLIS + SEARCH_DEBOUNCE, TimeUnit.MILLISECONDS)
@@ -65,7 +67,7 @@ class SpeakersSearchViewModelTest : RxTestBase() {
         val query = "test"
         val testSpeakersPageSingle = Single.just(testSpeakersPage)
         whenever(speakersRepository.searchSpeakersPage(query)).thenReturn(testSpeakersPageSingle)
-        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker, delayViewModel)
+        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker, delayViewModel, ObservableField(0f))
 
         speakersSearchViewModel.searchPhrase.set(query)
 
@@ -86,7 +88,7 @@ class SpeakersSearchViewModelTest : RxTestBase() {
 
         val emptySpeakerPageSingle: Single<Page<SpeakerDto>> = Single.just(Page(emptyList(), 1, 1))
         whenever(speakersRepository.searchSpeakersPage(secondQuery)).thenReturn(emptySpeakerPageSingle)
-        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker, delayViewModel)
+        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker, delayViewModel, ObservableField(0f))
 
         speakersSearchViewModel.searchPhrase.set(firstQuery)
         testScheduler.advanceTimeBy(Constants.MIN_LOADING_DELAY_MILLIS + SEARCH_DEBOUNCE, TimeUnit.MILLISECONDS)
@@ -109,7 +111,7 @@ class SpeakersSearchViewModelTest : RxTestBase() {
 
         val testSpeakersPageSingle = Single.just(testSpeakersPage)
         whenever(speakersRepository.searchSpeakersPage(secondQuery)).thenReturn(testSpeakersPageSingle)
-        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker, delayViewModel)
+        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker, delayViewModel, ObservableField(0f))
 
         speakersSearchViewModel.searchPhrase.set(firstQuery)
         testScheduler.advanceTimeBy(Constants.MIN_LOADING_DELAY_MILLIS + SEARCH_DEBOUNCE, TimeUnit.MILLISECONDS)
@@ -143,7 +145,7 @@ class SpeakersSearchViewModelTest : RxTestBase() {
         val testSpeakersPageSingle = Single.just(testSpeakersPage)
         whenever(speakersRepository.searchSpeakersPage(query)).thenReturn(testSpeakersPageSingle)
 
-        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker, delayViewModel)
+        speakersSearchViewModel = SpeakersSearchViewModel(speakersRepository, analyticsEventTracker, delayViewModel, ObservableField(0f))
 
         speakersSearchViewModel.searchPhrase.set(query)
         testScheduler.advanceTimeBy(Constants.MIN_LOADING_DELAY_MILLIS + SEARCH_DEBOUNCE, TimeUnit.MILLISECONDS)
