@@ -23,7 +23,7 @@ class SpeakerTalkDetailsViewModelTest : RxTestBase() {
 
     @Before
     fun setUp() {
-        speakerTalkDetailsViewModel.init(testSpeakerTalkDto, onCoverLoadingFinished = mock())
+        speakerTalkDetailsViewModel.init(testSpeakerTalkDto)
     }
 
     @Test

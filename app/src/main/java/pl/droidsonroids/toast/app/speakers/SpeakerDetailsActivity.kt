@@ -72,11 +72,39 @@ class SpeakerDetailsActivity : BaseActivity() {
     }
 
     private fun handleNavigationRequest(request: NavigationRequest) {
-        if (request is NavigationRequest.SpeakerTalkDetails) {
-            navigator.showActivityWithSharedAnimation(this, request, getSharedViews(request.speakerTalkDto))
-        } else {
-            navigator.dispatch(this, request)
+        when (request) {
+            is NavigationRequest.SpeakerTalkDetails -> showTalkDetails(request)
+            is NavigationRequest.EventDetails -> showEventDetails(request)
+            else -> navigator.dispatch(this, request)
         }
+    }
+
+    private fun showTalkDetails(request: NavigationRequest.SpeakerTalkDetails) {
+        navigator.showActivityWithSharedAnimation(this, request, getTalkSharedViews(request.speakerTalkDto))
+    }
+
+    private fun showEventDetails(request: NavigationRequest.EventDetails) {
+        navigator.showActivityWithSharedAnimation(this, request, getEventSharedViews(request.talkId))
+    }
+
+    private fun getTalkSharedViews(speakerTalkDto: SpeakerTalkDto): Array<Pair<View, String>> {
+        return talksRecyclerView.findViewHolderForItemId(speakerTalkDto.id)
+                ?.itemView
+                ?.run {
+                    val talkCard = findViewById<View>(R.id.talkCard)
+                    arrayOf(Pair(talkCard, talkCard.transitionName))
+                } ?: emptyArray()
+    }
+
+    private fun getEventSharedViews(talkId: Long?): Array<Pair<View, String>> {
+        return talkId?.let {
+            talksRecyclerView.findViewHolderForItemId(it)
+                    ?.itemView
+                    ?.run {
+                        val eventCoverImage = findViewById<View>(R.id.eventCoverImage)
+                        arrayOf(Pair(eventCoverImage, eventCoverImage.transitionName))
+                    }
+        } ?: emptyArray()
     }
 
     private fun setupRecyclerView() {
@@ -100,15 +128,6 @@ class SpeakerDetailsActivity : BaseActivity() {
             android.R.id.home -> consume { finish() }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    private fun getSharedViews(speakerTalkDto: SpeakerTalkDto): Array<Pair<View, String>> {
-        return talksRecyclerView.findViewHolderForItemId(speakerTalkDto.id)
-                ?.itemView
-                ?.run {
-                    val talkCard = findViewById<View>(R.id.talkCard)
-                    arrayOf(Pair(talkCard, talkCard.transitionName))
-                } ?: emptyArray()
     }
 
     override fun onDestroy() {

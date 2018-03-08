@@ -4,14 +4,14 @@ buildscript {
     ext {
         //    add versions that occur at least twice
         versions = [
-                buildTools: "27.0.1",
-                kotlin    : "1.2.21",
+                buildTools: "27.0.3",
+                kotlin    : "1.2.30",
                 support   : "27.0.2",
-                dagger    : "2.13",
+                dagger    : "2.14.1",
                 retrofit  : "2.3.0",
                 chuck     : "1.1.0",
                 lifecycle : '1.1.0',
-                glide     : '4.4.0',
+                glide     : '4.6.1',
                 espresso  : "3.0.1"
         ]
     }

@@ -66,7 +66,7 @@ class ToastApplication : Application(), HasActivityInjector {
         Fabric.with(fabric)
     }
 
-    private inner class CrashlyticsTree : Timber.Tree() {
+    private class CrashlyticsTree : Timber.Tree() {
 
         override fun log(priority: Int, tag: String?, message: String, throwable: Throwable?) {
             if (priority == Log.ERROR) {

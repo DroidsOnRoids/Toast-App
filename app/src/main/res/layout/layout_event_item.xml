@@ -9,6 +9,8 @@
         <variable
             name="eventViewModel"
             type="pl.droidsonroids.toast.viewmodels.event.EventItemViewModel"/>
+
+        <import type="pl.droidsonroids.toast.utils.Constants.PhotoTransition"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -27,15 +29,17 @@
             android:adjustViewBounds="true"
             android:contentDescription="@string/previous_event_cover_desc"
             android:scaleType="centerCrop"
-            app:originalImage="@{eventViewModel.coverImage}"
+            app:elementId="@{eventViewModel.id}"
+            app:fromCache="@{eventViewModel.loadFromCache}"
             app:layout_constraintBottom_toTopOf="@+id/eventName"
             app:layout_constraintDimensionRatio="h,3:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:fromCache="@{true}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
-            app:loadingFinishedListener="@{eventViewModel.onCoverLoadingFinish}"/>
+            app:loadingFinishedListener="@{eventViewModel.onCoverLoadingFinish}"
+            app:originalImage="@{eventViewModel.coverImage}"
+            app:transitionName="@{PhotoTransition.PHOTO}"/>
 
         <TextView
             android:id="@+id/eventName"

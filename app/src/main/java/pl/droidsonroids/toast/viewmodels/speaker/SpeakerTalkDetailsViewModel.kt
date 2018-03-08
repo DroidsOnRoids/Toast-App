@@ -23,18 +23,24 @@ class SpeakerTalkDetailsViewModel @Inject constructor(
     val description: ObservableField<String> = ObservableField()
     val eventItemViewModel: ObservableField<EventItemViewModel> = ObservableField()
 
-    fun init(talkDto: SpeakerTalkDto, onCoverLoadingFinished: () -> Unit) {
+    val coverLoadingFinishedSubject: PublishSubject<Unit> = PublishSubject.create()
+
+    fun init(talkDto: SpeakerTalkDto) {
         talkDto.let {
             id.set(it.id)
             title.set(it.title)
             description.set(it.description)
-            eventItemViewModel.set(it.event.toViewModel(::onEventClick, onCoverLoadingFinished))
+            eventItemViewModel.set(it.event.toViewModel(::onEventClick, ::onCoverLoadingFinished))
         }
     }
 
     private fun onEventClick(eventId: Long, imageDto: ImageDto?) {
         navigationSubject.onNext(NavigationRequest.EventDetails(eventId, imageDto))
         analyticsEventTracker.logSpeakerDetailsEventTapEvent(eventId)
+    }
+
+    private fun onCoverLoadingFinished() {
+        coverLoadingFinishedSubject.onNext(Unit)
     }
 
     fun onReadLess() {
