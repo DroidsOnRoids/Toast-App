@@ -34,7 +34,7 @@ android {
     compileSdkVersion 27
     buildToolsVersion '27.0.1'
     defaultConfig {
-        applicationId "pl.droidsonrioids.toast"
+        applicationId "pl.droidsonroids.toast"
         minSdkVersion 21
         targetSdkVersion 26
         versionCode commitTimestamp
