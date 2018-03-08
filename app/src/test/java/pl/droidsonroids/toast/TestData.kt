@@ -38,6 +38,12 @@ val testSpeaker = ApiSpeaker(
         job = "job",
         avatar = ApiImage("bigImageFirst", "thumbImageFirst")
 )
+val anotherTestSpeaker = ApiSpeaker(
+        id = 1,
+        name = "name",
+        job = "job",
+        avatar = ApiImage("bigImageFirst", "thumbImageFirst")
+)
 
 val testApiEventTalk = ApiEventTalk(
         id = 0,
@@ -63,7 +69,13 @@ val testSplitEvents = SplitEvents(upcomingEvent = testEventDetails.toDto(), prev
 
 val testSpeakers = listOf(testSpeaker)
 
+val anotherTestSpeakers = listOf(anotherTestSpeaker)
+
 val testSpeakersPage = Page(items = testSpeakers.map { it.toDto() }, pageNumber = 1, allPagesCount = 1)
+
+val anotherTestSpeakersPage = Page(items = anotherTestSpeakers.map { it.toDto() }, pageNumber = 1, allPagesCount = 1)
+
+
 
 val testImageDto = ImageDto(
         "originalSizeUrl",

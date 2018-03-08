@@ -6,10 +6,9 @@ import io.reactivex.Single
 import io.reactivex.rxkotlin.toSingle
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
+import org.junit.Before
 import org.junit.Test
-import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Spy
 import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
@@ -31,11 +30,15 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
     lateinit var analyticsEventTracker: AnalyticsEventTracker
     @Mock
     lateinit var delayViewModel: DelayViewModel
-    @Spy
+
     private var rotation = ObservableField(0f)
 
-    @InjectMocks
     lateinit var speakerDetailsViewModel: SpeakerDetailsViewModel
+
+    @Before
+    fun setUp(){
+        speakerDetailsViewModel = SpeakerDetailsViewModel(speakersRepository, analyticsEventTracker, delayViewModel, rotation)
+    }
 
     @Test
     fun shouldLoadSpeakerDetails() {

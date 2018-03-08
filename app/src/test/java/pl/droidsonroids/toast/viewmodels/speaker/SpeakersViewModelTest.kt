@@ -11,7 +11,7 @@ import org.junit.Assert.assertThat
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
-import pl.droidsonroids.toast.RxTestBase
+import pl.droidsonroids.toast.*
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
@@ -20,9 +20,6 @@ import pl.droidsonroids.toast.data.dto.speaker.SpeakerDto
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.rule.RxPluginSchedulerRule
-import pl.droidsonroids.toast.testSpeaker
-import pl.droidsonroids.toast.testSpeakers
-import pl.droidsonroids.toast.testSpeakersPage
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
@@ -131,6 +128,28 @@ class SpeakersViewModelTest : RxTestBase() {
         val firstSpeakerPageSingle = Single.just(testSpeakersPageWithNextPageAvailable)
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(firstSpeakerPageSingle)
 
+        val secondSpeakersPage = anotherTestSpeakersPage.copy(pageNumber = 2, allPagesCount = 2)
+        val secondSpeakerPageSingle = Single.just(secondSpeakersPage)
+        whenever(speakersRepository.getSpeakersPage(eq(2), any())).thenReturn(secondSpeakerPageSingle)
+
+        setupSpeakersViewModel()
+
+        speakersViewModel.loadNextPage()
+
+        val speakerItemViewModelList = speakersViewModel.speakersSubject.value
+        assertThat(speakerItemViewModelList.size, equalTo(itemsCountOnAllPages))
+        assertSpeaker((speakerItemViewModelList[0] as? State.Item)?.item, testSpeakers.first())
+        assertSpeaker((speakerItemViewModelList[1] as? State.Item)?.item, anotherTestSpeakers.first())
+    }
+
+
+    @Test
+    fun shouldLoadNextPageWithUniqueSpeakers() {
+        val itemsCountOnAllPages = 1
+        val testSpeakersPageWithNextPageAvailable = testSpeakersPage.copy(allPagesCount = 2)
+        val firstSpeakerPageSingle = Single.just(testSpeakersPageWithNextPageAvailable)
+        whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(firstSpeakerPageSingle)
+
         val secondSpeakersPage = testSpeakersPage.copy(pageNumber = 2, allPagesCount = 2)
         val secondSpeakerPageSingle = Single.just(secondSpeakersPage)
         whenever(speakersRepository.getSpeakersPage(eq(2), any())).thenReturn(secondSpeakerPageSingle)
@@ -141,7 +160,7 @@ class SpeakersViewModelTest : RxTestBase() {
 
         val speakerItemViewModelList = speakersViewModel.speakersSubject.value
         assertThat(speakerItemViewModelList.size, equalTo(itemsCountOnAllPages))
-        assertSpeaker((speakerItemViewModelList[1] as? State.Item)?.item, testSpeakers.first())
+        assertSpeaker((speakerItemViewModelList[0] as? State.Item)?.item, testSpeakers.first())
     }
 
     @Test
