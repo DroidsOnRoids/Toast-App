@@ -71,7 +71,7 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
         val previousList = speakersSubject.value
                 ?.filter { it is State.Item }
                 ?: emptyList()
-        return (previousList + newList).distinct()
+        return (previousList + newList).distinctBy { state -> (state as State.Item).item.id }
     }
 
     protected fun onFirstPageLoadError(throwable: Throwable) {

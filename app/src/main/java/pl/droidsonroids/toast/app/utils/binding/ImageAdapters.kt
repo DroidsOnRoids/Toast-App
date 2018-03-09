@@ -52,17 +52,15 @@ fun setOriginalImage(imageView: ImageView, imageDto: ImageDto?) {
 @BindingAdapter("originalImage", "loadingFinishedListener", "fromCache")
 fun loadOriginalPhoto(imageView: ImageView, imageDto: ImageDto?, onLoadingFinished: () -> Unit, loadFromCache: Boolean) {
     val listener = createRequestListener(onLoadingFinished)
-    loadWithListener(imageView, imageDto, listener, isRoundImage = false) {
-        apply(RequestOptions().override(Target.SIZE_ORIGINAL).onlyRetrieveFromCache(loadFromCache))
-    }
+    loadWithListener(imageView, imageDto, listener, loadFromCache)
 }
 
 @SuppressLint("CheckResult")
 @BindingAdapter("roundImage", "loadingFinishedListener", "fromCache")
 fun loadRoundPhoto(imageView: ImageView, imageDto: ImageDto?, onLoadingFinished: () -> Unit, loadFromCache: Boolean) {
     val listener = createRequestListener(onLoadingFinished)
-    loadWithListener(imageView, imageDto, listener, isRoundImage = true) {
-        apply(RequestOptions().override(Target.SIZE_ORIGINAL).onlyRetrieveFromCache(loadFromCache))
+    loadWithListener(imageView, imageDto, listener, loadFromCache) {
+        apply(RequestOptions.circleCropTransform())
     }
 }
 
@@ -84,26 +82,22 @@ private fun createRequestListener(onLoadingFinished: () -> Unit): RequestListene
 @BindingAdapter("originalImage", "imageColorListener", "loadingFinishedListener", "fromCache")
 fun setCoverImageWithPaletteListener(imageView: ImageView, imageDto: ImageDto?, onColorLoaded: (Int) -> Unit, onLoadingFinished: () -> Unit, loadFromCache: Boolean) {
     val listener = createGlidePaletteListener(imageDto, onColorLoaded, onLoadingFinished)
-    loadWithListener(imageView, imageDto, listener, isRoundImage = false) {
-        apply(RequestOptions().override(Target.SIZE_ORIGINAL).onlyRetrieveFromCache(loadFromCache))
-    }
+    loadWithListener(imageView, imageDto, listener, loadFromCache)
 }
 
-private fun loadWithListener(imageView: ImageView, imageDto: ImageDto?, listener: RequestListener<Drawable>, isRoundImage: Boolean, apply: RequestBuilder<Drawable>.() -> RequestBuilder<Drawable> = { this }) {
+private fun loadWithListener(imageView: ImageView, imageDto: ImageDto?, listener: RequestListener<Drawable>, loadFromCache: Boolean, apply: RequestBuilder<Drawable>.() -> RequestBuilder<Drawable> = { this }) {
     val thumbnailLoader = (Glide.with(imageView))
             .load(imageDto?.thumbSizeUrl)
-            .apply {
-                if (isRoundImage) apply(RequestOptions.circleCropTransform())
-            }
+            .apply()
     Glide.with(imageView)
             .load(imageDto?.originalSizeUrl)
             .thumbnail(thumbnailLoader)
             .listener(listener)
+            .apply(RequestOptions()
+                    .override(Target.SIZE_ORIGINAL)
+                    .onlyRetrieveFromCache(loadFromCache))
+            .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_toast))
             .apply()
-            .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_toast)
-                    .apply {
-                        if (isRoundImage) circleCrop()
-                    })
             .into(imageView)
 }
 
