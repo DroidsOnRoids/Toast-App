@@ -62,4 +62,22 @@ class ContactScreenTest {
             checkIfSpinnerTextIsCorrect(getString(R.string.become_a_partner), R.id.topicSpinner)
         }
     }
+
+    private fun createCounterOutput(countedText : String) : String {
+        val countedTextCharNumber : Int = countedText.length
+        val limitOfTypedText = " / 250"
+        return countedTextCharNumber.toString() + limitOfTypedText
+    }
+
+    @Test
+    fun isCounterVisibleAndWorkingCorrectly() {
+        val countedText = "abcabcabc"
+        with(ContactRobot()) {
+            goToContactScreen()
+            checkIfElementWithIdIsDisplayed(R.id.characterCounter)
+            checkIfTextIsCorrect(createCounterOutput(""), R.id.characterCounter)
+            performTyping(countedText, R.id.contactMessageEditText)
+            checkIfTextIsCorrect(createCounterOutput(countedText), R.id.characterCounter)
+        }
+    }
 }
