@@ -1,0 +1,2 @@
+-dontwarn org.bouncycastle.**
+-dontwarn org.xmlpull.**

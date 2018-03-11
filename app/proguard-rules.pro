@@ -58,3 +58,4 @@
 -keepclassmembers class * extends java.lang.Enum {
     <fields>;
 }
+-keep class io.reactivex.** { *; }
