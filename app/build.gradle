@@ -55,7 +55,7 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'proguard-ui-testing-rules.pro'
+            testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-ui-testing-rules.pro'
             signingConfig signingConfigs.debug
         }
         staging {
@@ -63,13 +63,13 @@ android {
             versionNameSuffix "-staging"
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'proguard-ui-testing-rules.pro'
+            testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-ui-testing-rules.pro'
             signingConfig signingConfigs.debug
         }
         debug {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'proguard-ui-testing-rules.pro'
+            testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-ui-testing-rules.pro'
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
             signingConfig signingConfigs.debug
