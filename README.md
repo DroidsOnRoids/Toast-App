@@ -35,6 +35,10 @@ This app allows you to keep up to date with the latest events info like speakers
 
 - Run the app
 
+## Project info
+
+The app is using the [MVVM architecture](https://en.wikipedia.org/wiki/Model–view–viewmodel) with [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html) and [databinding](https://developer.android.com/topic/libraries/data-binding/index.html)
+
 #### Mocking server responses sample in UI test using MockWebServer path dispatcher -> [HERE](app/src/androidTest/SAMPLE.md)
 
 ## License
