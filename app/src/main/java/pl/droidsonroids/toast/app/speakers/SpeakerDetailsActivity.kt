@@ -66,11 +66,11 @@ class SpeakerDetailsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        postponeSharedTransition()
         val speakerDetailsBinding = ActivitySpeakerDetailsBinding.inflate(layoutInflater)
         setContentView(speakerDetailsBinding.root)
         setupToolbar()
         setupViewModel(speakerDetailsBinding)
+        postponeSharedTransitionIfNeeded(isFreshStart = savedInstanceState == null)
         setupRecyclerView()
         addInsetAppBehaviorToLoadingLayout()
     }
@@ -91,13 +91,17 @@ class SpeakerDetailsActivity : BaseActivity() {
     }
 
 
-    private fun postponeSharedTransition() {
-        postponeEnterTransition()
-        window.sharedElementEnterTransition = TransitionSet()
-                .addTransition(ChangeImageTransform())
-                .addTransition(ChangeBounds())
-                .doOnEnd { speakerDetailsViewModel.onTransitionEnd() }
-        isTransitionPostponed = true
+    private fun postponeSharedTransitionIfNeeded(isFreshStart: Boolean) {
+        if (isFreshStart) {
+            postponeEnterTransition()
+            window.sharedElementEnterTransition = TransitionSet()
+                    .addTransition(ChangeImageTransform())
+                    .addTransition(ChangeBounds())
+                    .doOnEnd { speakerDetailsViewModel.onTransitionEnd() }
+            isTransitionPostponed = true
+        } else {
+            speakerDetailsViewModel.onTransitionEnd()
+        }
     }
 
     private fun resumeSharedTransition() {
