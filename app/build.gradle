@@ -49,19 +49,13 @@ android {
             storePassword 'android'
             storeFile file('../keystore/debug.keystore')
         }
-        release {
-            keyAlias 'upload'
-            keyPassword property('pl.droidsonroids.toast.upload.key.password')
-            storePassword property('pl.droidsonroids.toast.upload.keystore.password')
-            storeFile file('../keystore/upload.keystore')
-        }
     }
 
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.debug
         }
         staging {
             applicationIdSuffix ".staging"
