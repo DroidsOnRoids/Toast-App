@@ -31,15 +31,15 @@
             <ImageView
                 android:id="@+id/upcomingEventImage"
                 android:layout_width="0dp"
-                android:layout_height="182dp"
-                android:layout_marginBottom="@dimen/margin_large"
+                android:layout_height="0dp"
                 android:scaleType="centerCrop"
                 app:elementId="@{upcomingEvent.id}"
-                app:transitionName="@{PhotoTransition.PHOTO}"
-                app:originalImage="@{upcomingEvent.coverImage}"
+                app:layout_constraintDimensionRatio="h,172:91"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:originalImage="@{upcomingEvent.coverImage}"
+                app:transitionName="@{PhotoTransition.PHOTO}"/>
 
             <TextView
                 android:id="@+id/upcomingEventTitleText"
