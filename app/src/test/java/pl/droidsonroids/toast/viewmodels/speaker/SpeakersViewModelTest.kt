@@ -111,6 +111,7 @@ class SpeakersViewModelTest : RxTestBase() {
         val testSpeakersPageWithNextPageAvailable = testSpeakersPage.copy(allPagesCount = 2)
         val firstSpeakerPageSingle = Single.just(testSpeakersPageWithNextPageAvailable)
         whenever(speakersRepository.getSpeakersPage(any(), any())).thenReturn(firstSpeakerPageSingle)
+
         val error = Single.error<Page<SpeakerDto>>(Exception())
         whenever(speakersRepository.getSpeakersPage(eq(2), any())).thenReturn(error)
         setupSpeakersViewModel()

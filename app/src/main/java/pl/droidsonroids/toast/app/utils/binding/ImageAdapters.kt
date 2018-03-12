@@ -93,10 +93,10 @@ private fun loadWithListener(imageView: ImageView, imageDto: ImageDto?, listener
             .load(imageDto?.originalSizeUrl)
             .thumbnail(thumbnailLoader)
             .listener(listener)
-            .apply(RequestOptions()
+            .apply(RequestOptions
+                    .placeholderOf(R.drawable.ic_placeholder_toast)
                     .override(Target.SIZE_ORIGINAL)
                     .onlyRetrieveFromCache(loadFromCache))
-            .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_toast))
             .apply()
             .into(imageView)
 }

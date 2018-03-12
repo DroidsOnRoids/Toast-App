@@ -28,7 +28,6 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
     protected fun mapToSingleSpeakerItemViewModelsPage(page: Page<SpeakerDto>): Single<Page<State.Item<SpeakerItemViewModel>>> {
         val (items, pageNumber, allPagesCount) = page
         return items.toObservable()
-                .distinct { it -> it.id }
                 .map {
                     it.toViewModel { id, name, avatar ->
                         navigationSubject.onNext(NavigationRequest.SpeakerDetails(id, avatar))
@@ -71,7 +70,7 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
         val previousList = speakersSubject.value
                 ?.filter { it is State.Item }
                 ?: emptyList()
-        return (previousList + newList).distinctBy { state -> (state as State.Item).item.id }
+        return (previousList + newList).distinctBy { state -> (state as? State.Item)?.item?.id }
     }
 
     protected fun onFirstPageLoadError(throwable: Throwable) {
