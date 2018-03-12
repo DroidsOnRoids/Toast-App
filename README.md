@@ -29,7 +29,7 @@ This app allows you to keep up to date with the latest events info like speakers
 ## Installation guide
 - Download repo
     ```
-    $ https://github.com/DroidsOnRoids/Toast-App.git
+    $ git clone https://github.com/DroidsOnRoids/Toast-App.git
     ```
 - Run the app
 
