@@ -9,6 +9,8 @@ Toast App is supporting Android developers meetup in Poland - Toast, which takes
 
 This app allows you to keep up to date with the latest events info like speakers descriptions, lectures topics or previous events photo galleries. Additionally, user may contact us via contact form.
 
+![App screenshots](art/screenshots.png)
+
 ## Features
 - [x] Events and lectures info
 - [x] Event photo gallery
