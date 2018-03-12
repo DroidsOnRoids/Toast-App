@@ -31,8 +31,6 @@ This app allows you to keep up to date with the latest events info like speakers
     ```
     $ https://github.com/DroidsOnRoids/Toast-App.git
     ```
-- Add google-services.json in `app/` directory
-
 - Run the app
 
 ## Project info
