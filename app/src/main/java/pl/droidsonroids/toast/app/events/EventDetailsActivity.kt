@@ -76,24 +76,28 @@ class EventDetailsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        postponeSharedTransition()
         val eventDetailsBinding = ActivityEventDetailsBinding.inflate(layoutInflater)
         setContentView(eventDetailsBinding.root)
 
         setupAppBar()
         setupViewModel(eventDetailsBinding)
+        postponeSharedTransitionIfNeeded(isFreshStart = savedInstanceState == null)
         setupGradientSwitcher()
         setupRecyclerView()
         addInsetAppBehaviorToLoadingLayout()
     }
 
-    private fun postponeSharedTransition() {
-        postponeEnterTransition()
-        window.sharedElementEnterTransition = TransitionSet()
-                .addTransition(ChangeImageTransform())
-                .addTransition(ChangeBounds())
-                .doOnEnd { eventDetailsViewModel.onTransitionEnd() }
-        isTransitionPostponed = true
+    private fun postponeSharedTransitionIfNeeded(isFreshStart: Boolean) {
+        if (isFreshStart) {
+            postponeEnterTransition()
+            window.sharedElementEnterTransition = TransitionSet()
+                    .addTransition(ChangeImageTransform())
+                    .addTransition(ChangeBounds())
+                    .doOnEnd { eventDetailsViewModel.onTransitionEnd() }
+            isTransitionPostponed = true
+        } else {
+            eventDetailsViewModel.onTransitionEnd()
+        }
     }
 
     private fun setupAppBar() {
