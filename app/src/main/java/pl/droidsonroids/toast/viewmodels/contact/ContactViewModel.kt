@@ -42,7 +42,7 @@ class ContactViewModel @Inject constructor(
     val name: ObservableField<String> = ObservableField("")
     val email: ObservableField<String> = ObservableField("")
     val message: ObservableField<String> = ObservableField("")
-    val messageCounter: ObservableField<String> = ObservableField("0/250")
+    val messageCounter: ObservableField<String> = ObservableField("0 / 250")
 
     private val nameChangedCallback = OnPropertyChangedSkippableCallback { onTextChanged(name) }
     private val emailChangedCallback = OnPropertyChangedSkippableCallback { onTextChanged(email) }

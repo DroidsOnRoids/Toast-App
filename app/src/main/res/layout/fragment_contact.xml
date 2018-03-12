@@ -118,6 +118,7 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <TextView
+                    android:id="@+id/characterCounter"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@{contactViewModel.messageCounter}"
