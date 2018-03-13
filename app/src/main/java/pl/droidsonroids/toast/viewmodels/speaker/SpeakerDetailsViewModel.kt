@@ -112,9 +112,11 @@ class SpeakerDetailsViewModel @Inject constructor(
     }
 
     private fun onTalksLoaded(talks: List<SpeakerTalkDto>) {
-        talksSubject.onNext(talks.map {
-            it.toViewModel(::onReadMoreClick, ::onEventClick)
-        })
+        talksSubject.onNext(talks
+                .sortedByDescending { it.id }
+                .map {
+                    it.toViewModel(::onReadMoreClick, ::onEventClick)
+                })
         isTalksLabelVisible.set(talks.isNotEmpty())
     }
 
