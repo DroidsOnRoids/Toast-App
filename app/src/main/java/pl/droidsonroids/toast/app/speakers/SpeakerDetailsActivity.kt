@@ -6,8 +6,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.util.Pair
 import android.support.v7.widget.LinearLayoutManager
+import android.transition.ChangeBounds
+import android.transition.ChangeImageTransform
+import android.transition.TransitionSet
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.AnimationUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
@@ -16,7 +20,10 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.events.HorizontalSnapHelper
+import pl.droidsonroids.toast.app.utils.binding.setVisible
 import pl.droidsonroids.toast.app.utils.extensions.addInsetAppBehaviorToLoadingLayout
+import pl.droidsonroids.toast.app.utils.extensions.doOnEnd
+import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerTalkDto
 import pl.droidsonroids.toast.databinding.ActivitySpeakerDetailsBinding
 import pl.droidsonroids.toast.utils.Constants
@@ -28,10 +35,12 @@ import javax.inject.Inject
 class SpeakerDetailsActivity : BaseActivity() {
     companion object {
         private const val SPEAKER_ID: String = "speaker_id"
+        private const val AVATAR_IMAGE = "avatar_image"
 
         fun createIntent(context: Context, navigationRequest: NavigationRequest.SpeakerDetails): Intent {
             return Intent(context, SpeakerDetailsActivity::class.java)
                     .putExtra(SPEAKER_ID, navigationRequest.id)
+                    .putExtra(AVATAR_IMAGE, navigationRequest.avatar)
         }
     }
 
@@ -46,8 +55,14 @@ class SpeakerDetailsActivity : BaseActivity() {
     private val speakerId: Long by lazy {
         intent.getLongExtra(SPEAKER_ID, Constants.NO_ID)
     }
+    private val avatar by lazy {
+        intent.getParcelableExtra<ImageDto?>(AVATAR_IMAGE)
+    }
 
     private val compositeDisposable = CompositeDisposable()
+
+    private var isTransitionPostponed = false
+    private var isAvatarAnimationShowing = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +70,7 @@ class SpeakerDetailsActivity : BaseActivity() {
         setContentView(speakerDetailsBinding.root)
         setupToolbar()
         setupViewModel(speakerDetailsBinding)
+        postponeSharedTransitionIfNeeded(isFreshStart = savedInstanceState == null)
         setupRecyclerView()
         addInsetAppBehaviorToLoadingLayout()
     }
@@ -65,18 +81,60 @@ class SpeakerDetailsActivity : BaseActivity() {
     }
 
     private fun setupViewModel(speakerDetailsBinding: ActivitySpeakerDetailsBinding) {
-        speakerDetailsViewModel.init(speakerId)
+        speakerDetailsViewModel.init(speakerId, avatar)
         speakerDetailsBinding.speakerDetailsViewModel = speakerDetailsViewModel
         compositeDisposable += speakerDetailsViewModel.navigationSubject
                 .subscribe(::handleNavigationRequest)
+        compositeDisposable += speakerDetailsViewModel.avatarLoadingFinishedSubject
+                .filter { isTransitionPostponed }
+                .subscribe { resumeSharedTransition() }
+    }
+
+
+    private fun postponeSharedTransitionIfNeeded(isFreshStart: Boolean) {
+        if (isFreshStart) {
+            postponeEnterTransition()
+            window.sharedElementEnterTransition = TransitionSet()
+                    .addTransition(ChangeImageTransform())
+                    .addTransition(ChangeBounds())
+                    .doOnEnd { speakerDetailsViewModel.onTransitionEnd() }
+            isTransitionPostponed = true
+        } else {
+            speakerDetailsViewModel.onTransitionEnd()
+        }
+    }
+
+    private fun resumeSharedTransition() {
+        startPostponedEnterTransition()
+        isTransitionPostponed = false
     }
 
     private fun handleNavigationRequest(request: NavigationRequest) {
         when (request) {
             is NavigationRequest.SpeakerTalkDetails -> showTalkDetails(request)
             is NavigationRequest.EventDetails -> showEventDetails(request)
+            NavigationRequest.AvatarAnimation -> toggleAvatarAnimation()
             else -> navigator.dispatch(this, request)
         }
+    }
+
+    private fun toggleAvatarAnimation() {
+        if (isAvatarAnimationShowing) {
+            stopAvatarAnimation()
+        } else {
+            showAvatarAnimation()
+        }
+    }
+
+    private fun showAvatarAnimation() {
+        val rotateAnimation = AnimationUtils.loadAnimation(this, R.anim.animation_rotation)
+        avatarImage.startAnimation(rotateAnimation)
+        isAvatarAnimationShowing = true
+    }
+
+    private fun stopAvatarAnimation() {
+        avatarImage.clearAnimation()
+        isAvatarAnimationShowing = false
     }
 
     private fun showTalkDetails(request: NavigationRequest.SpeakerTalkDetails) {
@@ -125,9 +183,15 @@ class SpeakerDetailsActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            android.R.id.home -> consume { finish() }
+            android.R.id.home -> consume { onBackPressed() }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onBackPressed() {
+        avatarBorderContainer.setVisible(false)
+        stopAvatarAnimation()
+        super.onBackPressed()
     }
 
     override fun onDestroy() {

@@ -5,8 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.databinding.OnRebindCallback
 import android.os.Bundle
+import android.support.v4.util.Pair
+import android.view.View
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
+import kotlinx.android.synthetic.main.item_speaker.*
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.data.dto.event.EventTalkDto
@@ -63,13 +66,15 @@ class EventTalkDetailsActivity : BaseActivity() {
         binding.eventTalkDetailsViewModel = eventTalkDetailsViewModel
     }
 
-    private fun handleNavigationRequest(it: NavigationRequest) {
-        if (it is NavigationRequest.Close) {
-            finishAfterTransition()
-        } else {
-            navigator.dispatch(this, it)
+    private fun handleNavigationRequest(navigationRequest: NavigationRequest) {
+        when (navigationRequest) {
+            is NavigationRequest.SpeakerDetails -> navigator.showActivityWithSharedAnimation(this, navigationRequest, getSharedViews())
+            NavigationRequest.Close -> finishAfterTransition()
+            else -> navigator.dispatch(this, navigationRequest)
         }
     }
+
+    private fun getSharedViews() = arrayOf(Pair(speakerAvatarImage as View, speakerAvatarImage.transitionName))
 
     override fun onDestroy() {
         navigationDisposable.dispose()
