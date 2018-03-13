@@ -70,9 +70,9 @@ class EventsViewModel @Inject constructor(
         compositeDisposable += getFirstPage()
                 .let(::addLoadingDelay)
                 .subscribeBy(
-                        onSuccess = (::onEventsLoaded),
-                        onError = (::onEventsLoadError),
-                        onComplete = (::onEmptyResponse)
+                        onSuccess = ::onEventsLoaded,
+                        onError = ::onEventsLoadError,
+                        onComplete = ::onEmptyResponse
                 )
     }
 
@@ -164,8 +164,8 @@ class EventsViewModel @Inject constructor(
                 .flatMap(::mapToSingleEventItemViewModelsPage)
                 .doAfterSuccess { isPreviousEventsLoading = false }
                 .subscribeBy(
-                        onSuccess = (::onPreviousEventsPageLoaded),
-                        onError = (::onPreviousEventsLoadError)
+                        onSuccess = ::onPreviousEventsPageLoaded,
+                        onError = ::onPreviousEventsLoadError
                 )
     }
 
@@ -202,9 +202,9 @@ class EventsViewModel @Inject constructor(
         invalidateAttendState()
         getFirstPage()
                 .subscribeBy(
-                        onSuccess = (::onEventsRefreshed),
+                        onSuccess = ::onEventsRefreshed,
                         onError = { onRefreshError() },
-                        onComplete = (::onRefreshError)
+                        onComplete = ::onRefreshError
                 )
     }
 

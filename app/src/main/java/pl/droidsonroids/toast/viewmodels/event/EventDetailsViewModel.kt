@@ -103,8 +103,8 @@ class EventDetailsViewModel @Inject constructor(
         eventsDisposable = eventsRepository.getEvent(eventId.get())
                 .let(::addLoadingDelay)
                 .subscribeBy(
-                        onSuccess = (::onEventLoaded),
-                        onError = (::onEventLoadError)
+                        onSuccess = ::onEventLoaded,
+                        onError = ::onEventLoadError
                 )
     }
 

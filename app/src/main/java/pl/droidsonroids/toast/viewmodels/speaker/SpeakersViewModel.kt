@@ -15,9 +15,9 @@ import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.SortingType
 import pl.droidsonroids.toast.utils.addOnPropertyChangedCallback
-import pl.droidsonroids.toast.viewmodels.RefreshViewModel
 import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
+import pl.droidsonroids.toast.viewmodels.RefreshViewModel
 import javax.inject.Inject
 
 class SpeakersViewModel @Inject constructor(
@@ -73,8 +73,8 @@ class SpeakersViewModel @Inject constructor(
                 .let(::addLoadingDelay)
                 .doAfterSuccess { isNextPageLoading = false }
                 .subscribeBy(
-                        onSuccess = (::onNewSpeakersPageLoaded),
-                        onError = (::onFirstPageLoadError)
+                        onSuccess = ::onNewSpeakersPageLoaded,
+                        onError = ::onFirstPageLoadError
                 )
     }
 
@@ -97,8 +97,8 @@ class SpeakersViewModel @Inject constructor(
                 .flatMap(::mapToSingleSpeakerItemViewModelsPage)
                 .doAfterSuccess { isNextPageLoading = false }
                 .subscribeBy(
-                        onSuccess = (::onSpeakersPageLoaded),
-                        onError = (::onNextPageLoadError)
+                        onSuccess = ::onSpeakersPageLoaded,
+                        onError = ::onNextPageLoadError
                 )
     }
 
@@ -123,8 +123,8 @@ class SpeakersViewModel @Inject constructor(
                 .let(::addLoadingDelay)
                 .doAfterSuccess { isNextPageLoading = false }
                 .subscribeBy(
-                        onSuccess = (::onNewSpeakersPageLoaded),
-                        onError = (::onRefreshError)
+                        onSuccess = ::onNewSpeakersPageLoaded,
+                        onError = ::onRefreshError
                 )
     }
 
