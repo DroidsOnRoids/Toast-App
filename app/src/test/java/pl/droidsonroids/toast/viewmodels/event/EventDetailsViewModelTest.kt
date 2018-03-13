@@ -16,7 +16,6 @@ import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
-import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.testApiEventTalk
@@ -98,7 +97,7 @@ class EventDetailsViewModelTest : RxTestBase() {
 
         eventDetailsViewModel.onPhotosClick()
 
-        testObserver.assertValue(NavigationRequest.Photos(testPhotos, eventId, ParentView.EVENT_DETAILS))
+        testObserver.assertValue(NavigationRequest.Photos(testPhotos))
     }
 
     private fun setUpWith(testEventDetailsSingle: Single<EventDetailsDto>) {

@@ -11,7 +11,6 @@ import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
 import pl.droidsonroids.toast.data.dto.event.EventTalkDto
-import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.repositories.event.EventsRepository
@@ -68,7 +67,7 @@ class EventDetailsViewModel @Inject constructor(
     private var eventsDisposable = Disposables.disposed()
 
     fun onPhotosClick() {
-        navigationSubject.onNext(NavigationRequest.Photos(photos, eventId.get(), ParentView.EVENT_DETAILS))
+        navigationSubject.onNext(NavigationRequest.Photos(photos))
         analyticsEventTracker.logEventDetailsSeePhotosEvent(eventId.get())
     }
 
