@@ -18,7 +18,6 @@ import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
 import pl.droidsonroids.toast.data.dto.event.EventDto
-import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.data.wrapWithState
 import pl.droidsonroids.toast.repositories.event.EventsRepository
@@ -105,7 +104,7 @@ class EventsViewModel @Inject constructor(
 
     private fun onSeePhotosClick(eventId: Long, photos: List<ImageDto>) {
         Timber.d("On upcoming photos click: $eventId")
-        navigationSubject.onNext(NavigationRequest.Photos(photos, eventId, ParentView.HOME))
+        navigationSubject.onNext(NavigationRequest.Photos(photos))
     }
 
     fun loadNextPage() {
