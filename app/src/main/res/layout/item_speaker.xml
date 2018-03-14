@@ -8,6 +8,8 @@
         <variable
             name="itemViewModel"
             type="pl.droidsonroids.toast.viewmodels.speaker.SpeakerItemViewModel"/>
+
+        <import type="pl.droidsonroids.toast.utils.Constants.AvatarTransition"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -26,6 +28,8 @@
             android:layout_height="48dp"
             android:layout_margin="@dimen/margin_large"
             android:scaleType="centerCrop"
+            app:elementId="@{itemViewModel.id}"
+            app:transitionName="@{AvatarTransition.AVATAR}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

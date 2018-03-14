@@ -7,10 +7,10 @@ class SpeakerItemViewModel(
         val name: String,
         val job: String,
         val avatar: ImageDto,
-        private val onSpeakerClick: (Long, String) -> Unit
+        private val onSpeakerClick: (Long, String, ImageDto?) -> Unit
 ) {
     fun onClick() {
-        onSpeakerClick(id, name)
+        onSpeakerClick(id, name, avatar)
     }
 
     override fun equals(other: Any?): Boolean {
