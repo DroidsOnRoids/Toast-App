@@ -130,8 +130,8 @@ class SpeakersSearchViewModel @Inject constructor(
                 .flatMap(::mapToSingleSpeakerItemViewModelsPage)
                 .doAfterSuccess { isNextPageLoading = false }
                 .subscribeBy(
-                        onSuccess = (::onSpeakersPageLoaded),
-                        onError = (::onNextPageLoadError)
+                        onSuccess = ::onSpeakersPageLoaded,
+                        onError = ::onNextPageLoadError
                 )
     }
 

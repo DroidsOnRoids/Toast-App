@@ -10,6 +10,8 @@
         <variable
             name="speakerDetailsViewModel"
             type="pl.droidsonroids.toast.viewmodels.speaker.SpeakerDetailsViewModel"/>
+
+        <import type="pl.droidsonroids.toast.utils.Constants.AvatarTransition"/>
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -20,9 +22,9 @@
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appBar"
-            android:stateListAnimator="@null"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:stateListAnimator="@null"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <android.support.design.widget.CollapsingToolbarLayout
@@ -195,11 +197,16 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="57dp"
             android:elevation="@dimen/elevation_large"
+            android:onLongClick="@{() -> speakerDetailsViewModel.onAvatarLongClick()}"
+            app:elementId="@{speakerDetailsViewModel.speakerId}"
             app:finalHeight="@dimen/small_avatar_size"
             app:finalWidth="@dimen/small_avatar_size"
             app:finalXPosition="@dimen/avatar_collapsed_margin"
+            app:fromCache="@{speakerDetailsViewModel.loadFromCache}"
             app:layout_behavior="pl.droidsonroids.toast.app.behaviors.SpeakerHeaderBehavior"
+            app:loadingFinishedListener="@{speakerDetailsViewModel.onLoadingFinished}"
             app:roundImage="@{speakerDetailsViewModel.avatar}"
+            app:transitionName="@{AvatarTransition.AVATAR}"
             tools:backgroundTint="@color/white"/>
 
         <TextView

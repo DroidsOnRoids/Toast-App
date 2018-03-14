@@ -6,15 +6,15 @@ import io.reactivex.Single
 import io.reactivex.rxkotlin.toSingle
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
+import org.junit.Before
 import org.junit.Test
-import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Spy
 import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
+import pl.droidsonroids.toast.testImageDto
 import pl.droidsonroids.toast.testSpeakerDetailsDto
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
@@ -30,11 +30,15 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
     lateinit var analyticsEventTracker: AnalyticsEventTracker
     @Mock
     lateinit var delayViewModel: DelayViewModel
-    @Spy
+
     private var rotation = ObservableField(0f)
 
-    @InjectMocks
     lateinit var speakerDetailsViewModel: SpeakerDetailsViewModel
+
+    @Before
+    fun setUp(){
+        speakerDetailsViewModel = SpeakerDetailsViewModel(speakersRepository, analyticsEventTracker, delayViewModel, rotation)
+    }
 
     @Test
     fun shouldLoadSpeakerDetails() {
@@ -56,8 +60,7 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
     fun shouldRetryLoadSpeakerDetails() {
         val error = Single.error<SpeakerDetailsDto>(Exception())
         whenever(speakersRepository.getSpeaker(speakerId)).thenReturn(error)
-        whenever(delayViewModel.addLoadingDelay(error)).thenReturn(error)
-        speakerDetailsViewModel.init(speakerId)
+        speakerDetailsViewModel.init(speakerId, testImageDto)
 
         val testSpeaker = testSpeakerDetailsDto.toSingle()
         whenever(speakersRepository.getSpeaker(speakerId)).thenReturn(testSpeaker)
@@ -121,6 +124,18 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
     }
 
     @Test
+    fun shouldRequestAvatarAnimation() {
+        speakerDetailsViewModel.email.set(testSpeakerDetailsDto.email)
+        val testObserver = speakerDetailsViewModel.navigationSubject.test()
+
+        speakerDetailsViewModel.onAvatarLongClick()
+
+        testObserver
+                .assertNoErrors()
+                .assertValue { it == NavigationRequest.AvatarAnimation }
+    }
+
+    @Test
     fun shouldRequestNavigationToSpeakerTalkDetails() {
         mockSpeakerWith(testSpeakerDetailsDto.toSingle())
         val testObserver = speakerDetailsViewModel.navigationSubject.test()
@@ -151,7 +166,8 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
     private fun mockSpeakerWith(value: Single<SpeakerDetailsDto>) {
         whenever(speakersRepository.getSpeaker(speakerId)).thenReturn(value)
         whenever(delayViewModel.addLoadingDelay(value)).thenReturn(value)
-        speakerDetailsViewModel.init(speakerId)
+        speakerDetailsViewModel.init(speakerId, testImageDto)
+        speakerDetailsViewModel.onTransitionEnd()
     }
 
     private fun assertSpeakerDetails() {
