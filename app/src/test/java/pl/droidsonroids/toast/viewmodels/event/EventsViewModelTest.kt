@@ -13,11 +13,10 @@ import org.junit.Test
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
-import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
+import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.data.dto.event.SplitEvents
-import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.rule.RxPluginSchedulerRule
@@ -123,9 +122,7 @@ class EventsViewModelTest : RxTestBase() {
 
         testObserver.assertValue {
             it is NavigationRequest.Photos
-                    && it.eventId == testEventDetails.id
                     && it.photos.first() == testEventDetails.photos.first().toDto()
-                    && it.parentView == ParentView.HOME
         }
     }
 
