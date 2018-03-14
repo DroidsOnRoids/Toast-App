@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Toast</string>
     <string name="action_settings">Ustawienia</string>
-    <string name="about_app">O Aplikacji</string>
+    <string name="about_app">O aplikacji</string>
     <string name="about">Kilka słów o %s</string>
     <string name="events_title">Wydarzenia</string>
     <string name="speakers_title">Prelegenci</string>
@@ -24,16 +24,16 @@
     <string name="please_check_your_internet_settings">Sprawdź swoje ustawienia internetu</string>
     <string name="sort">Sortuj</string>
     <string name="alphabetical">Alfabetycznie</string>
-    <string name="date">Po Dacie</string>
+    <string name="date">Po dacie</string>
     <string name="toast_title">TOAST</string>
     <string name="search">Szukaj</string>
     <string name="search_hint">Szukaj</string>
     <string name="no_speakers_found">Nie znaleziono prelegentów</string>
-    <string name="read_less">Czytaj mniej</string>
+    <string name="read_less">Zwiń</string>
     <string name="read_more">Czytaj więcej</string>
-    <string name="your_name">Twoje Imię</string>
-    <string name="email_address">Twój Email</string>
-    <string name="your_message">Twoja Wiadomość</string>
+    <string name="your_name">Twoje imię</string>
+    <string name="email_address">Twój email</string>
+    <string name="your_message">Twoja wiadomość</string>
     <string name="send">Wyślij</string>
     <string name="i_want_to">Chciał(a)bym…</string>
     <string name="speak_on_the_next_event">wystąpić na następnym wydarzeniu</string>

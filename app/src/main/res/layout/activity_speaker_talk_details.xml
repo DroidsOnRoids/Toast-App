@@ -85,27 +85,6 @@
                     android:showDividers="middle">
 
                     <FrameLayout
-                        android:id="@+id/slideshareButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:alpha="0.2"
-                        android:gravity="center"
-                        android:padding="@dimen/margin_medium">
-
-                        <TextView
-                            android:id="@+id/slideshareText"
-                            style="@style/FacebookAttend"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:drawablePadding="@dimen/margin_small"
-                            android:drawableStart="@drawable/ic_slideshare"
-                            android:gravity="center_vertical"
-                            android:text="@string/slideshare"/>
-                    </FrameLayout>
-
-                    <FrameLayout
                         android:id="@+id/readLessButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
