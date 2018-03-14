@@ -66,7 +66,7 @@ fun SpeakerTalkViewModel.toDto(): SpeakerTalkDto {
     )
 }
 
-fun SpeakerDto.toViewModel(onClick: (Long, String) -> Unit): SpeakerItemViewModel {
+fun SpeakerDto.toViewModel(onClick: (Long, String, ImageDto?) -> Unit): SpeakerItemViewModel {
     return SpeakerItemViewModel(
             id = id,
             name = name,
