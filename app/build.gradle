@@ -12,7 +12,9 @@ apply plugin: 'composer'
 
 apply plugin: "pl.droidsonroids.ui.test"
 
-apply plugin: 'io.fabric'
+if (file("google-services.json").isFile()) {
+    apply plugin: 'io.fabric'
+}
 
 buildscript {
     repositories {

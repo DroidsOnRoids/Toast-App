@@ -31,6 +31,10 @@ object Constants {
         const val PHOTO = "photo"
     }
 
+    object AvatarTransition {
+        const val AVATAR = "avatar"
+    }
+
     object ClipDataLabel {
         const val EMAIL = "Email address"
     }

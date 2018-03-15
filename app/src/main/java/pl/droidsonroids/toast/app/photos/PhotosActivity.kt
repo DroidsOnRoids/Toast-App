@@ -21,12 +21,8 @@ import kotlinx.android.synthetic.main.activity_photos.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
-import pl.droidsonroids.toast.app.events.EventDetailsActivity
-import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.app.utils.binding.setVisible
 import pl.droidsonroids.toast.data.dto.ImageDto
-import pl.droidsonroids.toast.data.enums.ParentView
-import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.addOnPropertyChangedCallback
 import pl.droidsonroids.toast.utils.consume
@@ -37,8 +33,6 @@ import javax.inject.Inject
 class PhotosActivity : BaseActivity() {
     companion object {
         private const val PHOTOS_KEY = "photos_key"
-        private const val EVENT_ID_KEY = "event_id_key"
-        private const val PARENT_VIEW_KEY = "parent_view_key"
         private const val PHOTOS_GRID_SIZE = 2
         private const val SYSTEM_UI_FLAG_SHOW_NAVIGATION = 6
 
@@ -54,22 +48,18 @@ class PhotosActivity : BaseActivity() {
 
         fun createIntent(context: Context, navigationRequest: NavigationRequest.Photos): Intent {
             return Intent(context, PhotosActivity::class.java)
-                    .putExtra(EVENT_ID_KEY, navigationRequest.eventId)
                     .putParcelableArrayListExtra(PHOTOS_KEY, ArrayList(navigationRequest.photos))
-                    .putExtra(PARENT_VIEW_KEY, navigationRequest.parentView)
         }
     }
 
     @Inject
     lateinit var navigator: Navigator
 
-    private val parentEventId by lazy { intent.getLongExtra(EVENT_ID_KEY, Constants.NO_ID) }
     private val photosViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory)[PhotosViewModel::class.java]
     }
 
     private val photos by lazy { intent.getParcelableArrayListExtra<ImageDto>(PHOTOS_KEY) }
-    private val parentView by lazy { intent.getSerializableExtra(PARENT_VIEW_KEY) }
 
     private val compositeDisposable = CompositeDisposable()
     private val isImmersiveMode
@@ -262,20 +252,9 @@ class PhotosActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            android.R.id.home -> handleUpAction()
+            android.R.id.home -> consume { onBackPressed() }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    private fun handleUpAction() = consume {
-        val upIntent = if (parentView == ParentView.EVENT_DETAILS) {
-            val eventDetailsRequest = NavigationRequest.EventDetails(parentEventId)
-            EventDetailsActivity.createIntent(this, eventDetailsRequest)
-        } else {
-            MainActivity.createIntent(this)
-        }
-        upIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(upIntent)
     }
 
     override fun onDestroy() {

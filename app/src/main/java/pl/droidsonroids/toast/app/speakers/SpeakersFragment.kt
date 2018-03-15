@@ -3,6 +3,7 @@ package pl.droidsonroids.toast.app.speakers
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.util.Pair
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import io.reactivex.disposables.Disposables
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.fragment_speakers.*
 import kotlinx.android.synthetic.main.layout_speakers_sorting_bar.*
+import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseFragment
 import pl.droidsonroids.toast.app.home.MainActivity
@@ -46,20 +48,6 @@ class SpeakersFragment : BaseFragment() {
         setupViewModel()
     }
 
-    private fun setupViewModel() {
-        speakersViewModel = ViewModelProviders.of(this, viewModelFactory)[SpeakersViewModel::class.java]
-        navigationDisposable = speakersViewModel.navigationSubject
-                .subscribe(::handleNavigationRequest)
-    }
-
-    private fun handleNavigationRequest(request: NavigationRequest) {
-        if (request is NavigationRequest.SnackBar) {
-            speakersSwipeRefresh.showSnackbar(request)
-        } else {
-            activity?.let { navigator.dispatch(it, request) }
-        }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = FragmentSpeakersBinding.inflate(inflater, container, false)
         binding.speakersViewModel = speakersViewModel
@@ -72,6 +60,31 @@ class SpeakersFragment : BaseFragment() {
         showSearchMenuItemWithAnimation()
         setupSwipeRefresh()
         subscribeToSortingDetailsVisibilityChange()
+    }
+
+    private fun setupViewModel() {
+        speakersViewModel = ViewModelProviders.of(this, viewModelFactory)[SpeakersViewModel::class.java]
+        navigationDisposable = speakersViewModel.navigationSubject
+                .subscribe(::handleNavigationRequest)
+    }
+
+    private fun handleNavigationRequest(request: NavigationRequest) {
+        when (request) {
+            is NavigationRequest.SnackBar -> speakersSwipeRefresh.showSnackbar(request)
+            is NavigationRequest.SpeakerDetails -> {
+                navigator.showActivityWithSharedAnimation(activity as MainActivity, request, getSharedViews(request.id))
+            }
+            else -> activity?.let { navigator.dispatch(it, request) }
+        }
+    }
+
+    private fun getSharedViews(speakerId: Long): Array<Pair<View, String>> {
+        return speakersRecyclerView.findViewHolderForItemId(speakerId)
+                ?.itemView
+                ?.run {
+                    val speakerAvatar = findViewById<View>(R.id.speakerAvatarImage)
+                    arrayOf(Pair(speakerAvatar, speakerAvatar.transitionName))
+                } ?: emptyArray()
     }
 
     private fun setupSwipeRefresh() {

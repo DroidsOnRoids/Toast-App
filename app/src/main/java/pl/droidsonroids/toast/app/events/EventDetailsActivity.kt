@@ -76,24 +76,28 @@ class EventDetailsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        postponeSharedTransition()
         val eventDetailsBinding = ActivityEventDetailsBinding.inflate(layoutInflater)
         setContentView(eventDetailsBinding.root)
 
         setupAppBar()
         setupViewModel(eventDetailsBinding)
+        postponeSharedTransitionIfNeeded(isFreshStart = savedInstanceState == null)
         setupGradientSwitcher()
         setupRecyclerView()
         addInsetAppBehaviorToLoadingLayout()
     }
 
-    private fun postponeSharedTransition() {
-        postponeEnterTransition()
-        window.sharedElementEnterTransition = TransitionSet()
-                .addTransition(ChangeImageTransform())
-                .addTransition(ChangeBounds())
-                .doOnEnd { eventDetailsViewModel.onTransitionEnd() }
-        isTransitionPostponed = true
+    private fun postponeSharedTransitionIfNeeded(isFreshStart: Boolean) {
+        if (isFreshStart) {
+            postponeEnterTransition()
+            window.sharedElementEnterTransition = TransitionSet()
+                    .addTransition(ChangeImageTransform())
+                    .addTransition(ChangeBounds())
+                    .doOnEnd { eventDetailsViewModel.onTransitionEnd() }
+            isTransitionPostponed = true
+        } else {
+            eventDetailsViewModel.onTransitionEnd()
+        }
     }
 
     private fun setupAppBar() {
@@ -135,21 +139,33 @@ class EventDetailsActivity : BaseActivity() {
         isTransitionPostponed = false
     }
 
-    private fun handleNavigationRequest(it: NavigationRequest) {
-        if (it is NavigationRequest.EventTalkDetails) {
-            navigator.showActivityWithSharedAnimation(this, it, getSharedViews(it.eventTalkDto))
-        } else {
-            navigator.dispatch(this, it)
+    private fun handleNavigationRequest(navigationRequest: NavigationRequest) {
+        when (navigationRequest) {
+            is NavigationRequest.EventTalkDetails -> navigator.showActivityWithSharedAnimation(this, navigationRequest, getTalkSharedViews(navigationRequest.eventTalkDto))
+            is NavigationRequest.SpeakerDetails -> navigator.showActivityWithSharedAnimation(this, navigationRequest, getSpeakerSharedViews(navigationRequest.talkId))
+            else -> navigator.dispatch(this, navigationRequest)
         }
     }
 
-    private fun getSharedViews(it: EventTalkDto): Array<Pair<View, String>> {
-        return eventSpeakersRecyclerView.findViewHolderForItemId(it.id)
+    private fun getTalkSharedViews(eventTalkDto: EventTalkDto): Array<Pair<View, String>> {
+        return eventSpeakersRecyclerView.findViewHolderForItemId(eventTalkDto.id)
                 ?.itemView
                 ?.run {
                     val talkCard = findViewById<View>(R.id.talkCard)
                     arrayOf(Pair(talkCard, talkCard.transitionName))
                 } ?: emptyArray()
+    }
+
+    private fun getSpeakerSharedViews(talkId: Long?): Array<Pair<View, String>> {
+        return talkId?.let {
+            eventSpeakersRecyclerView.findViewHolderForItemId(it)
+                    ?.itemView
+                    ?.run {
+                        val speakerAvatarImage = findViewById<View>(R.id.speakerAvatarImage)
+                        arrayOf(Pair(speakerAvatarImage, speakerAvatarImage.transitionName))
+                    }
+        } ?: emptyArray()
+
     }
 
     private fun setupGradientSwitcher() {
