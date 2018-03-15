@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Toast</string>
     <string name="action_settings">Настройки</string>
     <string name="about_app">О Приложении</string>
     <string name="about">Пара слов о %s</string>
@@ -11,7 +10,6 @@
     <string name="by_toast_team">командой TOAST</string>
     <string name="for_more_information_visit_our">Больше информации найдёшь в</string>
     <string name="error_internet_browser_not_found">Интернет браузер не найден</string>
-    <string name="toast_fanpage_url" translatable="false">https://www.facebook.com/toastwroclaw/</string>
     <string name="application_version">Версия приложения: %s</string>
     <string name="attend">Прими участие</string>
     <string name="previous_events_label">Предыдущие мероприятия</string>
@@ -19,7 +17,6 @@
     <string name="previous_event_arrow_desc">Иди в детали предыдущего мероприятия</string>
     <string name="no_events_loaded">Нет загруженных мероприятий</string>
     <string name="retry">Повтори</string>
-    <string name="android_developers_meet_up">Android Developers Meet-up</string>
     <string name="oops_no_internet_connection">Упс! Нет соединения с интернетом.</string>
     <string name="please_check_your_internet_settings">Проверь настройки интернета.</string>
     <string name="sort">Сортируй</string>
@@ -53,12 +50,9 @@
     <string name="meetup_photo_desc">Фото с мероприятия</string>
     <string name="no_map_app_found">Не найдено приложения с картами</string>
     <string name="email_is_copied_to_clipboard">Email скопирован в буфер обмена</string>
-    <string name="facebook_app_id" translatable="false">146423969371902</string>
-    <string name="fb_login_protocol_scheme" translatable="false">fb146423969371902</string>
     <string name="log_in">Авторизируйся</string>
     <string name="log_out">Выйди</string>
     <string name="participated_in">Выступал(а) в</string>
-    <string name="slideshare">Slideshare</string>
     <string name="attending">Участвую</string>
     <string name="interested_in">Интересуюсь</string>
     <string name="attended">Участвовал(а)</string>
