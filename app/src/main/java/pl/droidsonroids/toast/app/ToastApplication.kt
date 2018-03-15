@@ -5,11 +5,15 @@ import android.app.Application
 import android.util.Log
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import io.fabric.sdk.android.Fabric
 import pl.droidsonroids.toast.BuildConfig
 import pl.droidsonroids.toast.di.DaggerAppComponent
+import pl.droidsonroids.toast.utils.BASE_URL_KEY
+import pl.droidsonroids.toast.utils.IMAGE_URL_KEY
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -29,6 +33,7 @@ class ToastApplication : Application(), HasActivityInjector {
         setupDagger()
         setupTimber()
         setupCrashlytics()
+        setupRemoteConfig()
     }
 
     private fun setupDagger() {
@@ -64,6 +69,17 @@ class ToastApplication : Application(), HasActivityInjector {
                 .build()
 
         Fabric.with(fabric)
+    }
+
+    private fun setupRemoteConfig() {
+        FirebaseRemoteConfig.getInstance().apply {
+            setConfigSettings(FirebaseRemoteConfigSettings.Builder().setDeveloperModeEnabled(BuildConfig.DEBUG).build())
+            val defaults = mapOf(
+                    BASE_URL_KEY to BuildConfig.BASE_API_URL,
+                    IMAGE_URL_KEY to BuildConfig.BASE_IMAGES_URL
+            )
+            setDefaults(defaults)
+        }
     }
 
     private class CrashlyticsTree : Timber.Tree() {

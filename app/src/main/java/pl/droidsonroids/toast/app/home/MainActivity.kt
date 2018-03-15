@@ -1,5 +1,6 @@
 package pl.droidsonroids.toast.app.home
 
+import android.app.AlertDialog
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
@@ -7,9 +8,11 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_main.*
+import pl.droidsonroids.toast.BuildConfig
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
@@ -19,6 +22,8 @@ import pl.droidsonroids.toast.databinding.ActivityMainBinding
 import pl.droidsonroids.toast.di.LoginCallbackManager
 import pl.droidsonroids.toast.utils.Constants.SearchMenuItem.ANIM_DURATION_MILLIS
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.utils.baseImageUrl
+import pl.droidsonroids.toast.utils.baseUrl
 import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.MainViewModel
 import javax.inject.Inject
@@ -28,6 +33,7 @@ class MainActivity : BaseActivity() {
 
     companion object {
         private const val CURRENT_TITLE = "current_title"
+        private val REMOTE_CONFIG_CACHE_TIME_S = if (BuildConfig.DEBUG) 1L else 60 * 60 * 24
 
         fun createIntent(context: Context) = Intent(context, MainActivity::class.java)
     }
@@ -52,6 +58,32 @@ class MainActivity : BaseActivity() {
         setupNavigationView()
         initHomeFragmentTransaction(showEventsFragment = savedInstanceState == null)
         setupViewModel(mainBinding)
+        fetchRemoteConfig()
+    }
+
+    private fun fetchRemoteConfig() {
+        FirebaseRemoteConfig.getInstance().run {
+            fetch(REMOTE_CONFIG_CACHE_TIME_S).addOnSuccessListener {
+                val oldBaseUrl = baseUrl
+                val oldImageUrl = baseImageUrl
+                activateFetched()
+                if (oldBaseUrl != baseUrl || oldImageUrl != baseImageUrl) {
+                    showNewConfigDialog()
+                }
+            }
+        }
+    }
+
+    private fun showNewConfigDialog() {
+        AlertDialog.Builder(this)
+                .setCancelable(false)
+                .setIcon(R.drawable.ic_settings)
+                .setTitle(R.string.new_config_arrived)
+                .setMessage(R.string.restart_app)
+                .setPositiveButton(R.string.ok) { _, _ ->
+                    startActivity(Intent.makeRestartActivityTask(componentName))
+                }
+                .show()
     }
 
     private fun showFacebookError() {

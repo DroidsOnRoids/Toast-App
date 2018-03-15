@@ -68,7 +68,7 @@ android {
         }
         debug {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-debug-rules.pro', 'proguard-rules.pro'
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
             signingConfig signingConfigs.debug
@@ -151,7 +151,8 @@ dependencies {
     implementation 'com.facebook.android:facebook-login:4.30.0'
 
     // firebase
-    implementation 'com.google.firebase:firebase-core:11.8.0'
+    implementation "com.google.firebase:firebase-core:$versions.firebase"
+    implementation "com.google.firebase:firebase-config:$versions.firebase"
 
     // crashlytics
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.1@aar'){

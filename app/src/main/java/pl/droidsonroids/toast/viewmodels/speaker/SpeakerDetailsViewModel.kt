@@ -110,7 +110,7 @@ class SpeakerDetailsViewModel @Inject constructor(
         speakerDto.let {
             name.set(it.name)
             job.set(it.job)
-            avatar.set(it.avatar)
+            avatar.run { set(get() ?: it.avatar) }
             bio.set(it.bio)
             github.set(it.github)
             website.set(it.website)

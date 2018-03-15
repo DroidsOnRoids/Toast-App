@@ -67,4 +67,7 @@
     <string name="logged_in_successfully">You\'ve been successfully logged in</string>
     <string name="logged_out_successfully">You\'ve been successfully logged out</string>
     <string name="cannot_refresh_data">Cannot refresh data</string>
+    <string name="new_config_arrived">New configuration arrived</string>
+    <string name="ok">OK</string>
+    <string name="restart_app">The app will restart now to apply it</string>
 </resources>
