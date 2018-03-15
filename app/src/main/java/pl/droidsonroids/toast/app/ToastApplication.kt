@@ -73,12 +73,14 @@ class ToastApplication : Application(), HasActivityInjector {
 
     private fun setupRemoteConfig() {
         FirebaseRemoteConfig.getInstance().apply {
-            setConfigSettings(FirebaseRemoteConfigSettings.Builder().setDeveloperModeEnabled(BuildConfig.DEBUG).build())
-            val defaults = mapOf(
+            FirebaseRemoteConfigSettings.Builder()
+                    .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                    .build()
+                    .let(::setConfigSettings)
+            mapOf(
                     BASE_URL_KEY to BuildConfig.BASE_API_URL,
                     IMAGE_URL_KEY to BuildConfig.BASE_IMAGES_URL
-            )
-            setDefaults(defaults)
+            ).let(::setDefaults)
         }
     }
 
