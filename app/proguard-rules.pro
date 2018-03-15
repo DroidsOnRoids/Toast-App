@@ -58,3 +58,5 @@
 -keepclassmembers class * extends java.lang.Enum {
     <fields>;
 }
+-keep class io.reactivex.plugins.RxJavaPlugins { *; }
+-keep class io.reactivex.disposables.CompositeDisposable { *; }

@@ -57,6 +57,7 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            testProguardFiles 'proguard-ui-testing-rules.pro'
             signingConfig signingConfigs.debug
         }
         staging {
@@ -64,11 +65,13 @@ android {
             versionNameSuffix "-staging"
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            testProguardFiles 'proguard-ui-testing-rules.pro'
             signingConfig signingConfigs.debug
         }
         debug {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            testProguardFiles 'proguard-ui-testing-rules.pro'
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
             signingConfig signingConfigs.debug
@@ -154,7 +157,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:11.8.0'
 
     // crashlytics
-    implementation('com.crashlytics.sdk.android:crashlytics:2.9.1@aar'){
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
         transitive = true
     }
 
