@@ -33,7 +33,7 @@ class MainActivity : BaseActivity() {
 
     companion object {
         private const val CURRENT_TITLE = "current_title"
-        private val REMOTE_CONFIG_CACHE_TIME_S = if (BuildConfig.DEBUG) 1L else 60 * 60 * 24
+        private val REMOTE_CONFIG_CACHE_TIME_S = if (BuildConfig.DEBUG) 5 * 60L else 60 * 60 * 24
 
         fun createIntent(context: Context) = Intent(context, MainActivity::class.java)
     }
