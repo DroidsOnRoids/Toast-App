@@ -55,9 +55,9 @@
     <string name="participated_in">Brał(a) udział w</string>
     <string name="attending">Bierzesz udział</string>
     <string name="interested_in">Zainteresowany(a)</string>
-    <string name="attended">Brał(a)ś udział</string>
+    <string name="attended">Wzięto udział</string>
     <string name="facebook_update_attend_error">Nie udało się odświeżyć statusu udziału w wydarzeniu</string>
-    <string name="logged_in_successfully">Zostałe(a)ś zalogowany(a) pomyślnie</string>
-    <string name="logged_out_successfully">Zostałe(a)ś wylogowany(a) pomyślnie</string>
+    <string name="logged_in_successfully">Zalogowano pomyślnie</string>
+    <string name="logged_out_successfully">Wylogowano pomyślnie</string>
     <string name="cannot_refresh_data">Nie udało się odświeżyć danych</string>
 </resources>
