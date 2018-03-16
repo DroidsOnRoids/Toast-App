@@ -52,7 +52,6 @@
     <string name="photos_title">Photos</string>
     <string name="meetup_photo_desc">Meetup photo</string>
     <string name="no_map_app_found">No map app found</string>
-    <string name="browser_not_found">Internet browser not found</string>
     <string name="email_is_copied_to_clipboard">Email is copied to clipboard</string>
     <string name="facebook_app_id" translatable="false">146423969371902</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb146423969371902</string>
