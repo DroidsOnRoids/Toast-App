@@ -26,6 +26,7 @@ import pl.droidsonroids.toast.utils.baseImageUrl
 import pl.droidsonroids.toast.utils.baseUrl
 import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.MainViewModel
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -33,7 +34,7 @@ class MainActivity : BaseActivity() {
 
     companion object {
         private const val CURRENT_TITLE = "current_title"
-        private val REMOTE_CONFIG_CACHE_TIME_S = if (BuildConfig.DEBUG) 5 * 60L else 60 * 60 * 24
+        private val REMOTE_CONFIG_CACHE_TIME_S = if (BuildConfig.DEBUG) TimeUnit.MINUTES.toSeconds(5) else TimeUnit.DAYS.toSeconds(1)
 
         fun createIntent(context: Context) = Intent(context, MainActivity::class.java)
     }
