@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/paleGrayBackground"
+        android:rotation="@{mainViewModel.rotation}"
         tools:context="pl.droidsonroids.toast.app.home.MainActivity">
 
         <android.support.design.widget.AppBarLayout
@@ -47,10 +48,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="end"
-                    android:paddingStart="@dimen/margin_medium"
-                    android:paddingEnd="@dimen/margin_medium"
                     android:background="?selectableItemBackgroundBorderless"
                     android:onClick="@{() -> mainViewModel.onSpeakerSearchRequested()}"
+                    android:paddingEnd="@dimen/margin_medium"
+                    android:paddingStart="@dimen/margin_medium"
                     android:src="@drawable/ic_menu_search"
                     android:translationY="-200dp"/>
             </android.support.v7.widget.Toolbar>

@@ -29,6 +29,7 @@ import pl.droidsonroids.toast.app.utils.callbacks.LazyLoadingScrollListener
 import pl.droidsonroids.toast.app.utils.extensions.disableActivityTransitionAnimations
 import pl.droidsonroids.toast.app.utils.extensions.unicodeLength
 import pl.droidsonroids.toast.databinding.ActivitySpeakersSearchBinding
+import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.consume
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersSearchViewModel
 import javax.inject.Inject
@@ -95,7 +96,23 @@ class SpeakersSearchActivity : BaseActivity() {
     private fun setupViewModel(speakersSearchBinding: ActivitySpeakersSearchBinding) {
         speakersSearchBinding.speakersSearchViewModel = speakersSearchViewModel
         navigationDisposable = speakersSearchViewModel.navigationSubject
-                .subscribe { navigator.dispatch(this, it) }
+                .subscribe {
+                    if (it is NavigationRequest.SpeakerDetails) {
+                        navigator.showActivityWithSharedAnimation(this, it, getSharedViews(it.id))
+                    } else {
+                        navigator.dispatch(this, it)
+                    }
+                }
+    }
+
+
+    private fun getSharedViews(speakerId: Long): Array<android.support.v4.util.Pair<View, String>> {
+        return speakersSearchRecyclerView.findViewHolderForItemId(speakerId)
+                ?.itemView
+                ?.run {
+                    val speakerAvatar = findViewById<View>(R.id.speakerAvatarImage)
+                    arrayOf(android.support.v4.util.Pair(speakerAvatar, speakerAvatar.transitionName))
+                } ?: emptyArray()
     }
 
     private fun setupRecyclerView() {

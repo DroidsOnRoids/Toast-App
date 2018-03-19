@@ -20,16 +20,6 @@ import pl.droidsonroids.toast.utils.SortingType
 
 private const val COLOR_TRANSPARENT = 0x00FFFFFF
 
-@BindingAdapter("coverImage")
-fun setCoverImage(imageView: ImageView, imageDto: ImageDto?) {
-    val thumbnailLoader = Glide.with(imageView).load(imageDto?.thumbSizeUrl)
-    Glide.with(imageView)
-            .load(imageDto?.originalSizeUrl)
-            .thumbnail(thumbnailLoader)
-            .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_toast))
-            .into(imageView)
-}
-
 @BindingAdapter("roundImage")
 fun setRoundImage(imageView: ImageView, imageDto: ImageDto?) {
     val thumbnailLoader = Glide.with(imageView)
@@ -61,7 +51,21 @@ fun setOriginalImage(imageView: ImageView, imageDto: ImageDto?) {
 @SuppressLint("CheckResult")
 @BindingAdapter("originalImage", "loadingFinishedListener", "fromCache")
 fun loadOriginalPhoto(imageView: ImageView, imageDto: ImageDto?, onLoadingFinished: () -> Unit, loadFromCache: Boolean) {
-    val listener = object : RequestListener<Drawable> {
+    val listener = createRequestListener(onLoadingFinished)
+    loadWithListener(imageView, imageDto, listener, loadFromCache)
+}
+
+@SuppressLint("CheckResult")
+@BindingAdapter("roundImage", "loadingFinishedListener", "fromCache")
+fun loadRoundPhoto(imageView: ImageView, imageDto: ImageDto?, onLoadingFinished: () -> Unit, loadFromCache: Boolean) {
+    val listener = createRequestListener(onLoadingFinished)
+    loadWithListener(imageView, imageDto, listener, loadFromCache) {
+        apply(RequestOptions.circleCropTransform())
+    }
+}
+
+private fun createRequestListener(onLoadingFinished: () -> Unit): RequestListener<Drawable> {
+    return object : RequestListener<Drawable> {
         override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
             onLoadingFinished()
             return false
@@ -72,31 +76,34 @@ fun loadOriginalPhoto(imageView: ImageView, imageDto: ImageDto?, onLoadingFinish
             return false
         }
     }
-    loadWithListener(imageView, imageDto, listener) {
-        apply(RequestOptions().override(Target.SIZE_ORIGINAL).onlyRetrieveFromCache(loadFromCache))
-    }
 }
 
-@BindingAdapter("coverImage", "coverImageColorListener")
-fun setCoverImageWithPaletteListener(imageView: ImageView, imageDto: ImageDto?, onColorLoaded: (Int) -> Unit) {
-    val listener = createGlidePaletteListener(imageDto, onColorLoaded)
-    loadWithListener(imageView, imageDto, listener)
+@SuppressLint("CheckResult")
+@BindingAdapter("originalImage", "imageColorListener", "loadingFinishedListener", "fromCache")
+fun setCoverImageWithPaletteListener(imageView: ImageView, imageDto: ImageDto?, onColorLoaded: (Int) -> Unit, onLoadingFinished: () -> Unit, loadFromCache: Boolean) {
+    val listener = createGlidePaletteListener(imageDto, onColorLoaded, onLoadingFinished)
+    loadWithListener(imageView, imageDto, listener, loadFromCache)
 }
 
-private fun loadWithListener(imageView: ImageView, imageDto: ImageDto?, listener: RequestListener<Drawable>, apply: RequestBuilder<Drawable>.() -> RequestBuilder<Drawable> = { this }) {
-    val thumbnailLoader = Glide.with(imageView)
+private fun loadWithListener(imageView: ImageView, imageDto: ImageDto?, listener: RequestListener<Drawable>, loadFromCache: Boolean, apply: RequestBuilder<Drawable>.() -> RequestBuilder<Drawable> = { this }) {
+    val thumbnailLoader = (Glide.with(imageView))
             .load(imageDto?.thumbSizeUrl)
+            .apply()
     Glide.with(imageView)
             .load(imageDto?.originalSizeUrl)
             .thumbnail(thumbnailLoader)
             .listener(listener)
+            .apply(RequestOptions
+                    .placeholderOf(R.drawable.ic_placeholder_toast)
+                    .override(Target.SIZE_ORIGINAL)
+                    .onlyRetrieveFromCache(loadFromCache))
             .apply()
-            .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_toast))
             .into(imageView)
 }
 
-private fun createGlidePaletteListener(imageDto: ImageDto?, onColorLoaded: (Int) -> Unit): GlidePalette<Drawable> {
+private fun createGlidePaletteListener(imageDto: ImageDto?, onColorLoaded: (Int) -> Unit, onLoadingFinished: () -> Unit): GlidePalette<Drawable> {
     return GlidePalette.with(imageDto?.originalSizeUrl)
+            .setGlideListener(createRequestListener(onLoadingFinished))
             .intoCallBack { palette ->
                 val darkVibrantColor = palette?.darkVibrantSwatch?.rgb
                 darkVibrantColor?.let { onColorLoaded(it) }

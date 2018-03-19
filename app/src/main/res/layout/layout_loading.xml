@@ -11,15 +11,19 @@
     </data>
 
     <FrameLayout
+        android:id="@+id/loadingLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:elevation="@dimen/elevation_large">
+        android:elevation="@dimen/elevation_large"
+        android:fitsSystemWindows="true">
 
         <FrameLayout
             android:id="@+id/loadingContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/paleGrayBackground"
+            android:clickable="true"
+            android:focusable="true"
             android:visibility="gone"
             app:fadingEnabled="@{loadingViewModel.isFadingEnabled}"
             app:loadingContainerVisibility="@{loadingViewModel.loadingStatus}">

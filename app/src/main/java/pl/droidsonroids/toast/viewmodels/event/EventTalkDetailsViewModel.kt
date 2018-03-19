@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import io.reactivex.subjects.PublishSubject
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
+import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.EventTalkDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.utils.NavigationRequest
@@ -12,7 +13,10 @@ import pl.droidsonroids.toast.viewmodels.speaker.SpeakerItemViewModel
 import javax.inject.Inject
 
 
-class EventTalkDetailsViewModel @Inject constructor(private val analyticsEventTracker: AnalyticsEventTracker) : ViewModel(), NavigatingViewModel {
+class EventTalkDetailsViewModel @Inject constructor(
+        private val analyticsEventTracker: AnalyticsEventTracker,
+        val rotation: ObservableField<Float>
+) : ViewModel(), NavigatingViewModel {
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
     val id: ObservableField<Long> = ObservableField()
     val title: ObservableField<String> = ObservableField()
@@ -28,8 +32,8 @@ class EventTalkDetailsViewModel @Inject constructor(private val analyticsEventTr
         }
     }
 
-    private fun onSpeakerClick(speakerId: Long, speakerName: String) {
-        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId))
+    private fun onSpeakerClick(speakerId: Long, speakerName: String, avatar: ImageDto?) {
+        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId, avatar, id.get()))
         analyticsEventTracker.logEventDetailsShowSpeakerEvent(speakerName)
     }
 

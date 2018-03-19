@@ -16,6 +16,7 @@ import pl.droidsonroids.toast.repositories.contact.ContactRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.addOnPropertyChangedCallback
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import javax.inject.Inject
@@ -23,11 +24,13 @@ import javax.inject.Inject
 class ContactViewModel @Inject constructor(
         private val contactFormValidator: ContactFormValidator,
         private val contactRepository: ContactRepository,
-        private val analyticsEventTracker: AnalyticsEventTracker
-) : ViewModel(), LoadingViewModel, NavigatingViewModel {
+        private val analyticsEventTracker: AnalyticsEventTracker,
+        delayViewModel: DelayViewModel
+) : ViewModel(), LoadingViewModel, DelayViewModel by delayViewModel, NavigatingViewModel {
 
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.PENDING)
+    override val isFadingEnabled get() = true
 
     val sendingEnabled = ObservableField(false)
 
@@ -39,7 +42,7 @@ class ContactViewModel @Inject constructor(
     val name: ObservableField<String> = ObservableField("")
     val email: ObservableField<String> = ObservableField("")
     val message: ObservableField<String> = ObservableField("")
-    val messageCounter: ObservableField<String> = ObservableField("0/250")
+    val messageCounter: ObservableField<String> = ObservableField("0 / 250")
 
     private val nameChangedCallback = OnPropertyChangedSkippableCallback { onTextChanged(name) }
     private val emailChangedCallback = OnPropertyChangedSkippableCallback { onTextChanged(email) }
@@ -119,7 +122,9 @@ class ContactViewModel @Inject constructor(
     fun onSendClick() {
         val message = createMessageDto()
         loadingStatus.set(LoadingStatus.PENDING)
+        updateLastLoadingStartTime()
         compositeDisposable += contactRepository.sendMessage(message)
+                .let(::addLoadingDelay)
                 .subscribeBy(
                         onComplete = (::onSendSuccessfully),
                         onError = { loadingStatus.set(LoadingStatus.ERROR) }

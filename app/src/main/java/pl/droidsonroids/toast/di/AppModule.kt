@@ -3,6 +3,7 @@ package pl.droidsonroids.toast.di
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.databinding.ObservableField
 import android.preference.PreferenceManager
 import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.Module
@@ -11,19 +12,20 @@ import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import pl.droidsonroids.toast.BuildConfig
-import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTrackerImpl
 import pl.droidsonroids.toast.repositories.contact.ContactRepository
 import pl.droidsonroids.toast.repositories.contact.ContactRepositoryImpl
 import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.repositories.event.EventsRepositoryImpl
-import pl.droidsonroids.toast.repositories.facebook.FacebookRepository
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepositoryImpl
 import pl.droidsonroids.toast.services.*
+import pl.droidsonroids.toast.utils.baseUrl
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
+import pl.droidsonroids.toast.viewmodels.LoadingDelayViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
-import pl.droidsonroids.toast.viewmodels.facebook.FacebookAttendViewModel
+import pl.droidsonroids.toast.viewmodels.facebook.WebAttendViewModel
 import pl.droidsonroids.toast.viewmodels.speaker.Clock
 import pl.droidsonroids.toast.viewmodels.speaker.SystemClockWrapper
 import retrofit2.Retrofit
@@ -46,15 +48,12 @@ class AppModule {
     fun provideSharedPreference(context: Context): SharedPreferences =
             PreferenceManager.getDefaultSharedPreferences(context)
 
-    @Singleton
     @Provides
     fun provideEventsRepository(eventService: EventService): EventsRepository = EventsRepositoryImpl(eventService)
 
-    @Singleton
     @Provides
     fun provideSpeakersRepository(speakerService: SpeakerService): SpeakersRepository = SpeakersRepositoryImpl(speakerService)
 
-    @Singleton
     @Provides
     fun provideContactRepository(contactService: ContactService, localContactStorage: LocalContactStorage): ContactRepository = ContactRepositoryImpl(contactService, localContactStorage)
 
@@ -62,8 +61,12 @@ class AppModule {
     @Provides
     fun provideContactStorage(sharedPreferences: SharedPreferences): ContactStorage = LocalContactStorage(sharedPreferences)
 
+    //    Replace with FacebookAttendViewModel to use Graph API & attend status check
     @Provides
-    fun provideAttendViewModel(loginStateWatcher: LoginStateWatcher, facebookRepository: FacebookRepository, analyticsEventTracker: AnalyticsEventTracker): AttendViewModel = FacebookAttendViewModel(loginStateWatcher, facebookRepository, analyticsEventTracker)
+    fun provideAttendViewModel(): AttendViewModel = WebAttendViewModel()
+
+    @Provides
+    fun provideDelayViewModel(clock: Clock): DelayViewModel = LoadingDelayViewModel(clock)
 
     @Singleton
     @Provides
@@ -71,17 +74,18 @@ class AppModule {
 
     @Singleton
     @Provides
+    fun provideRotation() = ObservableField(0f)
+
+    @Provides
     fun provideEventService(httpClient: OkHttpClient): EventService =
             getRetrofitBuilder(httpClient)
                     .create(EventService::class.java)
 
-    @Singleton
     @Provides
     fun provideSpeakersService(httpClient: OkHttpClient): SpeakerService =
             getRetrofitBuilder(httpClient)
                     .create(SpeakerService::class.java)
 
-    @Singleton
     @Provides
     fun provideContactService(httpClient: OkHttpClient): ContactService =
             getRetrofitBuilder(httpClient)
@@ -97,7 +101,7 @@ class AppModule {
 
     private fun getRetrofitBuilder(httpClient: OkHttpClient) =
             Retrofit.Builder()
-                    .baseUrl(BuildConfig.BASE_API_URL)
+                    .baseUrl(baseUrl)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                     .client(httpClient)
@@ -118,7 +122,7 @@ class AppModule {
 
     private fun OkHttpClient.Builder.addHttpLoggingInterceptorIfDebugBuildConfig(): OkHttpClient.Builder {
         if (BuildConfig.DEBUG) {
-            addNetworkInterceptor(getHttpLoggingInterceptor())
+            addInterceptor(getHttpLoggingInterceptor())
         }
         return this
     }

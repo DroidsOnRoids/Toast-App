@@ -11,20 +11,29 @@ import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerTalkDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
+import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.utils.consume
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import timber.log.Timber
 import javax.inject.Inject
 
 
-class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository: SpeakersRepository, private val analyticsEventTracker: AnalyticsEventTracker) : ViewModel(), LoadingViewModel, NavigatingViewModel {
-    private val Any.simpleClassName: String get() = javaClass.simpleName
-    private var speakerId: Long? = null
+class SpeakerDetailsViewModel @Inject constructor(
+        private val speakersRepository: SpeakersRepository,
+        private val analyticsEventTracker: AnalyticsEventTracker,
+        delayViewModel: DelayViewModel,
+        val rotation: ObservableField<Float>
+) : ViewModel(), LoadingViewModel, DelayViewModel by delayViewModel, NavigatingViewModel {
 
     override val navigationSubject: PublishSubject<NavigationRequest> = PublishSubject.create()
     override val loadingStatus = ObservableField(LoadingStatus.PENDING)
+    override val isFadingEnabled get() = true
+
+    var speakerId = ObservableField<Long>(Constants.NO_ID)
     val name = ObservableField("")
     val job = ObservableField("")
     val bio = ObservableField("")
@@ -34,13 +43,18 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
     val twitter = ObservableField<String?>(null)
     val email = ObservableField<String?>(null)
     val isTalksLabelVisible = ObservableField(false)
+    val loadFromCache = ObservableField(true)
 
     val talksSubject: BehaviorSubject<List<SpeakerTalkViewModel>> = BehaviorSubject.create()
+    val avatarLoadingFinishedSubject: PublishSubject<Unit> = PublishSubject.create()
+    val onLoadingFinished: () -> Unit = {
+        avatarLoadingFinishedSubject.onNext(Unit)
+    }
 
-    fun init(id: Long) {
-        if (speakerId == null) {
-            speakerId = id
-            loadSpeaker()
+    fun init(id: Long, avatar: ImageDto?) {
+        if (speakerId.get() == Constants.NO_ID) {
+            speakerId.set(id)
+            this.avatar.set(avatar)
         }
     }
 
@@ -72,19 +86,23 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
         }
     }
 
+    fun onAvatarLongClick() = consume {
+        navigationSubject.onNext(NavigationRequest.AvatarAnimation)
+    }
+
     private fun openWebsite(url: String?) {
         url?.let { navigationSubject.onNext(NavigationRequest.Website(url = it)) }
     }
 
     private fun loadSpeaker() {
-        speakerId?.let {
-            loadingStatus.set(LoadingStatus.PENDING)
-            speakersRepository.getSpeaker(it)
-                    .subscribeBy(
-                            onSuccess = (::onSpeakerLoaded),
-                            onError = (::onSpeakerLoadError)
-                    )
-        }
+        loadingStatus.set(LoadingStatus.PENDING)
+        updateLastLoadingStartTime()
+        speakersRepository.getSpeaker(speakerId.get())
+                .let(::addLoadingDelay)
+                .subscribeBy(
+                        onSuccess = ::onSpeakerLoaded,
+                        onError = ::onSpeakerLoadError
+                )
     }
 
     private fun onSpeakerLoaded(speakerDto: SpeakerDetailsDto) {
@@ -92,7 +110,7 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
         speakerDto.let {
             name.set(it.name)
             job.set(it.job)
-            avatar.set(it.avatar)
+            avatar.run { set(get() ?: it.avatar) }
             bio.set(it.bio)
             github.set(it.github)
             website.set(it.website)
@@ -103,9 +121,11 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
     }
 
     private fun onTalksLoaded(talks: List<SpeakerTalkDto>) {
-        talksSubject.onNext(talks.map {
-            it.toViewModel(::onReadMoreClick, ::onEventClick)
-        })
+        talksSubject.onNext(talks
+                .sortedByDescending { it.id }
+                .map {
+                    it.toViewModel(::onReadMoreClick, ::onEventClick)
+                })
         isTalksLabelVisible.set(talks.isNotEmpty())
     }
 
@@ -114,8 +134,8 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
         analyticsEventTracker.logSpeakerDetailsReadMoreEvent(talkDto.title)
     }
 
-    private fun onEventClick(eventId: Long) {
-        navigationSubject.onNext(NavigationRequest.EventDetails(eventId))
+    private fun onEventClick(eventId: Long, imageDto: ImageDto?, talkId: Long) {
+        navigationSubject.onNext(NavigationRequest.EventDetails(eventId, imageDto, talkId))
         analyticsEventTracker.logSpeakerDetailsEventTapEvent(eventId)
     }
 
@@ -126,5 +146,12 @@ class SpeakerDetailsViewModel @Inject constructor(private val speakersRepository
 
     override fun retryLoading() {
         loadSpeaker()
+    }
+
+    fun onTransitionEnd() {
+        if (loadFromCache.get()) {
+            loadFromCache.set(false)
+            loadSpeaker()
+        }
     }
 }

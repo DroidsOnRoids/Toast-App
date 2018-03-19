@@ -15,7 +15,6 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.events.EventTalkDetailsActivity
 import pl.droidsonroids.toast.app.photos.PhotosActivity
-import pl.droidsonroids.toast.app.photos.PhotosViewerActivity
 import pl.droidsonroids.toast.app.speakers.SpeakerDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakerTalkDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
@@ -45,12 +44,13 @@ class Navigator @Inject constructor(private val loginManager: LoginManager, priv
         }
     }
 
+    // Not used for now due to graph API change - removed possibility to check attend status
     private fun logIn(activity: Activity) {
-        loginManager.logInWithPublishPermissions(activity, Constants.Facebook.PERMISSIONS)
+        //        loginManager.logInWithPublishPermissions(activity, Constants.Facebook.PERMISSIONS)
     }
 
     private fun logOut() {
-        loginManager.logOut()
+        //        loginManager.logOut()
     }
 
     private fun showMap(context: Context, navigationRequest: NavigationRequest.Map) {
@@ -82,24 +82,22 @@ class Navigator @Inject constructor(private val loginManager: LoginManager, priv
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             context.startActivity(intent)
         } catch (exception: ActivityNotFoundException) {
-            Toast.makeText(context, R.string.browser_not_found, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.error_internet_browser_not_found, Toast.LENGTH_SHORT).show()
         }
-    }
-
-    fun showSinglePhotoWithSharedAnimation(activity: AppCompatActivity, navigationRequest: NavigationRequest.SinglePhoto, sharedViews: Array<Pair<View, String>>) {
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, *sharedViews).toBundle()
-        val intent = PhotosViewerActivity.createIntent(activity, navigationRequest)
-        activity.startActivity(intent, options)
     }
 
     fun showActivityWithSharedAnimation(activity: AppCompatActivity, navigationRequest: NavigationRequest, sharedViews: Array<Pair<View, String>>) {
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, *sharedViews).toBundle()
-        val intent = when (navigationRequest) {
-            is NavigationRequest.EventTalkDetails -> EventTalkDetailsActivity.createIntent(activity, navigationRequest)
-            is NavigationRequest.SpeakerTalkDetails -> SpeakerTalkDetailsActivity.createIntent(activity, navigationRequest)
-            else -> throw IllegalArgumentException("The $navigationRequest is not supported.")
+        if (activity.hasWindowFocus()) {
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, *sharedViews).toBundle()
+            val intent = when (navigationRequest) {
+                is NavigationRequest.EventTalkDetails -> EventTalkDetailsActivity.createIntent(activity, navigationRequest)
+                is NavigationRequest.SpeakerTalkDetails -> SpeakerTalkDetailsActivity.createIntent(activity, navigationRequest)
+                is NavigationRequest.EventDetails -> EventDetailsActivity.createIntent(activity, navigationRequest)
+                is NavigationRequest.SpeakerDetails -> SpeakerDetailsActivity.createIntent(activity, navigationRequest)
+                else -> throw IllegalArgumentException("The $navigationRequest is not supported.")
+            }
+            activity.startActivity(intent, options)
         }
-        activity.startActivity(intent, options)
     }
 
     fun showSearchSpeakersWithRevealAnimation(activity: Activity, centerCoordinates: kotlin.Pair<Int, Int>) {

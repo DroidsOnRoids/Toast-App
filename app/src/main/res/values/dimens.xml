@@ -6,7 +6,7 @@
     <dimen name="text_size_large">18sp</dimen>
     <dimen name="margin_large">16dp</dimen>
     <dimen name="margin_huge">24dp</dimen>
-    <dimen name="margin_extra">72dp</dimen>
+    <dimen name="avatar_collapsed_margin">72dp</dimen>
     <dimen name="icon_size_small">24dp</dimen>
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_medium">12dp</dimen>
@@ -18,6 +18,6 @@
 
     <dimen name="small_avatar_size">32dp</dimen>
     <dimen name="expanded_toolbar_height">213dp</dimen>
-    <dimen name="collapsed_appbar_height">110dp</dimen>
     <dimen name="elevation_large">8dp</dimen>
+    <dimen name="photo_item_pading">2dp</dimen>
 </resources>

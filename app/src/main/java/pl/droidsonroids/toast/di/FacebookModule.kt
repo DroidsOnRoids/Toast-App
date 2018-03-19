@@ -7,9 +7,9 @@ import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
-import pl.droidsonroids.toast.app.facebook.FacebookLoginStateWatcher
 import pl.droidsonroids.toast.app.facebook.FacebookUserManager
 import pl.droidsonroids.toast.app.facebook.LoginStateWatcher
+import pl.droidsonroids.toast.app.facebook.LoginStateWatcherPlaceholder
 import pl.droidsonroids.toast.app.facebook.UserManager
 import pl.droidsonroids.toast.data.enums.AttendStatus
 import pl.droidsonroids.toast.data.enums.AttendStatusAdapter
@@ -35,9 +35,10 @@ class FacebookModule {
     @Provides
     fun provideCallbackManager(): CallbackManager = CallbackManager.Factory.create()
 
+    //    Replace with FacebookLoginStateWatcher to use Facebook SDK
     @Singleton
     @Provides
-    fun provideLoginStateWatcher(loginManager: LoginManager, loginCallbackManager: LoginCallbackManager): LoginStateWatcher = FacebookLoginStateWatcher(loginManager, loginCallbackManager)
+    fun provideLoginStateWatcher(): LoginStateWatcher = LoginStateWatcherPlaceholder()
 
     @Singleton
     @Provides

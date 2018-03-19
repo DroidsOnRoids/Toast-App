@@ -6,11 +6,11 @@ import com.nhaarman.mockito_kotlin.verify
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Test
-import pl.droidsonroids.toast.data.api.ApiImage
 import pl.droidsonroids.toast.data.api.speaker.ApiSpeaker
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerTalkDto
+import pl.droidsonroids.toast.testApiImage
 import pl.droidsonroids.toast.testApiSpeakerDetails
 import pl.droidsonroids.toast.testApiSpeakerTalk
 import pl.droidsonroids.toast.testSpeakerTalkDto
@@ -21,7 +21,7 @@ class SpeakersMapperTest {
         val id = 1L
         val name = "name"
         val job = "job"
-        val avatar = ApiImage("bigImageUrl", "thumbImageUrl")
+        val avatar = testApiImage
         val apiSpeaker = ApiSpeaker(id, name, job, avatar)
         val speakerDto = apiSpeaker.toDto()
 
@@ -51,7 +51,7 @@ class SpeakersMapperTest {
         val name = "name"
         val job = "job"
         val avatar = ImageDto("bigImageUrl", "thumbImageUrl")
-        val onClick: (Long, String) -> Unit = mock()
+        val onClick: (Long, String, ImageDto?) -> Unit = mock()
         val speakerDto = SpeakerDto(id, name, job, avatar)
         val speakerItemViewModel = speakerDto.toViewModel(onClick)
 
@@ -60,7 +60,7 @@ class SpeakersMapperTest {
         assertThat(speakerItemViewModel.job, equalTo(job))
         assertThat(speakerItemViewModel.avatar, equalTo(avatar))
         speakerItemViewModel.onClick()
-        verify(onClick).invoke(id, name)
+        verify(onClick).invoke(id, name, avatar)
     }
 
     @Test
@@ -74,7 +74,7 @@ class SpeakersMapperTest {
     @Test
     fun shouldMapSpeakerTalkDtoToViewModel() {
         val onReadMoreClick: (SpeakerTalkDto) -> Unit = mock()
-        val onEventClick: (Long) -> Unit = mock()
+        val onEventClick: (Long, ImageDto?, Long) -> Unit = mock()
         val viewModel = testSpeakerTalkDto.toViewModel(onReadMoreClick, onEventClick)
         viewModel.let {
             assertThat(it.id, equalTo(testSpeakerTalkDto.id))

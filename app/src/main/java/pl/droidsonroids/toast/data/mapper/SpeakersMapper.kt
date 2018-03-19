@@ -3,6 +3,7 @@ package pl.droidsonroids.toast.data.mapper
 import pl.droidsonroids.toast.data.api.speaker.ApiSpeaker
 import pl.droidsonroids.toast.data.api.speaker.ApiSpeakerDetails
 import pl.droidsonroids.toast.data.api.speaker.ApiSpeakerTalk
+import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerTalkDto
@@ -43,7 +44,10 @@ fun ApiSpeakerTalk.toDto(): SpeakerTalkDto {
     )
 }
 
-fun SpeakerTalkDto.toViewModel(onReadMoreClick: (SpeakerTalkDto) -> Unit, onEventClick: (Long) -> Unit, onLoadingFinished: () -> Unit = {}): SpeakerTalkViewModel {
+fun SpeakerTalkDto.toViewModel(onReadMoreClick: (SpeakerTalkDto) -> Unit, onEventClickCallback: (Long, ImageDto?, Long) -> Unit, onLoadingFinished: () -> Unit = {}): SpeakerTalkViewModel {
+    val onEventClick: (Long, ImageDto?) -> Unit = { eventId, image ->
+        onEventClickCallback(eventId, image, id)
+    }
     return SpeakerTalkViewModel(
             id = id,
             title = title,
@@ -62,7 +66,7 @@ fun SpeakerTalkViewModel.toDto(): SpeakerTalkDto {
     )
 }
 
-fun SpeakerDto.toViewModel(onClick: (Long, String) -> Unit): SpeakerItemViewModel {
+fun SpeakerDto.toViewModel(onClick: (Long, String, ImageDto?) -> Unit): SpeakerItemViewModel {
     return SpeakerItemViewModel(
             id = id,
             name = name,

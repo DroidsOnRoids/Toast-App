@@ -11,14 +11,11 @@ import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
 import pl.droidsonroids.toast.data.dto.event.EventTalkDto
-import pl.droidsonroids.toast.data.enums.ParentView
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.repositories.event.EventsRepository
-import pl.droidsonroids.toast.utils.Constants
-import pl.droidsonroids.toast.utils.LoadingStatus
-import pl.droidsonroids.toast.utils.NavigationRequest
-import pl.droidsonroids.toast.utils.SourceAttending
+import pl.droidsonroids.toast.utils.*
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
@@ -28,16 +25,20 @@ import javax.inject.Inject
 
 private const val DEFAULT_GRADIENT_COLOR = 0xA0000000.toInt()
 private const val GRADIENT_COLOR_MASK = 0xE0FFFFFF.toInt()
+private const val WINDOW_MAX_ROTATION_DEGREES = 5f
+private const val WINDOW_DEFAULT_ROTATION_DEGREES = 0f
 
 class EventDetailsViewModel @Inject constructor(
         private val eventsRepository: EventsRepository,
         attendViewModel: AttendViewModel,
-        private val analyticsEventTracker: AnalyticsEventTracker
-) : ViewModel(), LoadingViewModel, NavigatingViewModel, AttendViewModel by attendViewModel {
-    private val Any.simpleClassName: String get() = javaClass.simpleName
+        private val analyticsEventTracker: AnalyticsEventTracker,
+        delayViewModel: DelayViewModel,
+        val rotation: ObservableField<Float>
+) : ViewModel(), LoadingViewModel, DelayViewModel by delayViewModel, NavigatingViewModel, AttendViewModel by attendViewModel {
     override val navigationSubject: PublishSubject<NavigationRequest> = navigationRequests
     override val loadingStatus: ObservableField<LoadingStatus> = ObservableField(LoadingStatus.PENDING)
-    private var eventId = Constants.NO_ID
+    val eventId = ObservableField(Constants.NO_ID)
+    override val isFadingEnabled get() = true
     val title = ObservableField("")
     val date = ObservableField<Date>()
     val placeName = ObservableField("")
@@ -45,6 +46,14 @@ class EventDetailsViewModel @Inject constructor(
     val coverImage = ObservableField<ImageDto?>()
     val photosAvailable = ObservableField(false)
     val gradientColor = ObservableField(DEFAULT_GRADIENT_COLOR)
+    val loadFromCache = ObservableField(true)
+
+    val coverImageLoadingFinishedSubject: PublishSubject<Unit> = PublishSubject.create()
+
+    val onLoadingFinished: () -> Unit = {
+        coverImageLoadingFinishedSubject.onNext(Unit)
+    }
+
     val onGradientColorLoaded: (Int) -> Unit = {
         gradientColor.set(it and GRADIENT_COLOR_MASK)
     }
@@ -58,8 +67,8 @@ class EventDetailsViewModel @Inject constructor(
     private var eventsDisposable = Disposables.disposed()
 
     fun onPhotosClick() {
-        navigationSubject.onNext(NavigationRequest.Photos(photos, eventId, ParentView.EVENT_DETAILS))
-        analyticsEventTracker.logEventDetailsSeePhotosEvent(eventId)
+        navigationSubject.onNext(NavigationRequest.Photos(photos))
+        analyticsEventTracker.logEventDetailsSeePhotosEvent(eventId.get())
     }
 
     fun onLocationClick() {
@@ -69,19 +78,32 @@ class EventDetailsViewModel @Inject constructor(
         }
     }
 
-    fun init(id: Long) {
-        if (eventId == Constants.NO_ID) {
-            eventId = id
-            loadEvent()
+    fun onTitleLongClick() = consume {
+        if (date.get().isToday) {
+            with(rotation) {
+                when (get()) {
+                    WINDOW_DEFAULT_ROTATION_DEGREES -> set(WINDOW_MAX_ROTATION_DEGREES)
+                    WINDOW_MAX_ROTATION_DEGREES -> set(WINDOW_DEFAULT_ROTATION_DEGREES)
+                }
+            }
+        }
+    }
+
+    fun init(id: Long, coverImage: ImageDto?) {
+        if (eventId.get() == Constants.NO_ID) {
+            eventId.set(id)
+            this.coverImage.set(coverImage)
         }
     }
 
     private fun loadEvent() {
         loadingStatus.set(LoadingStatus.PENDING)
-        eventsDisposable = eventsRepository.getEvent(eventId)
+        updateLastLoadingStartTime()
+        eventsDisposable = eventsRepository.getEvent(eventId.get())
+                .let(::addLoadingDelay)
                 .subscribeBy(
-                        onSuccess = (::onEventLoaded),
-                        onError = (::onEventLoadError)
+                        onSuccess = ::onEventLoaded,
+                        onError = ::onEventLoadError
                 )
     }
 
@@ -92,7 +114,7 @@ class EventDetailsViewModel @Inject constructor(
             date.set(it.date)
             placeName.set(it.placeName)
             placeStreet.set(it.placeStreet)
-            coverImage.set(it.coverImages.firstOrNull())
+            coverImage.run { set(get() ?: it.coverImages.firstOrNull()) }
             photosAvailable.set(it.photos.isNotEmpty())
             photos = it.photos
             coordinates = it.coordinates
@@ -110,18 +132,18 @@ class EventDetailsViewModel @Inject constructor(
     private fun onReadMore(eventSpeakerItemViewModel: EventSpeakerItemViewModel) {
         val eventTalkDto = eventSpeakerItemViewModel.toDto()
         navigationSubject.onNext(NavigationRequest.EventTalkDetails(eventTalkDto))
-        Timber.d(simpleClassName, "onReadMore: ${eventSpeakerItemViewModel.id}")
+        Timber.d("onReadMore: ${eventSpeakerItemViewModel.id}")
         analyticsEventTracker.logEventDetailsReadMoreEvent(eventTalkDto.title)
     }
 
-    private fun onSpeakerClick(speakerId: Long, speakerName: String) {
-        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId))
+    private fun onSpeakerClick(speakerTalkId: Long?, speakerId: Long, speakerName: String, avatar: ImageDto?) {
+        navigationSubject.onNext(NavigationRequest.SpeakerDetails(speakerId, avatar, speakerTalkId))
         analyticsEventTracker.logEventDetailsShowSpeakerEvent(speakerName)
     }
 
     private fun onEventLoadError(throwable: Throwable) {
         loadingStatus.set(LoadingStatus.ERROR)
-        Timber.e(throwable, "Something went wrong when fetching event details with id = $eventId")
+        Timber.e(throwable, "Something went wrong when fetching event details with id = ${eventId.get()}")
     }
 
     override fun retryLoading() {
@@ -131,5 +153,17 @@ class EventDetailsViewModel @Inject constructor(
     override fun onCleared() {
         dispose()
         eventsDisposable.dispose()
+    }
+
+    fun onTransitionEnd() {
+        if (loadFromCache.get()) {
+            loadFromCache.set(false)
+            loadEvent()
+        }
+    }
+
+    fun invalidateLoading() {
+        //        Due to shared element transition bug https://github.com/UweTrottmann/SeriesGuide/issues/522
+        loadingStatus.notifyChange()
     }
 }

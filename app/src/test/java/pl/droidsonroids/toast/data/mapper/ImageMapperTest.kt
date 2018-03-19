@@ -1,6 +1,5 @@
 package pl.droidsonroids.toast.data.mapper
 
-import android.databinding.ObservableField
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import org.hamcrest.CoreMatchers.equalTo
@@ -9,11 +8,11 @@ import org.junit.Test
 import pl.droidsonroids.toast.testImageDto
 
 class ImageMapperTest {
-    private val position = 1L
+    private val position = 1
 
     @Test
     fun shouldMapImageDtoToItemViewModel() {
-        val action: (Long) -> Unit = mock()
+        val action: (Int) -> Unit = mock()
         val photoItemViewModel = testImageDto.toItemViewModel(position, action)
         assertThat(photoItemViewModel.image, equalTo(testImageDto))
         assertThat(photoItemViewModel.position, equalTo(position))
@@ -22,16 +21,12 @@ class ImageMapperTest {
     }
 
     @Test
-    fun shouldMapImageDtoToSingleViewModel() {
-        val photoLoadedCallback: () -> Unit = mock()
+    fun shouldMapImageDtoToFullscreenViewModel() {
         val onClick: () -> Unit = mock()
-        val loadFromCache = ObservableField(true)
-        val singlePhotoViewModel = testImageDto.toSingleViewModel(position, loadFromCache, photoLoadedCallback, onClick)
-        assertThat(singlePhotoViewModel.image, equalTo(testImageDto))
-        assertThat(singlePhotoViewModel.loadFromCache, equalTo(loadFromCache))
-        assertThat(singlePhotoViewModel.position, equalTo(position))
-        assertThat(singlePhotoViewModel.onPhotoLoadingFinished, equalTo(photoLoadedCallback))
-        singlePhotoViewModel.onClick()
+        val fullscreenPhotoViewModel = testImageDto.toFullscreenViewModel(position, onClick)
+        assertThat(fullscreenPhotoViewModel.image, equalTo(testImageDto))
+        assertThat(fullscreenPhotoViewModel.position, equalTo(position))
+        fullscreenPhotoViewModel.onClick()
         verify(onClick).invoke()
     }
 }

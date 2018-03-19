@@ -1,21 +1,24 @@
 package pl.droidsonroids.toast.viewmodels.speaker
 
+import android.databinding.ObservableField
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toSingle
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
+import org.junit.Before
 import org.junit.Test
-import org.mockito.InjectMocks
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDetailsDto
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
+import pl.droidsonroids.toast.testImageDto
 import pl.droidsonroids.toast.testSpeakerDetailsDto
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import java.io.IOException
 
 class SpeakerDetailsViewModelTest : RxTestBase() {
@@ -25,8 +28,17 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
     lateinit var speakersRepository: SpeakersRepository
     @Mock
     lateinit var analyticsEventTracker: AnalyticsEventTracker
-    @InjectMocks
+    @Mock
+    lateinit var delayViewModel: DelayViewModel
+
+    private var rotation = ObservableField(0f)
+
     lateinit var speakerDetailsViewModel: SpeakerDetailsViewModel
+
+    @Before
+    fun setUp(){
+        speakerDetailsViewModel = SpeakerDetailsViewModel(speakersRepository, analyticsEventTracker, delayViewModel, rotation)
+    }
 
     @Test
     fun shouldLoadSpeakerDetails() {
@@ -46,10 +58,13 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
 
     @Test
     fun shouldRetryLoadSpeakerDetails() {
-        whenever(speakersRepository.getSpeaker(speakerId)).thenReturn(Single.error(Exception()))
-        speakerDetailsViewModel.init(speakerId)
+        val error = Single.error<SpeakerDetailsDto>(Exception())
+        whenever(speakersRepository.getSpeaker(speakerId)).thenReturn(error)
+        speakerDetailsViewModel.init(speakerId, testImageDto)
 
-        whenever(speakersRepository.getSpeaker(speakerId)).thenReturn(testSpeakerDetailsDto.toSingle())
+        val testSpeaker = testSpeakerDetailsDto.toSingle()
+        whenever(speakersRepository.getSpeaker(speakerId)).thenReturn(testSpeaker)
+        whenever(delayViewModel.addLoadingDelay(testSpeaker)).thenReturn(testSpeaker)
 
         speakerDetailsViewModel.retryLoading()
 
@@ -109,6 +124,18 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
     }
 
     @Test
+    fun shouldRequestAvatarAnimation() {
+        speakerDetailsViewModel.email.set(testSpeakerDetailsDto.email)
+        val testObserver = speakerDetailsViewModel.navigationSubject.test()
+
+        speakerDetailsViewModel.onAvatarLongClick()
+
+        testObserver
+                .assertNoErrors()
+                .assertValue { it == NavigationRequest.AvatarAnimation }
+    }
+
+    @Test
     fun shouldRequestNavigationToSpeakerTalkDetails() {
         mockSpeakerWith(testSpeakerDetailsDto.toSingle())
         val testObserver = speakerDetailsViewModel.navigationSubject.test()
@@ -138,14 +165,16 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
 
     private fun mockSpeakerWith(value: Single<SpeakerDetailsDto>) {
         whenever(speakersRepository.getSpeaker(speakerId)).thenReturn(value)
-        speakerDetailsViewModel.init(speakerId)
+        whenever(delayViewModel.addLoadingDelay(value)).thenReturn(value)
+        speakerDetailsViewModel.init(speakerId, testImageDto)
+        speakerDetailsViewModel.onTransitionEnd()
     }
 
     private fun assertSpeakerDetails() {
         assertThat(speakerDetailsViewModel.name.get(), equalTo(testSpeakerDetailsDto.name))
         assertThat(speakerDetailsViewModel.job.get(), equalTo(testSpeakerDetailsDto.job))
         assertThat(speakerDetailsViewModel.bio.get(), equalTo(testSpeakerDetailsDto.bio))
-        assertThat(speakerDetailsViewModel.avatar.get(), equalTo(testSpeakerDetailsDto.avatar))
+        assertThat(speakerDetailsViewModel.avatar.get(), equalTo(testImageDto))
         assertThat(speakerDetailsViewModel.github.get(), equalTo(testSpeakerDetailsDto.github))
         assertThat(speakerDetailsViewModel.website.get(), equalTo(testSpeakerDetailsDto.website))
         assertThat(speakerDetailsViewModel.twitter.get(), equalTo(testSpeakerDetailsDto.twitter))

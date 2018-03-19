@@ -12,6 +12,10 @@ apply plugin: 'composer'
 
 apply plugin: "pl.droidsonroids.ui.test"
 
+if (file("google-services.json").isFile()) {
+    apply plugin: 'io.fabric'
+}
+
 buildscript {
     repositories {
         jcenter()
@@ -32,7 +36,7 @@ android {
     compileSdkVersion 27
     buildToolsVersion '27.0.1'
     defaultConfig {
-        applicationId "pl.droidsonrioids.toast"
+        applicationId "pl.droidsonroids.toast"
         minSdkVersion 21
         targetSdkVersion 26
         versionCode commitTimestamp
@@ -53,6 +57,7 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            testProguardFiles 'proguard-ui-testing-rules.pro'
             signingConfig signingConfigs.debug
         }
         staging {
@@ -60,9 +65,13 @@ android {
             versionNameSuffix "-staging"
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            testProguardFiles 'proguard-ui-testing-rules.pro'
             signingConfig signingConfigs.debug
         }
         debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-debug-rules.pro', 'proguard-rules.pro'
+            testProguardFiles 'proguard-ui-testing-rules.pro'
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
             signingConfig signingConfigs.debug
@@ -78,9 +87,8 @@ android {
             buildConfigField 'String', 'BASE_IMAGES_URL', '"https://api.letswift.pl"'
         }
         toast {
-            // TODO change api url to toast when available
-            buildConfigField 'String', 'BASE_API_URL', '"https://api.letswift.pl/api/v1/"'
-            buildConfigField 'String', 'BASE_IMAGES_URL', '"https://api.letswift.pl"'
+            buildConfigField 'String', 'BASE_API_URL', '"http://default-environment.qr3cuxzfs5.eu-central-1.elasticbeanstalk.com/api/v1/"'
+            buildConfigField 'String', 'BASE_IMAGES_URL', '"http://default-environment.qr3cuxzfs5.eu-central-1.elasticbeanstalk.com"'
         }
         mockUiTest {
             applicationIdSuffix ".letswift"
@@ -140,16 +148,24 @@ dependencies {
 
     // glide
     implementation "com.github.bumptech.glide:glide:$versions.glide"
-    implementation 'com.github.florent37:glidepalette:2.1.1'
+    implementation 'com.github.florent37:glidepalette:2.1.2'
 
     // facebook
     implementation 'com.facebook.android:facebook-login:4.30.0'
 
     // firebase
-    implementation 'com.google.firebase:firebase-core:11.8.0'
+    implementation "com.google.firebase:firebase-core:$versions.firebase"
+    implementation "com.google.firebase:firebase-config:$versions.firebase"
+
+    // crashlytics
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
+        transitive = true
+    }
 
     // timber logger
     implementation 'com.jakewharton.timber:timber:4.6.1'
+
+    implementation 'com.alexvasilkov:gesture-views:2.4.1'
 
     // tests
     testImplementation 'junit:junit:4.12'

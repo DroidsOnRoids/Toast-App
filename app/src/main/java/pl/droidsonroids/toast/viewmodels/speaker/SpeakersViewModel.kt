@@ -4,26 +4,33 @@ import android.databinding.ObservableField
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
-import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
+import pl.droidsonroids.toast.R
+import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
+import pl.droidsonroids.toast.data.Page
 import pl.droidsonroids.toast.data.State
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.utils.LoadingStatus
+import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.utils.SortingType
 import pl.droidsonroids.toast.utils.addOnPropertyChangedCallback
-import java.util.concurrent.TimeUnit
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
+import pl.droidsonroids.toast.viewmodels.LoadingViewModel
+import pl.droidsonroids.toast.viewmodels.RefreshViewModel
 import javax.inject.Inject
 
-private const val MIN_LOADING_DELAY = 500
 class SpeakersViewModel @Inject constructor(
         private val speakersRepository: SpeakersRepository,
         private val analyticsEventTracker: AnalyticsEventTracker,
-        private val clock: Clock
-) : BaseSpeakerListViewModel() {
+        delayViewModel: DelayViewModel
+) : BaseSpeakerListViewModel(), LoadingViewModel, RefreshViewModel, DelayViewModel by delayViewModel {
+
+    override val isSwipeRefreshLoaderVisibleSubject: PublishSubject<Boolean> = PublishSubject.create()
 
     val isSortingDetailsVisible: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
     val sortingType = ObservableField(SortingType.DATE)
-    private var lastLoadingStartTimeMillis = clock.elapsedRealtime()
+    override val isFadingEnabled get() = true
 
     private var speakersDisposable: Disposable? = null
 
@@ -33,8 +40,6 @@ class SpeakersViewModel @Inject constructor(
             loadFirstPage()
         }
     }
-
-    override val isFadingEnabled get() = true
 
     private fun clearSpeakersList() {
         speakersSubject.onNext(emptyList())
@@ -63,16 +68,20 @@ class SpeakersViewModel @Inject constructor(
     private fun loadFirstPage() {
         isNextPageLoading = true
         loadingStatus.set(LoadingStatus.PENDING)
-        lastLoadingStartTimeMillis = clock.elapsedRealtime()
-        speakersDisposable = speakersRepository.getSpeakersPage(sortingQuery = sortingType.get().toQuery())
-                .flatMap(::mapToSingleSpeakerItemViewModelsPage)
-                .doOnSuccess { clearSpeakersList() }
-                .addLoadingDelay()
+        updateLastLoadingStartTime()
+        speakersDisposable = getFirstPage()
+                .let(::addLoadingDelay)
                 .doAfterSuccess { isNextPageLoading = false }
                 .subscribeBy(
-                        onSuccess = (::onNewSpeakersPageLoaded),
-                        onError = (::onFirstPageLoadError)
+                        onSuccess = ::onNewSpeakersPageLoaded,
+                        onError = ::onFirstPageLoadError
                 )
+    }
+
+    private fun getFirstPage(): Single<Page<State.Item<SpeakerItemViewModel>>> {
+        return speakersRepository.getSpeakersPage(sortingQuery = sortingType.get().toQuery())
+                .flatMap(::mapToSingleSpeakerItemViewModelsPage)
+                .doOnSuccess { clearSpeakersList() }
     }
 
     fun loadNextPage() {
@@ -88,8 +97,8 @@ class SpeakersViewModel @Inject constructor(
                 .flatMap(::mapToSingleSpeakerItemViewModelsPage)
                 .doAfterSuccess { isNextPageLoading = false }
                 .subscribeBy(
-                        onSuccess = (::onSpeakersPageLoaded),
-                        onError = (::onNextPageLoadError)
+                        onSuccess = ::onSpeakersPageLoaded,
+                        onError = ::onNextPageLoadError
                 )
     }
 
@@ -107,9 +116,26 @@ class SpeakersViewModel @Inject constructor(
         speakersDisposable?.dispose()
     }
 
-    private fun <T> Single<T>.addLoadingDelay() = flatMap {
-        Single.just(it)
-                .delay(MIN_LOADING_DELAY + lastLoadingStartTimeMillis - clock.elapsedRealtime(), TimeUnit.MILLISECONDS)
+    override fun refresh() {
+        isNextPageLoading = true
+        speakersDisposable = getFirstPage()
+                .doOnSuccess { refreshSuccessful() }
+                .let(::addLoadingDelay)
+                .doAfterSuccess { isNextPageLoading = false }
+                .subscribeBy(
+                        onSuccess = ::onNewSpeakersPageLoaded,
+                        onError = ::onRefreshError
+                )
     }
 
+    private fun onRefreshError(throwable: Throwable) {
+        navigationSubject.onNext(NavigationRequest.SnackBar(R.string.cannot_refresh_data))
+        isSwipeRefreshLoaderVisibleSubject.onNext(false)
+    }
+
+    private fun refreshSuccessful() {
+        isSwipeRefreshLoaderVisibleSubject.onNext(false)
+        loadingStatus.set(LoadingStatus.PENDING)
+        updateLastLoadingStartTime()
+    }
 }

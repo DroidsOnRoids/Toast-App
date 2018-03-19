@@ -10,9 +10,13 @@
         <variable
             name="speakerDetailsViewModel"
             type="pl.droidsonroids.toast.viewmodels.speaker.SpeakerDetailsViewModel"/>
+
+        <import type="pl.droidsonroids.toast.utils.Constants.AvatarTransition"/>
     </data>
 
     <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/speakerDetailsContainer"
+        android:rotation="@{speakerDetailsViewModel.rotation}"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -20,6 +24,7 @@
             android:id="@+id/appBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:stateListAnimator="@null"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <android.support.design.widget.CollapsingToolbarLayout
@@ -34,7 +39,6 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    app:contentInsetStart="0dp"
                     app:layout_collapseMode="pin"
                     app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
@@ -78,11 +82,13 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
+                android:id="@+id/speakerInfoContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <android.support.constraint.ConstraintLayout
+                    android:id="@+id/speakerBioContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
@@ -139,8 +145,8 @@
                     android:layout_marginStart="@dimen/margin_large"
                     android:layout_marginTop="@dimen/margin_large"
                     android:text="@string/participated_in"
-                    android:visibility="@{speakerDetailsViewModel.isTalksLabelVisible}"
-                    android:textAllCaps="true"/>
+                    android:textAllCaps="true"
+                    android:visibility="@{speakerDetailsViewModel.isTalksLabelVisible}"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/talksRecyclerView"
@@ -156,17 +162,16 @@
         </android.support.v4.widget.NestedScrollView>
 
         <FrameLayout
+            android:id="@+id/avatarBorderContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="45dp"
             android:elevation="@dimen/elevation_large"
             app:finalHeight="@dimen/small_avatar_size"
-            app:finalToolbarHeight="@dimen/collapsed_appbar_height"
             app:finalWidth="@dimen/small_avatar_size"
-            app:finalXPosition="@dimen/margin_extra"
-            app:finalYPosition="@dimen/margin_medium"
-            app:layout_behavior="pl.droidsonroids.toast.app.speakers.SpeakerHeaderBehavior">
+            app:finalXPosition="@dimen/avatar_collapsed_margin"
+            app:layout_behavior="pl.droidsonroids.toast.app.behaviors.SpeakerHeaderBehavior">
 
             <View
                 android:id="@+id/avatarBorderBig"
@@ -192,13 +197,16 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="57dp"
             android:elevation="@dimen/elevation_large"
+            android:onLongClick="@{() -> speakerDetailsViewModel.onAvatarLongClick()}"
+            app:elementId="@{speakerDetailsViewModel.speakerId}"
             app:finalHeight="@dimen/small_avatar_size"
-            app:finalToolbarHeight="@dimen/collapsed_appbar_height"
             app:finalWidth="@dimen/small_avatar_size"
-            app:finalXPosition="@dimen/margin_extra"
-            app:finalYPosition="@dimen/margin_medium"
-            app:layout_behavior="pl.droidsonroids.toast.app.speakers.SpeakerHeaderBehavior"
+            app:finalXPosition="@dimen/avatar_collapsed_margin"
+            app:fromCache="@{speakerDetailsViewModel.loadFromCache}"
+            app:layout_behavior="pl.droidsonroids.toast.app.behaviors.SpeakerHeaderBehavior"
+            app:loadingFinishedListener="@{speakerDetailsViewModel.onLoadingFinished}"
             app:roundImage="@{speakerDetailsViewModel.avatar}"
+            app:transitionName="@{AvatarTransition.AVATAR}"
             tools:backgroundTint="@color/white"/>
 
         <TextView
@@ -214,10 +222,8 @@
             android:text="@{speakerDetailsViewModel.name}"
             android:textColor="@color/white"
             android:textSize="18sp"
-            app:finalToolbarHeight="@dimen/collapsed_appbar_height"
             app:finalXPosition="120dp"
-            app:finalYPosition="@dimen/margin_large"
-            app:layout_behavior="pl.droidsonroids.toast.app.speakers.SpeakerHeaderBehavior"
+            app:layout_behavior="pl.droidsonroids.toast.app.behaviors.SpeakerHeaderBehavior"
             tools:text="Paulina Szklarska"/>
 
         <include

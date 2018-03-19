@@ -11,7 +11,6 @@ import pl.droidsonroids.toast.viewmodels.event.EventDetailsViewModel
 import pl.droidsonroids.toast.viewmodels.event.EventTalkDetailsViewModel
 import pl.droidsonroids.toast.viewmodels.event.EventsViewModel
 import pl.droidsonroids.toast.viewmodels.photos.PhotosViewModel
-import pl.droidsonroids.toast.viewmodels.photos.PhotosViewerViewModel
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakerDetailsViewModel
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakerTalkDetailsViewModel
 import pl.droidsonroids.toast.viewmodels.speaker.SpeakersSearchViewModel
@@ -69,11 +68,6 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(PhotosViewModel::class)
     abstract fun bindPhotosViewModel(photosViewModel: PhotosViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(PhotosViewerViewModel::class)
-    abstract fun bindPhotoDetailsViewModel(photosViewerViewModel: PhotosViewerViewModel): ViewModel
 
     @Binds
     internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory

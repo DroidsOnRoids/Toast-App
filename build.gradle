@@ -4,15 +4,16 @@ buildscript {
     ext {
         //    add versions that occur at least twice
         versions = [
-                buildTools: "27.0.1",
-                kotlin    : "1.2.21",
+                buildTools: "27.0.3",
+                kotlin    : "1.2.30",
                 support   : "27.0.2",
-                dagger    : "2.13",
+                dagger    : "2.14.1",
                 retrofit  : "2.3.0",
                 chuck     : "1.1.0",
-                lifecycle : '1.0.0',
-                glide     : '4.4.0',
-                espresso  : "3.0.1"
+                lifecycle : '1.1.0',
+                glide     : '4.6.1',
+                espresso  : "3.0.1",
+                firebase  : "11.8.0"
         ]
     }
     repositories {
@@ -24,6 +25,9 @@ buildscript {
         maven {
             url "https://jitpack.io"
         }
+        maven {
+            url 'https://maven.fabric.io/public'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
@@ -32,6 +36,7 @@ buildscript {
         classpath "gradle.plugin.pl.droidsonroids.gradle.ui.test:plugin:2.0.2"
         classpath 'com.github.trevjonez.composer-gradle-plugin:plugin:0.5.1'
         classpath 'com.google.gms:google-services:3.2.0'
+        classpath 'io.fabric.tools:gradle:1.25.1'
     }
 }
 
@@ -39,6 +44,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url "https://jitpack.io" }
     }
 }
 

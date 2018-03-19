@@ -24,14 +24,13 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
     val speakersSubject: BehaviorSubject<List<State<SpeakerItemViewModel>>> = BehaviorSubject.create()
     protected var isNextPageLoading: Boolean = false
     protected var nextPageNumber: Int? = null
-    private val Any.simpleClassName: String get() = javaClass.simpleName
 
     protected fun mapToSingleSpeakerItemViewModelsPage(page: Page<SpeakerDto>): Single<Page<State.Item<SpeakerItemViewModel>>> {
         val (items, pageNumber, allPagesCount) = page
         return items.toObservable()
                 .map {
-                    it.toViewModel { id, name ->
-                        navigationSubject.onNext(NavigationRequest.SpeakerDetails(id))
+                    it.toViewModel { id, name, avatar ->
+                        navigationSubject.onNext(NavigationRequest.SpeakerDetails(id, avatar))
                         onSpeakerNavigationRequestSent(name)
                     }
                 }
@@ -45,7 +44,7 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
         loadingStatus.set(LoadingStatus.SUCCESS)
     }
 
-    protected fun onNewSpeakersPageLoaded(page: Page<State.Item<SpeakerItemViewModel>>) {
+    protected open fun onNewSpeakersPageLoaded(page: Page<State.Item<SpeakerItemViewModel>>) {
         val speakers = page.items.appendLoadingItemIfNextPageAvailable(page)
         speakersSubject.onNext(speakers)
         loadingStatus.set(LoadingStatus.SUCCESS)
@@ -71,7 +70,7 @@ abstract class BaseSpeakerListViewModel : ViewModel(), LoadingViewModel, Navigat
         val previousList = speakersSubject.value
                 ?.filter { it is State.Item }
                 ?: emptyList()
-        return previousList + newList
+        return (previousList + newList).distinctBy { state -> (state as? State.Item)?.item?.id }
     }
 
     protected fun onFirstPageLoadError(throwable: Throwable) {

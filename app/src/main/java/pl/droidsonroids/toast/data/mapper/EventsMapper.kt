@@ -58,14 +58,14 @@ fun ApiEvent.toDto(): EventDto {
     )
 }
 
-fun EventDto.toViewModel(onClick: (Long) -> Unit, onCoverLoadingFinish: () -> Unit = {}): EventItemViewModel {
+fun EventDto.toViewModel(onClick: (Long, ImageDto?) -> Unit, onCoverLoadingFinish: () -> Unit = {}): EventItemViewModel {
     return EventItemViewModel(
             id = id,
             title = title,
             date = date,
             coverImage = coverImages.firstOrNull(),
             onEventClick = onClick,
-            onCoverLoadingFinish = onCoverLoadingFinish
+            onCoverLoadingFinishCallback = onCoverLoadingFinish
     )
 }
 
@@ -81,7 +81,7 @@ fun EventItemViewModel.toDto(): EventDto {
 fun EventDetailsDto.toViewModel(
         onLocationClick: (CoordinatesDto, String) -> Unit,
         onSeePhotosClick: (Long, List<ImageDto>) -> Unit,
-        onEventClick: (Long) -> Unit,
+        onEventClick: (Long, ImageDto?) -> Unit,
         onAttendClick: () -> Unit
 ): UpcomingEventViewModel {
     return UpcomingEventViewModel(
@@ -100,7 +100,10 @@ fun EventDetailsDto.toViewModel(
     )
 }
 
-fun EventTalkDto.toViewModel(onReadMore: (EventSpeakerItemViewModel) -> Unit, onSpeakerClick: (Long, String) -> Unit): EventSpeakerItemViewModel {
+fun EventTalkDto.toViewModel(onReadMore: (EventSpeakerItemViewModel) -> Unit, onEventClickCallback: (Long?, Long, String, ImageDto?) -> Unit): EventSpeakerItemViewModel {
+    val onSpeakerClick: (Long, String, ImageDto?) -> Unit = { speakerId, name, avatar ->
+        onEventClickCallback(id, speakerId, name, avatar)
+    }
     return EventSpeakerItemViewModel(
             id = id,
             title = title,

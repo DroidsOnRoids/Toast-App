@@ -28,6 +28,13 @@
     public *;
 }
 
+# Crashlytics
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keepnames public class * extends java.lang.Exception
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
+
 # OkHttp
 -dontwarn okio.**
 -dontwarn com.squareup.okhttp.**
@@ -51,3 +58,5 @@
 -keepclassmembers class * extends java.lang.Enum {
     <fields>;
 }
+-keep class io.reactivex.plugins.RxJavaPlugins { *; }
+-keep class io.reactivex.disposables.CompositeDisposable { *; }

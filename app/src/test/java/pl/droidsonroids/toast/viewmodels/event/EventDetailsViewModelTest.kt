@@ -1,6 +1,6 @@
 package pl.droidsonroids.toast.viewmodels.event
 
-import com.nhaarman.mockito_kotlin.mock
+import android.databinding.ObservableField
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -14,20 +14,28 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
-import pl.droidsonroids.toast.data.enums.ParentView
+import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
+import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
 import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.testApiEventTalk
 import pl.droidsonroids.toast.testEventDetails
 import pl.droidsonroids.toast.utils.LoadingStatus
 import pl.droidsonroids.toast.utils.NavigationRequest
+import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
+import java.io.IOException
 
 class EventDetailsViewModelTest : RxTestBase() {
     @Mock
     lateinit var eventsRepository: EventsRepository
     @Mock
     lateinit var attendViewModel: AttendViewModel
+    @Mock
+    lateinit var delayViewModel: DelayViewModel
+    @Mock
+    lateinit var analyticsEventTracker: AnalyticsEventTracker
+
     lateinit var eventDetailsViewModel: EventDetailsViewModel
 
     private val eventId: Long = 1
@@ -35,13 +43,14 @@ class EventDetailsViewModelTest : RxTestBase() {
     @Before
     fun setUp() {
         whenever(attendViewModel.navigationRequests).thenReturn(PublishSubject.create())
-        eventDetailsViewModel = EventDetailsViewModel(eventsRepository, attendViewModel, analyticsEventTracker = mock())
+        eventDetailsViewModel = EventDetailsViewModel(eventsRepository, attendViewModel, analyticsEventTracker, delayViewModel, ObservableField(0f))
+        eventDetailsViewModel.init(eventId, null)
     }
 
     @Test
-    fun shouldLoadEventDetails() {
-        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
-        eventDetailsViewModel.init(eventId)
+    fun shouldLoadEventDetailsOnTransitionEnd() {
+        setUpWith(testEventDetails.toDto().toSingle())
+        eventDetailsViewModel.onTransitionEnd()
 
         assertEventDetails()
         assertThat(eventDetailsViewModel.loadingStatus.get(), equalTo(LoadingStatus.SUCCESS))
@@ -49,27 +58,28 @@ class EventDetailsViewModelTest : RxTestBase() {
 
     @Test
     fun shouldLoadEventDetailsOnlyOnce() {
-        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
-        eventDetailsViewModel.init(eventId)
+        setUpWith(testEventDetails.toDto().toSingle())
+        eventDetailsViewModel.onTransitionEnd()
 
-        eventDetailsViewModel.init(eventId)
+        eventDetailsViewModel.onTransitionEnd()
 
         verify(eventsRepository, times(1)).getEvent(eventId)
     }
 
     @Test
     fun shouldFailLoadEventDetails() {
-        whenever(eventsRepository.getEvent(eventId)).thenReturn(Single.error(Exception()))
-        eventDetailsViewModel.init(eventId)
+        setUpWith(Single.error(IOException()))
+        eventDetailsViewModel.onTransitionEnd()
 
         assertThat(eventDetailsViewModel.loadingStatus.get(), equalTo(LoadingStatus.ERROR))
     }
 
     @Test
     fun shouldRetryLoadEventDetails() {
-        whenever(eventsRepository.getEvent(eventId)).thenReturn(Single.error(Exception()))
-        eventDetailsViewModel.init(eventId)
-        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
+        setUpWith(Single.error(IOException()))
+        eventDetailsViewModel.onTransitionEnd()
+
+        setUpWith(testEventDetails.toDto().toSingle())
 
         eventDetailsViewModel.retryLoading()
 
@@ -79,27 +89,53 @@ class EventDetailsViewModelTest : RxTestBase() {
 
     @Test
     fun shouldRequestNavigationToPhotos() {
-        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
-        eventDetailsViewModel.init(eventId)
+        setUpWith(testEventDetails.toDto().toSingle())
+        eventDetailsViewModel.onTransitionEnd()
         val testPhotos = testEventDetails.photos.map { it.toDto() }
 
         val testObserver = eventDetailsViewModel.navigationSubject.test()
 
         eventDetailsViewModel.onPhotosClick()
 
-        testObserver.assertValue(NavigationRequest.Photos(testPhotos, eventId, ParentView.EVENT_DETAILS))
+        testObserver.assertValue(NavigationRequest.Photos(testPhotos))
+    }
+
+    private fun setUpWith(testEventDetailsSingle: Single<EventDetailsDto>) {
+        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetailsSingle)
+        whenever(delayViewModel.addLoadingDelay(testEventDetailsSingle)).thenReturn(testEventDetailsSingle)
     }
 
     @Test
     fun shouldRequestNavigationToEventLocation() {
-        whenever(eventsRepository.getEvent(eventId)).thenReturn(testEventDetails.toDto().toSingle())
-        eventDetailsViewModel.init(eventId)
+        setUpWith(testEventDetails.toDto().toSingle())
+        eventDetailsViewModel.onTransitionEnd()
 
         val testObserver = eventDetailsViewModel.navigationSubject.test()
 
         eventDetailsViewModel.onLocationClick()
 
         testObserver.assertValue(NavigationRequest.Map(testEventDetails.placeCoordinates.toDto(), testEventDetails.placeName))
+    }
+
+    @Test
+    fun shouldNotLoadFromCacheWhenTransitionEnds() {
+        setUpWith(testEventDetails.toDto().toSingle())
+        eventDetailsViewModel.onTransitionEnd()
+
+        eventDetailsViewModel.onTransitionEnd()
+
+        assertThat(eventDetailsViewModel.loadFromCache.get(), equalTo(false))
+    }
+
+    @Test
+    fun shouldNotifyWhenImageLoadingFinished() {
+        setUpWith(testEventDetails.toDto().toSingle())
+        eventDetailsViewModel.onTransitionEnd()
+        val testObserver = eventDetailsViewModel.coverImageLoadingFinishedSubject.test()
+
+        eventDetailsViewModel.onLoadingFinished()
+
+        testObserver.assertValueCount(1)
     }
 
     private fun assertEventDetails() {
