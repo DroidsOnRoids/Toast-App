@@ -60,4 +60,7 @@
     <string name="logged_in_successfully">Zalogowano pomyślnie</string>
     <string name="logged_out_successfully">Wylogowano pomyślnie</string>
     <string name="cannot_refresh_data">Nie udało się odświeżyć danych</string>
+    <string name="ok">OK</string>
+    <string name="new_config_arrived">Dotarła nowa kofiguracja</string>
+    <string name="restart_app">Aplikacja zostanie zrestartowana, aby zastosować zmiany</string>
 </resources>
