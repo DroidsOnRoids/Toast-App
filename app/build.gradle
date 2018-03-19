@@ -40,7 +40,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 26
         versionCode commitTimestamp
-        versionName "0.1.$commitsOnBranchCount"
+        versionName "1.0.$commitsOnBranchCount"
         testInstrumentationRunner "pl.droidsonroids.toast.RxAndroidJUnitRunner"
     }
 
