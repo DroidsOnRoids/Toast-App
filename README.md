@@ -37,6 +37,12 @@ This app allows you to keep up to date with the latest events info like speakers
 
 The app is using the [MVVM architecture](https://en.wikipedia.org/wiki/Model–view–viewmodel) with [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html) and [databinding](https://developer.android.com/topic/libraries/data-binding/index.html)
 
+#### Remote config
+
+The app is using remote config for API URL changes.
+There are two keys for each flavor. I.e. for toast flavor: `toastBaseUrl` and `toastImageUrl`.
+Value cache time is set to 1 day. Keep it in mind when you're changing config from Firebase console.
+
 #### Mocking server responses sample in UI test using MockWebServer path dispatcher -> [HERE](app/src/androidTest/SAMPLE.md)
 
 ## License

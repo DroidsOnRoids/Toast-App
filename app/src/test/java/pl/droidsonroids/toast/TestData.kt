@@ -22,11 +22,13 @@ import java.util.*
 
 val testDate: Date = SimpleDateFormat(Constants.Date.PATTERN).parse("1.12.2017")
 
+val testApiImage = ApiImage("http://image.url", "http://thumb.url")
+
 val testApiEvent = ApiEvent(
         id = 0,
         title = "titleFirst",
         date = testDate,
-        coverImages = listOf(ApiImage("bigImageFirst", "thumbImageFirst"))
+        coverImages = listOf(testApiImage)
 )
 val testPreviousEvents = listOf(testApiEvent)
 
@@ -36,13 +38,13 @@ val testSpeaker = ApiSpeaker(
         id = 0,
         name = "name",
         job = "job",
-        avatar = ApiImage("bigImageFirst", "thumbImageFirst")
+        avatar = testApiImage
 )
 val anotherTestSpeaker = ApiSpeaker(
         id = 1,
         name = "name",
         job = "job",
-        avatar = ApiImage("bigImageFirst", "thumbImageFirst")
+        avatar = testApiImage
 )
 
 val testApiEventTalk = ApiEventTalk(
@@ -60,8 +62,8 @@ val testEventDetails = ApiEventDetails(
         placeName = "placeName",
         placeStreet = "placeStreet",
         placeCoordinates = ApiCoordinates(51.1098206, 17.0251941),
-        coverImages = listOf(ApiImage("bigCoverImageFirst", "thumbCoverImageFirst")),
-        photos = listOf(ApiImage("bigImageFirst", "thumbImageFirst")),
+        coverImages = listOf(testApiImage),
+        photos = listOf(testApiImage),
         eventTalks = listOf(testApiEventTalk)
 )
 
@@ -76,17 +78,16 @@ val testSpeakersPage = Page(items = testSpeakers.map { it.toDto() }, pageNumber 
 val anotherTestSpeakersPage = Page(items = anotherTestSpeakers.map { it.toDto() }, pageNumber = 1, allPagesCount = 1)
 
 
-
 val testImageDto = ImageDto(
-        "originalSizeUrl",
-        "thumbSizeUrl"
+        "http://image.url",
+        "http://thumb.url"
 )
 
 val testEventDto = EventDto(
         id = 0,
         title = "titleFirst",
         date = testDate,
-        coverImages = listOf(ImageDto("bigImageFirst", "thumbImageFirst")))
+        coverImages = listOf(testImageDto))
 
 val testSpeakerTalkDto = SpeakerTalkDto(
         id = 1,
@@ -107,7 +108,7 @@ val testSpeakerDetailsDto = SpeakerDetailsDto(
         name = "name",
         job = "job",
         bio = "bio",
-        avatar = ImageDto("bigAvatar", "thumbAvatar"),
+        avatar = testImageDto,
         github = "github",
         email = "email",
         website = "website",
@@ -120,7 +121,7 @@ val testApiSpeakerDetails = ApiSpeakerDetails(
         name = "name",
         job = "job",
         bio = "bio",
-        avatar = ApiImage("bigAvatar", "thumbAvatar"),
+        avatar = testApiImage,
         github = "github",
         email = "email",
         website = "website",
@@ -150,7 +151,7 @@ val upcomingEventViewModelWithoutPhotos = UpcomingEventViewModel(
         placeName = testEventDetails.placeName,
         placeStreet = testEventDetails.placeStreet,
         coverImage = testImageDto,
-        photos = listOf(),
+        photos = emptyList(),
         coordinates = testEventDetails.placeCoordinates.toDto(),
         locationClickCallback = { _, _ -> },
         seePhotosCallback = { _, _ -> },

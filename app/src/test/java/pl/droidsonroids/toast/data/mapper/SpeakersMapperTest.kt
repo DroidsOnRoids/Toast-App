@@ -6,11 +6,11 @@ import com.nhaarman.mockito_kotlin.verify
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Test
-import pl.droidsonroids.toast.data.api.ApiImage
 import pl.droidsonroids.toast.data.api.speaker.ApiSpeaker
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerDto
 import pl.droidsonroids.toast.data.dto.speaker.SpeakerTalkDto
+import pl.droidsonroids.toast.testApiImage
 import pl.droidsonroids.toast.testApiSpeakerDetails
 import pl.droidsonroids.toast.testApiSpeakerTalk
 import pl.droidsonroids.toast.testSpeakerTalkDto
@@ -21,7 +21,7 @@ class SpeakersMapperTest {
         val id = 1L
         val name = "name"
         val job = "job"
-        val avatar = ApiImage("bigImageUrl", "thumbImageUrl")
+        val avatar = testApiImage
         val apiSpeaker = ApiSpeaker(id, name, job, avatar)
         val speakerDto = apiSpeaker.toDto()
 

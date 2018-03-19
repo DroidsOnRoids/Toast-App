@@ -21,6 +21,7 @@ import pl.droidsonroids.toast.repositories.event.EventsRepositoryImpl
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepositoryImpl
 import pl.droidsonroids.toast.services.*
+import pl.droidsonroids.toast.utils.baseUrl
 import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingDelayViewModel
 import pl.droidsonroids.toast.viewmodels.facebook.AttendViewModel
@@ -47,15 +48,12 @@ class AppModule {
     fun provideSharedPreference(context: Context): SharedPreferences =
             PreferenceManager.getDefaultSharedPreferences(context)
 
-    @Singleton
     @Provides
     fun provideEventsRepository(eventService: EventService): EventsRepository = EventsRepositoryImpl(eventService)
 
-    @Singleton
     @Provides
     fun provideSpeakersRepository(speakerService: SpeakerService): SpeakersRepository = SpeakersRepositoryImpl(speakerService)
 
-    @Singleton
     @Provides
     fun provideContactRepository(contactService: ContactService, localContactStorage: LocalContactStorage): ContactRepository = ContactRepositoryImpl(contactService, localContactStorage)
 
@@ -78,19 +76,16 @@ class AppModule {
     @Provides
     fun provideRotation() = ObservableField(0f)
 
-    @Singleton
     @Provides
     fun provideEventService(httpClient: OkHttpClient): EventService =
             getRetrofitBuilder(httpClient)
                     .create(EventService::class.java)
 
-    @Singleton
     @Provides
     fun provideSpeakersService(httpClient: OkHttpClient): SpeakerService =
             getRetrofitBuilder(httpClient)
                     .create(SpeakerService::class.java)
 
-    @Singleton
     @Provides
     fun provideContactService(httpClient: OkHttpClient): ContactService =
             getRetrofitBuilder(httpClient)
@@ -106,7 +101,7 @@ class AppModule {
 
     private fun getRetrofitBuilder(httpClient: OkHttpClient) =
             Retrofit.Builder()
-                    .baseUrl(BuildConfig.BASE_API_URL)
+                    .baseUrl(baseUrl)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                     .client(httpClient)

@@ -1,8 +1,8 @@
 package pl.droidsonroids.toast.data.mapper
 
-import pl.droidsonroids.toast.BuildConfig
 import pl.droidsonroids.toast.data.api.ApiImage
 import pl.droidsonroids.toast.data.dto.ImageDto
+import pl.droidsonroids.toast.utils.baseImageUrl
 import pl.droidsonroids.toast.viewmodels.photos.FullscreenPhotoViewModel
 import pl.droidsonroids.toast.viewmodels.photos.PhotoItemViewModel
 
@@ -33,5 +33,5 @@ fun ApiImage.toDto(): ImageDto {
 private fun String.addBaseUrlIfNeeded(): String {
     return if (startsWith("http", true)) {
         this
-    } else BuildConfig.BASE_IMAGES_URL + this
+    } else baseImageUrl + this
 }
