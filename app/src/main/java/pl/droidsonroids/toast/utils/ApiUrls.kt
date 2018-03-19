@@ -7,11 +7,9 @@ const val BASE_URL_KEY = BuildConfig.FLAVOR + "BaseUrl"
 const val IMAGE_URL_KEY = BuildConfig.FLAVOR + "ImageUrl"
 
 val baseUrl: String
-    get() = FirebaseRemoteConfig.getInstance().run {
-        getString(BASE_URL_KEY)
-    }
+    get() = FirebaseRemoteConfig.getInstance()
+            .getString(BASE_URL_KEY)
 
 val baseImageUrl: String
-    get() = FirebaseRemoteConfig.getInstance().run {
-        getString(IMAGE_URL_KEY)
-    }
+    get() = FirebaseRemoteConfig.getInstance()
+            .getString(IMAGE_URL_KEY)
