@@ -82,7 +82,7 @@ class Navigator @Inject constructor(private val loginManager: LoginManager, priv
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             context.startActivity(intent)
         } catch (exception: ActivityNotFoundException) {
-            Toast.makeText(context, R.string.browser_not_found, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.error_internet_browser_not_found, Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Toast</string>
+    <string name="app_name" translatable="false">Toast</string>
     <string name="action_settings">Settings</string>
     <string name="about_app">About app</string>
     <string name="about">About %s</string>
@@ -19,7 +19,7 @@
     <string name="previous_event_arrow_desc">Go to previous event details</string>
     <string name="no_events_loaded">No events loaded</string>
     <string name="retry">Retry</string>
-    <string name="android_developers_meet_up">Android Developers Meet-up</string>
+    <string name="android_developers_meet_up" translatable="false">Android Developers Meetup</string>
     <string name="oops_no_internet_connection">Oops! No internet connection.</string>
     <string name="please_check_your_internet_settings">Please check your internet settings.</string>
     <string name="sort">Sort</string>
@@ -52,14 +52,12 @@
     <string name="photos_title">Photos</string>
     <string name="meetup_photo_desc">Meetup photo</string>
     <string name="no_map_app_found">No map app found</string>
-    <string name="browser_not_found">Internet browser not found</string>
     <string name="email_is_copied_to_clipboard">Email is copied to clipboard</string>
     <string name="facebook_app_id" translatable="false">146423969371902</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb146423969371902</string>
     <string name="log_in">Log in</string>
     <string name="log_out">Log out</string>
     <string name="participated_in">Participated in</string>
-    <string name="slideshare">Slideshare</string>
     <string name="attending">Attending</string>
     <string name="interested_in">Interested in</string>
     <string name="attended">Attended</string>

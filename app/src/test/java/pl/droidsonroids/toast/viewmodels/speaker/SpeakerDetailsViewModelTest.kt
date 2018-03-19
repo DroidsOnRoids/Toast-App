@@ -174,7 +174,7 @@ class SpeakerDetailsViewModelTest : RxTestBase() {
         assertThat(speakerDetailsViewModel.name.get(), equalTo(testSpeakerDetailsDto.name))
         assertThat(speakerDetailsViewModel.job.get(), equalTo(testSpeakerDetailsDto.job))
         assertThat(speakerDetailsViewModel.bio.get(), equalTo(testSpeakerDetailsDto.bio))
-        assertThat(speakerDetailsViewModel.avatar.get(), equalTo(testSpeakerDetailsDto.avatar))
+        assertThat(speakerDetailsViewModel.avatar.get(), equalTo(testImageDto))
         assertThat(speakerDetailsViewModel.github.get(), equalTo(testSpeakerDetailsDto.github))
         assertThat(speakerDetailsViewModel.website.get(), equalTo(testSpeakerDetailsDto.website))
         assertThat(speakerDetailsViewModel.twitter.get(), equalTo(testSpeakerDetailsDto.twitter))
