@@ -62,6 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_large"
+            android:padding="@dimen/margin_large"
             android:background="@drawable/retry_connection_button_shape"
             android:foreground="@drawable/retry_connection_button_ripple"
             android:onClick="@{() -> loadingViewModel.retryLoading()}"
