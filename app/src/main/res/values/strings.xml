@@ -10,7 +10,7 @@
     <string name="toast_facebook_fanpage">Toast\'s Facebook fanpage</string>
     <string name="by_toast_team">by TOAST Team</string>
     <string name="for_more_information_visit_our">For more information visit our</string>
-    <string name="error_internet_browser_not_found">Internet browser not found.</string>
+    <string name="error_internet_browser_not_found">Internet browser not found</string>
     <string name="toast_fanpage_url" translatable="false">https://www.facebook.com/toastwroclaw/</string>
     <string name="application_version">Application Version: %s</string>
     <string name="attend">Attend</string>
@@ -20,8 +20,8 @@
     <string name="no_events_loaded">No events loaded</string>
     <string name="retry">Retry</string>
     <string name="android_developers_meet_up" translatable="false">Android Developers Meetup</string>
-    <string name="oops_no_internet_connection">Oops! No internet connection.</string>
-    <string name="please_check_your_internet_settings">Please check your internet settings.</string>
+    <string name="oops_no_internet_connection">Oops! No internet connection</string>
+    <string name="please_check_your_internet_settings">Please check your internet settings</string>
     <string name="sort">Sort</string>
     <string name="alphabetical">Alphabetical</string>
     <string name="date">Date</string>

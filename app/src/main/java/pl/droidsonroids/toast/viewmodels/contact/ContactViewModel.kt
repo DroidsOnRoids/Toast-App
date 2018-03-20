@@ -126,7 +126,7 @@ class ContactViewModel @Inject constructor(
         compositeDisposable += contactRepository.sendMessage(message)
                 .let(::addLoadingDelay)
                 .subscribeBy(
-                        onComplete = (::onSendSuccessfully),
+                        onComplete = ::onSendSuccessfully,
                         onError = { loadingStatus.set(LoadingStatus.ERROR) }
                 )
         analyticsEventTracker.logContactSendClickEvent(message.type.name)
