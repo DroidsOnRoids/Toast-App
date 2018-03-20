@@ -17,9 +17,9 @@ class LoadingDelayViewModel @Inject constructor(private val clock: Clock) : Dela
         lastLoadingStartTimeMillis = clock.elapsedRealtimeMillis()
     }
 
-    override fun addLoadingDelay(completable: Completable) = completable.andThen {
-        Completable.timer(Constants.MIN_LOADING_DELAY_MILLIS + lastLoadingStartTimeMillis - clock.elapsedRealtimeMillis(), TimeUnit.MILLISECONDS)
-    }
+    override fun addLoadingDelay(completable: Completable) = completable.andThen(
+            Completable.timer(Constants.MIN_LOADING_DELAY_MILLIS + lastLoadingStartTimeMillis - clock.elapsedRealtimeMillis(), TimeUnit.MILLISECONDS)
+    )
 
 
     override fun <T> addLoadingDelay(single: Single<T>) = single.flatMap {

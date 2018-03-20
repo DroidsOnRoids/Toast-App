@@ -60,7 +60,7 @@ class ContactViewModelTest : RxTestBase() {
 
         contactViewModel.onSendClick()
 
-        testObserver.assertValue { it is NavigationRequest.MessageSent }
+        testObserver.assertValue { it == NavigationRequest.MessageSent }
         assertThat(contactViewModel.loadingStatus.get(), equalTo(LoadingStatus.SUCCESS))
     }
 
