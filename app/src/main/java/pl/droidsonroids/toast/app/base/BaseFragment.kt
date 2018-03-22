@@ -11,6 +11,10 @@ abstract class BaseFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
+    protected val baseActivity: BaseActivity
+        get() = activity as BaseActivity?
+                ?: throw IllegalStateException("Tried to access forced context when not available")
+
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)

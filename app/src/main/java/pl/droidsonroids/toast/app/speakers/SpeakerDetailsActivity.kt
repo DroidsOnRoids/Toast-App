@@ -20,6 +20,7 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.events.HorizontalSnapHelper
+import pl.droidsonroids.toast.app.utils.SnackbarQueue
 import pl.droidsonroids.toast.app.utils.binding.setVisible
 import pl.droidsonroids.toast.app.utils.extensions.addInsetAppBehaviorToLoadingLayout
 import pl.droidsonroids.toast.app.utils.extensions.doOnEnd
@@ -47,22 +48,30 @@ class SpeakerDetailsActivity : BaseActivity() {
     @Inject
     lateinit var navigator: Navigator
 
+    @Inject
+    lateinit var snackbarQueue: SnackbarQueue
+
     private val speakerDetailsViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory)
                 .get(speakerId.toString(), SpeakerDetailsViewModel::class.java)
     }
-
     private val speakerId: Long by lazy {
         intent.getLongExtra(SPEAKER_ID, Constants.NO_ID)
     }
+
     private val avatar by lazy {
         intent.getParcelableExtra<ImageDto?>(AVATAR_IMAGE)
     }
 
     private val compositeDisposable = CompositeDisposable()
-
     private var isTransitionPostponed = false
+
     private var isAvatarAnimationShowing = false
+
+    override fun showSnackbar(request: NavigationRequest.SnackBar): Boolean {
+        snackbarQueue.postSnackbarRequest(request)
+        return true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -186,6 +195,16 @@ class SpeakerDetailsActivity : BaseActivity() {
             android.R.id.home -> consume { onBackPressed() }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        snackbarQueue.attach(speakerDetailsContainer)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        snackbarQueue.detach()
     }
 
     override fun onBackPressed() {

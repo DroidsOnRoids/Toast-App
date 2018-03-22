@@ -2,7 +2,6 @@ package pl.droidsonroids.toast.app
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.support.v4.app.ActivityOptionsCompat
@@ -12,6 +11,7 @@ import android.view.View
 import android.widget.Toast
 import com.facebook.login.LoginManager
 import pl.droidsonroids.toast.R
+import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.events.EventTalkDetailsActivity
 import pl.droidsonroids.toast.app.photos.PhotosActivity
@@ -31,15 +31,16 @@ import javax.inject.Singleton
 @Singleton
 class Navigator @Inject constructor(private val loginManager: LoginManager, private val analyticsEventTracker: AnalyticsEventTracker) {
 
-    fun dispatch(activity: Activity, navigationRequest: NavigationRequest) {
+    fun dispatch(baseActivity: BaseActivity, navigationRequest: NavigationRequest) {
         when (navigationRequest) {
-            is NavigationRequest.SpeakerDetails -> showSpeakerDetails(activity, navigationRequest)
-            is NavigationRequest.EventDetails -> showEventDetails(activity, navigationRequest)
-            is NavigationRequest.Photos -> showPhotos(activity, navigationRequest)
-            is NavigationRequest.Map -> showMap(activity, navigationRequest)
-            is NavigationRequest.Website -> openWebsite(activity, navigationRequest.url)
-            is NavigationRequest.Email -> openEmailClient(activity, navigationRequest.email)
-            NavigationRequest.LogIn -> logIn(activity)
+            is NavigationRequest.SpeakerDetails -> showSpeakerDetails(baseActivity, navigationRequest)
+            is NavigationRequest.EventDetails -> showEventDetails(baseActivity, navigationRequest)
+            is NavigationRequest.Photos -> showPhotos(baseActivity, navigationRequest)
+            is NavigationRequest.Map -> showMap(baseActivity, navigationRequest)
+            is NavigationRequest.Website -> openWebsite(baseActivity, navigationRequest.url)
+            is NavigationRequest.Email -> openEmailClient(baseActivity, navigationRequest.email)
+            is NavigationRequest.SnackBar -> baseActivity.showSnackbar(navigationRequest)
+            NavigationRequest.LogIn -> logIn(baseActivity)
             NavigationRequest.LogOut -> logOut()
         }
     }
@@ -53,36 +54,38 @@ class Navigator @Inject constructor(private val loginManager: LoginManager, priv
         //        loginManager.logOut()
     }
 
-    private fun showMap(context: Context, navigationRequest: NavigationRequest.Map) {
+    private fun showMap(baseActivity: BaseActivity, navigationRequest: NavigationRequest.Map) {
         with(navigationRequest) {
             val locationUri = Uri.parse("geo:0,0?q=${coordinatesDto.latitude},${coordinatesDto.longitude}($placeName)")
             val intent = Intent(Intent.ACTION_VIEW).setData(locationUri)
             try {
-                context.startActivity(intent)
+                baseActivity.startActivity(intent)
             } catch (exception: ActivityNotFoundException) {
                 val query = URLEncoder.encode("${coordinatesDto.latitude},${coordinatesDto.longitude}", Charsets.UTF_8.name())
-                openWebsite(context, "https://www.google.com/maps/search/?api=1&query=$query")
+                openWebsite(baseActivity, "https://www.google.com/maps/search/?api=1&query=$query")
             }
         }
     }
 
-    private fun openEmailClient(context: Context, email: String) {
+    private fun openEmailClient(baseActivity: BaseActivity, email: String) {
         try {
             val intent = Intent(Intent.ACTION_SENDTO)
             intent.data = Uri.parse("mailto:$email")
-            context.startActivity(intent)
+            baseActivity.startActivity(intent)
         } catch (exception: ActivityNotFoundException) {
-            context.copyTextToClipboard(Constants.ClipDataLabel.EMAIL, email)
-            Toast.makeText(context, R.string.email_is_copied_to_clipboard, Toast.LENGTH_SHORT).show()
+            baseActivity.copyTextToClipboard(Constants.ClipDataLabel.EMAIL, email)
+            baseActivity.showSnackbar(NavigationRequest.SnackBar(R.string.email_is_copied_to_clipboard)).takeIf { it }
+                    ?: Toast.makeText(baseActivity, R.string.email_is_copied_to_clipboard, Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun openWebsite(context: Context, url: String) {
+    private fun openWebsite(baseActivity: BaseActivity, url: String) {
         try {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            context.startActivity(intent)
+            baseActivity.startActivity(intent)
         } catch (exception: ActivityNotFoundException) {
-            Toast.makeText(context, R.string.error_internet_browser_not_found, Toast.LENGTH_SHORT).show()
+            baseActivity.showSnackbar(NavigationRequest.SnackBar(R.string.error_internet_browser_not_found)).takeIf { it }
+                    ?: Toast.makeText(baseActivity, R.string.error_internet_browser_not_found, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -100,29 +103,29 @@ class Navigator @Inject constructor(private val loginManager: LoginManager, priv
         }
     }
 
-    fun showSearchSpeakersWithRevealAnimation(activity: Activity, centerCoordinates: kotlin.Pair<Int, Int>) {
+    fun showSearchSpeakersWithRevealAnimation(baseActivity: BaseActivity, centerCoordinates: kotlin.Pair<Int, Int>) {
         val intent = SpeakersSearchActivity.createIntent(
-                activity,
+                baseActivity,
                 revealCenterX = centerCoordinates.first,
                 revealCenterY = centerCoordinates.second)
 
-        activity.startActivity(intent)
-        activity.disableActivityTransitionAnimations()
+        baseActivity.startActivity(intent)
+        baseActivity.disableActivityTransitionAnimations()
         analyticsEventTracker.logSpeakersShowSearchEvent()
     }
 
-    private fun showEventDetails(context: Context, navigationRequest: NavigationRequest.EventDetails) {
-        val intent = EventDetailsActivity.createIntent(context, navigationRequest)
-        context.startActivity(intent)
+    private fun showEventDetails(baseActivity: BaseActivity, navigationRequest: NavigationRequest.EventDetails) {
+        val intent = EventDetailsActivity.createIntent(baseActivity, navigationRequest)
+        baseActivity.startActivity(intent)
     }
 
-    private fun showSpeakerDetails(context: Context, navigationRequest: NavigationRequest.SpeakerDetails) {
-        val intent = SpeakerDetailsActivity.createIntent(context, navigationRequest)
-        context.startActivity(intent)
+    private fun showSpeakerDetails(baseActivity: BaseActivity, navigationRequest: NavigationRequest.SpeakerDetails) {
+        val intent = SpeakerDetailsActivity.createIntent(baseActivity, navigationRequest)
+        baseActivity.startActivity(intent)
     }
 
-    private fun showPhotos(context: Context, navigationRequest: NavigationRequest.Photos) {
-        val intent = PhotosActivity.createIntent(context, navigationRequest)
-        context.startActivity(intent)
+    private fun showPhotos(baseActivity: BaseActivity, navigationRequest: NavigationRequest.Photos) {
+        val intent = PhotosActivity.createIntent(baseActivity, navigationRequest)
+        baseActivity.startActivity(intent)
     }
 }

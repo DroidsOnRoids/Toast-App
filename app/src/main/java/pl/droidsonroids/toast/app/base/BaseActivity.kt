@@ -8,6 +8,7 @@ import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import pl.droidsonroids.toast.utils.NavigationRequest
 import javax.inject.Inject
 
 abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector {
@@ -23,4 +24,6 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
     }
+
+    open fun showSnackbar(request: NavigationRequest.SnackBar) = false //no-op
 }
