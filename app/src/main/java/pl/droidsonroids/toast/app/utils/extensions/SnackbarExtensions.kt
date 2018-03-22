@@ -20,8 +20,8 @@ fun View.showSnackbar(request: NavigationRequest.SnackBar, length: Int = Snackba
         Snackbar.make(this, request.stringRes, length)
                 .apply {
                     view.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                    apply()
                 }
-                .apply { apply() }
                 .addCallback(onDismiss = onDismiss)
                 .show()
 

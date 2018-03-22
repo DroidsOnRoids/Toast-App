@@ -31,9 +31,8 @@ class SnackbarQueue @Inject constructor() {
 
     private fun showNextSnackbar() {
         val snackbarRequest = queue.peek()
-        val view = view
-        if (snackbarRequest != null && view != null) {
-            view.showSnackbar(snackbarRequest, apply = options, onDismiss = {
+        if (snackbarRequest != null) {
+            view?.showSnackbar(snackbarRequest, apply = options, onDismiss = {
                 queue.poll()
                 showNextSnackbar()
             })
