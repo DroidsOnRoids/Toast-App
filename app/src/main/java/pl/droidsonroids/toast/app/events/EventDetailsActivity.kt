@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.activity_event_details.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
+import pl.droidsonroids.toast.app.utils.SnackbarQueue
 import pl.droidsonroids.toast.app.utils.extensions.addInsetAppBehaviorToLoadingLayout
 import pl.droidsonroids.toast.app.utils.extensions.doOnEnd
 import pl.droidsonroids.toast.data.dto.ImageDto
@@ -67,11 +68,19 @@ class EventDetailsActivity : BaseActivity() {
     @Inject
     lateinit var navigator: Navigator
 
+    @Inject
+    lateinit var snackbarQueue: SnackbarQueue
+
     private var isTransitionPostponed = false
 
     private val eventDetailsViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory)
                 .get(eventId.toString(), EventDetailsViewModel::class.java)
+    }
+
+    override fun showSnackbar(request: NavigationRequest.SnackBar): Boolean {
+        snackbarQueue.postSnackbarRequest(request)
+        return true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -204,6 +213,17 @@ class EventDetailsActivity : BaseActivity() {
         super.onStart()
         eventDetailsViewModel.invalidateAttendState()
         eventDetailsViewModel.invalidateLoading()
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        snackbarQueue.attach(eventDetailsContainer)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        snackbarQueue.detach()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -22,11 +22,9 @@ import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseFragment
 import pl.droidsonroids.toast.app.utils.callbacks.LazyLoadingScrollListener
-import pl.droidsonroids.toast.app.utils.extensions.showSnackbar
 import pl.droidsonroids.toast.databinding.FragmentEventsBinding
 import pl.droidsonroids.toast.utils.NavigationRequest
 import pl.droidsonroids.toast.viewmodels.event.EventsViewModel
-import java.util.*
 import javax.inject.Inject
 
 private const val TOP_BAR_TRANSLATION_FACTOR = 2f
@@ -41,8 +39,6 @@ class EventsFragment : BaseFragment() {
     private val compositeDisposable = CompositeDisposable()
 
     private var navigationDisposable: Disposable = Disposables.disposed()
-
-    private val snackbarQueue = LinkedList<NavigationRequest.SnackBar>()
 
     private val topBarHeight by lazy {
         resources.getDimension(R.dimen.events_top_bar_height)
@@ -65,16 +61,8 @@ class EventsFragment : BaseFragment() {
 
     private fun handleNavigationRequest(request: NavigationRequest) {
         when (request) {
-            is NavigationRequest.SnackBar -> showSnackbar(request)
             is NavigationRequest.EventDetails -> showEventDetails(request)
-            else -> activity?.let { navigator.dispatch(it, request) }
-        }
-    }
-
-    private fun showSnackbar(request: NavigationRequest.SnackBar) {
-        snackbarQueue.add(request)
-        if (snackbarQueue.size == 1) {
-            showNextSnackbar()
+            else -> navigator.dispatch(baseActivity, request)
         }
     }
 
@@ -97,16 +85,6 @@ class EventsFragment : BaseFragment() {
                     val coverImage = findViewById<View>(R.id.eventCoverImage)
                     arrayOf(Pair(coverImage, coverImage.transitionName))
                 } ?: emptyArray()
-    }
-
-    private fun showNextSnackbar() {
-        val snackbarRequest = snackbarQueue.peek()
-        if (isVisible && snackbarRequest != null) {
-            eventsScrollContainer.showSnackbar(snackbarRequest, onDismiss = {
-                snackbarQueue.poll()
-                showNextSnackbar()
-            })
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -168,7 +146,6 @@ class EventsFragment : BaseFragment() {
     }
 
     override fun onDestroyView() {
-        snackbarQueue.clear()
         compositeDisposable.clear()
         super.onDestroyView()
     }
@@ -179,4 +156,3 @@ class EventsFragment : BaseFragment() {
         super.onDetach()
     }
 }
-
