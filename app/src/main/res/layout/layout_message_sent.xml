@@ -9,6 +9,7 @@
     tools:ignore="UseCompoundDrawables">
 
     <ImageView
+        android:id="@+id/messageSentIcon"
         android:contentDescription="@string/message_sent_desc"
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -17,6 +18,7 @@
         android:src="@drawable/ic_paper_plane_accent"/>
 
     <TextView
+        android:id="@+id/messageSent"
         style="@style/EventHeaderStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -9,4 +9,9 @@ class ContactRobot : BaseRobot() {
             performClickOnElementWithId(R.id.actionContact)
         }
     }
+
+    fun checkIfSendButtonIsNotClickable() {
+        checkIfElementWithIdIsVisible(R.id.disabledSendButton)
+        checkIfElementWithIdIsNotVisible(R.id.enabledSendButton)
+    }
 }

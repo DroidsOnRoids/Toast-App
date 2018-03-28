@@ -1,4 +1,4 @@
-package pl.droidsonroids.toast
+/**/package pl.droidsonroids.toast
 
 import com.squareup.rx2.idler.Rx2Idler
 import io.reactivex.plugins.RxJavaPlugins
@@ -12,6 +12,8 @@ class RxAndroidJUnitRunner : AndroidJUnitRunner() {
         RxJavaPlugins.setInitComputationSchedulerHandler(
                 Rx2Idler.create("RxJava 2.x Computation Scheduler"))
         RxJavaPlugins.setInitNewThreadSchedulerHandler(
+                Rx2Idler.create("RxJava 2.x New Thread Scheduler"))
+        RxJavaPlugins.setInitSingleSchedulerHandler(
                 Rx2Idler.create("RxJava 2.x New Thread Scheduler"))
         super.onStart()
     }

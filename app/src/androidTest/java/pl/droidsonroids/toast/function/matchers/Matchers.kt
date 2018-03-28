@@ -59,3 +59,16 @@ fun isHintOnTextInputLayoutCorrect(hint: String): Matcher<View> {
         }
     }
 }
+
+fun isErrorOnTextInputLayoutCorrect(error: String?): Matcher<View> {
+    return object : BoundedMatcher<View, TextInputLayout>(TextInputLayout::class.java) {
+
+        override fun describeTo(description: Description) {
+            description.appendText("with TextInputLayout error: " + error)
+        }
+
+        override fun matchesSafely(textInputLayout: TextInputLayout): Boolean {
+            return textInputLayout.error == error && textInputLayout.isErrorEnabled
+        }
+    }
+}

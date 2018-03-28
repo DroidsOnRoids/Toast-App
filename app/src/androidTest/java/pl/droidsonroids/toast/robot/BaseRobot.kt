@@ -3,7 +3,7 @@ package pl.droidsonroids.toast.robot
 import android.support.test.espresso.Espresso.onData
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.action.ViewActions
-import android.support.test.espresso.action.ViewActions.click
+import android.support.test.espresso.action.ViewActions.*
 import android.support.test.espresso.assertion.ViewAssertions.doesNotExist
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.contrib.RecyclerViewActions
@@ -11,6 +11,7 @@ import android.support.test.espresso.matcher.RootMatchers.isDialog
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.v7.widget.RecyclerView
 import org.hamcrest.Matchers.*
+import pl.droidsonroids.toast.function.matchers.isErrorOnTextInputLayoutCorrect
 import pl.droidsonroids.toast.function.matchers.isHintOnEditTextCorrect
 import pl.droidsonroids.toast.function.matchers.isHintOnTextInputLayoutCorrect
 
@@ -42,6 +43,18 @@ abstract class BaseRobot {
         return this
     }
 
+    fun checkIfElementWithIdIsVisible(id: Int): BaseRobot {
+        onView(withId(id))
+                .check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+        return this
+    }
+
+    fun checkIfElementWithIdIsNotVisible(id: Int): BaseRobot {
+        onView(withId(id))
+                .check(matches(not(withEffectiveVisibility(Visibility.VISIBLE))))
+        return this
+    }
+
     fun checkIfElementWithTextIsDisplayed(text: String): BaseRobot {
         onView(withText(text))
                 .check(matches(isDisplayed()))
@@ -67,10 +80,15 @@ abstract class BaseRobot {
         return this
     }
 
-
     fun checkIfTextIsCorrect(text: String, id: Int): BaseRobot {
         onView(withId(id))
                 .check(matches(withText(text)))
+        return this
+    }
+
+    fun checkIfErrorTextIsCorrect(error: String?, id: Int): BaseRobot {
+        onView(withId(id))
+                .check(matches(isErrorOnTextInputLayoutCorrect(error)))
         return this
     }
 
@@ -131,6 +149,25 @@ abstract class BaseRobot {
     fun performTyping(text: String, id: Int): BaseRobot {
         onView(withId(id))
                 .perform(ViewActions.typeText(text))
+        return this
+    }
+
+    fun scrollToAndPerformTyping(text: String, id: Int): BaseRobot {
+        onView(withId(id))
+                .perform(scrollTo(), ViewActions.typeText(text))
+        return this
+    }
+
+    fun performClearText(id: Int): BaseRobot {
+        onView(withId(id))
+                .perform(clearText())
+        return this
+    }
+
+
+    fun scrollTo(id: Int): BaseRobot {
+        onView(withId(id))
+                .perform(scrollTo())
         return this
     }
 
