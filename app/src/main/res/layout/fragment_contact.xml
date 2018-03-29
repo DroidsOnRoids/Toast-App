@@ -103,6 +103,7 @@
                     app:error="@{contactViewModel.messageInputError}"
                     app:errorEnabled="true"
                     app:hintEnabled="false"
+                    android:scrollbars="vertical"
                     android:labelFor="@+id/contactMessageEditText"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -117,7 +118,8 @@
                         android:paddingEnd="@dimen/margin_medium"
                         android:paddingStart="@dimen/margin_medium"
                         android:paddingTop="18dp"
-                        android:text="@={contactViewModel.message}"/>
+                        android:text="@={contactViewModel.message}"
+                        android:inputType="textMultiLine"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <TextView
