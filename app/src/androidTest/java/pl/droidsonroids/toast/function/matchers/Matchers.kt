@@ -25,7 +25,7 @@ fun isBottomViewElementWithCorrectTitle(title: String): Matcher<View> {
     return object : BoundedMatcher<View, BottomNavigationItemView>(BottomNavigationItemView::class.java) {
 
         override fun describeTo(description: Description) {
-            description.appendText("with BottomNavigationItem title: " + title)
+            description.appendText("with BottomNavigationItem title: $title")
         }
 
         override fun matchesSafely(item: BottomNavigationItemView): Boolean {
@@ -38,7 +38,7 @@ fun isHintOnEditTextCorrect(hint: String): Matcher<View> {
     return object : BoundedMatcher<View, EditText>(EditText::class.java) {
 
         override fun describeTo(description: Description) {
-            description.appendText("with EditText hint: " + hint)
+            description.appendText("with EditText hint: $hint")
         }
 
         override fun matchesSafely(editText: EditText): Boolean {
@@ -51,7 +51,7 @@ fun isHintOnTextInputLayoutCorrect(hint: String): Matcher<View> {
     return object : BoundedMatcher<View, TextInputLayout>(TextInputLayout::class.java) {
 
         override fun describeTo(description: Description) {
-            description.appendText("with TextInputLayout hint: " + hint)
+            description.appendText("with TextInputLayout hint: $hint")
         }
 
         override fun matchesSafely(textInputLayout: TextInputLayout): Boolean {
@@ -64,7 +64,7 @@ fun isErrorOnTextInputLayoutCorrect(error: String?): Matcher<View> {
     return object : BoundedMatcher<View, TextInputLayout>(TextInputLayout::class.java) {
 
         override fun describeTo(description: Description) {
-            description.appendText("with TextInputLayout error: " + error)
+            description.appendText("with TextInputLayout error: $error")
         }
 
         override fun matchesSafely(textInputLayout: TextInputLayout): Boolean {

@@ -152,7 +152,7 @@ class ContactScreenTest {
     fun isSendButtonDisabledAgainWhenMessageIsTooLong() {
         val message = "abcabcabcabcabcabcabcabcabcabcabcabcabcaabcabcabcaabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc"
         val name = "Julia"
-        val email = "julia@julia.co"
+        val email = "julia@test.co"
         with(ContactRobot()) {
             goToContactScreen()
             performClickOnElementWithId(R.id.topicSpinner)
@@ -167,7 +167,7 @@ class ContactScreenTest {
     @Test
     fun isSendButtonInProperStateAndMessageSent() {
         val name = "Jack Sparrow"
-        val email = "jack.sparrow@gmail.com"
+        val email = "jack.sparrow@mail.test"
         val message = "abcabcabcabcabcabcabcabcabcabcabcabcabcabc"
         with(ContactRobot()) {
             goToContactScreen()
