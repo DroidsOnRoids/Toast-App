@@ -9,11 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_info_dialog.*
 import pl.droidsonroids.toast.BuildConfig
 import pl.droidsonroids.toast.R
-import pl.droidsonroids.toast.app.utils.extensions.showSnackbar
+import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.utils.NavigationRequest
 
 class InfoDialogFragment : DialogFragment() {
@@ -60,12 +59,12 @@ class InfoDialogFragment : DialogFragment() {
             intent.data = Uri.parse(getString(R.string.toast_fanpage_url))
             startActivity(intent)
         } catch (exception: ActivityNotFoundException) {
-            showBrowserNotFoundErrorToast()
+            showBrowserNotFoundErrorSnackbar()
         }
     }
 
-    private fun showBrowserNotFoundErrorToast() {
-        (activity as MainActivity).mainCoordinatorLayout.showSnackbar(NavigationRequest.SnackBar(R.string.error_internet_browser_not_found))
+    private fun showBrowserNotFoundErrorSnackbar() {
+        (activity as BaseActivity).showSnackbar(NavigationRequest.SnackBar(R.string.error_internet_browser_not_found))
     }
 
     private fun setVersionText() {
