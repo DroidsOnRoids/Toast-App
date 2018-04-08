@@ -22,13 +22,8 @@ class InfoDialogRobot : BaseRobot() {
 
     fun showDialog() {
         with(InfoDialogRobot()) {
-            openMenuOverflow()
-            performClickOnElementWithText(getString(R.string.about_app))
+            performClickOnElementWithId(R.id.menuItemAbout)
         }
-    }
-
-    fun openMenuOverflow() {
-        Espresso.openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().targetContext)
     }
 
     fun isDialogClosed() {

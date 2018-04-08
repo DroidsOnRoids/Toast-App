@@ -25,18 +25,10 @@ class InfoDialogTest {
     val activityRule = IntentsTestRule(MainActivity::class.java, true, true)
 
     @Test
-    fun isMenuOverflowDisplayed() {
+    fun isMenuOverflowDisplayedAndClickable() {
         with(InfoDialogRobot()) {
-            openMenuOverflow()
-            checkIfElementWithTextIsDisplayed(getString(R.string.about_app))
-        }
-    }
-
-    @Test
-    fun isMenuOverflowClickable() {
-        with(InfoDialogRobot()) {
-            openMenuOverflow()
-            checkIfElementWithTextIsClickable(getString(R.string.about_app))
+            checkIfElementWithIdIsDisplayed(R.id.menuItemAbout)
+            checkIfElementWithIdIsClickable(R.id.menuItemAbout)
         }
     }
 
