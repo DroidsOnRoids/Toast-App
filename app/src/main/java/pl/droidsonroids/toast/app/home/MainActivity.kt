@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -16,6 +17,8 @@ import pl.droidsonroids.toast.BuildConfig
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
+import pl.droidsonroids.toast.app.utils.SnackbarQueue
+import pl.droidsonroids.toast.app.utils.extensions.setNavigationViewAnchor
 import pl.droidsonroids.toast.app.utils.extensions.showSnackbar
 import pl.droidsonroids.toast.data.enums.LoginState
 import pl.droidsonroids.toast.databinding.ActivityMainBinding
@@ -50,6 +53,14 @@ class MainActivity : BaseActivity() {
 
     @Inject
     lateinit var navigator: Navigator
+
+    @Inject
+    lateinit var snackbarQueue: SnackbarQueue
+
+    override fun showSnackbar(request: NavigationRequest.SnackBar): Boolean {
+        snackbarQueue.postSnackbarRequest(request)
+        return true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -150,7 +161,6 @@ class MainActivity : BaseActivity() {
     private fun handleNavigationRequest(navigationRequest: NavigationRequest) {
         when (navigationRequest) {
             NavigationRequest.SpeakersSearch -> navigator.showSearchSpeakersWithRevealAnimation(this, getViewCenterCoordinates(searchImageButton))
-            is NavigationRequest.SnackBar -> mainCoordinatorLayout.showSnackbar(navigationRequest)
             else -> navigator.dispatch(this, navigationRequest)
         }
     }
@@ -189,6 +199,16 @@ class MainActivity : BaseActivity() {
         val centerX = (view.x + view.width / 2).toInt()
         val centerY = (view.y + view.height / 2).toInt()
         return centerX to centerY
+    }
+
+    override fun onResume() {
+        super.onResume()
+        snackbarQueue.attach(mainCoordinatorLayout, Snackbar::setNavigationViewAnchor)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        snackbarQueue.detach()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

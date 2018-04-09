@@ -8,6 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlNormal">@color/paleGray</item>
         <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="android:splitMotionEvents">false</item>
+        <item name="android:windowEnableSplitTouch">false</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

@@ -74,7 +74,7 @@ class SpeakersFragment : BaseFragment() {
             is NavigationRequest.SpeakerDetails -> {
                 navigator.showActivityWithSharedAnimation(activity as MainActivity, request, getSharedViews(request.id))
             }
-            else -> activity?.let { navigator.dispatch(it, request) }
+            else -> navigator.dispatch(baseActivity, request)
         }
     }
 

@@ -15,7 +15,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/paleGrayBackground">
 
         <ScrollView
             android:id="@+id/contactScrollContainer"
@@ -45,6 +46,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_medium"
                     android:layout_marginTop="@dimen/margin_large"
+                    android:hint="@string/your_name"
+                    android:labelFor="@+id/contactNameEditText"
                     app:error="@{contactViewModel.nameInputError}"
                     app:errorEnabled="true"
                     app:layout_constraintEnd_toStartOf="@+id/contactEmailInputLayout"
@@ -57,7 +60,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:hint="@string/your_name"
                         android:imeOptions="actionNext"
                         android:paddingEnd="@dimen/margin_medium"
                         android:paddingStart="@dimen/margin_medium"
@@ -70,6 +72,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_medium"
                     android:layout_marginTop="@dimen/margin_large"
+                    android:hint="@string/email_address"
+                    android:labelFor="@+id/contactEmailEditText"
                     app:error="@{contactViewModel.emailInputError}"
                     app:errorEnabled="true"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -82,7 +86,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:hint="@string/email_address"
                         android:imeOptions="actionNext"
                         android:inputType="textEmailAddress"
                         android:paddingEnd="@dimen/margin_medium"
@@ -97,9 +100,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_large"
                     android:layout_marginStart="@dimen/margin_large"
+                    android:hint="@string/your_message"
+                    android:labelFor="@+id/contactMessageEditText"
                     app:error="@{contactViewModel.messageInputError}"
                     app:errorEnabled="true"
                     app:hintEnabled="false"
+                    android:scrollbars="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/contactNameInputLayout">
@@ -114,19 +120,20 @@
                         android:paddingEnd="@dimen/margin_medium"
                         android:paddingStart="@dimen/margin_medium"
                         android:paddingTop="18dp"
-                        android:text="@={contactViewModel.message}"/>
+                        android:text="@={contactViewModel.message}"
+                        android:inputType="textMultiLine"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <TextView
                     android:id="@+id/characterCounter"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:paddingTop="113dp"
                     android:text="@{contactViewModel.messageCounter}"
                     android:textSize="@dimen/text_size_tiny"
                     app:layout_constraintEnd_toEndOf="@id/contactMessageInputLayout"
-                    tools:layout_editor_absoluteY="291dp"
-                    android:paddingTop="113dp"
                     app:layout_constraintTop_toTopOf="@id/contactMessageInputLayout"
+                    tools:layout_editor_absoluteY="291dp"
                     tools:text="12 / 250"/>
 
                 <FrameLayout
