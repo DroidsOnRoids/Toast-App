@@ -63,4 +63,5 @@
     <string name="ok">OK</string>
     <string name="new_config_arrived">Новая конфигурация установлена</string>
     <string name="restart_app">Приложение будет перезагружено для установки конфигурации</string>
+    <string name="default_notification_channel_name">Default</string>
 </resources>

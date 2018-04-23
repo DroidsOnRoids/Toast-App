@@ -11,6 +11,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import io.fabric.sdk.android.Fabric
 import pl.droidsonroids.toast.BuildConfig
+import pl.droidsonroids.toast.app.notifications.NotificationManager
 import pl.droidsonroids.toast.di.DaggerAppComponent
 import pl.droidsonroids.toast.utils.BASE_URL_KEY
 import pl.droidsonroids.toast.utils.IMAGE_URL_KEY
@@ -26,6 +27,9 @@ class ToastApplication : Application(), HasActivityInjector {
     @Inject
     lateinit var activityInjector: DispatchingAndroidInjector<Activity>
 
+    @Inject
+    lateinit var notificationManager: NotificationManager
+
     override fun activityInjector() = activityInjector
 
     override fun onCreate() {
@@ -34,6 +38,7 @@ class ToastApplication : Application(), HasActivityInjector {
         setupTimber()
         setupCrashlytics()
         setupRemoteConfig()
+        setupNotificationManager()
     }
 
     private fun setupDagger() {
@@ -82,6 +87,10 @@ class ToastApplication : Application(), HasActivityInjector {
                     IMAGE_URL_KEY to BuildConfig.BASE_IMAGES_URL
             ).let(::setDefaults)
         }
+    }
+
+    private fun setupNotificationManager() {
+        notificationManager.init()
     }
 
     private class CrashlyticsTree : Timber.Tree() {

@@ -68,4 +68,21 @@
     <string name="new_config_arrived">New configuration arrived</string>
     <string name="ok">OK</string>
     <string name="restart_app">The app will restart now to apply it</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="default_notification_channel_name">Default</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Notifications</string>
+
+    <string name="pref_title_notifications">Show notifications</string>
+    <string name="pref_title_new_events">Show new events notification</string>
+    <string name="pref_title_new_photos">Show new photos notification</string>
+    <string name="pref_title_new_talks">Show new talks notification</string>
+    <string name="pref_key_all_notifications" translatable="false">all_notifications</string>
+    <string name="pref_key_new_events_notifications" translatable="false">new_events_notifications</string>
+    <string name="pref_key_new_photos_notifications" translatable="false">new_photos_notifications</string>
+    <string name="pref_key_new_talks_notifications" translatable="false">new_talks_notifications</string>
 </resources>

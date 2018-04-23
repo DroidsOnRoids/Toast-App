@@ -63,4 +63,5 @@
     <string name="ok">OK</string>
     <string name="new_config_arrived">Dotarła nowa kofiguracja</string>
     <string name="restart_app">Aplikacja zostanie zrestartowana, aby zastosować zmiany</string>
+    <string name="default_notification_channel_name">Domyślne</string>
 </resources>

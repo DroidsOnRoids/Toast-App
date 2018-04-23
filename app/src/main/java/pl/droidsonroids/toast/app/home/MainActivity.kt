@@ -17,6 +17,7 @@ import pl.droidsonroids.toast.BuildConfig
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
+import pl.droidsonroids.toast.app.settings.SettingsActivity
 import pl.droidsonroids.toast.app.utils.SnackbarQueue
 import pl.droidsonroids.toast.app.utils.extensions.setNavigationViewAnchor
 import pl.droidsonroids.toast.app.utils.extensions.showSnackbar
@@ -114,6 +115,7 @@ class MainActivity : BaseActivity() {
                 R.id.menuItemAbout -> consume { homeFragmentTransaction.showInfoDialog() }
                 R.id.menuItemLogin -> consume { mainViewModel.onLogInClick() }
                 R.id.menuItemLogout -> consume { mainViewModel.onLogOutClick() }
+                R.id.settings -> consume { startActivity(Intent(this, SettingsActivity::class.java)) }
                 else -> super.onOptionsItemSelected(item)
             }
 

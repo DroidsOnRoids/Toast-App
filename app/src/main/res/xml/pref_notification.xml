@@ -1,0 +1,27 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/pref_header_notifications">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/pref_key_all_notifications"
+            android:title="@string/pref_title_notifications"/>
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:dependency="@string/pref_key_all_notifications"
+            android:key="@string/pref_key_new_events_notifications"
+            android:title="@string/pref_title_new_events"/>
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:dependency="@string/pref_key_all_notifications"
+            android:key="@string/pref_key_new_photos_notifications"
+            android:title="@string/pref_title_new_photos"/>
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:dependency="@string/pref_key_all_notifications"
+            android:key="@string/pref_key_new_talks_notifications"
+            android:title="@string/pref_title_new_talks"/>
+    </PreferenceCategory>
+</PreferenceScreen>
