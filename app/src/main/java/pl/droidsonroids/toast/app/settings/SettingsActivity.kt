@@ -37,8 +37,6 @@ class SettingsActivity : BaseActivity() {
         super.onPause()
     }
 
-    //    override fun isMultiPane() = false
-
     private fun setupActionBar() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }

@@ -73,16 +73,18 @@
     <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
-
-    <!-- Example settings for Notifications -->
     <string name="pref_header_notifications">Notifications</string>
 
-    <string name="pref_title_notifications">Show notifications</string>
-    <string name="pref_title_new_events">Show new events notification</string>
-    <string name="pref_title_new_photos">Show new photos notification</string>
-    <string name="pref_title_new_talks">Show new talks notification</string>
-    <string name="pref_key_all_notifications" translatable="false">all_notifications</string>
+    <string name="pref_title_new_events">New events</string>
+    <string name="pref_title_new_photos">New photos</string>
+    <string name="pref_title_new_talks">New talks</string>
+    <string name="pref_summary_new_events">Notify me about new events</string>
+    <string name="pref_summary_new_photos">Notify me about new photos</string>
+    <string name="pref_summary_new_talks">Notify me about new talks</string>
     <string name="pref_key_new_events_notifications" translatable="false">new_events_notifications</string>
     <string name="pref_key_new_photos_notifications" translatable="false">new_photos_notifications</string>
     <string name="pref_key_new_talks_notifications" translatable="false">new_talks_notifications</string>
+    <string name="new_events_notification_channel_id" translatable="false">new_events_channel</string>
+    <string name="new_photos_notification_channel_id" translatable="false">new_photos_channel</string>
+    <string name="new_talks_notification_channel_id" translatable="false">new_talks_channel</string>
 </resources>

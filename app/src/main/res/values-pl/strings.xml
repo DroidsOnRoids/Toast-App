@@ -64,4 +64,12 @@
     <string name="new_config_arrived">Dotarła nowa kofiguracja</string>
     <string name="restart_app">Aplikacja zostanie zrestartowana, aby zastosować zmiany</string>
     <string name="default_notification_channel_name">Domyślne</string>
+    <string name="title_activity_settings">Ustawienia</string>
+    <string name="pref_header_notifications">Powiadomienia</string>
+    <string name="pref_title_new_events">Nowe wydarzenia</string>
+    <string name="pref_title_new_photos">Nowe zdjęcia</string>
+    <string name="pref_title_new_talks">Nowe prelekcje</string>
+    <string name="pref_summary_new_events">Informuj mnie o nowych wydarzeniach</string>
+    <string name="pref_summary_new_photos">Informuj mnie o nowych zdjęciach</string>
+    <string name="pref_summary_new_talks">Informuj mnie o nowych prelekcjach</string>
 </resources>
