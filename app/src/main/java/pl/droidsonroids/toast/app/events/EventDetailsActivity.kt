@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.activity_event_details.*
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.Navigator
 import pl.droidsonroids.toast.app.base.BaseActivity
+import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.app.utils.SnackbarQueue
 import pl.droidsonroids.toast.app.utils.extensions.addInsetAppBehaviorToLoadingLayout
 import pl.droidsonroids.toast.app.utils.extensions.doOnEnd
@@ -51,8 +52,16 @@ class EventDetailsActivity : BaseActivity() {
         }
     }
 
+    private val startedFromNotification by lazy {
+        intent.extras.containsKey("from")
+    }
+
     private val eventId by lazy {
-        intent.getLongExtra(EVENT_ID, 0)
+        if (startedFromNotification) {
+            intent.getStringExtra(EVENT_ID).toLong()
+        } else {
+            intent.getLongExtra(EVENT_ID, 0)
+        }
     }
 
     private val coverImage by lazy {
@@ -90,14 +99,14 @@ class EventDetailsActivity : BaseActivity() {
 
         setupAppBar()
         setupViewModel(eventDetailsBinding)
-        postponeSharedTransitionIfNeeded(isFreshStart = savedInstanceState == null)
+        postponeSharedTransitionIfNeeded(shouldPostponeTransition = savedInstanceState == null && !startedFromNotification)
         setupGradientSwitcher()
         setupRecyclerView()
         addInsetAppBehaviorToLoadingLayout()
     }
 
-    private fun postponeSharedTransitionIfNeeded(isFreshStart: Boolean) {
-        if (isFreshStart) {
+    private fun postponeSharedTransitionIfNeeded(shouldPostponeTransition: Boolean) {
+        if (shouldPostponeTransition) {
             postponeEnterTransition()
             window.sharedElementEnterTransition = TransitionSet()
                     .addTransition(ChangeImageTransform())
@@ -204,7 +213,14 @@ class EventDetailsActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            android.R.id.home -> consume { onBackPressed() }
+            android.R.id.home -> consume {
+                if (startedFromNotification) {
+                    startActivity(MainActivity.createIntent(this))
+                    finish()
+                } else {
+                    onBackPressed()
+                }
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
