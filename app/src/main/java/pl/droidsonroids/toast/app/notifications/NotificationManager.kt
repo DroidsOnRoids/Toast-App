@@ -1,13 +1,10 @@
 package pl.droidsonroids.toast.app.notifications
 
-import android.annotation.TargetApi
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
-import android.support.annotation.RequiresApi
-import android.support.annotation.StringRes
 import com.google.firebase.messaging.FirebaseMessaging
 import pl.droidsonroids.toast.R
 import javax.inject.Inject
@@ -36,22 +33,13 @@ class NotificationManager @Inject constructor(
     private fun createChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             with(context) {
-                createChannel(R.string.default_notification_channel_id, R.string.default_notification_channel_name)
-                createChannel(R.string.new_events_notification_channel_id, R.string.pref_title_new_events)
-                createChannel(R.string.new_photos_notification_channel_id, R.string.pref_title_new_photos)
-                createChannel(R.string.new_talks_notification_channel_id, R.string.pref_title_new_talks)
+                val channelId = getString(R.string.default_notification_channel_id)
+                val channelName = getString(R.string.default_notification_channel_name)
+                val notificationManager = getSystemService(NotificationManager::class.java)
+                notificationManager.createNotificationChannel(NotificationChannel(channelId,
+                        channelName, NotificationManager.IMPORTANCE_DEFAULT))
             }
         }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    @TargetApi(Build.VERSION_CODES.O)
-    private fun Context.createChannel(@StringRes channelIdRes: Int, @StringRes channelNameRes: Int) {
-        val channelId = getString(channelIdRes)
-        val channelName = getString(channelNameRes)
-        val notificationManager = getSystemService(NotificationManager::class.java)
-        notificationManager.createNotificationChannel(NotificationChannel(channelId,
-                channelName, NotificationManager.IMPORTANCE_DEFAULT))
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String) {

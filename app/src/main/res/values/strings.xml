@@ -84,7 +84,5 @@
     <string name="pref_key_new_events_notifications" translatable="false">new_events_notifications</string>
     <string name="pref_key_new_photos_notifications" translatable="false">new_photos_notifications</string>
     <string name="pref_key_new_talks_notifications" translatable="false">new_talks_notifications</string>
-    <string name="new_events_notification_channel_id" translatable="false">new_events_channel</string>
-    <string name="new_photos_notification_channel_id" translatable="false">new_photos_channel</string>
-    <string name="new_talks_notification_channel_id" translatable="false">new_talks_channel</string>
+    <!--TODO: Add notifications messages-->
 </resources>
