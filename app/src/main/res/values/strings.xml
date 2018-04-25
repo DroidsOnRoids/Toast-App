@@ -70,10 +70,16 @@
     <string name="restart_app">The app will restart now to apply it</string>
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="default_notification_channel_name">Default</string>
-    <string name="title_activity_settings">Settings</string>
+    <string name="new_event_title">New event</string>
+    <string name="new_event_description" formatted="true">Information about %1$s is now available</string>
+    <string name="new_talk_title" formatted="true">New talk at %s</string>
+    <string name="new_talk_description">%1$s will talk about %2$s</string>
+    <string name="new_photos_title">New photos</string>
+    <string name="new_photos_description">Photos from %s1$ are available</string>
 
     <!-- Strings related to Settings -->
-    <string name="pref_header_notifications">Notifications</string>
+    <string name="settings">Settings</string>
+    <string name="pref_notifications">Notifications</string>
 
     <string name="pref_title_new_events">New events</string>
     <string name="pref_title_new_photos">New photos</string>
@@ -84,5 +90,4 @@
     <string name="pref_key_new_events_notifications" translatable="false">new_events_notifications</string>
     <string name="pref_key_new_photos_notifications" translatable="false">new_photos_notifications</string>
     <string name="pref_key_new_talks_notifications" translatable="false">new_talks_notifications</string>
-    <!--TODO: Add notifications messages-->
 </resources>

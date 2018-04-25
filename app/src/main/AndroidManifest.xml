@@ -104,7 +104,7 @@
 
         <activity
             android:name=".app.settings.SettingsActivity"
-            android:label="@string/title_activity_settings"
+            android:label="@string/settings"
             android:parentActivityName=".app.home.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

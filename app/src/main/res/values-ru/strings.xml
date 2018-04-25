@@ -66,7 +66,7 @@
     <string name="default_notification_channel_name">Default</string>
 
     <!-- Strings related to Settings -->
-    <string name="pref_header_notifications">Уведомления</string>
+    <string name="pref_notifications">Уведомления</string>
 
     <string name="pref_title_new_events">Новые мероприятия</string>
     <string name="pref_title_new_photos">Новые фото</string>
