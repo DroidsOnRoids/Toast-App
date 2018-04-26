@@ -72,4 +72,10 @@
     <string name="pref_summary_new_events">Informuj mnie o nowych wydarzeniach</string>
     <string name="pref_summary_new_photos">Informuj mnie o nowych zdjęciach</string>
     <string name="pref_summary_new_talks">Informuj mnie o nowych prelekcjach</string>
+    <string name="new_event_title">Nowe wydarzenie</string>
+    <string name="new_event_description" formatted="true">Informacje o %1$s są już dostępne</string>
+    <string name="new_talk_title" formatted="true">Nowa prelekcja na %s</string>
+    <string name="new_talk_description">%1$s przedstawi temat: %2$s</string>
+    <string name="new_photos_title">Nowe zdjęcia</string>
+    <string name="new_photos_description">Zdjęcia z %1$s są już dostępne</string>
 </resources>

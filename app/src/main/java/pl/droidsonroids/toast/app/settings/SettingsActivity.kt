@@ -1,5 +1,7 @@
 package pl.droidsonroids.toast.app.settings
 
+import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.preference.PreferenceFragmentCompat
@@ -11,6 +13,11 @@ import pl.droidsonroids.toast.utils.consume
 import javax.inject.Inject
 
 class SettingsActivity : BaseActivity() {
+    companion object {
+        fun createIntent(context: Context) =
+                Intent(context, SettingsActivity::class.java)
+    }
+
     @Inject
     lateinit var notificationManager: NotificationManager
     @Inject
@@ -19,12 +26,16 @@ class SettingsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (savedInstanceState == null) {
+        addFragmentIfNeeded(shouldAdd = savedInstanceState == null)
+        setupActionBar()
+    }
+
+    private fun addFragmentIfNeeded(shouldAdd: Boolean) {
+        if (shouldAdd) {
             supportFragmentManager.beginTransaction()
                     .add(android.R.id.content, NotificationPreferenceFragment())
                     .commit()
         }
-        setupActionBar()
     }
 
     override fun onResume() {

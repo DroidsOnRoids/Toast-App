@@ -75,7 +75,7 @@
     <string name="new_talk_title" formatted="true">New talk at %s</string>
     <string name="new_talk_description">%1$s will talk about %2$s</string>
     <string name="new_photos_title">New photos</string>
-    <string name="new_photos_description">Photos from %s1$ are available</string>
+    <string name="new_photos_description">Photos from %1$s are available</string>
 
     <!-- Strings related to Settings -->
     <string name="settings">Settings</string>
