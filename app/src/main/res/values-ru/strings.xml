@@ -73,6 +73,7 @@
     <string name="new_photos_description">Photos from %1$s are available</string>
 
     <!-- Strings related to Settings -->
+    <string name="settings">Settings</string>
     <string name="pref_notifications">Уведомления</string>
 
     <string name="pref_title_new_events">Новые мероприятия</string>
