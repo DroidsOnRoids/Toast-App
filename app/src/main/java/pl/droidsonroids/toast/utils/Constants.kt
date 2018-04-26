@@ -49,6 +49,14 @@ object Constants {
         const val EVENT_URL: String = "https://www.facebook.com/events/"
     }
 
+    object Notifications {
+        const val ID = "id"
+        const val TITLE = "title"
+        const val DATE = "date"
+        const val SOURCE_KEY = "from"
+        const val SOURCE_LOCAL = "local_notification"
+    }
+
     const val MIN_LOADING_DELAY_MILLIS = 300L
 
 }

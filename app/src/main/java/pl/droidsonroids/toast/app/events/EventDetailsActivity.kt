@@ -44,7 +44,6 @@ class EventDetailsActivity : BaseActivity() {
         private const val ADD_ANIMATION_DURATION_MS = 600L
         private const val EVENT_ID = "event_id"
         private const val COVER_IMAGE = "cover_image"
-        private const val FCM_TOPIC_KEY = "from"
 
         fun createIntent(context: Context, eventDetailsRequest: NavigationRequest.EventDetails): Intent {
             return Intent(context, EventDetailsActivity::class.java)
@@ -54,7 +53,7 @@ class EventDetailsActivity : BaseActivity() {
     }
 
     private val startedFromNotification by lazy {
-        intent.extras.containsKey(FCM_TOPIC_KEY)
+        intent.getStringExtra(EVENT_ID) != null
     }
 
     private val eventId by lazy {
@@ -230,6 +229,7 @@ class EventDetailsActivity : BaseActivity() {
     override fun onStart() {
         super.onStart()
         eventDetailsViewModel.invalidateAttendState()
+        eventDetailsViewModel.invalidateEventReminderState()
         eventDetailsViewModel.invalidateLoading()
     }
 

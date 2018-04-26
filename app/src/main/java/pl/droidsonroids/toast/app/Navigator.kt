@@ -30,7 +30,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class Navigator @Inject constructor(private val loginManager: LoginManager, private val analyticsEventTracker: AnalyticsEventTracker) {
+class Navigator @Inject constructor(
+        private val loginManager: LoginManager,
+        private val analyticsEventTracker: AnalyticsEventTracker
+) {
 
     fun dispatch(baseActivity: BaseActivity, navigationRequest: NavigationRequest) {
         when (navigationRequest) {

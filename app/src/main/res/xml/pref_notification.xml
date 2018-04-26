@@ -19,5 +19,13 @@
             android:key="@string/pref_key_new_talks_notifications"
             android:title="@string/pref_title_new_talks"
             android:summary="@string/pref_summary_new_talks"/>
+
+        <ListPreference
+            android:defaultValue="2"
+            android:key="@string/pref_key_event_reminder_notifications"
+            android:title="@string/pref_title_event_reminder"
+            android:entries="@array/event_reminder_time"
+            android:summary="@string/pref_summary_event_reminder"
+            android:entryValues="@array/event_reminder_time_values"/>
     </PreferenceCategory>
 </PreferenceScreen>

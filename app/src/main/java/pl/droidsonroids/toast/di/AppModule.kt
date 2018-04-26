@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.databinding.ObservableField
 import android.preference.PreferenceManager
+import com.firebase.jobdispatcher.FirebaseJobDispatcher
+import com.firebase.jobdispatcher.GooglePlayDriver
 import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.Module
 import dagger.Provides
@@ -21,6 +23,7 @@ import pl.droidsonroids.toast.repositories.event.EventsRepositoryImpl
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepositoryImpl
 import pl.droidsonroids.toast.services.*
+import pl.droidsonroids.toast.utils.StringProvider
 import pl.droidsonroids.toast.utils.baseUrl
 import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingDelayViewModel
@@ -48,6 +51,11 @@ class AppModule {
     fun provideSharedPreference(context: Context): SharedPreferences =
             PreferenceManager.getDefaultSharedPreferences(context)
 
+    @Singleton
+    @Provides
+    fun provideJobDispatcher(context: Context): FirebaseJobDispatcher =
+            FirebaseJobDispatcher(GooglePlayDriver(context))
+
     @Provides
     fun provideEventsRepository(eventService: EventService): EventsRepository = EventsRepositoryImpl(eventService)
 
@@ -60,6 +68,10 @@ class AppModule {
     @Singleton
     @Provides
     fun provideContactStorage(sharedPreferences: SharedPreferences): ContactStorage = LocalContactStorage(sharedPreferences)
+
+    @Singleton
+    @Provides
+    fun provideNotificationStorage(sharedPreferences: SharedPreferences, stringProvider: StringProvider): NotificationStorage = LocalNotificationStorage(sharedPreferences, stringProvider)
 
     //    Replace with FacebookAttendViewModel to use Graph API & attend status check
     @Provides
