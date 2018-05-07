@@ -71,8 +71,8 @@
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="default_notification_channel_name">Default</string>
     <string name="new_event_title">New event</string>
-    <string name="new_event_description" formatted="true">Information about %1$s is now available</string>
-    <string name="new_talk_title" formatted="true">New talk at %s</string>
+    <string name="new_event_description">Information about %1$s is now available</string>
+    <string name="new_talk_title">New talk at %s</string>
     <string name="new_talk_description">%1$s will talk about %2$s</string>
     <string name="new_photos_title">New photos</string>
     <string name="new_photos_description">Photos from %1$s are available</string>

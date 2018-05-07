@@ -8,18 +8,17 @@ import android.support.v7.preference.PreferenceFragmentCompat
 import android.view.MenuItem
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.base.BaseActivity
-import pl.droidsonroids.toast.app.notifications.NotificationManager
+import pl.droidsonroids.toast.app.notifications.FcmSubscriptionManager
 import pl.droidsonroids.toast.utils.consume
 import javax.inject.Inject
 
 class SettingsActivity : BaseActivity() {
     companion object {
-        fun createIntent(context: Context) =
-                Intent(context, SettingsActivity::class.java)
+        fun createIntent(context: Context) = Intent(context, SettingsActivity::class.java)
     }
 
     @Inject
-    lateinit var notificationManager: NotificationManager
+    lateinit var fcmSubscriptionManager: FcmSubscriptionManager
     @Inject
     lateinit var sharedPrefs: SharedPreferences
 
@@ -40,11 +39,11 @@ class SettingsActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        sharedPrefs.registerOnSharedPreferenceChangeListener(notificationManager)
+        sharedPrefs.registerOnSharedPreferenceChangeListener(fcmSubscriptionManager)
     }
 
     override fun onPause() {
-        sharedPrefs.unregisterOnSharedPreferenceChangeListener(notificationManager)
+        sharedPrefs.unregisterOnSharedPreferenceChangeListener(fcmSubscriptionManager)
         super.onPause()
     }
 
