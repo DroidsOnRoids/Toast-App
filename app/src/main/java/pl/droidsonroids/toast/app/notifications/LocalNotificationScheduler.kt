@@ -18,16 +18,17 @@ class LocalNotificationScheduler @Inject constructor(
         private val jobDispatcher: FirebaseJobDispatcher,
         private val notificationStorage: NotificationStorage
 ) {
-    val notificationReminderMilisShift
+    private val notificationReminderMillisShift
         get() = TimeUnit.HOURS.toMillis(notificationStorage.reminderNotificationHoursShift)
 
-    fun scheduleNotification(id: Long, title: String, date: Date): Boolean {
+    fun scheduleNotification(id: Long, title: String, date: Date, notificationReminderShift: Long? = null): Boolean {
         val bundle = Bundle().apply {
             putString(Constants.Notifications.TITLE, title)
             putLong(Constants.Notifications.ID, id)
             putLong(Constants.Notifications.DATE, date.time)
         }
-        val startTimeSeconds = TimeUnit.MILLISECONDS.toSeconds(date.time - Date().time - notificationReminderMilisShift).toInt()
+        val startTimeSeconds = TimeUnit.MILLISECONDS.toSeconds(date.time - Date().time
+                - (notificationReminderShift ?: notificationReminderMillisShift)).toInt()
         if (startTimeSeconds > 0) {
             val job = jobDispatcher.newJobBuilder()
                     .setTag(id.toString())
