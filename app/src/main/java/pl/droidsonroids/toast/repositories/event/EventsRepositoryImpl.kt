@@ -12,8 +12,6 @@ import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.services.EventService
 import pl.droidsonroids.toast.utils.Constants
 import pl.droidsonroids.toast.utils.toPage
-import java.util.*
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class EventsRepositoryImpl @Inject constructor(private val eventService: EventService) : EventsRepository {
@@ -42,7 +40,7 @@ class EventsRepositoryImpl @Inject constructor(private val eventService: EventSe
     }
 
     override fun getEvent(id: Long): Single<EventDetailsDto> =
-            eventService.getEvent(id).map { it.eventItem.toDto().copy(date = Date().apply { time += TimeUnit.MINUTES.toMillis(121) }) }
+            eventService.getEvent(id).map { it.eventItem.toDto() }
 
     override fun getEventsPage(pageNumber: Int): Single<Page<EventDto>> {
         return eventService.getEvents(pageNumber = pageNumber)

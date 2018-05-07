@@ -9,6 +9,7 @@ import android.support.design.widget.CoordinatorLayout
 import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.ColorUtils
 import android.support.v4.util.Pair
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.transition.ChangeBounds
 import android.transition.ChangeImageTransform
@@ -162,6 +163,7 @@ class EventDetailsActivity : BaseActivity() {
         when (navigationRequest) {
             is NavigationRequest.EventTalkDetails -> navigator.showActivityWithSharedAnimation(this, navigationRequest, getTalkSharedViews(navigationRequest.eventTalkDto))
             is NavigationRequest.SpeakerDetails -> navigator.showActivityWithSharedAnimation(this, navigationRequest, getSpeakerSharedViews(navigationRequest.talkId))
+            is NavigationRequest.ShowReminderDialog -> showReminderDialog(navigationRequest)
             else -> navigator.dispatch(this, navigationRequest)
         }
     }
@@ -185,6 +187,15 @@ class EventDetailsActivity : BaseActivity() {
                     }
         } ?: emptyArray()
 
+    }
+
+    private fun showReminderDialog(navigationRequest: NavigationRequest.ShowReminderDialog) {
+        AlertDialog.Builder(this)
+                .setTitle(R.string.pref_title_event_reminder)
+                .setItems(navigationRequest.options.toTypedArray()) { _, position ->
+                    eventDetailsViewModel.onReminderSelected(position)
+                }
+                .show()
     }
 
     private fun setupGradientSwitcher() {

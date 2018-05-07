@@ -18,6 +18,7 @@ import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.utils.*
+import pl.droidsonroids.toast.utils.Constants.Notifications.MIN_TIME_TO_SET_REMINDER_MS
 import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
@@ -97,14 +98,26 @@ class EventDetailsViewModel @Inject constructor(
 
     fun onNotificationClick() {
         if (!isNotificationScheduled.get()) {
-            val isScheduled = notificationScheduler.scheduleNotification(eventId.get(), title.get(), date.get())
-            if (!isScheduled) {
-                invalidateEventReminderState()
-                navigationSubject.onNext(NavigationRequest.SnackBar(R.string.reminder_schedule_error))
-            }
+            sendReminderDialogRequest()
         } else {
             notificationScheduler.unscheduleNotification(eventId.get())
         }
+    }
+
+    private fun sendReminderDialogRequest() {
+        val options = getReminderOptions()
+        if (options.isNotEmpty()) {
+            navigationSubject.onNext(NavigationRequest.ShowReminderDialog(options))
+        } else {
+            navigationSubject.onNext(NavigationRequest.SnackBar(R.string.reminder_schedule_error))
+        }
+    }
+
+    private fun getReminderOptions(): List<String> {
+        val date = date.get()
+        return notificationScheduler.reminderOptions
+                .filter { (_, value) -> date.time - value - Date().time - MIN_TIME_TO_SET_REMINDER_MS > 0 }
+                .map { (option, _) -> option }
     }
 
     fun init(id: Long, coverImage: ImageDto?) {
@@ -190,7 +203,16 @@ class EventDetailsViewModel @Inject constructor(
 
     fun invalidateEventReminderState() {
         date.get()?.run {
-            //            isEventReminderAvailable.set(isAfterNow(notificationScheduler.notificationReminderMilisShift))
+            isEventReminderAvailable.set(isAfterNow(notificationScheduler.reminderOptions.first().second + MIN_TIME_TO_SET_REMINDER_MS))
+        }
+    }
+
+    fun onReminderSelected(position: Int) {
+        val notificationReminderShift = notificationScheduler.reminderOptions[position].second
+        val isScheduled = notificationScheduler.scheduleNotification(eventId.get(), title.get(), date.get(), notificationReminderShift)
+        if (!isScheduled) {
+            invalidateEventReminderState()
+            navigationSubject.onNext(NavigationRequest.SnackBar(R.string.reminder_schedule_error))
         }
     }
 }

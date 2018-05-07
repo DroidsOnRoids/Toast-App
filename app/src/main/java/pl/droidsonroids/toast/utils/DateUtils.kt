@@ -11,8 +11,8 @@ val Date.isToday
         todayMidnight().time..time
     }
 
-fun Date.isAfterNow(shiftMilis: Long = 0) =
-        this.time - shiftMilis >= Date().time
+fun Date.isAfterNow(shiftMillis: Long = 0) =
+        this.time - shiftMillis >= Date().time
 
 private fun todayMidnight(): Calendar {
     return Calendar.getInstance().apply {
