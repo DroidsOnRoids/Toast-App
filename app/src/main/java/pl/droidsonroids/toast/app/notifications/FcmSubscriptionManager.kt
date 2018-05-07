@@ -15,7 +15,7 @@ private const val NEW_TALKS_TOPIC = "new_talk"
 private const val NEW_PHOTOS_TOPIC = "new_photos"
 
 @Singleton
-class NotificationManager @Inject constructor(
+class FcmSubscriptionManager @Inject constructor(
         private val context: Context,
         private val sharedPrefs: SharedPreferences
 ) : SharedPreferences.OnSharedPreferenceChangeListener {
@@ -28,7 +28,6 @@ class NotificationManager @Inject constructor(
         createChannel()
         refreshSubscriptions()
     }
-
 
     private fun createChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
