@@ -44,7 +44,7 @@ class ToastApplication : Application(), HasActivityInjector, HasServiceInjector 
         setupTimber()
         setupCrashlytics()
         setupRemoteConfig()
-        setupNotificationManager()
+        setupFcmSubscriptionManager()
     }
 
     private fun setupDagger() {
@@ -95,7 +95,7 @@ class ToastApplication : Application(), HasActivityInjector, HasServiceInjector 
         }
     }
 
-    private fun setupNotificationManager() {
+    private fun setupFcmSubscriptionManager() {
         fcmSubscriptionManager.init()
     }
 

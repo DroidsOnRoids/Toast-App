@@ -32,8 +32,8 @@ class LocalNotificationScheduler @Inject constructor(
         }
         val startTimeSeconds = TimeUnit.MILLISECONDS.toSeconds(date.time - Date().time
                 - notificationReminderShift).toInt()
-        if (startTimeSeconds > 0) {
-            val executionWindowDeltaInSeconds = TimeUnit.SECONDS.toMillis(MIN_TIME_TO_SET_REMINDER_MS).toInt()
+        val executionWindowDeltaInSeconds = TimeUnit.MILLISECONDS.toSeconds(MIN_TIME_TO_SET_REMINDER_MS).toInt() / 2
+        if (startTimeSeconds > executionWindowDeltaInSeconds) {
             val job = jobDispatcher.newJobBuilder()
                     .setTag(id.toString())
                     .setLifetime(Lifetime.FOREVER)
