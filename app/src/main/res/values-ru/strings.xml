@@ -63,17 +63,17 @@
     <string name="ok">OK</string>
     <string name="new_config_arrived">Новая конфигурация установлена</string>
     <string name="restart_app">Приложение будет перезагружено для установки конфигурации</string>
-    <!--TODO Add ru translations-->
-    <string name="default_notification_channel_name">Default</string>
-    <string name="new_event_title">New event</string>
-    <string name="new_event_description" formatted="true">Information about %1$s is now available</string>
-    <string name="new_talk_title" formatted="true">New talk at %s</string>
-    <string name="new_talk_description">%1$s will talk about %2$s</string>
-    <string name="new_photos_title">New photos</string>
-    <string name="new_photos_description">Photos from %1$s are available</string>
+    <string name="default_notification_channel_name">Стандартные</string>
+    <string name="new_event_title">Новое мероприятие</string>
+    <string name="new_event_description" formatted="true">Информация о %1$s уже доступна</string>
+    <string name="new_talk_title" formatted="true">Новое выступление на %s</string>
+    <string name="new_talk_description">%1$s расскажет о %2$s</string>
+    <string name="new_photos_title">Новые фото</string>
+    <string name="new_photos_description">Фото с %1$s уже доступны</string>
+    <string name="event_reminder_description">%1$s начинается в %2$tR</string>
 
     <!-- Strings related to Settings -->
-    <string name="settings">Settings</string>
+    <string name="settings">Настройки</string>
     <string name="pref_notifications">Уведомления</string>
 
     <string name="pref_title_new_events">Новые мероприятия</string>
@@ -82,4 +82,9 @@
     <string name="pref_summary_new_events">Сообщите мне о новых мероприятиях</string>
     <string name="pref_summary_new_photos">Сообщите мне о новых фото</string>
     <string name="pref_summary_new_talks">Сообщите мне о новых высуплениях</string>
+    <string name="pref_event_reminder_hour">За час до начала мероприятия</string>
+    <string name="pref_event_reminder_two_hours">За 2 часа до начала мероприятия</string>
+    <string name="pref_event_reminder_day">За день до начала мероприятия</string>
+    <string name="pref_summary_event_reminder">Сообщите мне %1$s</string>
+    <string name="reminder_schedule_error">Не удалость создать уведомление</string>
 </resources>
