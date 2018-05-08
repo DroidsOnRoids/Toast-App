@@ -55,8 +55,6 @@ object Constants {
         const val ID = "id"
         const val TITLE = "title"
         const val DATE = "date"
-        const val SOURCE_KEY = "from"
-        const val SOURCE_LOCAL = "local_notification"
         val MIN_TIME_TO_SET_REMINDER_MS = TimeUnit.MINUTES.toMillis(20)
     }
 
