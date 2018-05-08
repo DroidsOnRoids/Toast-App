@@ -70,7 +70,8 @@
     <string name="new_talk_description">%1$s расскажет о %2$s</string>
     <string name="new_photos_title">Новые фото</string>
     <string name="new_photos_description">Фото с %1$s уже доступны</string>
-    <string name="event_reminder_description">%1$s rozpoczyna się o %2$tR</string>
+    <string name="event_reminder_description">%1$s начинается в %2$tR</string>
+    <string name="title_event_reminder">Напоминание о мероприятии</string>
 
     <!-- Strings related to Settings -->
     <string name="settings">Настройки</string>
@@ -86,5 +87,5 @@
     <string name="pref_event_reminder_two_hours">За 2 часа до начала мероприятия</string>
     <string name="pref_event_reminder_day">За день до начала мероприятия</string>
     <string name="pref_summary_event_reminder">Сообщите мне %1$s</string>
-    <string name="reminder_schedule_error">Не удалость создать уведомление</string>
+    <string name="reminder_schedule_error">Не удалость создать напоминание</string>
 </resources>
