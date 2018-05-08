@@ -11,7 +11,7 @@
         <item>@string/event_reminder_two_hours</item>
         <item>@string/event_reminder_day</item>
     </string-array>
-    <string-array name="event_reminder_time_values">
+    <string-array name="event_reminder_time_values" translatable="false">
         <item>1</item>
         <item>2</item>
         <item>24</item>

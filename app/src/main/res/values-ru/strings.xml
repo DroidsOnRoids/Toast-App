@@ -83,9 +83,8 @@
     <string name="pref_summary_new_events">Сообщите мне о новых мероприятиях</string>
     <string name="pref_summary_new_photos">Сообщите мне о новых фото</string>
     <string name="pref_summary_new_talks">Сообщите мне о новых высуплениях</string>
-    <string name="pref_event_reminder_hour">За час до начала мероприятия</string>
-    <string name="pref_event_reminder_two_hours">За 2 часа до начала мероприятия</string>
-    <string name="pref_event_reminder_day">За день до начала мероприятия</string>
-    <string name="pref_summary_event_reminder">Сообщите мне %1$s</string>
+    <string name="event_reminder_hour">За час до начала мероприятия</string>
+    <string name="event_reminder_two_hours">За 2 часа до начала мероприятия</string>
+    <string name="event_reminder_day">За день до начала мероприятия</string>
     <string name="reminder_schedule_error">Не удалость создать напоминание</string>
 </resources>
