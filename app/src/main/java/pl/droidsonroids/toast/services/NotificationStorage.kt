@@ -6,5 +6,4 @@ interface NotificationStorage {
 
     fun setIsNotificationScheduled(eventId: Long, isScheduled: Boolean)
     fun getIsNotificationScheduled(eventId: Long): Observable<Boolean>
-    val reminderNotificationHoursShift: Long
 }

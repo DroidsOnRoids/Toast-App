@@ -15,7 +15,7 @@ private const val NEW_TALKS_TOPIC = "new_talk"
 private const val NEW_PHOTOS_TOPIC = "new_photos"
 
 @Singleton
-class NotificationManager @Inject constructor(
+class RemoteNotificationSubscriptionManager @Inject constructor(
         private val context: Context,
         private val sharedPrefs: SharedPreferences
 ) : SharedPreferences.OnSharedPreferenceChangeListener {

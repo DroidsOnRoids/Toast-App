@@ -23,7 +23,6 @@ import pl.droidsonroids.toast.repositories.event.EventsRepositoryImpl
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepository
 import pl.droidsonroids.toast.repositories.speaker.SpeakersRepositoryImpl
 import pl.droidsonroids.toast.services.*
-import pl.droidsonroids.toast.utils.StringProvider
 import pl.droidsonroids.toast.utils.baseUrl
 import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingDelayViewModel
@@ -71,7 +70,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideNotificationStorage(sharedPreferences: SharedPreferences, stringProvider: StringProvider): NotificationStorage = LocalNotificationStorage(sharedPreferences, stringProvider)
+    fun provideNotificationStorage(sharedPreferences: SharedPreferences): NotificationStorage = LocalNotificationStorage(sharedPreferences)
 
     //    Replace with FacebookAttendViewModel to use Graph API & attend status check
     @Provides

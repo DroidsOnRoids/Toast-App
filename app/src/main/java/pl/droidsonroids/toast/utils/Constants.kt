@@ -1,5 +1,7 @@
 package pl.droidsonroids.toast.utils
 
+import java.util.concurrent.TimeUnit
+
 object Constants {
     object SearchMenuItem {
         const val SHOWN_OFFSET = 0f
@@ -53,8 +55,7 @@ object Constants {
         const val ID = "id"
         const val TITLE = "title"
         const val DATE = "date"
-        const val SOURCE_KEY = "from"
-        const val SOURCE_LOCAL = "local_notification"
+        val MIN_TIME_TO_SET_REMINDER_MS = TimeUnit.MINUTES.toMillis(20)
     }
 
     const val MIN_LOADING_DELAY_MILLIS = 300L

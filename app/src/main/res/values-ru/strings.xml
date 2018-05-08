@@ -65,12 +65,12 @@
     <string name="restart_app">Приложение будет перезагружено для установки конфигурации</string>
     <string name="default_notification_channel_name">Стандартные</string>
     <string name="new_event_title">Новое мероприятие</string>
-    <string name="new_event_description" formatted="true">Информация о %1$s уже доступна</string>
-    <string name="new_talk_title" formatted="true">Новое выступление на %s</string>
+    <string name="new_event_description">Информация о %1$s уже доступна</string>
+    <string name="new_talk_title">Новое выступление на %s</string>
     <string name="new_talk_description">%1$s расскажет о %2$s</string>
     <string name="new_photos_title">Новые фото</string>
     <string name="new_photos_description">Фото с %1$s уже доступны</string>
-    <string name="event_reminder_description">%1$s начинается в %2$tR</string>
+    <string name="event_reminder_description">%1$s rozpoczyna się o %2$tR</string>
 
     <!-- Strings related to Settings -->
     <string name="settings">Настройки</string>

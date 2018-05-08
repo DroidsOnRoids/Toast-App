@@ -25,5 +25,6 @@ sealed class NavigationRequest {
     data class SnackBar(@StringRes val stringRes: Int) : NavigationRequest()
     object AvatarAnimation : NavigationRequest()
     object Settings : NavigationRequest()
+    data class ShowReminderDialog(val options: List<String>) : NavigationRequest()
 }
 
