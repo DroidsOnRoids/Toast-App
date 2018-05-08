@@ -17,6 +17,7 @@ This app allows you to keep up to date with the latest events info like speakers
 - [x] Speakers list and details
 - [x] Contact form
 - [x] Notifications about new content
+- [x] Local notifications to remind about incoming event
 
 ## Communication
 * If you **found a bug** or have a **feature request** - open an issue.
