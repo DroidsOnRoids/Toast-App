@@ -85,17 +85,15 @@
     <string name="pref_title_new_events">New events</string>
     <string name="pref_title_new_photos">New photos</string>
     <string name="pref_title_new_talks">New talks</string>
-    <string name="pref_title_event_reminder">Event reminder</string>
+    <string name="title_event_reminder">Event reminder</string>
     <string name="pref_summary_new_events">Notify me about new events</string>
     <string name="pref_summary_new_photos">Notify me about new photos</string>
     <string name="pref_summary_new_talks">Notify me about new talks</string>
     <string name="pref_key_new_events_notifications" translatable="false">new_events_notifications</string>
     <string name="pref_key_new_photos_notifications" translatable="false">new_photos_notifications</string>
     <string name="pref_key_new_talks_notifications" translatable="false">new_talks_notifications</string>
-    <string name="pref_key_event_reminder_notifications" translatable="false">event_reminder_notifications</string>
-    <string name="pref_event_reminder_hour">1 hour before event</string>
-    <string name="pref_event_reminder_two_hours">2 hours before event</string>
-    <string name="pref_event_reminder_day">1 day before event</string>
-    <string name="pref_summary_event_reminder">Notify me %1$s</string>
+    <string name="event_reminder_hour">1 hour before event</string>
+    <string name="event_reminder_two_hours">2 hours before event</string>
+    <string name="event_reminder_day">1 day before event</string>
     <string name="reminder_schedule_error">Cannot schedule a reminder</string>
 </resources>

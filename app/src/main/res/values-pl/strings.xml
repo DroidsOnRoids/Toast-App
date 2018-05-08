@@ -79,8 +79,9 @@
     <string name="new_photos_title">Nowe zdjęcia</string>
     <string name="new_photos_description">Zdjęcia z %1$s są już dostępne</string>
     <string name="event_reminder_description">%1$s rozpoczyna się o %2$tR</string>
-    <string name="pref_title_event_reminder">Przypomnienie o wydarzeniu</string>
-    <string name="pref_event_reminder_hour">Godzinę przed wydarzeniem</string>
-    <string name="pref_event_reminder_two_hours">2 godziny przed wydarzeniem</string>
-    <string name="pref_event_reminder_day">Dzień przed wydarzeniem</string>
+    <string name="title_event_reminder">Przypomnienie o wydarzeniu</string>
+    <string name="event_reminder_hour">Godzinę przed wydarzeniem</string>
+    <string name="event_reminder_two_hours">2 godziny przed wydarzeniem</string>
+    <string name="event_reminder_day">Dzień przed wydarzeniem</string>
+    <string name="reminder_schedule_error">Nie można ustawić przypomnienia</string>
 </resources>

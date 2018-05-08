@@ -41,9 +41,9 @@ import javax.inject.Inject
 class EventDetailsActivity : BaseActivity() {
 
     companion object {
+        public const val EVENT_ID = "event_id"
         private const val ALPHA_MAX_VALUE = 255
         private const val ADD_ANIMATION_DURATION_MS = 600L
-        private const val EVENT_ID = "event_id"
         private const val COVER_IMAGE = "cover_image"
 
         fun createIntent(context: Context, eventDetailsRequest: NavigationRequest.EventDetails): Intent {
@@ -191,7 +191,7 @@ class EventDetailsActivity : BaseActivity() {
 
     private fun showReminderDialog(navigationRequest: NavigationRequest.ShowReminderDialog) {
         AlertDialog.Builder(this)
-                .setTitle(R.string.pref_title_event_reminder)
+                .setTitle(R.string.title_event_reminder)
                 .setItems(navigationRequest.options.toTypedArray()) { _, position ->
                     eventDetailsViewModel.onReminderSelected(position)
                 }

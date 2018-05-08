@@ -23,18 +23,32 @@ class LocalNotificationScheduler @Inject constructor(
         private val notificationStorage: NotificationStorage,
         private val stringProvider: StringProvider
 ) {
+    private val executionWindowDeltaInSeconds = TimeUnit.MILLISECONDS.toSeconds(MIN_TIME_TO_SET_REMINDER_MS).toInt() / 2
 
     fun scheduleNotification(id: Long, title: String, date: Date, notificationReminderShift: Long): Boolean {
-        val bundle = Bundle().apply {
-            putString(Constants.Notifications.TITLE, title)
-            putLong(Constants.Notifications.ID, id)
-            putLong(Constants.Notifications.DATE, date.time)
+        val bundle = createNotificationExtras(title, id, date)
+        val startTimeInSeconds = getStartTimeSeconds(date, notificationReminderShift)
+        if (startTimeInSeconds > executionWindowDeltaInSeconds) {
+            val job = createJob(id, startTimeInSeconds, bundle)
+            jobDispatcher.mustSchedule(job)
+            notificationStorage.setIsNotificationScheduled(id, true)
+            return true
         }
-        val startTimeSeconds = TimeUnit.MILLISECONDS.toSeconds(date.time - Date().time
-                - notificationReminderShift).toInt()
-        val executionWindowDeltaInSeconds = TimeUnit.MILLISECONDS.toSeconds(MIN_TIME_TO_SET_REMINDER_MS).toInt() / 2
-        if (startTimeSeconds > executionWindowDeltaInSeconds) {
-            val job = jobDispatcher.newJobBuilder()
+        return false
+    }
+
+    private fun createNotificationExtras(title: String, id: Long, date: Date) =
+            Bundle().apply {
+                putString(Constants.Notifications.TITLE, title)
+                putLong(Constants.Notifications.ID, id)
+                putLong(Constants.Notifications.DATE, date.time)
+            }
+
+    private fun getStartTimeSeconds(date: Date, notificationReminderShift: Long) =
+            TimeUnit.MILLISECONDS.toSeconds(date.time - Date().time - notificationReminderShift).toInt()
+
+    private fun createJob(id: Long, startTimeSeconds: Int, bundle: Bundle) =
+            jobDispatcher.newJobBuilder()
                     .setTag(id.toString())
                     .setLifetime(Lifetime.FOREVER)
                     .setTrigger(
@@ -48,12 +62,6 @@ class LocalNotificationScheduler @Inject constructor(
                     .setReplaceCurrent(true)
                     .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
                     .build()
-            jobDispatcher.mustSchedule(job)
-            notificationStorage.setIsNotificationScheduled(id, true)
-            return true
-        }
-        return false
-    }
 
     fun unscheduleNotification(id: Long) {
         jobDispatcher.cancel(id.toString())
