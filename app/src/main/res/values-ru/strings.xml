@@ -63,4 +63,22 @@
     <string name="ok">OK</string>
     <string name="new_config_arrived">Новая конфигурация установлена</string>
     <string name="restart_app">Приложение будет перезагружено для установки конфигурации</string>
+    <string name="default_notification_channel_name">Стандартные</string>
+    <string name="new_event_title">Новое мероприятие</string>
+    <string name="new_event_description">Информация о %1$s уже доступна</string>
+    <string name="new_talk_title">Новое выступление на %s</string>
+    <string name="new_talk_description">%1$s расскажет о %2$s</string>
+    <string name="new_photos_title">Новые фото</string>
+    <string name="new_photos_description">Фото с %1$s уже доступны</string>
+
+    <!-- Strings related to Settings -->
+    <string name="settings">Настройки</string>
+    <string name="pref_notifications">Уведомления</string>
+
+    <string name="pref_title_new_events">Новые мероприятия</string>
+    <string name="pref_title_new_photos">Новые фото</string>
+    <string name="pref_title_new_talks">Новые выступления</string>
+    <string name="pref_summary_new_events">Сообщите мне о новых мероприятиях</string>
+    <string name="pref_summary_new_photos">Сообщите мне о новых фото</string>
+    <string name="pref_summary_new_talks">Сообщите мне о новых высуплениях</string>
 </resources>

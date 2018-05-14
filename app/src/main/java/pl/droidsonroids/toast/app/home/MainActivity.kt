@@ -114,6 +114,7 @@ class MainActivity : BaseActivity() {
                 R.id.menuItemAbout -> consume { homeFragmentTransaction.showInfoDialog() }
                 R.id.menuItemLogin -> consume { mainViewModel.onLogInClick() }
                 R.id.menuItemLogout -> consume { mainViewModel.onLogOutClick() }
+                R.id.settings -> consume { navigator.dispatch(this, NavigationRequest.Settings) }
                 else -> super.onOptionsItemSelected(item)
             }
 
