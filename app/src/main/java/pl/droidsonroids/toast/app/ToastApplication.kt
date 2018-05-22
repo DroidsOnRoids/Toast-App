@@ -2,6 +2,7 @@ package pl.droidsonroids.toast.app
 
 import android.app.Activity
 import android.app.Application
+import android.app.Service
 import android.util.Log
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
@@ -9,6 +10,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import dagger.android.HasServiceInjector
 import io.fabric.sdk.android.Fabric
 import pl.droidsonroids.toast.BuildConfig
 import pl.droidsonroids.toast.app.notifications.FcmSubscriptionManager
@@ -22,15 +24,19 @@ private const val CRASHLYTICS_KEY_PRIORITY = "priority"
 private const val CRASHLYTICS_KEY_TAG = "tag"
 private const val CRASHLYTICS_KEY_MESSAGE = "message"
 
-class ToastApplication : Application(), HasActivityInjector {
+class ToastApplication : Application(), HasActivityInjector, HasServiceInjector {
 
     @Inject
     lateinit var activityInjector: DispatchingAndroidInjector<Activity>
+    @Inject
+    lateinit var serviceInjector: DispatchingAndroidInjector<Service>
 
     @Inject
     lateinit var fcmSubscriptionManager: FcmSubscriptionManager
 
     override fun activityInjector() = activityInjector
+
+    override fun serviceInjector() = serviceInjector
 
     override fun onCreate() {
         super.onCreate()
@@ -38,7 +44,7 @@ class ToastApplication : Application(), HasActivityInjector {
         setupTimber()
         setupCrashlytics()
         setupRemoteConfig()
-        setupNotificationManager()
+        setupFcmSubscriptionManager()
     }
 
     private fun setupDagger() {
@@ -89,7 +95,7 @@ class ToastApplication : Application(), HasActivityInjector {
         }
     }
 
-    private fun setupNotificationManager() {
+    private fun setupFcmSubscriptionManager() {
         fcmSubscriptionManager.init()
     }
 

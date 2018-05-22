@@ -9,6 +9,7 @@ import android.support.design.widget.CoordinatorLayout
 import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.ColorUtils
 import android.support.v4.util.Pair
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.transition.ChangeBounds
 import android.transition.ChangeImageTransform
@@ -40,11 +41,10 @@ import javax.inject.Inject
 class EventDetailsActivity : BaseActivity() {
 
     companion object {
+        public const val EVENT_ID = "event_id"
         private const val ALPHA_MAX_VALUE = 255
         private const val ADD_ANIMATION_DURATION_MS = 600L
-        private const val EVENT_ID = "event_id"
         private const val COVER_IMAGE = "cover_image"
-        private const val FCM_TOPIC_KEY = "from"
 
         fun createIntent(context: Context, eventDetailsRequest: NavigationRequest.EventDetails): Intent {
             return Intent(context, EventDetailsActivity::class.java)
@@ -54,7 +54,7 @@ class EventDetailsActivity : BaseActivity() {
     }
 
     private val startedFromNotification by lazy {
-        intent.extras.containsKey(FCM_TOPIC_KEY)
+        intent.getStringExtra(EVENT_ID) != null
     }
 
     private val eventId by lazy {
@@ -163,6 +163,7 @@ class EventDetailsActivity : BaseActivity() {
         when (navigationRequest) {
             is NavigationRequest.EventTalkDetails -> navigator.showActivityWithSharedAnimation(this, navigationRequest, getTalkSharedViews(navigationRequest.eventTalkDto))
             is NavigationRequest.SpeakerDetails -> navigator.showActivityWithSharedAnimation(this, navigationRequest, getSpeakerSharedViews(navigationRequest.talkId))
+            is NavigationRequest.ShowReminderDialog -> showReminderDialog(navigationRequest)
             else -> navigator.dispatch(this, navigationRequest)
         }
     }
@@ -186,6 +187,15 @@ class EventDetailsActivity : BaseActivity() {
                     }
         } ?: emptyArray()
 
+    }
+
+    private fun showReminderDialog(navigationRequest: NavigationRequest.ShowReminderDialog) {
+        AlertDialog.Builder(this)
+                .setTitle(R.string.title_event_reminder)
+                .setItems(navigationRequest.options.toTypedArray()) { _, position ->
+                    eventDetailsViewModel.onReminderSelected(position)
+                }
+                .show()
     }
 
     private fun setupGradientSwitcher() {
@@ -230,6 +240,7 @@ class EventDetailsActivity : BaseActivity() {
     override fun onStart() {
         super.onStart()
         eventDetailsViewModel.invalidateAttendState()
+        eventDetailsViewModel.invalidateEventReminderState()
         eventDetailsViewModel.invalidateLoading()
     }
 

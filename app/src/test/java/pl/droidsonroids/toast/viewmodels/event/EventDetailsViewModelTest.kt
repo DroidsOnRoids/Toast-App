@@ -1,9 +1,11 @@
 package pl.droidsonroids.toast.viewmodels.event
 
 import android.databinding.ObservableField
+import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.rxkotlin.toSingle
@@ -14,6 +16,7 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import pl.droidsonroids.toast.RxTestBase
+import pl.droidsonroids.toast.app.notifications.LocalNotificationScheduler
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.dto.event.EventDetailsDto
 import pl.droidsonroids.toast.data.mapper.toDto
@@ -35,6 +38,8 @@ class EventDetailsViewModelTest : RxTestBase() {
     lateinit var delayViewModel: DelayViewModel
     @Mock
     lateinit var analyticsEventTracker: AnalyticsEventTracker
+    @Mock
+    lateinit var localNotificationScheduler: LocalNotificationScheduler
 
     lateinit var eventDetailsViewModel: EventDetailsViewModel
 
@@ -43,7 +48,8 @@ class EventDetailsViewModelTest : RxTestBase() {
     @Before
     fun setUp() {
         whenever(attendViewModel.navigationRequests).thenReturn(PublishSubject.create())
-        eventDetailsViewModel = EventDetailsViewModel(eventsRepository, attendViewModel, analyticsEventTracker, delayViewModel, ObservableField(0f))
+        whenever(localNotificationScheduler.getIsNotificationScheduled(any())).thenReturn(Observable.empty())
+        eventDetailsViewModel = EventDetailsViewModel(eventsRepository, attendViewModel, analyticsEventTracker, delayViewModel, localNotificationScheduler, ObservableField(0f))
         eventDetailsViewModel.init(eventId, null)
     }
 

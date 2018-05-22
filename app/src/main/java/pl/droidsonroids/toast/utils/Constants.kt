@@ -1,5 +1,7 @@
 package pl.droidsonroids.toast.utils
 
+import java.util.concurrent.TimeUnit
+
 object Constants {
     object SearchMenuItem {
         const val SHOWN_OFFSET = 0f
@@ -47,6 +49,13 @@ object Constants {
     object Facebook {
         val PERMISSIONS = listOf("rsvp_event")
         const val EVENT_URL: String = "https://www.facebook.com/events/"
+    }
+
+    object Notifications {
+        const val ID = "id"
+        const val TITLE = "title"
+        const val DATE = "date"
+        val MIN_TIME_TO_SET_REMINDER_MS = TimeUnit.MINUTES.toMillis(20)
     }
 
     const val MIN_LOADING_DELAY_MILLIS = 300L

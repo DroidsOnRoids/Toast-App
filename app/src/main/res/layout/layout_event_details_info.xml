@@ -24,26 +24,26 @@
             android:background="@color/white">
 
             <View
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:id="@+id/titleTouchArea"
-                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:onLongClick="@{() -> eventDetailsViewModel.onTitleLongClick()}"
                 app:layout_constraintBottom_toTopOf="@+id/eventTitleDivider"
-                android:layout_width="0dp"
-                android:layout_height="0dp"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
                 android:id="@+id/eventTitleText"
                 style="@style/EventHeaderStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_large"
+                android:layout_marginEnd="@dimen/margin_small"
                 android:layout_marginStart="@dimen/margin_large"
                 android:layout_marginTop="@dimen/margin_large"
                 android:text="@{eventDetailsViewModel.title}"
                 app:layout_constraintBottom_toTopOf="@+id/eventDescriptionText"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/eventNotificationButton"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed"
@@ -55,13 +55,28 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_large"
-                android:layout_marginEnd="@dimen/margin_large"
+                android:layout_marginEnd="@dimen/margin_small"
                 android:layout_marginStart="@dimen/margin_large"
                 android:text="@string/android_developers_meet_up"
                 app:layout_constraintBottom_toTopOf="@+id/eventTitleDivider"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/eventNotificationButton"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventTitleText"/>
+
+            <ImageButton
+                android:id="@+id/eventNotificationButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_small"
+                android:background="?attr/selectableItemBackground"
+                android:onClick="@{() -> eventDetailsViewModel.onNotificationClick()}"
+                android:padding="@dimen/margin_small"
+                android:visibility="@{eventDetailsViewModel.isEventReminderAvailable}"
+                app:layout_constraintBottom_toTopOf="@+id/view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/titleTouchArea"
+                app:notificationScheduled="@{eventDetailsViewModel.isNotificationScheduled}"
+                tools:src="@drawable/ic_notifications_on"/>
 
             <View
                 android:id="@+id/eventTitleDivider"
@@ -115,6 +130,7 @@
                 tools:text="Przejście Garncarskie 2, Rynek Wrocław"/>
 
             <View
+                android:id="@+id/view"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="?attr/selectableItemBackground"

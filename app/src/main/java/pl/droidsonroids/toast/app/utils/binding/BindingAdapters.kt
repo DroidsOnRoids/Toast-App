@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.CardView
 import android.view.View
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.utils.extensions.firstWord
@@ -58,4 +59,10 @@ fun setForeground(cardView: CardView, isEnabled: Boolean) {
     with(cardView) {
         foreground = ContextCompat.getDrawable(context, color)
     }
+}
+
+@BindingAdapter("notificationScheduled")
+fun ImageView.setNotificationIcon(isScheduled: Boolean) {
+    val image = if (isScheduled) R.drawable.ic_notifications_on else R.drawable.ic_notifications_off
+    setImageResource(image)
 }
