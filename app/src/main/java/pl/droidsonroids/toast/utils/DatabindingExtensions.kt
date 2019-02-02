@@ -6,7 +6,7 @@ import android.databinding.ObservableField
 fun <T> ObservableField<T>.addOnPropertyChangedCallback(onChange: (T) -> Unit): Observable.OnPropertyChangedCallback {
     return object : Observable.OnPropertyChangedCallback() {
         override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-            onChange(get())
+            get()?.let { onChange(it) }
         }
     }.also { addOnPropertyChangedCallback(it) }
 }

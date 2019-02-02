@@ -83,7 +83,7 @@ class FacebookAttendViewModel @Inject constructor(
     }
 
     override fun onAttendClick() {
-        if (!isPastEvent.get()) {
+        if (!isPastEvent.get()!!) {
             val attendStatus = this.attendStatus.get()
             when {
                 !hasPermissions -> navigationRequests.onNext(NavigationRequest.LogIn)

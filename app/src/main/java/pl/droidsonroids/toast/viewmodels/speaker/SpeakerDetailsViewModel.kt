@@ -97,7 +97,7 @@ class SpeakerDetailsViewModel @Inject constructor(
     private fun loadSpeaker() {
         loadingStatus.set(LoadingStatus.PENDING)
         updateLastLoadingStartTime()
-        speakersRepository.getSpeaker(speakerId.get())
+        speakersRepository.getSpeaker(speakerId.get()!!)
                 .let(::addLoadingDelay)
                 .subscribeBy(
                         onSuccess = ::onSpeakerLoaded,
@@ -149,7 +149,7 @@ class SpeakerDetailsViewModel @Inject constructor(
     }
 
     fun onTransitionEnd() {
-        if (loadFromCache.get()) {
+        if (loadFromCache.get()!!) {
             loadFromCache.set(false)
             loadSpeaker()
         }

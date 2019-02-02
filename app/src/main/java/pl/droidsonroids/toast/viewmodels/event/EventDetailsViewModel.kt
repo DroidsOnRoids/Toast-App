@@ -75,18 +75,18 @@ class EventDetailsViewModel @Inject constructor(
 
     fun onPhotosClick() {
         navigationSubject.onNext(NavigationRequest.Photos(photos))
-        analyticsEventTracker.logEventDetailsSeePhotosEvent(eventId.get())
+        analyticsEventTracker.logEventDetailsSeePhotosEvent(eventId.get()!!)
     }
 
     fun onLocationClick() {
         coordinates?.let {
-            navigationSubject.onNext(NavigationRequest.Map(it, placeName.get()))
+            navigationSubject.onNext(NavigationRequest.Map(it, placeName.get()!!))
             analyticsEventTracker.logEventDetailsTapMeetupPlaceEvent()
         }
     }
 
     fun onTitleLongClick() = consume {
-        if (date.get().isToday) {
+        if (date.get()!!.isToday) {
             with(rotation) {
                 when (get()) {
                     WINDOW_DEFAULT_ROTATION_DEGREES -> set(WINDOW_MAX_ROTATION_DEGREES)
@@ -97,10 +97,10 @@ class EventDetailsViewModel @Inject constructor(
     }
 
     fun onNotificationClick() {
-        if (!isNotificationScheduled.get()) {
+        if (!isNotificationScheduled.get()!!) {
             sendReminderDialogRequest()
         } else {
-            notificationScheduler.unscheduleNotification(eventId.get())
+            notificationScheduler.unscheduleNotification(eventId.get()!!)
         }
     }
 
@@ -116,7 +116,7 @@ class EventDetailsViewModel @Inject constructor(
     private fun getReminderOptions(): List<String> {
         val date = date.get()
         return notificationScheduler.reminderOptions
-                .filter { (_, value) -> date.time - value - Date().time - MIN_TIME_TO_SET_REMINDER_MS > 0 }
+                .filter { (_, value) -> date!!.time - value - Date().time - MIN_TIME_TO_SET_REMINDER_MS > 0 }
                 .map { (option, _) -> option }
     }
 
@@ -132,7 +132,7 @@ class EventDetailsViewModel @Inject constructor(
     private fun loadEvent() {
         loadingStatus.set(LoadingStatus.PENDING)
         updateLastLoadingStartTime()
-        compositeDisposable += eventsRepository.getEvent(eventId.get())
+        compositeDisposable += eventsRepository.getEvent(eventId.get()!!)
                 .let(::addLoadingDelay)
                 .subscribeBy(
                         onSuccess = ::onEventLoaded,
@@ -190,7 +190,7 @@ class EventDetailsViewModel @Inject constructor(
     }
 
     fun onTransitionEnd() {
-        if (loadFromCache.get()) {
+        if (loadFromCache.get()!!) {
             loadFromCache.set(false)
             loadEvent()
         }
@@ -209,7 +209,7 @@ class EventDetailsViewModel @Inject constructor(
 
     fun onReminderSelected(position: Int) {
         val notificationReminderShift = notificationScheduler.reminderOptions[position].second
-        val isScheduled = notificationScheduler.scheduleNotification(eventId.get(), title.get(), date.get(), notificationReminderShift)
+        val isScheduled = notificationScheduler.scheduleNotification(eventId.get()!!, title.get()!!, date.get()!!, notificationReminderShift)
         if (!isScheduled) {
             invalidateEventReminderState()
             navigationSubject.onNext(NavigationRequest.SnackBar(R.string.reminder_schedule_error))
