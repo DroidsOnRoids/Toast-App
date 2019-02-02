@@ -15,6 +15,7 @@ import pl.droidsonroids.toast.app.base.BaseActivity
 import pl.droidsonroids.toast.app.events.EventDetailsActivity
 import pl.droidsonroids.toast.app.events.EventTalkDetailsActivity
 import pl.droidsonroids.toast.app.photos.PhotosActivity
+import pl.droidsonroids.toast.app.settings.SettingsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakerDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakerTalkDetailsActivity
 import pl.droidsonroids.toast.app.speakers.SpeakersSearchActivity
@@ -29,7 +30,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class Navigator @Inject constructor(private val loginManager: LoginManager, private val analyticsEventTracker: AnalyticsEventTracker) {
+class Navigator @Inject constructor(
+        private val loginManager: LoginManager,
+        private val analyticsEventTracker: AnalyticsEventTracker
+) {
 
     fun dispatch(baseActivity: BaseActivity, navigationRequest: NavigationRequest) {
         when (navigationRequest) {
@@ -42,6 +46,7 @@ class Navigator @Inject constructor(private val loginManager: LoginManager, priv
             is NavigationRequest.SnackBar -> baseActivity.showSnackbar(navigationRequest)
             NavigationRequest.LogIn -> logIn(baseActivity)
             NavigationRequest.LogOut -> logOut()
+            NavigationRequest.Settings -> showSettings(baseActivity)
         }
     }
 
@@ -126,6 +131,11 @@ class Navigator @Inject constructor(private val loginManager: LoginManager, priv
 
     private fun showPhotos(baseActivity: BaseActivity, navigationRequest: NavigationRequest.Photos) {
         val intent = PhotosActivity.createIntent(baseActivity, navigationRequest)
+        baseActivity.startActivity(intent)
+    }
+
+    private fun showSettings(baseActivity: BaseActivity) {
+        val intent = SettingsActivity.createIntent(baseActivity)
         baseActivity.startActivity(intent)
     }
 }

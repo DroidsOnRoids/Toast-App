@@ -2,10 +2,13 @@ package pl.droidsonroids.toast.viewmodels.event
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
-import io.reactivex.disposables.Disposables
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import pl.droidsonroids.toast.R
+import pl.droidsonroids.toast.app.notifications.LocalNotificationScheduler
 import pl.droidsonroids.toast.app.utils.managers.AnalyticsEventTracker
 import pl.droidsonroids.toast.data.dto.ImageDto
 import pl.droidsonroids.toast.data.dto.event.CoordinatesDto
@@ -15,6 +18,7 @@ import pl.droidsonroids.toast.data.mapper.toDto
 import pl.droidsonroids.toast.data.mapper.toViewModel
 import pl.droidsonroids.toast.repositories.event.EventsRepository
 import pl.droidsonroids.toast.utils.*
+import pl.droidsonroids.toast.utils.Constants.Notifications.MIN_TIME_TO_SET_REMINDER_MS
 import pl.droidsonroids.toast.viewmodels.DelayViewModel
 import pl.droidsonroids.toast.viewmodels.LoadingViewModel
 import pl.droidsonroids.toast.viewmodels.NavigatingViewModel
@@ -33,6 +37,7 @@ class EventDetailsViewModel @Inject constructor(
         attendViewModel: AttendViewModel,
         private val analyticsEventTracker: AnalyticsEventTracker,
         delayViewModel: DelayViewModel,
+        private val notificationScheduler: LocalNotificationScheduler,
         val rotation: ObservableField<Float>
 ) : ViewModel(), LoadingViewModel, DelayViewModel by delayViewModel, NavigatingViewModel, AttendViewModel by attendViewModel {
     override val navigationSubject: PublishSubject<NavigationRequest> = navigationRequests
@@ -47,6 +52,8 @@ class EventDetailsViewModel @Inject constructor(
     val photosAvailable = ObservableField(false)
     val gradientColor = ObservableField(DEFAULT_GRADIENT_COLOR)
     val loadFromCache = ObservableField(true)
+    val isNotificationScheduled = ObservableField(false)
+    val isEventReminderAvailable = ObservableField(true)
 
     val coverImageLoadingFinishedSubject: PublishSubject<Unit> = PublishSubject.create()
 
@@ -64,7 +71,7 @@ class EventDetailsViewModel @Inject constructor(
 
     var photos: List<ImageDto> = emptyList()
 
-    private var eventsDisposable = Disposables.disposed()
+    private var compositeDisposable = CompositeDisposable()
 
     fun onPhotosClick() {
         navigationSubject.onNext(NavigationRequest.Photos(photos))
@@ -89,17 +96,43 @@ class EventDetailsViewModel @Inject constructor(
         }
     }
 
+    fun onNotificationClick() {
+        if (!isNotificationScheduled.get()) {
+            sendReminderDialogRequest()
+        } else {
+            notificationScheduler.unscheduleNotification(eventId.get())
+        }
+    }
+
+    private fun sendReminderDialogRequest() {
+        val options = getReminderOptions()
+        if (options.isNotEmpty()) {
+            navigationSubject.onNext(NavigationRequest.ShowReminderDialog(options))
+        } else {
+            navigationSubject.onNext(NavigationRequest.SnackBar(R.string.reminder_schedule_error))
+        }
+    }
+
+    private fun getReminderOptions(): List<String> {
+        val date = date.get()
+        return notificationScheduler.reminderOptions
+                .filter { (_, value) -> date.time - value - Date().time - MIN_TIME_TO_SET_REMINDER_MS > 0 }
+                .map { (option, _) -> option }
+    }
+
     fun init(id: Long, coverImage: ImageDto?) {
         if (eventId.get() == Constants.NO_ID) {
             eventId.set(id)
             this.coverImage.set(coverImage)
+            compositeDisposable += notificationScheduler.getIsNotificationScheduled(id)
+                    .subscribe(isNotificationScheduled::set)
         }
     }
 
     private fun loadEvent() {
         loadingStatus.set(LoadingStatus.PENDING)
         updateLastLoadingStartTime()
-        eventsDisposable = eventsRepository.getEvent(eventId.get())
+        compositeDisposable += eventsRepository.getEvent(eventId.get())
                 .let(::addLoadingDelay)
                 .subscribeBy(
                         onSuccess = ::onEventLoaded,
@@ -120,6 +153,7 @@ class EventDetailsViewModel @Inject constructor(
             coordinates = it.coordinates
             onTalksLoaded(it.talks)
             setEvent(it.facebookId, it.date, SourceAttending.EVENT_DETAILS)
+            invalidateEventReminderState()
         }
     }
 
@@ -152,7 +186,7 @@ class EventDetailsViewModel @Inject constructor(
 
     override fun onCleared() {
         dispose()
-        eventsDisposable.dispose()
+        compositeDisposable.dispose()
     }
 
     fun onTransitionEnd() {
@@ -165,5 +199,20 @@ class EventDetailsViewModel @Inject constructor(
     fun invalidateLoading() {
         //        Due to shared element transition bug https://github.com/UweTrottmann/SeriesGuide/issues/522
         loadingStatus.notifyChange()
+    }
+
+    fun invalidateEventReminderState() {
+        date.get()?.run {
+            isEventReminderAvailable.set(isAfterNow(notificationScheduler.reminderOptions.first().second + MIN_TIME_TO_SET_REMINDER_MS))
+        }
+    }
+
+    fun onReminderSelected(position: Int) {
+        val notificationReminderShift = notificationScheduler.reminderOptions[position].second
+        val isScheduled = notificationScheduler.scheduleNotification(eventId.get(), title.get(), date.get(), notificationReminderShift)
+        if (!isScheduled) {
+            invalidateEventReminderState()
+            navigationSubject.onNext(NavigationRequest.SnackBar(R.string.reminder_schedule_error))
+        }
     }
 }

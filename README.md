@@ -16,6 +16,8 @@ This app allows you to keep up to date with the latest events info like speakers
 - [x] Event photo gallery
 - [x] Speakers list and details
 - [x] Contact form
+- [x] Notifications about new content
+- [x] Local notifications to remind about incoming event
 
 ## Communication
 * If you **found a bug** or have a **feature request** - open an issue.
@@ -36,6 +38,71 @@ This app allows you to keep up to date with the latest events info like speakers
 ## Project info
 
 The app is using the [MVVM architecture](https://en.wikipedia.org/wiki/Model–view–viewmodel) with [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html) and [databinding](https://developer.android.com/topic/libraries/data-binding/index.html)
+
+#### Firebase Cloud Messaging
+
+There are 3 topics for notifications: new event, new photos, new talk.
+
+Notification template for a new event:
+```
+{
+  "message": {
+    "android": {
+      "data": {
+        "event_id": "EVENT_ID"
+      },
+      "notification": {
+        "click_action": "pl.droidsonroids.toast.event",
+        "title_loc_key": "new_event_title",
+        "body_loc_key": "new_event_description",
+        "body_loc_args": ["EVENT_TITLE"]
+      }
+    },
+    "topic": "new_event"
+  }
+}
+```
+
+Notification template for a new photos:
+```
+{
+  "message": {
+    "android": {
+      "data": {
+        "event_id": "EVENT_ID"
+      },
+      "notification": {
+        "click_action": "pl.droidsonroids.toast.event",
+        "title_loc_key": "new_photos_title",
+        "body_loc_key": "new_photos_description",
+        "body_loc_args": ["EVENT_TITLE"]
+      }
+    },
+    "topic": "new_photos"
+  }
+}
+```
+
+Notification template for a new talk:
+```
+{
+  "message": {
+    "android": {
+      "data": {
+        "event_id": "EVENT_ID"
+      },
+      "notification": {
+        "click_action": "pl.droidsonroids.toast.event",
+        "title_loc_key": "new_talk_title",
+        "title_loc_args": ["EVENT_TITLE"],
+        "body_loc_key": "new_talk_description",
+        "body_loc_args": ["AUTHOR_NAME", "TALK_TITLE"]
+      }
+    },
+    "topic": "new_talk"
+  }
+}
+```
 
 #### Remote config
 
