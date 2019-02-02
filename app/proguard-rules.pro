@@ -60,3 +60,6 @@
 }
 -keep class io.reactivex.plugins.RxJavaPlugins { *; }
 -keep class io.reactivex.disposables.CompositeDisposable { *; }
+
+# Hyperion BuilConfig
+-keep class com.willowtreeapps.hyperion.sample.BuildConfig { *; }

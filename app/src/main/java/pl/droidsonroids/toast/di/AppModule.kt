@@ -8,6 +8,7 @@ import android.preference.PreferenceManager
 import com.firebase.jobdispatcher.FirebaseJobDispatcher
 import com.firebase.jobdispatcher.GooglePlayDriver
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.readystatesoftware.chuck.ChuckInterceptor
 import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
@@ -120,10 +121,11 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(): OkHttpClient =
+    fun provideOkHttpClient(context: Context): OkHttpClient =
             OkHttpClient.Builder()
                     .addHttpHeaders()
                     .addHttpLoggingInterceptorIfDebugBuildConfig()
+                    .addInterceptor(ChuckInterceptor(context))
                     .build()
 
     private fun OkHttpClient.Builder.addHttpHeaders() =

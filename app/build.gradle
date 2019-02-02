@@ -68,7 +68,7 @@ android {
             signingConfig signingConfigs.debug
         }
         debug {
-            minifyEnabled true
+         //   minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-debug-rules.pro', 'proguard-rules.pro'
             testProguardFiles 'proguard-ui-testing-rules.pro'
             applicationIdSuffix ".debug"
@@ -183,8 +183,29 @@ dependencies {
         exclude group: 'io.reactivex.rxjava2', module: 'rxjava'
     }
     androidTestImplementation "pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.0.1"
-}
 
+    //hyperion
+    releaseImplementation 'com.willowtreeapps.hyperion:hyperion-core-no-op:0.9.27'
+
+    stagingImplementation 'com.willowtreeapps.hyperion:hyperion-core-no-op:0.9.27'
+
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-core:0.9.27'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-core:0.9.27'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-attr:0.9.27'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-measurement:0.9.27'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-disk:0.9.27'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-recorder:0.9.27'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-phoenix:0.9.27'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-crash:0.9.27'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-shared-preferences:0.9.27'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-geiger-counter:0.9.27'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-timber:0.9.27'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-build-config:0.9.27'
+
+    // hyperion third party plugins
+    debugImplementation 'com.github.Commit451:Hyperion-Chuck:1.0.0'
+    debugImplementation 'com.star_zero:hyperion-appinfo:1.0.0'
+}
 repositories {
     mavenCentral()
 }
