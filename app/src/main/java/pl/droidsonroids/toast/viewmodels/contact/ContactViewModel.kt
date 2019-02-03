@@ -34,9 +34,9 @@ class ContactViewModel @Inject constructor(
 
     val sendingEnabled = ObservableField(false)
 
-    val nameInputError = ObservableField<String?>(null)
-    val emailInputError = ObservableField<String?>(null)
-    val messageInputError = ObservableField<String?>(null)
+    val nameInputError = ObservableField<String?>()
+    val emailInputError = ObservableField<String?>()
+    val messageInputError = ObservableField<String?>()
 
     val selectedTopicPosition = ObservableField(0)
     val name: ObservableField<String> = ObservableField("")

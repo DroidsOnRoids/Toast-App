@@ -1,0 +1,4 @@
+<resources>
+    <string name="hbc_target_build_config_name" translatable="false">pl.droidsonroids.toast.BuildConfig</string>
+</resources>
+

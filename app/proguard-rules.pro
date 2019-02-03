@@ -62,4 +62,4 @@
 -keep class io.reactivex.disposables.CompositeDisposable { *; }
 
 # Hyperion BuilConfig
--keep class com.willowtreeapps.hyperion.sample.BuildConfig { *; }
+-keep class pl.droidsonroids.toast.BuildConfig { *; }

@@ -122,7 +122,7 @@ class PhotosActivity : BaseActivity() {
         compositeDisposable += photosViewModel.navigationSubject
                 .subscribe(::handleNavigationRequest)
         rotationCallback = photosViewModel.rotation
-                .apply { photosContainer.rotation = this!!.get()!! }
+                .apply { photosContainer.rotation = this.get()!! }
                 .addOnPropertyChangedCallback {
                     photosContainer.rotation = it
                 }
@@ -258,7 +258,7 @@ class PhotosActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
-        photosViewModel.rotation.removeOnPropertyChangedCallback(this!!.rotationCallback!!)
+        photosViewModel.rotation.removeOnPropertyChangedCallback(this.rotationCallback!!)
         setDefaultGlideMemoryCache()
         compositeDisposable.dispose()
         super.onDestroy()

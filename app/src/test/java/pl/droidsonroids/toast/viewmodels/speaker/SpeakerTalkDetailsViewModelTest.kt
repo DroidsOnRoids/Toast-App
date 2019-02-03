@@ -39,11 +39,11 @@ class SpeakerTalkDetailsViewModelTest : RxTestBase() {
     @Test
     fun shouldRequestNavigationToEventDetails() {
         val testObserver = speakerTalkDetailsViewModel.navigationSubject.test()
-        speakerTalkDetailsViewModel.eventItemViewModel.get().onClick()
+        speakerTalkDetailsViewModel.eventItemViewModel.get()!!.onClick()
 
         testObserver.assertValue {
             it is NavigationRequest.EventDetails
-                    && it.id == speakerTalkDetailsViewModel.eventItemViewModel.get().id
+                    && it.id == speakerTalkDetailsViewModel.eventItemViewModel.get()!!.id
         }
     }
 

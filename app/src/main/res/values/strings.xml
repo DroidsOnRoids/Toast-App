@@ -96,8 +96,5 @@
     <string name="event_reminder_two_hours">2 hours before event</string>
     <string name="event_reminder_day">1 day before event</string>
     <string name="reminder_schedule_error">Cannot schedule a reminder</string>
-
-    <!-- override BuildConfig name -->
-    <string name="hbc_target_build_config_name">pl.droidsonroids.toast.BuildConfig</string>
 </resources>
 

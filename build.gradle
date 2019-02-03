@@ -4,7 +4,7 @@ buildscript {
     ext {
         //    add versions that occur at least twice
         versions = [
-                kotlin    : "1.3.11",
+                kotlin    : "1.3.20",
                 support   : "27.1.1",
                 dagger    : "2.21",
                 retrofit  : "2.3.0",
@@ -35,7 +35,7 @@ buildscript {
         classpath "gradle.plugin.pl.droidsonroids.gradle.ui.test:plugin:2.0.2"
         classpath 'com.github.trevjonez.composer-gradle-plugin:plugin:0.5.1'
         classpath 'com.google.gms:google-services:4.2.0'
-        classpath 'io.fabric.tools:gradle:1.27.0'
+        classpath 'io.fabric.tools:gradle:1.27.1'
     }
 }
 

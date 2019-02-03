@@ -56,7 +56,7 @@ class EventsViewModelTest : RxTestBase() {
 
         val upcomingEventViewModel = eventsViewModel.upcomingEvent.get()
 
-        checkIsUpcomingEventLoaded(upcomingEventViewModel)
+        checkIsUpcomingEventLoaded(upcomingEventViewModel!!)
     }
 
     @Test
@@ -104,7 +104,7 @@ class EventsViewModelTest : RxTestBase() {
         setUpWith(Maybe.just(testSplitEvents))
         val testObserver = eventsViewModel.navigationSubject.test()
 
-        eventsViewModel.upcomingEvent.get().onEventClick()
+        eventsViewModel.upcomingEvent.get()?.onEventClick()
 
         testObserver.assertValue {
             it is NavigationRequest.EventDetails
@@ -118,7 +118,7 @@ class EventsViewModelTest : RxTestBase() {
         setUpWith(Maybe.just(testSplitEvents))
         val testObserver = eventsViewModel.navigationSubject.test()
 
-        eventsViewModel.upcomingEvent.get().onPhotosClick()
+        eventsViewModel.upcomingEvent.get()!!.onPhotosClick()
 
         testObserver.assertValue {
             it is NavigationRequest.Photos
@@ -131,7 +131,7 @@ class EventsViewModelTest : RxTestBase() {
         setUpWith(Maybe.just(testSplitEvents))
         val testObserver = eventsViewModel.navigationSubject.test()
 
-        eventsViewModel.upcomingEvent.get().onLocationClick()
+        eventsViewModel.upcomingEvent.get()!!.onLocationClick()
 
         testObserver.assertValue {
             it is NavigationRequest.Map
@@ -161,7 +161,7 @@ class EventsViewModelTest : RxTestBase() {
         eventsViewModel.refresh()
 
         val upcomingEventViewModel = eventsViewModel.upcomingEvent.get()
-        checkIsUpcomingEventLoaded(upcomingEventViewModel)
+        checkIsUpcomingEventLoaded(upcomingEventViewModel!!)
     }
 
     @Test
@@ -183,7 +183,7 @@ class EventsViewModelTest : RxTestBase() {
         eventsViewModel.refresh()
 
         val upcomingEventViewModel = eventsViewModel.upcomingEvent.get()
-        checkIsUpcomingEventLoaded(upcomingEventViewModel)
+        checkIsUpcomingEventLoaded(upcomingEventViewModel!!)
     }
 
     @Test
