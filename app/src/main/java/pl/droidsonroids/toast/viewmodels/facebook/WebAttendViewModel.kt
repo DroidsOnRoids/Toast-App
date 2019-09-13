@@ -28,7 +28,7 @@ class WebAttendViewModel : AttendViewModel {
     }
 
     override fun onAttendClick() {
-        if (!isPastEvent.get() && facebookId != null) {
+        if (!isPastEvent.get()!! && facebookId != null) {
             navigationRequests.onNext(NavigationRequest.Website("${Constants.Facebook.EVENT_URL}$facebookId"))
         }
     }

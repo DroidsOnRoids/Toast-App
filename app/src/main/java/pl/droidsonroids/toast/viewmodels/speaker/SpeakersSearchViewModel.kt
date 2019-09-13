@@ -87,7 +87,7 @@ class SpeakersSearchViewModel @Inject constructor(
     }
 
     fun requestSearch() {
-        val query = searchPhrase.get().trim()
+        val query = searchPhrase.get()!!.trim()
         if (shouldPerformSearch(query)) {
             search(query)
         }

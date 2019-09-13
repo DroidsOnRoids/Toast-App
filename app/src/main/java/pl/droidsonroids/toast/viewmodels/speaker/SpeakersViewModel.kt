@@ -52,13 +52,13 @@ class SpeakersViewModel @Inject constructor(
     fun onAlphabeticalSortingClick() {
         sortingType.set(SortingType.ALPHABETICAL)
         toggleSortingDetailsVisibility()
-        analyticsEventTracker.logSpeakersChooseSortOptionEvent(sortingType.get())
+        analyticsEventTracker.logSpeakersChooseSortOptionEvent(sortingType.get()!!)
     }
 
     fun onDateSortingClick() {
         sortingType.set(SortingType.DATE)
         toggleSortingDetailsVisibility()
-        analyticsEventTracker.logSpeakersChooseSortOptionEvent(sortingType.get())
+        analyticsEventTracker.logSpeakersChooseSortOptionEvent(sortingType.get()!!)
     }
 
     override fun retryLoading() {
@@ -79,7 +79,7 @@ class SpeakersViewModel @Inject constructor(
     }
 
     private fun getFirstPage(): Single<Page<State.Item<SpeakerItemViewModel>>> {
-        return speakersRepository.getSpeakersPage(sortingQuery = sortingType.get().toQuery())
+        return speakersRepository.getSpeakersPage(sortingQuery = sortingType.get()!!.toQuery())
                 .flatMap(::mapToSingleSpeakerItemViewModelsPage)
                 .doOnSuccess { clearSpeakersList() }
     }
@@ -93,7 +93,7 @@ class SpeakersViewModel @Inject constructor(
 
     private fun loadPage(pageNumber: Int) {
         isNextPageLoading = true
-        speakersDisposable = speakersRepository.getSpeakersPage(pageNumber, sortingType.get().toQuery())
+        speakersDisposable = speakersRepository.getSpeakersPage(pageNumber, sortingType.get()!!.toQuery())
                 .flatMap(::mapToSingleSpeakerItemViewModelsPage)
                 .doAfterSuccess { isNextPageLoading = false }
                 .subscribeBy(

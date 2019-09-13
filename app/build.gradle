@@ -10,8 +10,6 @@ apply plugin: 'jacoco'
 
 apply plugin: 'composer'
 
-apply plugin: "pl.droidsonroids.ui.test"
-
 if (file("google-services.json").isFile()) {
     apply plugin: 'io.fabric'
 }
@@ -34,7 +32,6 @@ def commitTimestamp = git.head().time
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.1'
     defaultConfig {
         applicationId "pl.droidsonroids.toast"
         minSdkVersion 21
@@ -109,7 +106,7 @@ androidExtensions {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$versions.kotlin"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
 
     // android
     implementation "com.android.support:appcompat-v7:$versions.support"
@@ -146,7 +143,7 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$versions.lifecycle"
 
     // data binding
-    kapt 'com.android.databinding:compiler:3.0.1'
+//    kapt 'com.android.databinding:compiler:3.1.4'
 
     // glide
     implementation "com.github.bumptech.glide:glide:$versions.glide"
@@ -191,10 +188,6 @@ dependencies {
 
 repositories {
     mavenCentral()
-}
-
-uiTest {
-    uiTestReporter 'test%sComposer'
 }
 
 tasks.addRule("Pattern: jacoco<Variant>TestReport") { String taskName ->

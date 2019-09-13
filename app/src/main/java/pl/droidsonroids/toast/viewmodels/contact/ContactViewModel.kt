@@ -34,9 +34,9 @@ class ContactViewModel @Inject constructor(
 
     val sendingEnabled = ObservableField(false)
 
-    val nameInputError = ObservableField<String?>(null)
-    val emailInputError = ObservableField<String?>(null)
-    val messageInputError = ObservableField<String?>(null)
+    val nameInputError = ObservableField(null as String?)
+    val emailInputError = ObservableField(null as String?)
+    val messageInputError = ObservableField(null as String?)
 
     val selectedTopicPosition = ObservableField(0)
     val name: ObservableField<String> = ObservableField("")
@@ -77,9 +77,9 @@ class ContactViewModel @Inject constructor(
 
     private fun onTextChanged(property: ObservableField<String>) {
         when (property) {
-            name -> nameInputError.set(contactFormValidator.getNameError(property.get()))
-            email -> emailInputError.set(contactFormValidator.getEmailError(property.get()))
-            message -> updateMessage(property.get())
+            name -> nameInputError.set(contactFormValidator.getNameError(property.get()!!))
+            email -> emailInputError.set(contactFormValidator.getEmailError(property.get()!!))
+            message -> updateMessage(property.get()!!)
         }
         updateSendingEnabled()
     }
@@ -101,8 +101,8 @@ class ContactViewModel @Inject constructor(
     private fun updateSendingEnabled() {
         sendingEnabled.set(contactFormValidator.isFormValid(
                 errors = listOf(nameInputError, emailInputError, messageInputError).map { it.get() },
-                inputs = listOf(name, email, message).map { it.get() },
-                topicPosition = selectedTopicPosition.get()
+                inputs = listOf(name, email, message).map { it.get()!! },
+                topicPosition = selectedTopicPosition.get()!!
         ))
     }
 
@@ -135,15 +135,15 @@ class ContactViewModel @Inject constructor(
     private fun createMessageDto(): MessageDto {
         val type = resolveMessageType()
         return MessageDto(
-                email = email.get(),
+                email = email.get()!!,
                 type = type,
-                name = name.get(),
-                message = message.get()
+                name = name.get()!!,
+                message = message.get()!!
         )
     }
 
     private fun resolveMessageType(): MessageType {
-        return MessageType[selectedTopicPosition.get()]
+        return MessageType[selectedTopicPosition.get()!!]
     }
 
     private fun onSendSuccessfully() {

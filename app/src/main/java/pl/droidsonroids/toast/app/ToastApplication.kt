@@ -6,6 +6,7 @@ import android.app.Service
 import android.util.Log
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
+import com.google.firebase.FirebaseApp
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import dagger.android.DispatchingAndroidInjector
@@ -40,6 +41,7 @@ class ToastApplication : Application(), HasActivityInjector, HasServiceInjector 
 
     override fun onCreate() {
         super.onCreate()
+        FirebaseApp.initializeApp(this)
         setupDagger()
         setupTimber()
         setupCrashlytics()

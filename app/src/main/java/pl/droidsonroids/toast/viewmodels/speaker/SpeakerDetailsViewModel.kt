@@ -38,10 +38,10 @@ class SpeakerDetailsViewModel @Inject constructor(
     val job = ObservableField("")
     val bio = ObservableField("")
     val avatar = ObservableField<ImageDto?>()
-    val github = ObservableField<String?>(null)
-    val website = ObservableField<String?>(null)
-    val twitter = ObservableField<String?>(null)
-    val email = ObservableField<String?>(null)
+    val github = ObservableField(null as String?)
+    val website = ObservableField(null as String?)
+    val twitter = ObservableField(null as String?)
+    val email = ObservableField(null as String?)
     val isTalksLabelVisible = ObservableField(false)
     val loadFromCache = ObservableField(true)
 
@@ -97,7 +97,7 @@ class SpeakerDetailsViewModel @Inject constructor(
     private fun loadSpeaker() {
         loadingStatus.set(LoadingStatus.PENDING)
         updateLastLoadingStartTime()
-        speakersRepository.getSpeaker(speakerId.get())
+        speakersRepository.getSpeaker(speakerId.get()!!)
                 .let(::addLoadingDelay)
                 .subscribeBy(
                         onSuccess = ::onSpeakerLoaded,
@@ -149,7 +149,7 @@ class SpeakerDetailsViewModel @Inject constructor(
     }
 
     fun onTransitionEnd() {
-        if (loadFromCache.get()) {
+        if (loadFromCache.get()!!) {
             loadFromCache.set(false)
             loadSpeaker()
         }
